@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, NgZone } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParsedSong } from '../../models/song.model';
@@ -24,7 +24,7 @@ export class SongEditorComponent {
   constructor(
     public chordSvc: ChordService,
     private exportSvc: ExportService,
-    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   get song(): ParsedSong {
@@ -68,7 +68,8 @@ export class SongEditorComponent {
     try {
       await this.exportSvc.toPdf(this.songs);
     } finally {
-      this.ngZone.run(() => { this.exporting = false; });
+      this.exporting = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -81,7 +82,8 @@ export class SongEditorComponent {
     try {
       await this.exportSvc.toPdf([this.song]);
     } finally {
-      this.ngZone.run(() => { this.exporting = false; });
+      this.exporting = false;
+      this.cdr.detectChanges();
     }
   }
 }
