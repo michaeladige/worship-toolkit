@@ -6,11 +6,9 @@ const FLATS  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
 // Keys that prefer flats
 const FLAT_KEYS = new Set(['F','Bb','Eb','Ab','Db','Gb','Dm','Gm','Cm','Fm','Bbm','Ebm']);
 
-// Regex to match a single chord root + optional modifier
+// Quality alternatives ordered longest-first so "maj" beats "m", etc.
 const CHORD_RE =
-  /^([A-G][b#]?)((?:maj|min|sus|add|aug|dim|no|M)?[0-9]*)?((?:sus|add)[0-9]?)?(\([0-9]+\))?(?:\/([A-G][b#]?))?$/;
-
-const NOTE_RE = /^[A-G][b#]?$/;
+  /^([A-G][b#]?)(maj|min|dim|aug|m|M)?(\d+)?(\([0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
 
 @Injectable({ providedIn: 'root' })
 export class ChordService {
@@ -45,8 +43,9 @@ export class ChordService {
     const m = chord.match(CHORD_RE);
     if (!m) return null;
     const root = m[1];
-    const suffix = ((m[2] ?? '') + (m[3] ?? '') + (m[4] ?? '')).trim();
-    const bass = m[5] ?? null;
+    // groups: [2]=quality, [3]=digits, [4]=parens, [5]=sus/add, [6]=bass
+    const suffix = ((m[2] ?? '') + (m[3] ?? '') + (m[4] ?? '') + (m[5] ?? '')).trim();
+    const bass = m[6] ? m[6].slice(1) : null; // strip leading "/"
     return { root, suffix, bass };
   }
 
@@ -73,8 +72,8 @@ export class ChordService {
     if (!parsed) return chord;
     const flat = this.preferFlat(targetKey);
     const newRoot = this.transposeNote(parsed.root, semitones, flat);
-    const newBass = parsed.bass ? this.transposeNote(parsed.bass, semitones, flat) : null;
-    return newRoot + parsed.suffix + (newBass ? '/' + newBass : '');
+    const newBass = parsed.bass ? '/' + this.transposeNote(parsed.bass, semitones, flat) : '';
+    return newRoot + parsed.suffix + newBass;
   }
 
   /** Transpose full key string e.g. "C" → "D" when +2 semitones */
