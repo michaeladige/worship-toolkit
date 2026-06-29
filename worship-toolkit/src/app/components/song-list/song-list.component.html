@@ -1,0 +1,18 @@
+<div class="song-list">
+  <div class="list-header">
+    <h3>Songs in Set</h3>
+    <button class="new-btn" (click)="uploadNew.emit()">+ New PDF</button>
+  </div>
+
+  <ul>
+    @for (song of songs; track song.id; let i = $index) {
+      <li
+        [class.active]="i === selectedIndex"
+        (click)="selectSong.emit(i)"
+      >
+        <span class="song-title">{{ song.title }}</span>
+        <span class="song-key">{{ effectiveKey(song) }}</span>
+      </li>
+    }
+  </ul>
+</div>

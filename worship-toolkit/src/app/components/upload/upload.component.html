@@ -1,0 +1,55 @@
+<div class="upload-page">
+  <div class="hero">
+    <h1>WorshipToolkit</h1>
+    <p class="subtitle">Upload a SongSelect PDF to edit keys, transpose chords, and export your set</p>
+  </div>
+
+  <div
+    class="drop-zone"
+    [class.dragging]="isDragging"
+    [class.loading]="isLoading"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave()"
+    (drop)="onDrop($event)"
+  >
+    @if (isLoading) {
+      <div class="spinner"></div>
+      <p>Parsing PDF...</p>
+    } @else {
+      <div class="upload-icon">📄</div>
+      <p class="drop-text">Drag &amp; drop your SongSelect PDF here</p>
+      <p class="or-text">or</p>
+      <label class="file-btn">
+        Choose File
+        <input type="file" accept=".pdf" (change)="onFileChange($event)" />
+      </label>
+    }
+  </div>
+
+  @if (error) {
+    <div class="error-msg">{{ error }}</div>
+  }
+
+  <div class="info-cards">
+    <div class="card">
+      <span class="card-icon">🎵</span>
+      <strong>Transpose Keys</strong>
+      <p>Shift the entire song up or down by semitones, or jump directly to a target key</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">✏️</span>
+      <strong>Edit Chords</strong>
+      <p>Click any chord to rename it inline, or change individual chord placements</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🎹</span>
+      <strong>Bass Notes</strong>
+      <p>Toggle to show just the root/bass note of every chord — great for beginners</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📤</span>
+      <strong>Export</strong>
+      <p>Download updated sheet as a formatted PDF or Markdown file to share with your team</p>
+    </div>
+  </div>
+</div>
