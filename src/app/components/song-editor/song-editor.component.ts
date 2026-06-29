@@ -72,8 +72,12 @@ export class SongEditorComponent {
     this.exportSvc.downloadMarkdown(this.songs);
   }
 
-  exportCurrentSongPdf() {
+  async exportCurrentSongPdf() {
     this.exporting = true;
-    this.exportSvc.toPdf([this.song]).finally(() => this.exporting = false);
+    try {
+      await this.exportSvc.toPdf([this.song]);
+    } finally {
+      this.exporting = false;
+    }
   }
 }
