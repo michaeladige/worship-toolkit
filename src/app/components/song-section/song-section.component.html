@@ -1,7 +1,10 @@
-<div class="sections">
+<div class="sections" cdkDropList (cdkDropListDropped)="dropSection($event)">
   @for (section of song.sections; track trackSection($index, section); let si = $index) {
-    <div class="section">
+    <div class="section" cdkDrag [cdkDragDisabled]="!showSectionControls">
       <div class="section-header">
+        @if (showSectionControls) {
+          <span class="drag-handle" cdkDragHandle title="Drag to reorder">⠿</span>
+        }
         <div class="section-label">{{ section.name }}</div>
         @if (showSectionControls) {
           <div class="section-actions">
@@ -11,15 +14,19 @@
         }
       </div>
 
+      <!-- CDK drag placeholder -->
+      <div *cdkDragPlaceholder class="section-drag-placeholder"></div>
+
       @for (line of section.lines; track trackLine($index, line); let li = $index) {
         <div class="line-group" [class.chords-only]="line.isChordsOnly">
 
           @if (line.chords.length > 0) {
-            <div class="chord-row">
+            <div class="chord-row" #chordRowRef>
               @for (ct of line.chords; track trackChord($index, ct); let ci = $index) {
                 <span
                   class="chord-wrapper"
-                  [style.left]="chordLeft(line, ci)"
+                  [class.dragging]="isDraggingChord(si, li, ci)"
+                  [style.left]="chordLeft(line, si, li, ci)"
                 >
                   @if (isEditing(si, li, ci)) {
                     <input
@@ -34,7 +41,8 @@
                     <button
                       class="chord-btn"
                       (click)="startEdit(si, li, ci, displayChord(ct.chord))"
-                      [title]="'Click to edit chord'"
+                      (mousedown)="startChordDrag($event, si, li, ci, chordRowRef)"
+                      title="Click to edit · drag to reposition"
                     >{{ displayChord(ct.chord) }}</button>
                     <button
                       class="chord-remove"
@@ -48,7 +56,7 @@
             </div>
           } @else if (!line.isChordsOnly) {
             <div class="chord-row chord-row--empty">
-              <button class="add-chord-btn" (click)="addChord(si, li)" title="Add chord">+</button>
+              <button class="add-chord-btn add-chord-btn--visible" (click)="addChord(si, li)" title="Add chord">+ chord</button>
             </div>
           }
 
@@ -56,13 +64,18 @@
             <div class="annotation-row">{{ displayAnnotation(line.annotation) }}</div>
           }
           @if (!line.isChordsOnly) {
-            <div
-              class="lyric-row"
-              contenteditable="true"
-              [textContent]="line.lyric"
-              (blur)="editLyric(si, li, $any($event.target).textContent)"
-              spellcheck="false"
-            ></div>
+            <div class="lyric-row-wrap">
+              <div
+                class="lyric-row"
+                contenteditable="true"
+                [textContent]="line.lyric"
+                (blur)="editLyric(si, li, $any($event.target).textContent)"
+                spellcheck="false"
+              ></div>
+              @if (showSectionControls) {
+                <button class="remove-line-btn" (click)="removeLine(si, li)" title="Remove line">✕</button>
+              }
+            </div>
           }
         </div>
       }
