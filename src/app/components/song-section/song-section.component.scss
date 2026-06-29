@@ -30,6 +30,8 @@
   position: relative;
   height: 1.4rem;
   margin-bottom: 0.1rem;
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-size: 0.82rem;
 
   &--empty {
     opacity: 0;
@@ -61,7 +63,7 @@
   font-weight: 700;
   color: var(--color-chord);
   cursor: pointer;
-  font-family: inherit;
+  font-family: 'Courier New', 'Consolas', monospace;
   line-height: 1;
   border-radius: 3px;
   transition: background 0.12s;
@@ -96,7 +98,7 @@
   border-radius: 3px;
   padding: 0 3px;
   min-width: 2rem;
-  font-family: inherit;
+  font-family: 'Courier New', 'Consolas', monospace;
   outline: none;
 }
 
@@ -131,7 +133,8 @@
 }
 
 .lyric-row {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
+  font-family: 'Courier New', 'Consolas', monospace;
   color: var(--color-text);
   line-height: 1.45;
   white-space: pre-wrap;

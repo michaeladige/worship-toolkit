@@ -296,9 +296,9 @@ export class PdfParserService {
         }
         pendingChordLine = line;
       } else {
-        // Lyric line
+        // Lyric line — pass lyric items so chords get accurate charPos
         const chords = pendingChordLine
-          ? this.extractChords(pendingChordLine)
+          ? this.extractChords(pendingChordLine, line.items)
           : [];
         currentSection.lines.push({ chords, lyric: text, isChordsOnly: false });
         pendingChordLine = null;
@@ -324,12 +324,14 @@ export class PdfParserService {
 
   private flushChordOnly(line: RawLine | null, section: SongSection | null): void {
     if (line && section) {
-      section.lines.push({ chords: this.extractChords(line), lyric: '', isChordsOnly: true });
+      section.lines.push({ chords: this.extractChords(line, null), lyric: '', isChordsOnly: true });
     }
   }
 
-  // Extract chord tokens from a chord line, using the line's column info for xPercent
-  private extractChords(line: RawLine): ChordToken[] {
+  // Extract chord tokens from a chord line.
+  // lyricItems: raw items from the lyric line directly below — used to compute charPos.
+  // When null (chord-only line), charPos is estimated proportionally from x position.
+  private extractChords(line: RawLine, lyricItems: RawItem[] | null): ChordToken[] {
     const tokens: ChordToken[] = [];
     const { colMinX, colWidth } = line;
     const range = colWidth || 240;
@@ -339,9 +341,37 @@ export class PdfParserService {
       if (!chord || /^[|:]+$|^[|][|][:?]|^:\|\|/.test(chord)) continue;
       if (this.chordSvc.isChord(chord)) {
         const xPercent = Math.max(0, Math.min(100, ((item.x - colMinX) / range) * 100));
-        tokens.push({ chord, xPercent, charPos: 0 });
+        const charPos = lyricItems
+          ? this.xToCharPos(item.x, lyricItems)
+          : Math.round(((item.x - colMinX) / range) * 40);
+        tokens.push({ chord, xPercent, charPos });
       }
     }
     return tokens;
+  }
+
+  // Map a chord's PDF x coordinate to the character offset in the reconstructed lyric string.
+  // lyricItems must be sorted by x (makeRawLine already sorts them).
+  private xToCharPos(chordX: number, lyricItems: RawItem[]): number {
+    if (!lyricItems.length) return 0;
+    let charCount = 0;
+    let lastEnd = lyricItems[0].x;
+
+    for (let i = 0; i < lyricItems.length; i++) {
+      const item = lyricItems[i];
+      if (i > 0 && item.x > lastEnd + 1) charCount++; // inter-word space
+
+      if (chordX <= item.x) return charCount; // chord falls before this word
+
+      if (chordX < item.x + item.width) {
+        // chord falls within this item — interpolate character offset
+        const fraction = (chordX - item.x) / Math.max(item.width, 1);
+        return charCount + Math.round(fraction * item.text.length);
+      }
+
+      charCount += item.text.length;
+      lastEnd = item.x + item.width;
+    }
+    return charCount; // chord is past the last lyric item
   }
 }
