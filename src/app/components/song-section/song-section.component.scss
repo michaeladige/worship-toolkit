@@ -6,13 +6,52 @@
   margin-bottom: 1.8rem;
 }
 
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
 .section-label {
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-muted);
-  margin-bottom: 0.6rem;
+}
+
+.section-actions {
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  .section:hover & {
+    opacity: 1;
+  }
+}
+
+.section-action-btn {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-bg);
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: border-color 0.12s, color 0.12s;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  &--danger:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+  }
 }
 
 .line-group {

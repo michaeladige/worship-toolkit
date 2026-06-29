@@ -1,7 +1,15 @@
 <div class="sections">
   @for (section of song.sections; track trackSection($index, section); let si = $index) {
     <div class="section">
-      <div class="section-label">{{ section.name }}</div>
+      <div class="section-header">
+        <div class="section-label">{{ section.name }}</div>
+        @if (showSectionControls) {
+          <div class="section-actions">
+            <button class="section-action-btn" (click)="addLine.emit(si)" title="Add line">+ Line</button>
+            <button class="section-action-btn section-action-btn--danger" (click)="removeSection.emit(si)" title="Remove section">✕</button>
+          </div>
+        }
+      </div>
 
       @for (line of section.lines; track trackLine($index, line); let li = $index) {
         <div class="line-group" [class.chords-only]="line.isChordsOnly">

@@ -69,6 +69,7 @@ export class ExportService {
     const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones);
     let transposed = this.chordSvc.transposeChord(chord, song.transposeSemitones, effectiveKey);
     if (song.showBassNotesOnly) transposed = this.chordSvc.getBassNote(transposed);
+    if (song.showNashville) transposed = this.chordSvc.toNashville(transposed, effectiveKey);
     return transposed;
   }
 

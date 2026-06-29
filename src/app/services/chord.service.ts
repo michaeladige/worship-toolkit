@@ -116,6 +116,24 @@ export class ChordService {
       .join('');
   }
 
+  // Nashville Number System: convert a chord to scale-degree notation relative to key.
+  // e.g. in key of C: Am7 → "6m7", F/C → "4/1", Bb → "b7"
+  toNashville(chord: string, key: string): string {
+    const DEGREES = ['1','b2','2','b3','3','4','b5','5','b6','6','b7','7'];
+    const parsed = this.parseChord(chord);
+    if (!parsed) return chord;
+    const keyIdx = this.noteToIndex(key);
+    const rootIdx = this.noteToIndex(parsed.root);
+    if (keyIdx === -1 || rootIdx === -1) return chord;
+    const degree = DEGREES[((rootIdx - keyIdx) + 12) % 12];
+    let bassStr = '';
+    if (parsed.bass) {
+      const bassIdx = this.noteToIndex(parsed.bass);
+      bassStr = bassIdx !== -1 ? '/' + DEGREES[((bassIdx - keyIdx) + 12) % 12] : '/' + parsed.bass;
+    }
+    return degree + parsed.suffix + bassStr;
+  }
+
   semitonesBetween(fromKey: string, toKey: string): number {
     const from = this.noteToIndex(fromKey);
     const to = this.noteToIndex(toKey);

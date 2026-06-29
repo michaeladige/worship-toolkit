@@ -29,4 +29,5 @@ export interface ParsedSong {
   copyright?: string;
   transposeSemitones: number;
   showBassNotesOnly: boolean;
+  showNashville?: boolean;
 }

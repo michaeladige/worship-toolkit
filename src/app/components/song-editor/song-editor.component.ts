@@ -6,6 +6,8 @@ import { ChordService } from '../../services/chord.service';
 import { ExportService } from '../../services/export.service';
 import { SongSectionComponent } from '../song-section/song-section.component';
 
+const QUICK_SECTIONS = ['INTRO', 'VERSE', 'CHORUS', 'PRE-CHORUS', 'BRIDGE', 'OUTRO', 'TAG'];
+
 @Component({
   selector: 'app-song-editor',
   standalone: true,
@@ -15,11 +17,14 @@ import { SongSectionComponent } from '../song-section/song-section.component';
 })
 export class SongEditorComponent {
   readonly Math = Math;
+  readonly quickSections = QUICK_SECTIONS;
+
   @Input() songs: ParsedSong[] = [];
   @Input() selectedIndex = 0;
   @Output() songsChange = new EventEmitter<ParsedSong[]>();
 
   exporting = false;
+  newSectionName = '';
 
   constructor(
     public chordSvc: ChordService,
@@ -59,8 +64,36 @@ export class SongEditorComponent {
     this.updateSong({ ...this.song, showBassNotesOnly: !this.song.showBassNotesOnly });
   }
 
+  toggleNashville() {
+    this.updateSong({ ...this.song, showNashville: !this.song.showNashville });
+  }
+
   resetTranspose() {
     this.updateSong({ ...this.song, transposeSemitones: 0 });
+  }
+
+  addSection(name: string) {
+    const trimmed = name.trim().toUpperCase();
+    if (!trimmed) return;
+    const song = JSON.parse(JSON.stringify(this.song)) as ParsedSong;
+    song.sections.push({
+      name: trimmed,
+      lines: [{ chords: [], lyric: '', isChordsOnly: false }],
+    });
+    this.updateSong(song);
+    this.newSectionName = '';
+  }
+
+  addLineToSection(si: number) {
+    const song = JSON.parse(JSON.stringify(this.song)) as ParsedSong;
+    song.sections[si].lines.push({ chords: [], lyric: '', isChordsOnly: false });
+    this.updateSong(song);
+  }
+
+  removeSection(si: number) {
+    const song = JSON.parse(JSON.stringify(this.song)) as ParsedSong;
+    song.sections.splice(si, 1);
+    this.updateSong(song);
   }
 
   async exportPdf() {

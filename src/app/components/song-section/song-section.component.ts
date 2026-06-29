@@ -23,7 +23,10 @@ interface EditState {
 })
 export class SongSectionComponent {
   @Input() song!: ParsedSong;
+  @Input() showSectionControls = false;
   @Output() songChange = new EventEmitter<ParsedSong>();
+  @Output() addLine = new EventEmitter<number>();       // section index
+  @Output() removeSection = new EventEmitter<number>(); // section index
 
   editing: EditState | null = null;
 
@@ -39,7 +42,8 @@ export class SongSectionComponent {
 
   displayChord(raw: string): string {
     const transposed = this.chordSvc.transposeChord(raw, this.song.transposeSemitones, this.effectiveKey);
-    return this.song.showBassNotesOnly ? this.chordSvc.getBassNote(transposed) : transposed;
+    const display = this.song.showBassNotesOnly ? this.chordSvc.getBassNote(transposed) : transposed;
+    return this.song.showNashville ? this.chordSvc.toNashville(display, this.effectiveKey) : display;
   }
 
   startEdit(si: number, li: number, ci: number, currentDisplay: string) {
@@ -92,10 +96,7 @@ export class SongSectionComponent {
     return this.editing?.sectionIdx === si && this.editing?.lineIdx === li && this.editing?.chordIdx === ci;
   }
 
-  // Returns the effective left position (in ch units) for chord at index `idx` in `line`,
-  // adjusted so no chord visually overlaps the one before it.
   chordLeft(line: SongLine, idx: number): string {
-    // Build sort order by charPos once per line, tracking original indices
     const order = line.chords
       .map((ct, i) => ({ charPos: ct.charPos ?? 0, len: this.displayChord(ct.chord).length, i }))
       .sort((a, b) => a.charPos - b.charPos);
@@ -105,7 +106,7 @@ export class SongSectionComponent {
     for (const entry of order) {
       const pos = Math.max(cursor, entry.charPos);
       result[entry.i] = pos;
-      cursor = pos + entry.len + 1; // +1 gap between chords
+      cursor = pos + entry.len + 1;
     }
     return result[idx] + 'ch';
   }
