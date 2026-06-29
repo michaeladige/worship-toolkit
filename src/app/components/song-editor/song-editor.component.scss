@@ -1,8 +1,16 @@
-.editor {
+// Host element must be a proper flex child of .workspace (flex row).
+// Without this, the browser treats <app-song-editor> as inline and
+// .content's overflow-y: auto has no constrained height to scroll against.
+:host {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-width: 0;
+}
+
+.editor {
+  display: contents; // let :host act as the flex container directly
 }
 
 .toolbar {

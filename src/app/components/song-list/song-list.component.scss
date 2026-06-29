@@ -1,10 +1,16 @@
-.song-list {
-  width: 220px;
-  min-width: 200px;
-  border-right: 1px solid var(--color-border);
+:host {
   display: flex;
   flex-direction: column;
+  width: 220px;
+  min-width: 200px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--color-border);
   background: var(--color-surface);
+  overflow: hidden;
+}
+
+.song-list {
+  display: contents;
 }
 
 .list-header {

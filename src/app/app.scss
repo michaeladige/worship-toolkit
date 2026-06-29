@@ -1,5 +1,11 @@
-.app-shell {
+// app-root host defaults to inline; make it fill the viewport
+:host {
+  display: block;
   height: 100vh;
+}
+
+.app-shell {
+  height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
