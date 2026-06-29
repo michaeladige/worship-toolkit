@@ -19,22 +19,27 @@ export class ChordService {
 
   /** Check if a line of space-separated tokens is primarily chords */
   isChordLine(line: string): boolean {
-    const tokens = line.trim().split(/\s+/).filter(t => t.length > 0);
+    // Remove multi-word parenthesized direction annotations before splitting.
+    // "(To Tag)", "(To Interlude 1a)", "(Last time)" etc. are single PDF items
+    // whose internal spaces would otherwise break into non-chord tokens.
+    // Chord extensions like "Eb(4)" are safe: their parens contain no space.
+    const cleaned = line.replace(/\([^)]*\s[^)]*\)/g, '');
+
+    const tokens = cleaned.trim().split(/\s+/).filter(t => t.length > 0);
     if (tokens.length === 0) return false;
 
-    // Allow bar lines and annotation tokens
-    const skipTokens = new Set(['|', '||', '||:', ':|:', ':|', ':||', '(', ')']);
-    const annotationRe = /^\(.*\)$|^\*|^[0-9]+\.$|^-+$|^\[.*\]$/;
+    const SKIP = new Set(['|', '||', '||:', ':|:', ':|', ':||', '(', ')']);
+    // Single-token annotations: (1.) (2.) *, dashes, standalone numbers/letters like "1" "1A"
+    const ANN_RE = /^\(.*\)$|^\*|^[0-9]+\.$|^-+$|^\[.*\]$|^\d+[A-Za-z]?$/;
+    // Section-name keywords that can appear inline on chord lines (e.g. "F TAG", "C VERSE 3")
+    const SEC_RE = /^(VERSE|CHORUS|PRE-?CHORUS|PRE|BRIDGE|INTRO|OUTRO|TAG|ENDING|INTERLUDE|INSTRUMENTAL|CODA|VAMP)$/i;
 
     let chordCount = 0;
     let nonChordCount = 0;
     for (const t of tokens) {
-      if (skipTokens.has(t) || annotationRe.test(t)) continue;
-      if (this.isChord(t)) {
-        chordCount++;
-      } else {
-        nonChordCount++;
-      }
+      if (SKIP.has(t) || ANN_RE.test(t) || SEC_RE.test(t)) continue;
+      if (this.isChord(t)) chordCount++;
+      else nonChordCount++;
     }
     return chordCount > 0 && nonChordCount === 0;
   }
