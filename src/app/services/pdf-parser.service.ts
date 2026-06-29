@@ -265,6 +265,7 @@ export class PdfParserService {
     const sections: SongSection[] = [];
     let currentSection: SongSection | null = null;
     let pendingChordLine: RawLine | null = null;
+    let pendingAnnotation = '';
 
     for (let i = contentStart; i < allLines.length; i++) {
       const line = allLines[i];
@@ -272,14 +273,14 @@ export class PdfParserService {
       if (!text) continue;
       if (/CCLI Song|For use solely|©|www\.ccli|License #/i.test(text)) continue;
       if (/^Key\s*[-–]\s*[A-G][b#]?$/i.test(text)) {
-        this.flushChordOnly(pendingChordLine, currentSection);
-        pendingChordLine = null;
+        this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
+        pendingChordLine = null; pendingAnnotation = '';
         continue;
       }
 
       if (SECTION_RE.test(text)) {
-        this.flushChordOnly(pendingChordLine, currentSection);
-        pendingChordLine = null;
+        this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
+        pendingChordLine = null; pendingAnnotation = '';
         currentSection = { name: text.toUpperCase().trim(), lines: [] };
         sections.push(currentSection);
         continue;
@@ -292,19 +293,23 @@ export class PdfParserService {
 
       if (this.chordSvc.isChordLine(text)) {
         if (pendingChordLine) {
-          this.flushChordOnly(pendingChordLine, currentSection);
+          this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
         }
         pendingChordLine = line;
+        pendingAnnotation = this.extractAnnotation(text);
       } else {
         // Lyric line — pass lyric items so chords get accurate charPos
         const chords = pendingChordLine
           ? this.extractChords(pendingChordLine, line.items)
           : [];
-        currentSection.lines.push({ chords, lyric: text, isChordsOnly: false });
-        pendingChordLine = null;
+        currentSection.lines.push({
+          chords, lyric: text, isChordsOnly: false,
+          annotation: pendingAnnotation || undefined,
+        });
+        pendingChordLine = null; pendingAnnotation = '';
       }
     }
-    this.flushChordOnly(pendingChordLine, currentSection);
+    this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
 
     return {
       id: crypto.randomUUID(),
@@ -322,10 +327,27 @@ export class PdfParserService {
     };
   }
 
-  private flushChordOnly(line: RawLine | null, section: SongSection | null): void {
+  private flushChordOnly(line: RawLine | null, section: SongSection | null, annotation = ''): void {
     if (line && section) {
-      section.lines.push({ chords: this.extractChords(line, null), lyric: '', isChordsOnly: true });
+      section.lines.push({
+        chords: this.extractChords(line, null),
+        lyric: '', isChordsOnly: true,
+        annotation: annotation || undefined,
+      });
     }
+  }
+
+  // Extract direction/repeat annotation text from a chord line.
+  // Returns numbered markers like "(1.)" and multi-word direction notes like "(To Tag)".
+  private extractAnnotation(lineText: string): string {
+    const parts: string[] = [];
+    // (1.) (2.) numbered repeat markers
+    for (const m of lineText.matchAll(/\(\d+\.\)/g)) parts.push(m[0]);
+    // (To Tag) (Last time) (To Interlude 1a) — multi-word direction notes
+    for (const m of lineText.matchAll(/\([^)]*\s[^)]*\)/g)) {
+      if (!parts.includes(m[0])) parts.push(m[0]);
+    }
+    return parts.join(' ').trim();
   }
 
   // Extract chord tokens from a chord line.

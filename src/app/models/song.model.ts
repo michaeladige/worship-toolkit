@@ -8,6 +8,7 @@ export interface SongLine {
   chords: ChordToken[];
   lyric: string;
   isChordsOnly: boolean; // line with chords but no lyric (interlude bars, etc.)
+  annotation?: string;   // direction notes from the chord line: "(To Tag)", "(1.)", etc.
 }
 
 export interface SongSection {
