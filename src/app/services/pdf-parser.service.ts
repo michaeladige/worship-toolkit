@@ -337,9 +337,13 @@ export class PdfParserService {
     }
   }
 
-  // Extract direction/repeat annotation text from a chord line.
-  // Returns numbered markers like "(1.)" and multi-word direction notes like "(To Tag)".
+  // Extract annotation text from a chord line to display alongside the chords.
+  // Bar-notation lines return their full text so the bar structure is visible.
+  // Other chord lines return any direction/repeat markers embedded in them.
   private extractAnnotation(lineText: string): string {
+    // Bar notation: preserve the full line so musicians see "| Am7 | G | Fmaj7 |"
+    if (lineText.includes('|')) return lineText.trim();
+
     const parts: string[] = [];
     // (1.) (2.) numbered repeat markers
     for (const m of lineText.matchAll(/\(\d+\.\)/g)) parts.push(m[0]);
