@@ -1,8 +1,8 @@
-name: Deploy to GitHub Pages
+name: Deploy Beta to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [feature/session-sections-nashville]
   workflow_dispatch:
 
 permissions:
@@ -22,16 +22,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
-        run: npx ng build --base-href /worship-toolkit/ --configuration production
+      - name: Build (beta base href)
+        run: npx ng build --base-href /worship-toolkit/beta/ --configuration production
 
       - name: Copy 404 redirect
         run: cp dist/worship-toolkit/browser/index.html dist/worship-toolkit/browser/404.html
 
-      - name: Deploy to gh-pages (root)
+      - name: Deploy to gh-pages/beta
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: dist/worship-toolkit/browser
+          destination_dir: beta
           keep_files: true
-          exclude_assets: 'beta'
