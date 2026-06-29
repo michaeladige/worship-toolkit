@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParsedSong } from '../../models/song.model';
@@ -21,7 +21,11 @@ export class SongEditorComponent {
 
   exporting = false;
 
-  constructor(public chordSvc: ChordService, private exportSvc: ExportService) {}
+  constructor(
+    public chordSvc: ChordService,
+    private exportSvc: ExportService,
+    private ngZone: NgZone,
+  ) {}
 
   get song(): ParsedSong {
     return this.songs[this.selectedIndex];
@@ -64,7 +68,7 @@ export class SongEditorComponent {
     try {
       await this.exportSvc.toPdf(this.songs);
     } finally {
-      this.exporting = false;
+      this.ngZone.run(() => { this.exporting = false; });
     }
   }
 
@@ -77,7 +81,7 @@ export class SongEditorComponent {
     try {
       await this.exportSvc.toPdf([this.song]);
     } finally {
-      this.exporting = false;
+      this.ngZone.run(() => { this.exporting = false; });
     }
   }
 }
