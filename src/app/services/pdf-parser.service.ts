@@ -337,9 +337,14 @@ export class PdfParserService {
     const range = colWidth || 240;
 
     for (const item of line.items) {
-      const chord = item.text.trim();
-      if (!chord || /^[|:]+$|^[|][|][:?]|^:\|\|/.test(chord)) continue;
-      if (this.chordSvc.isChord(chord)) {
+      // Strip leading bar/repeat markers so "| Am7", "||: C2", "| Fmaj7" etc.
+      // yield just the chord text. Purely structural items like ":||" become empty.
+      const stripped = item.text.trim().replace(/^[|:]+\s*/, '').trim();
+      if (!stripped) continue;
+
+      // An item may contain multiple space-separated chords (e.g. after stripping "| C2 D/C")
+      for (const chord of stripped.split(/\s+/)) {
+        if (!this.chordSvc.isChord(chord)) continue;
         const xPercent = Math.max(0, Math.min(100, ((item.x - colMinX) / range) * 100));
         const charPos = lyricItems
           ? this.xToCharPos(item.x, lyricItems)
