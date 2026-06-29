@@ -1,59 +1,77 @@
 # WorshipToolkit
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.17.
+A chord chart editor for worship teams. Upload a SongSelect PDF, edit and transpose the charts, and export a clean PDF or Markdown file ready to share.
 
-## Development server
+**Live app:** https://michaeladige.github.io/worship-toolkit/
+**Beta (in-progress features):** https://michaeladige.github.io/worship-toolkit/beta/
 
-To start a local development server, run:
+---
+
+## Features
+
+### PDF Import
+- Drag-and-drop or file-picker upload for SongSelect chord chart PDFs
+- Parses multi-song PDFs into individual songs automatically
+- Handles two-column layouts, superscript chord extensions (e.g. Fm⁷ → Fm7)
+- Preserves direction notes (e.g. *To Tag*, *To Interlude*) and bar notation (e.g. `| Am7 | G |`) as italic annotations
+- Session is saved to `localStorage` — accidental refreshes restore your work; only the **+ New PDF** button resets
+
+### Chord Editing
+- Click any chord to rename it inline
+- Drag any chord left/right to reposition it over the lyric
+- Add chords to any line via the `+` gutter button on the left
+- Remove individual chords with the `×` that appears on hover
+- Add or remove entire lines and sections
+- Drag-and-drop to reorder sections within a song
+- Quick-add sections by name (INTRO / VERSE / CHORUS / PRE-CHORUS / BRIDGE / OUTRO / TAG) or enter a custom name
+
+### Key & Notation
+- Transpose up/down by semitone with arrow buttons
+- Jump directly to a target key via dropdown
+- Reset to the original PDF key at any time
+- **Bass Notes** toggle — displays only the root/bass note of every chord (great for beginner charts)
+- **Nashville Number System** toggle — converts all chords to scale-degree numbers (1–7 with ♭/♯ prefixes), key-independent and useful for ear-trained players
+
+### Export
+- **Song PDF** — exports the current song as a two-column Courier-monospace PDF matching the editor layout
+- **All PDF** — exports every song in the set in one file
+- **Markdown** — exports the full set as a `.md` file with chord rows above lyrics, usable in any Markdown viewer
+- All exports respect the current transposition, bass-notes toggle, and Nashville toggle
+- Direction/bar notation annotations are included and transposed correctly
+
+### Responsive UI
+- Works on desktop, tablet, and mobile
+- On mobile the song list collapses into a horizontal scrollable tab bar at the top
+
+---
+
+## Tech Stack
+
+| Layer | Library |
+|---|---|
+| Framework | Angular 21 (standalone components, zoneless) |
+| PDF parsing | pdfjs-dist |
+| PDF export | jsPDF |
+| Drag & drop | Angular CDK |
+| Hosting | GitHub Pages via GitHub Actions |
+
+---
+
+## Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Start dev server (http://localhost:4200)
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
+# Production build
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Branches & Deploy
+- `main` → deploys to `https://michaeladige.github.io/worship-toolkit/`
+- `feature/*` → deploys to `https://michaeladige.github.io/worship-toolkit/beta/`
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Both deploy automatically on push via GitHub Actions (`.github/workflows/`).
