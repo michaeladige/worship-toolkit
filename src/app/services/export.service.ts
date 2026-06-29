@@ -26,7 +26,10 @@ export class ExportService {
       for (const line of section.lines) {
         const chordLine = this.renderChordRow(line, song);
         if (chordLine.trim()) lines.push(chordLine);
-        if (line.annotation) lines.push(`*${line.annotation}*`);
+        if (line.annotation) {
+          const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey);
+          lines.push(`*${ann}*`);
+        }
         if (line.lyric.trim()) lines.push(line.lyric);
         if (!chordLine.trim() && !line.annotation && !line.lyric.trim()) lines.push('');
       }
@@ -186,7 +189,8 @@ export class ExportService {
             doc.setFont(MONO, 'italic');
             doc.setFontSize(FONT_PT - 0.5);
             setMutedColor();
-            doc.text(line.annotation, colX(col), y, { maxWidth: colWidth });
+            const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey);
+            doc.text(ann, colX(col), y, { maxWidth: colWidth });
             y += ANNOT_H;
           }
 

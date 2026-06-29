@@ -45,7 +45,7 @@
           }
 
           @if (line.annotation) {
-            <div class="annotation-row">{{ line.annotation }}</div>
+            <div class="annotation-row">{{ displayAnnotation(line.annotation) }}</div>
           }
           @if (!line.isChordsOnly) {
             <div

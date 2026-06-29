@@ -29,8 +29,9 @@ export class ChordService {
     if (tokens.length === 0) return false;
 
     const SKIP = new Set(['|', '||', '||:', ':|:', ':|', ':||', '(', ')']);
-    // Single-token annotations: (1.) (2.) *, dashes, standalone numbers/letters like "1" "1A"
-    const ANN_RE = /^\(.*\)$|^\*|^[0-9]+\.$|^-+$|^\[.*\]$|^\d+[A-Za-z]?$/;
+    // Single-token annotations: (1.) (2.) *, dashes, standalone numbers/letters like "1" "1A",
+    // and dots used as beat placeholders in bar notation (e.g. "| Eb . . Gm |")
+    const ANN_RE = /^\(.*\)$|^\*|^[0-9]+\.$|^-+$|^\[.*\]$|^\d+[A-Za-z]?$|^\.+$/;
     // Section-name keywords that can appear inline on chord lines (e.g. "F TAG", "C VERSE 3")
     const SEC_RE = /^(VERSE|CHORUS|PRE-?CHORUS|PRE|BRIDGE|INTRO|OUTRO|TAG|ENDING|INTERLUDE|INSTRUMENTAL|CODA|VAMP)$/i;
 
@@ -102,6 +103,17 @@ export class ChordService {
 
   allKeys(): string[] {
     return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+  }
+
+  // Transpose chord names embedded in an annotation string (bar notation, direction notes).
+  // Splits on whitespace so each token is checked individually — non-chord tokens like
+  // "|", ".", "(To", "Tag)" are passed through unchanged.
+  transposeAnnotation(annotation: string, semitones: number, targetKey: string): string {
+    if (semitones === 0) return annotation;
+    return annotation
+      .split(/(\s+)/)
+      .map(token => this.isChord(token) ? this.transposeChord(token, semitones, targetKey) : token)
+      .join('');
   }
 
   semitonesBetween(fromKey: string, toKey: string): number {

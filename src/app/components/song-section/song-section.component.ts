@@ -33,6 +33,10 @@ export class SongSectionComponent {
     return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones);
   }
 
+  displayAnnotation(annotation: string): string {
+    return this.chordSvc.transposeAnnotation(annotation, this.song.transposeSemitones, this.effectiveKey);
+  }
+
   displayChord(raw: string): string {
     const transposed = this.chordSvc.transposeChord(raw, this.song.transposeSemitones, this.effectiveKey);
     return this.song.showBassNotesOnly ? this.chordSvc.getBassNote(transposed) : transposed;
