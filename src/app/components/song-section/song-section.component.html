@@ -11,7 +11,7 @@
               @for (ct of line.chords; track trackChord($index, ct); let ci = $index) {
                 <span
                   class="chord-wrapper"
-                  [style.left]="ct.charPos + 'ch'"
+                  [style.left]="chordLeft(line, ci)"
                 >
                   @if (isEditing(si, li, ci)) {
                     <input

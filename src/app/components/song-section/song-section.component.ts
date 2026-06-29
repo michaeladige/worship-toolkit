@@ -88,6 +88,24 @@ export class SongSectionComponent {
     return this.editing?.sectionIdx === si && this.editing?.lineIdx === li && this.editing?.chordIdx === ci;
   }
 
+  // Returns the effective left position (in ch units) for chord at index `idx` in `line`,
+  // adjusted so no chord visually overlaps the one before it.
+  chordLeft(line: SongLine, idx: number): string {
+    // Build sort order by charPos once per line, tracking original indices
+    const order = line.chords
+      .map((ct, i) => ({ charPos: ct.charPos ?? 0, len: this.displayChord(ct.chord).length, i }))
+      .sort((a, b) => a.charPos - b.charPos);
+
+    const result: number[] = new Array(line.chords.length);
+    let cursor = 0;
+    for (const entry of order) {
+      const pos = Math.max(cursor, entry.charPos);
+      result[entry.i] = pos;
+      cursor = pos + entry.len + 1; // +1 gap between chords
+    }
+    return result[idx] + 'ch';
+  }
+
   trackSection(_: number, s: SongSection) { return s.name; }
   trackLine(i: number, _: SongLine) { return i; }
   trackChord(i: number, _: ChordToken) { return i; }

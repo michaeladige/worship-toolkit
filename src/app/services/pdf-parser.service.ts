@@ -352,6 +352,8 @@ export class PdfParserService {
 
   // Map a chord's PDF x coordinate to the character offset in the reconstructed lyric string.
   // lyricItems must be sorted by x (makeRawLine already sorts them).
+  // When the chord lies beyond the last lyric item, extrapolate using the average character
+  // width so chords that overflow the lyric spread out rather than all stacking at lyric end.
   private xToCharPos(chordX: number, lyricItems: RawItem[]): number {
     if (!lyricItems.length) return 0;
     let charCount = 0;
@@ -372,6 +374,13 @@ export class PdfParserService {
       charCount += item.text.length;
       lastEnd = item.x + item.width;
     }
-    return charCount; // chord is past the last lyric item
+
+    // Chord is past the last lyric item — extrapolate with average character width
+    // so overflowing chords spread out instead of all collapsing to the same position.
+    const totalChars = lyricItems.reduce((s, i) => s + i.text.length, 0);
+    const totalWidth = lastEnd - lyricItems[0].x;
+    const avgCharWidth = totalWidth / Math.max(totalChars, 1);
+    const overflow = chordX - lastEnd;
+    return charCount + Math.max(1, Math.round(overflow / Math.max(avgCharWidth, 4)));
   }
 }
