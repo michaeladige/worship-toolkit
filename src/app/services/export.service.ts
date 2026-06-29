@@ -25,10 +25,10 @@ export class ExportService {
       lines.push('');
       for (const line of section.lines) {
         const chordLine = this.renderChordRow(line, song);
-        const lyricLine = line.lyric;
         if (chordLine.trim()) lines.push(chordLine);
-        if (lyricLine.trim()) lines.push(lyricLine);
-        if (!chordLine.trim() && !lyricLine.trim()) lines.push('');
+        if (line.annotation) lines.push(`*${line.annotation}*`);
+        if (line.lyric.trim()) lines.push(line.lyric);
+        if (!chordLine.trim() && !line.annotation && !line.lyric.trim()) lines.push('');
       }
       lines.push('');
     }
@@ -84,6 +84,7 @@ export class ExportService {
     const FONT_PT   = 8;
     const CHAR_W    = FONT_PT * 0.6; // Courier: every char is exactly 60% of the point size
     const CHORD_H   = 10;            // vertical space consumed by a chord row
+    const ANNOT_H   = 9;             // vertical space consumed by an annotation row
     const LYRIC_H   = 11;            // vertical space consumed by a lyric row
     const SEC_GAP   = 14;            // space before a section label
 
@@ -141,6 +142,7 @@ export class ExportService {
         let needed = SEC_GAP;
         for (const line of section.lines) {
           if (line.chords.length > 0)  needed += CHORD_H;
+          if (line.annotation)         needed += ANNOT_H;
           if (!line.isChordsOnly)      needed += LYRIC_H;
         }
         ensureSpace(needed);
@@ -157,7 +159,7 @@ export class ExportService {
           const hasLyric  = !line.isChordsOnly && line.lyric.trim().length > 0;
 
           if (hasChords) {
-            ensureSpace(CHORD_H + (hasLyric ? LYRIC_H : 0));
+            ensureSpace(CHORD_H + (line.annotation ? ANNOT_H : 0) + (hasLyric ? LYRIC_H : 0));
 
             // Same anti-stacking as chordLeft() in the display component:
             // sort by charPos, advance cursor so no chord overlaps the previous one.
@@ -179,6 +181,15 @@ export class ExportService {
             y += CHORD_H;
           }
 
+          if (line.annotation) {
+            ensureSpace(ANNOT_H);
+            doc.setFont(MONO, 'italic');
+            doc.setFontSize(FONT_PT - 0.5);
+            setMutedColor();
+            doc.text(line.annotation, colX(col), y, { maxWidth: colWidth });
+            y += ANNOT_H;
+          }
+
           if (hasLyric) {
             ensureSpace(LYRIC_H);
             doc.setFont(MONO, 'normal');
@@ -188,7 +199,7 @@ export class ExportService {
             y += LYRIC_H;
           }
 
-          if (!hasChords && !hasLyric) y += LYRIC_H * 0.4;
+          if (!hasChords && !line.annotation && !hasLyric) y += LYRIC_H * 0.4;
         }
 
         y += SEC_GAP * 0.4;
