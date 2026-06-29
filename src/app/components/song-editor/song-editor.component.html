@@ -1,0 +1,82 @@
+<div class="editor">
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <div class="song-meta">
+        <h2 class="song-title">{{ song.title }}</h2>
+        @if (song.authors.length) {
+          <span class="song-authors">{{ song.authors[0] }}</span>
+        }
+      </div>
+
+      <div class="meta-chips">
+        <span class="chip">{{ song.tempo ? 'BPM ' + song.tempo : '' }}</span>
+        <span class="chip">{{ song.timeSignature }}</span>
+      </div>
+    </div>
+
+    <div class="toolbar-right">
+      <!-- Key / Transpose -->
+      <div class="key-control">
+        <label>Key</label>
+        <button class="step-btn" (click)="transpose(-1)" title="Transpose down">&#9660;</button>
+        <span class="key-display">{{ effectiveKey }}</span>
+        <button class="step-btn" (click)="transpose(1)" title="Transpose up">&#9650;</button>
+      </div>
+
+      <div class="key-jump">
+        <label>Jump to</label>
+        <select [value]="effectiveKey" (change)="setKey($any($event.target).value)">
+          @for (k of allKeys; track k) {
+            <option [value]="k">{{ k }}</option>
+          }
+        </select>
+      </div>
+
+      @if (song.transposeSemitones !== 0) {
+        <button class="reset-btn" (click)="resetTranspose()" title="Reset to original key">
+          Reset ({{ song.originalKey }})
+        </button>
+      }
+
+      <!-- Bass notes toggle -->
+      <button
+        class="toggle-btn"
+        [class.active]="song.showBassNotesOnly"
+        (click)="toggleBassNotes()"
+        title="Show bass/root notes only"
+      >
+        🎹 Bass Notes
+      </button>
+
+      <!-- Export -->
+      <div class="export-group">
+        <button class="export-btn" (click)="exportCurrentSongPdf()" [disabled]="exporting">
+          {{ exporting ? 'Generating...' : '↓ Song PDF' }}
+        </button>
+        <button class="export-btn export-btn--all" (click)="exportPdf()" [disabled]="exporting">
+          ↓ All PDF
+        </button>
+        <button class="export-btn export-btn--md" (click)="exportMarkdown()">
+          ↓ Markdown
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Original key indicator -->
+  @if (song.transposeSemitones !== 0) {
+    <div class="key-banner">
+      Transposed from <strong>{{ song.originalKey }}</strong> → <strong>{{ effectiveKey }}</strong>
+      ({{ song.transposeSemitones > 0 ? '+' : '' }}{{ song.transposeSemitones }} semitone{{ Math.abs(song.transposeSemitones) !== 1 ? 's' : '' }})
+    </div>
+  }
+
+  <!-- Song content -->
+  <div class="content">
+    <app-song-section
+      [song]="song"
+      (songChange)="updateSong($event)"
+    />
+  </div>
+</div>

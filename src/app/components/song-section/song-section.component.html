@@ -1,0 +1,60 @@
+<div class="sections">
+  @for (section of song.sections; track trackSection($index, section); let si = $index) {
+    <div class="section">
+      <div class="section-label">{{ section.name }}</div>
+
+      @for (line of section.lines; track trackLine($index, line); let li = $index) {
+        <div class="line-group" [class.chords-only]="line.isChordsOnly">
+
+          @if (line.chords.length > 0) {
+            <div class="chord-row">
+              @for (ct of line.chords; track trackChord($index, ct); let ci = $index) {
+                <span
+                  class="chord-wrapper"
+                  [style.left.%]="ct.xPercent"
+                >
+                  @if (isEditing(si, li, ci)) {
+                    <input
+                      class="chord-input"
+                      [(ngModel)]="editing!.value"
+                      (keydown)="editKeydown($event)"
+                      (blur)="commitEdit()"
+                      autofocus
+                      [style.width.ch]="editing!.value.length + 2"
+                    />
+                  } @else {
+                    <button
+                      class="chord-btn"
+                      (click)="startEdit(si, li, ci, displayChord(ct.chord))"
+                      [title]="'Click to edit chord'"
+                    >{{ displayChord(ct.chord) }}</button>
+                    <button
+                      class="chord-remove"
+                      (click)="removeChord(si, li, ci)"
+                      title="Remove chord"
+                    >×</button>
+                  }
+                </span>
+              }
+              <button class="add-chord-btn" (click)="addChord(si, li)" title="Add chord">+</button>
+            </div>
+          } @else if (!line.isChordsOnly) {
+            <div class="chord-row chord-row--empty">
+              <button class="add-chord-btn" (click)="addChord(si, li)" title="Add chord">+</button>
+            </div>
+          }
+
+          @if (!line.isChordsOnly) {
+            <div
+              class="lyric-row"
+              contenteditable="true"
+              [textContent]="line.lyric"
+              (blur)="editLyric(si, li, $any($event.target).textContent)"
+              spellcheck="false"
+            ></div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>
