@@ -31,6 +31,7 @@ export class SongEditorComponent {
 
   exporting = false;
   newSectionName = '';
+  editingTitle: string | null = null;
   editingTempo: string | null = null;
   editingTimeSignature: string | null = null;
 
@@ -78,6 +79,18 @@ export class SongEditorComponent {
 
   resetTranspose() {
     this.updateSong({ ...this.song, transposeSemitones: 0 });
+  }
+
+  startEditTitle() { this.editingTitle = this.song.title; }
+  commitTitle() {
+    const v = (this.editingTitle ?? '').trim();
+    this.editingTitle = null;
+    if (v) this.updateSong({ ...this.song, title: v });
+  }
+  cancelTitle() { this.editingTitle = null; }
+  titleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') { e.preventDefault(); this.commitTitle(); }
+    if (e.key === 'Escape') { this.cancelTitle(); }
   }
 
   startEditTempo() {

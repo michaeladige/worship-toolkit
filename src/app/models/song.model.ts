@@ -16,6 +16,13 @@ export interface SongSection {
   lines: SongLine[];
 }
 
+export interface SavedSession {
+  id: string;
+  name: string;
+  savedAt: number; // Unix ms timestamp
+  songs: ParsedSong[];
+}
+
 export interface ParsedSong {
   id: string;
   title: string;

@@ -10,6 +10,11 @@
         routerLinkActive="active"
         title="Open the user manual"
       >📖 Manual</a>
+      <button
+        class="ui-ctrl-btn sessions-btn"
+        (click)="sessionsSvc.openModal()"
+        title="Manage saved sessions"
+      >💾 Sessions</button>
       <span class="ui-label">Text size</span>
       <button
         class="ui-ctrl-btn"
@@ -32,4 +37,8 @@
   </div>
 
   <router-outlet />
+
+  @if (sessionsSvc.showModal) {
+    <app-sessions-modal />
+  }
 </div>

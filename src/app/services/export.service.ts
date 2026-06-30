@@ -230,6 +230,39 @@ export class ExportService {
     doc.save('worship-set.pdf');
   }
 
+  downloadSession(songs: ParsedSong[], name: string): void {
+    const payload = {
+      wtVersion: '1.1.0',
+      exportedAt: new Date().toISOString(),
+      sessionName: name,
+      songs,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${name.replace(/[^a-z0-9]/gi, '-')}.wt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async parseSessionFile(file: File): Promise<{ name: string; songs: ParsedSong[] }> {
+    const text = await file.text();
+    let parsed: Record<string, unknown>;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      throw new Error('Invalid file — not valid JSON.');
+    }
+    if (!parsed['wtVersion'] || !Array.isArray(parsed['songs']) || parsed['songs'].length === 0) {
+      throw new Error('Invalid session file — missing required fields.');
+    }
+    return {
+      name: (parsed['sessionName'] as string) || file.name.replace(/\.wt$/i, ''),
+      songs: parsed['songs'] as ParsedSong[],
+    };
+  }
+
   downloadMarkdown(songs: ParsedSong[]): void {
     const content = this.toMarkdown(songs);
     const blob = new Blob([content], { type: 'text/markdown' });

@@ -318,6 +318,7 @@
 
 // Inline prompt shown on lines with no annotation
 .add-annotation-btn {
+  display: none;
   background: none;
   border: 1px dashed var(--color-border);
   color: var(--color-muted);
@@ -325,18 +326,23 @@
   font-size: 0.72rem;
   padding: 0.05rem 0.4rem;
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.15s, border-color 0.12s, color 0.12s;
+  transition: border-color 0.12s, color 0.12s;
   align-self: flex-start;
 
-  .line-group:hover & { opacity: 1; }
+  .line-group:hover & { display: block; }
 
   &:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
   }
 
-  @media (max-width: 767px) { opacity: 1; }
+  // Touch devices have no hover — keep visible but compact so gap is minimal
+  @media (hover: none) {
+    display: block;
+    font-size: 0.65rem;
+    padding: 0.02rem 0.3rem;
+    opacity: 0.45;
+  }
 }
 
 .lyric-row {
