@@ -53,10 +53,10 @@
       <li>The current key for each song is shown next to its title.</li>
       <li><strong>Rename a song title</strong> &mdash; click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press <kbd>Enter</kbd> to save or <kbd>Esc</kbd> to cancel. This is especially useful for songs added as blank "New Song" entries.</li>
       <li><strong>Remove a song</strong> &mdash; hover over a song in the list and click the <strong>✕</strong> button that appears on the right. Removing the last song returns you to the upload screen.</li>
-      <li>Use <strong>↺ New PDF</strong> to replace the whole set with a different file. A confirmation modal appears before clearing all current edits.</li>
-      <li><strong>Collapse the sidebar</strong> &mdash; on desktop and tablet, click the <strong>◄</strong> button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click <strong>►</strong> to expand it again. On mobile, click <strong>Song List ▲</strong> at the top to collapse the song bar and free up vertical space; tap <strong>Song List ▼</strong> to expand it.</li>
+      <li><strong>Collapse the sidebar</strong> &mdash; on desktop and tablet, click the <strong>◄</strong> button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click <strong>►</strong> to expand it again. On mobile, tap <strong>Songs in Set ▼</strong> to collapse the song bar and free up vertical space; tap again (<strong>▲</strong>) to expand it.</li>
     </ul>
     <h3>Adding songs to an existing set</h3>
+    <p>Click the <strong>+</strong> button in the sidebar header (next to the collapse toggle) to expand the add-songs menu:</p>
     <ul>
       <li><strong>+ New Song</strong> &mdash; adds a blank song to the bottom of the list. Give it a name, add sections, and build it from scratch.</li>
       <li><strong>+ Import PDF</strong> &mdash; appends songs from another PDF <em>without</em> replacing what's already in your set. Great for building a multi-song set from separate files.</li>
@@ -156,7 +156,7 @@
     <p>
       Sessions let you snapshot your current set and return to it later &mdash; even if you close the browser or start working on a different set in the meantime.
     </p>
-    <p>Click <strong>💾 Sessions</strong> in the header to open the Sessions panel. When a session is active, the button shows the session name (e.g. <strong>💾 Sunday Service</strong>) so you always know which set you're working on.</p>
+    <p>Click <strong>💾 Sessions</strong> in the header to open the Sessions panel. At the top of the panel, the current session name and last-modified time are shown — or <em>Unsaved session</em> if no session is active yet.</p>
     <h3>Saving a session</h3>
     <ul>
       <li>Type a name for your session (e.g. <em>Sunday 29 June</em>) in the input at the top of the panel and click <strong>Save</strong> (or press <kbd>Enter</kbd>).</li>
@@ -217,18 +217,32 @@
     <h2>12. What's new <span class="version-pill">v{{ version }}</span></h2>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
-    <div class="changelog-entry">
-      <h3>1.1.2</h3>
+    <details class="changelog-entry" open>
+      <summary><h3>1.1.3</h3></summary>
+      <ul>
+        <li><strong>Removed "↺ New PDF" button</strong> &mdash; replaced by the <strong>+ New</strong> action in the Sessions panel, eliminating redundancy. Use <strong>💾 Sessions → + New</strong> to clear the workspace and start a fresh set.</li>
+        <li><strong>"+" add-songs menu in the sidebar</strong> &mdash; a <strong>+</strong> button in the sidebar header expands to reveal <strong>+ New Song</strong> and <strong>+ Import PDF</strong>, keeping the song list clean when not in use. The button rotates to × when open; collapses automatically when you collapse the sidebar.</li>
+        <li><strong>Current session info in Sessions panel</strong> &mdash; the top of the Sessions panel now shows the active session name and last-modified time, or <em>Unsaved session</em> in italic when no session is active. The header button always reads <strong>💾 Sessions</strong>.</li>
+        <li><strong>Last-modified timestamp on session list items</strong> &mdash; each saved session now shows "Modified [date &amp; time]" so you can tell at a glance when each one was last edited.</li>
+        <li><strong>Collapsible sidebar (desktop/tablet)</strong> &mdash; click ◄ to collapse the sidebar to a thin strip; click ► to expand. Gives the editor more horizontal space when you don't need the song list.</li>
+        <li><strong>Collapsible song bar (mobile)</strong> &mdash; the tab bar now shows <strong>Songs in Set ▼</strong> when collapsed (tap to expand) and a compact <strong>▲</strong> button when expanded (tap to collapse), freeing vertical space.</li>
+        <li><strong>Fix: "+ New" disabled on empty workspace</strong> &mdash; the "+ New" button is greyed out when no songs are loaded, preventing a misleading "unsaved work" prompt on a blank canvas.</li>
+        <li><strong>Collapsible changelog entries</strong> &mdash; version entries on this page now open and close on click; only the latest entry is expanded by default.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.2</h3></summary>
       <ul>
         <li><strong>Collapsible sidebar on desktop &amp; tablet</strong> &mdash; click ◄ in the sidebar header to collapse it to a thin strip and give more space to the editor. Click ► to expand it again.</li>
         <li><strong>Collapsible song bar on mobile</strong> &mdash; tap <strong>Song List ▲</strong> in the tab bar to collapse it and reclaim vertical screen space. Tap <strong>Song List ▼</strong> to bring it back.</li>
         <li><strong>Session-aware New PDF warning</strong> &mdash; clicking ↺ New PDF now prompts differently based on context: if a named session is active (already autosaved) it simply confirms; if there is unsaved work it offers to name and save it first.</li>
         <li><strong>Fix: "+ New" button disabled on empty workspace</strong> &mdash; the "+ New" button in the Sessions panel is now greyed out when there are no songs loaded, preventing a confusing "unsaved work" prompt from appearing on a blank canvas.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.1.1</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.1.1</h3></summary>
       <ul>
         <li><strong>Inline song title editing</strong> &mdash; click the song title in the editor toolbar to rename it. Press <kbd>Enter</kbd> to confirm or <kbd>Esc</kbd> to cancel.</li>
         <li><strong>Remove songs from the list</strong> &mdash; hover a song in the sidebar and click ✕ to delete it.</li>
@@ -238,10 +252,10 @@
         <li><strong>New PDF confirmation modal</strong> &mdash; replaced the inline confirmation (which overflowed on larger screens) with a proper centered modal dialog.</li>
         <li><strong>Cleaner editor view</strong> &mdash; the "add annotation" prompt is hidden by default and appears only when you hover a lyric line, removing visual gaps between chords and lyrics.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.1.0</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.1.0</h3></summary>
       <ul>
         <li><strong>Start from scratch</strong> &mdash; create a blank song directly from the upload page without uploading a PDF.</li>
         <li><strong>Add &amp; import songs</strong> &mdash; append individual blank songs or import from a second PDF without replacing your current set. Duplicate title detection warns before adding.</li>
@@ -249,76 +263,76 @@
         <li><strong>Saved sessions</strong> &mdash; snapshot any set under a name and restore it later. Up to 20 sessions stored locally per browser.</li>
         <li><strong>Session export &amp; import</strong> &mdash; export any session as a <code>.wt</code> file and re-import it on another device to continue editing.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.0.7</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.0.7</h3></summary>
       <ul>
         <li>Fix the table of contents on this page redirecting to the landing page instead of scrolling to the right section.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.0.6</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.0.6</h3></summary>
       <ul>
         <li>Make tempo editable — click the BPM chip to set or clear it.</li>
         <li>Make the time signature pill editable — click it to change it (e.g. <code>3/4</code> &rarr; <code>4/4</code>).</li>
         <li>Add, edit, and remove annotations (direction notes, bar notation) on any lyric line.</li>
         <li>Fix inline-edit inputs occasionally losing focus reliability after repeated use.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.0.5</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.0.5</h3></summary>
       <ul>
         <li>Show the app version in the header so the running build is always visible.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.0.4</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.0.4</h3></summary>
       <ul>
         <li>Fix the upload/landing page not scrolling when its content overflows a short viewport.</li>
         <li>Make chord drag-to-reposition work reliably on mobile and tablet via Pointer Events.</li>
         <li>Fix a bug where finishing a chord drag could immediately reopen the inline chord editor.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.0.3</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.0.3</h3></summary>
       <ul>
         <li>Add this user manual, linked from the header.</li>
         <li>Refresh the landing page with feature cards for Nashville numbers and undo/redo/dark mode/font size.</li>
         <li>Add a custom block-chord-notation favicon.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.0.2</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.0.2</h3></summary>
       <ul>
         <li>Add undo/redo history (up to 50 steps) with toolbar buttons and keyboard shortcuts.</li>
         <li>Add dark mode and adjustable text size, remembered between sessions.</li>
         <li>Add round-trip re-import — PDFs exported by WorshipToolkit parse back exactly as left.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.0.1</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.0.1</h3></summary>
       <ul>
         <li>Add session persistence, section add/remove/drag-reorder, and chord drag-to-reposition.</li>
         <li>Add the Nashville Number System notation toggle.</li>
         <li>Add a responsive mobile/tablet layout.</li>
       </ul>
-    </div>
+    </details>
 
-    <div class="changelog-entry">
-      <h3>1.0.0</h3>
+    <details class="changelog-entry">
+      <summary><h3>1.0.0</h3></summary>
       <ul>
         <li>Initial release: upload and parse SongSelect PDF chord charts, including two-column layouts and superscript chord extensions.</li>
         <li>Inline chord editing and transposition.</li>
         <li>Export to PDF and Markdown.</li>
       </ul>
-    </div>
+    </details>
   </section>
 
   <footer class="manual-footer">

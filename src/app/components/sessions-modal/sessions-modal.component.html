@@ -12,6 +12,16 @@
       <button class="close-btn" (click)="sessionsSvc.closeModal()" title="Close">✕</button>
     </div>
 
+    <!-- Current session info -->
+    <div class="current-session-row">
+      @if (activeSession) {
+        <span class="cs-name">{{ activeSession.name }}</span>
+        <span class="cs-meta">Modified {{ formatDate(activeSession.savedAt) }}</span>
+      } @else {
+        <em class="cs-unsaved">Unsaved session</em>
+      }
+    </div>
+
     <!-- Save current set -->
     <div class="save-row">
       <input
@@ -61,7 +71,7 @@
                 <span class="session-name">{{ session.name }}</span>
               }
               <span class="session-meta">
-                {{ formatDate(session.savedAt) }} · {{ session.songs.length }} song{{ session.songs.length !== 1 ? 's' : '' }}
+                Modified {{ formatDate(session.savedAt) }} · {{ session.songs.length }} song{{ session.songs.length !== 1 ? 's' : '' }}
                 @if (session.id === sessionsSvc.activeSessionId) {
                   <span class="active-badge">active</span>
                 }

@@ -1,22 +1,23 @@
 <div class="song-list">
   <div class="list-header">
-    <!-- Mobile-only: vertical collapse toggle -->
+    <!-- Mobile-only: vertical collapse toggle — label shown only when collapsed -->
     <button
       class="mobile-collapse-btn"
       (click)="toggleCollapse.emit()"
       [title]="collapsed ? 'Expand song list' : 'Collapse song list'"
     >
-      <span>Song List</span>
+      @if (collapsed) { <span>Songs in Set</span> }
       <span>{{ collapsed ? '▼' : '▲' }}</span>
     </button>
 
     @if (!collapsed) {
       <h3>Songs in Set</h3>
-      <div class="new-pdf-area">
-        <button class="new-btn" (click)="requestUploadNew()" title="Replace current set with a new PDF">
-          ↺ New PDF
-        </button>
-      </div>
+      <button
+        class="add-btn"
+        [class.open]="appendMenuOpen"
+        (click)="appendMenuOpen = !appendMenuOpen"
+        title="Add songs"
+      >+</button>
     }
     <button
       class="collapse-btn"
@@ -41,14 +42,16 @@
       }
     </ul>
 
-    <!-- Append row -->
-    <div class="append-row">
-      <button class="append-btn" (click)="addBlankSong.emit()" title="Add a blank song">+ New Song</button>
-      <label class="append-btn" [class.loading]="isAppending" title="Append songs from a PDF">
-        {{ isAppending ? 'Importing…' : '+ Import PDF' }}
-        <input type="file" accept=".pdf" hidden (change)="onAppendFileChange($event)" />
-      </label>
-    </div>
+    <!-- Expandable add-songs menu -->
+    @if (appendMenuOpen) {
+      <div class="append-row">
+        <button class="append-btn" (click)="onAddBlankSong()" title="Add a blank song">+ New Song</button>
+        <label class="append-btn" [class.loading]="isAppending" title="Append songs from a PDF">
+          {{ isAppending ? 'Importing…' : '+ Import PDF' }}
+          <input type="file" accept=".pdf" hidden (change)="onAppendFileChange($event)" />
+        </label>
+      </div>
+    }
 
     @if (appendError) {
       <div class="append-error">{{ appendError }}</div>
@@ -69,41 +72,3 @@
     }
   }
 </div>
-
-<!-- New PDF confirmation modals -->
-@if (newPdfState === 'confirm-named') {
-  <div class="confirm-backdrop" (click)="cancelUploadNew()">
-    <div class="confirm-dialog" (click)="$event.stopPropagation()" role="alertdialog">
-      <p class="confirm-msg">
-        Your session <strong>{{ sessionsSvc.activeSessionName }}</strong> is auto-saved.
-        Load a new PDF to start fresh?
-      </p>
-      <div class="confirm-actions">
-        <button class="confirm-yes-btn" (click)="confirmUploadNew()">Yes, load new PDF</button>
-        <button class="confirm-cancel-btn" (click)="cancelUploadNew()">Cancel</button>
-      </div>
-    </div>
-  </div>
-}
-
-@if (newPdfState === 'confirm-unsaved') {
-  <div class="confirm-backdrop" (click)="cancelUploadNew()">
-    <div class="confirm-dialog confirm-dialog--save" (click)="$event.stopPropagation()" role="alertdialog">
-      <p class="confirm-msg">You have unsaved work. Enter a name to save it first, or discard it.</p>
-      <input
-        class="confirm-save-input"
-        type="text"
-        placeholder="Session name (optional)…"
-        [(ngModel)]="newPdfSaveName"
-        (keydown.enter)="confirmNewPdfWithSave()"
-        maxlength="60"
-      />
-      <div class="confirm-actions">
-        <button class="confirm-yes-btn" (click)="confirmNewPdfWithSave()">
-          {{ newPdfSaveName.trim() ? 'Save & load PDF' : 'Discard & load PDF' }}
-        </button>
-        <button class="confirm-cancel-btn" (click)="cancelUploadNew()">Cancel</button>
-      </div>
-    </div>
-  </div>
-}

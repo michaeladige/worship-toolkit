@@ -2,6 +2,19 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.3] - 2026-06-30
+
+### Added
+- **"+" add-songs menu in sidebar** — a single `+` button in the sidebar header expands to reveal `+ New Song` and `+ Import PDF`. Keeps the song list uncluttered; rotates to × when open, and auto-closes when the sidebar collapses.
+- **Current session info row in Sessions panel** — top of the modal now shows the active session name + last-modified time, or *"Unsaved session"* in italic when no session is tracked. Header button always reads "💾 Sessions" (no longer swaps to session name).
+- **"Modified" timestamp on session list items** — each saved session now shows "Modified [date & time]" for at-a-glance recency.
+- **Collapsible changelog entries in the manual** — version entries on the manual page expand/collapse on click; only the latest starts open.
+
+### Changed
+- **Removed "↺ New PDF" button** — replaced by Sessions modal `+ New`, which was already identical in function (clears workspace with optional save-first prompt). Eliminates the redundant button and its separate confirm flow.
+- **Mobile toggle label** — the mobile song-bar toggle now says "Songs in Set" (when collapsed) to match PC/tablet; shows only the `▲` arrow when expanded to save space.
+- **Sidebar button spacing** — added gap between the `+` and `◄` buttons in the sidebar header.
+
 ## [1.1.2] - 2026-06-30
 
 ### Added

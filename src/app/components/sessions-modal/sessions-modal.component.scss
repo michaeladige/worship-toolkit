@@ -58,6 +58,33 @@
   &:hover { color: var(--color-text); }
 }
 
+.current-session-row {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  min-height: 2.4rem;
+  justify-content: center;
+}
+
+.cs-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.cs-meta {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  margin-top: 0.15rem;
+}
+
+.cs-unsaved {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
 .save-row {
   display: flex;
   gap: 0.5rem;

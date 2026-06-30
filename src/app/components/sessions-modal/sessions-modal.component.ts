@@ -29,6 +29,11 @@ export class SessionsModalComponent {
     return this.sessionsSvc.list();
   }
 
+  get activeSession(): SavedSession | null {
+    if (!this.sessionsSvc.activeSessionId) return null;
+    return this.sessions.find(s => s.id === this.sessionsSvc.activeSessionId) ?? null;
+  }
+
   @HostListener('document:keydown.escape')
   onEscape() {
     if (this.showNewSessionConfirm) {
@@ -122,8 +127,9 @@ export class SessionsModalComponent {
   }
 
   formatDate(ms: number): string {
-    return new Date(ms).toLocaleDateString(undefined, {
+    return new Date(ms).toLocaleString(undefined, {
       month: 'short', day: 'numeric', year: 'numeric',
+      hour: '2-digit', minute: '2-digit',
     });
   }
 }

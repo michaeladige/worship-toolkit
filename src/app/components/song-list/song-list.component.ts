@@ -1,11 +1,10 @@
-import { Component, HostBinding, Input, Output, EventEmitter } from '@angular/core';
+import { Component, HostBinding, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ParsedSong } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
 import { PdfParserService } from '../../services/pdf-parser.service';
-import { SessionsService } from '../../services/sessions.service';
 
 @Component({
   selector: 'app-song-list',
@@ -14,12 +13,11 @@ import { SessionsService } from '../../services/sessions.service';
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.scss',
 })
-export class SongListComponent {
+export class SongListComponent implements OnChanges {
   @Input() songs: ParsedSong[] = [];
   @Input() selectedIndex = 0;
   @Input() collapsed = false;
   @Output() selectSong = new EventEmitter<number>();
-  @Output() uploadNew = new EventEmitter<void>();
   @Output() reorderSongs = new EventEmitter<ParsedSong[]>();
   @Output() addBlankSong = new EventEmitter<void>();
   @Output() appendSongs = new EventEmitter<ParsedSong[]>();
@@ -28,9 +26,7 @@ export class SongListComponent {
 
   @HostBinding('class.collapsed') get isCollapsed() { return this.collapsed; }
 
-  // 'idle' | 'confirm-named' (active session, safe to proceed) | 'confirm-unsaved' (no session, offer save-first)
-  newPdfState: 'idle' | 'confirm-named' | 'confirm-unsaved' = 'idle';
-  newPdfSaveName = '';
+  appendMenuOpen = false;
 
   isAppending = false;
   appendError = '';
@@ -40,38 +36,21 @@ export class SongListComponent {
   constructor(
     public chordSvc: ChordService,
     private parser: PdfParserService,
-    public sessionsSvc: SessionsService,
   ) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['collapsed']?.currentValue === true) {
+      this.appendMenuOpen = false;
+    }
+  }
 
   effectiveKey(song: ParsedSong): string {
     return this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones);
   }
 
-  requestUploadNew() {
-    if (this.sessionsSvc.activeSessionId !== null) {
-      this.newPdfState = 'confirm-named';
-    } else {
-      this.newPdfState = 'confirm-unsaved';
-    }
-  }
-
-  cancelUploadNew() {
-    this.newPdfState = 'idle';
-    this.newPdfSaveName = '';
-  }
-
-  confirmUploadNew() {
-    this.newPdfState = 'idle';
-    this.newPdfSaveName = '';
-    this.uploadNew.emit();
-  }
-
-  confirmNewPdfWithSave() {
-    const name = this.newPdfSaveName.trim();
-    if (name) this.sessionsSvc.save(name, this.sessionsSvc.currentSongs);
-    this.newPdfState = 'idle';
-    this.newPdfSaveName = '';
-    this.uploadNew.emit();
+  onAddBlankSong() {
+    this.appendMenuOpen = false;
+    this.addBlankSong.emit();
   }
 
   dropSong(event: CdkDragDrop<ParsedSong[]>) {
@@ -82,6 +61,7 @@ export class SongListComponent {
   }
 
   async onAppendFileChange(e: Event) {
+    this.appendMenuOpen = false;
     const file = (e.target as HTMLInputElement).files?.[0];
     (e.target as HTMLInputElement).value = '';
     if (!file) return;
