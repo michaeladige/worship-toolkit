@@ -33,7 +33,26 @@
             title="Click to edit tempo"
           >{{ song.tempo ? 'BPM ' + song.tempo : '+ BPM' }}</button>
         }
-        <span class="chip">{{ song.timeSignature }}</span>
+        @if (editingTimeSignature !== null) {
+          <span class="chip chip--editing">
+            <input
+              class="chip-input"
+              type="text"
+              maxlength="6"
+              [(ngModel)]="editingTimeSignature"
+              (keydown)="timeSignatureKeydown($event)"
+              (blur)="commitTimeSignature()"
+              appAutofocus
+              [style.width.ch]="(editingTimeSignature.length || 1) + 1"
+            />
+          </span>
+        } @else {
+          <button
+            class="chip chip--btn"
+            (click)="startEditTimeSignature()"
+            title="Click to edit time signature"
+          >{{ song.timeSignature }}</button>
+        }
       </div>
 
       <div class="undo-redo-group">

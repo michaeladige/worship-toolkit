@@ -32,6 +32,7 @@ export class SongEditorComponent {
   exporting = false;
   newSectionName = '';
   editingTempo: string | null = null;
+  editingTimeSignature: string | null = null;
 
   constructor(
     public chordSvc: ChordService,
@@ -101,6 +102,32 @@ export class SongEditorComponent {
 
   setTempo(value: string) {
     this.updateSong({ ...this.song, tempo: value });
+  }
+
+  startEditTimeSignature() {
+    this.editingTimeSignature = this.song.timeSignature;
+  }
+
+  commitTimeSignature() {
+    if (this.editingTimeSignature === null) return;
+    const cleaned = this.editingTimeSignature.trim();
+    this.editingTimeSignature = null;
+    if (/^\d{1,2}\/\d{1,2}$/.test(cleaned)) {
+      this.setTimeSignature(cleaned);
+    }
+  }
+
+  cancelTimeSignature() {
+    this.editingTimeSignature = null;
+  }
+
+  timeSignatureKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') { e.preventDefault(); this.commitTimeSignature(); }
+    if (e.key === 'Escape') { this.cancelTimeSignature(); }
+  }
+
+  setTimeSignature(value: string) {
+    this.updateSong({ ...this.song, timeSignature: value });
   }
 
   addSection(name: string) {
