@@ -25,6 +25,7 @@ export class SongListComponent implements OnChanges {
   @Output() toggleCollapse = new EventEmitter<void>();
 
   @HostBinding('class.collapsed') get isCollapsed() { return this.collapsed; }
+  @HostBinding('class.append-open') get isAppendMenuOpen() { return this.appendMenuOpen; }
 
   appendMenuOpen = false;
 

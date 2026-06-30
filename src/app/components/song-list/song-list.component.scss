@@ -25,6 +25,8 @@
     height: auto;
     flex-shrink: 0;
     transition: none;
+
+    &.append-open { flex-wrap: wrap; }
   }
 }
 
@@ -119,12 +121,26 @@
 
     &:hover { color: var(--color-text); }
 
-    // Collapsed: fill header, push "Songs in Set" left and ▼ right
+    // Collapsed: fill header, keep consistent gap-based spacing
     :host.collapsed & {
       flex: 1;
-      justify-content: space-between;
       color: var(--color-text);
     }
+  }
+}
+
+// ── Add-row (wraps the "+" toggle below the song list) ───────────────────────
+.add-row {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+
+  @media (max-width: 767px) {
+    border-top: none;
+    padding: 0 0.5rem;
+    align-self: center;
   }
 }
 
@@ -264,12 +280,17 @@ li {
   border-top: 1px solid var(--color-border);
 
   @media (max-width: 767px) {
-    padding: 0.4rem 0.5rem;
+    width: 100%;         // wraps to its own row below the mobile tab strip
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
   }
 }
 
 .append-btn {
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: none;
   border: 1px solid var(--color-border);
   border-radius: 6px;
@@ -290,6 +311,11 @@ li {
   &.loading {
     opacity: 0.6;
     cursor: default;
+  }
+
+  @media (max-width: 767px) {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.74rem;
   }
 }
 

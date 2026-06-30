@@ -2,6 +2,15 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.4] - 2026-06-30
+
+### Fixed
+- **Mobile toggle consistent in both states** — "Songs in Set" label now appears in both expanded (`Songs in Set ▲`) and collapsed (`Songs in Set ▼`) states; previously only the collapsed state showed the label.
+- **Mobile toggle spacing** — text and arrow now use consistent `gap`-based spacing in both states; the collapsed state no longer uses `justify-content: space-between` which pushed them to opposite ends.
+- **"+" button moved to end of song list** — the add-songs toggle is now positioned below the last song (not in the sidebar header), making it intuitive to find. On mobile it appears at the end of the horizontal tab strip.
+- **Append menu now opens directly below "+"** — `+ New Song` and `+ Import PDF` expand immediately below the `+` button in both PC sidebar and mobile tab bar views.
+- **Append options slim and centered on mobile** — the `+ New Song` and `+ Import PDF` buttons in the expanded append row are slimmer and fully centered on mobile, so the tab bar does not grow excessively tall.
+
 ## [1.1.3] - 2026-06-30
 
 ### Added

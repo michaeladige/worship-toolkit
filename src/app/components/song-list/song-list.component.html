@@ -1,23 +1,17 @@
 <div class="song-list">
   <div class="list-header">
-    <!-- Mobile-only: vertical collapse toggle — label shown only when collapsed -->
+    <!-- Mobile-only: always shows Songs in Set label + directional arrow -->
     <button
       class="mobile-collapse-btn"
       (click)="toggleCollapse.emit()"
       [title]="collapsed ? 'Expand song list' : 'Collapse song list'"
     >
-      @if (collapsed) { <span>Songs in Set</span> }
+      <span>Songs in Set</span>
       <span>{{ collapsed ? '▼' : '▲' }}</span>
     </button>
 
     @if (!collapsed) {
       <h3>Songs in Set</h3>
-      <button
-        class="add-btn"
-        [class.open]="appendMenuOpen"
-        (click)="appendMenuOpen = !appendMenuOpen"
-        title="Add songs"
-      >+</button>
     }
     <button
       class="collapse-btn"
@@ -42,7 +36,16 @@
       }
     </ul>
 
-    <!-- Expandable add-songs menu -->
+    <!-- "+" toggle at the end of the song list; append-row expands directly below -->
+    <div class="add-row">
+      <button
+        class="add-btn"
+        [class.open]="appendMenuOpen"
+        (click)="appendMenuOpen = !appendMenuOpen"
+        title="Add songs"
+      >+</button>
+    </div>
+
     @if (appendMenuOpen) {
       <div class="append-row">
         <button class="append-btn" (click)="onAddBlankSong()" title="Add a blank song">+ New Song</button>
