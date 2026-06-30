@@ -20,6 +20,7 @@ export class SongListComponent {
   @Output() reorderSongs = new EventEmitter<ParsedSong[]>();
   @Output() addBlankSong = new EventEmitter<void>();
   @Output() appendSongs = new EventEmitter<ParsedSong[]>();
+  @Output() removeSong = new EventEmitter<number>();
 
   confirmingUpload = false;
   isAppending = false;

@@ -50,8 +50,21 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     }
 
     this.sessionsSvc.currentSongs = this.songs;
+    this.sessionsSvc.initActiveSession();
+
     this.sessionSub = this.sessionsSvc.sessionLoad$.subscribe(songs => {
-      this.onSongsLoaded(songs);
+      this.undoStack = [];
+      this.redoStack = [];
+      if (songs.length === 0) {
+        this.songs = [];
+        this.sessionsSvc.currentSongs = [];
+        localStorage.removeItem(SESSION_KEY);
+      } else {
+        this.songs = songs;
+        this.sessionsSvc.currentSongs = songs;
+        try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch {}
+      }
+      this.selectedIndex = 0;
     });
   }
 
@@ -80,6 +93,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.songs = songs;
     this.sessionsSvc.currentSongs = songs;
     try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch { /* quota */ }
+    this.sessionsSvc.autosave(songs);
   }
 
   private applyHistory(songs: ParsedSong[]) {
@@ -101,18 +115,24 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   }
 
   onSongsLoaded(songs: ParsedSong[]) {
+    this.sessionsSvc.activeSessionId = null;
+    localStorage.removeItem('worship_toolkit_active_session');
     this.undoStack = [];
     this.redoStack = [];
     this.songs = songs;
+    this.sessionsSvc.currentSongs = songs;
     try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch {}
     this.selectedIndex = 0;
   }
 
   onUploadNew() {
+    this.sessionsSvc.activeSessionId = null;
+    localStorage.removeItem('worship_toolkit_active_session');
     this.undoStack = [];
     this.redoStack = [];
     localStorage.removeItem(SESSION_KEY);
     this.songs = [];
+    this.sessionsSvc.currentSongs = [];
     this.selectedIndex = 0;
   }
 
@@ -153,5 +173,12 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     const updated = [...this.songs, ...newSongs];
     this.setSongs(updated);
     this.selectedIndex = this.songs.length - newSongs.length; // select first appended
+  }
+
+  onRemoveSong(i: number) {
+    const updated = this.songs.filter((_, idx) => idx !== i);
+    if (updated.length === 0) { this.onUploadNew(); return; }
+    this.setSongs(updated);
+    this.selectedIndex = Math.min(this.selectedIndex, updated.length - 1);
   }
 }

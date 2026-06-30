@@ -17,6 +17,8 @@ export class SessionsModalComponent {
   renamingId: string | null = null;
   renameValue = '';
   importError = '';
+  showNewSessionConfirm = false;
+  newSessionSaveName = '';
 
   constructor(
     public sessionsSvc: SessionsService,
@@ -28,7 +30,13 @@ export class SessionsModalComponent {
   }
 
   @HostListener('document:keydown.escape')
-  onEscape() { this.sessionsSvc.closeModal(); }
+  onEscape() {
+    if (this.showNewSessionConfirm) {
+      this.cancelNewSessionConfirm();
+    } else {
+      this.sessionsSvc.closeModal();
+    }
+  }
 
   onBackdropClick(e: MouseEvent) {
     if ((e.target as HTMLElement).classList.contains('modal-backdrop')) {
@@ -72,11 +80,44 @@ export class SessionsModalComponent {
     try {
       const { name, songs } = await this.exportSvc.parseSessionFile(file);
       this.sessionsSvc.save(name, songs);
-      this.sessionsSvc.triggerLoad({ id: '', name, savedAt: Date.now(), songs });
+      const saved = this.sessionsSvc.list().find(s => s.name.toLowerCase() === name.trim().toLowerCase());
+      if (saved) {
+        this.sessionsSvc.triggerLoad(saved);
+      } else {
+        this.sessionsSvc.triggerLoad({ id: '', name, savedAt: Date.now(), songs });
+      }
     } catch (err) {
       this.importError = err instanceof Error ? err.message : 'Failed to import file.';
     }
     (e.target as HTMLInputElement).value = '';
+  }
+
+  requestNewSession() {
+    if (this.sessionsSvc.activeSessionId !== null) {
+      // Named session is tracked and auto-saved — just clear
+      this.sessionsSvc.clearWorkspace();
+    } else {
+      this.showNewSessionConfirm = true;
+    }
+  }
+
+  confirmNewSessionWithSave() {
+    const name = this.newSessionSaveName.trim();
+    if (name) this.sessionsSvc.save(name, this.sessionsSvc.currentSongs);
+    this.showNewSessionConfirm = false;
+    this.newSessionSaveName = '';
+    this.sessionsSvc.clearWorkspace();
+  }
+
+  discardAndNewSession() {
+    this.showNewSessionConfirm = false;
+    this.newSessionSaveName = '';
+    this.sessionsSvc.clearWorkspace();
+  }
+
+  cancelNewSessionConfirm() {
+    this.showNewSessionConfirm = false;
+    this.newSessionSaveName = '';
   }
 
   formatDate(ms: number): string {

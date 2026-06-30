@@ -3,7 +3,19 @@
   <div class="toolbar">
     <div class="toolbar-left">
       <div class="song-meta">
-        <h2 class="song-title">{{ song.title }}</h2>
+        @if (editingTitle !== null) {
+          <input
+            class="title-input"
+            type="text"
+            [(ngModel)]="editingTitle"
+            (keydown)="titleKeydown($event)"
+            (blur)="commitTitle()"
+            appAutofocus
+            maxlength="120"
+          />
+        } @else {
+          <h2 class="song-title editable-title" (click)="startEditTitle()" title="Click to rename">{{ song.title }}</h2>
+        }
         @if (song.authors.length) {
           <span class="song-authors">{{ song.authors[0] }}</span>
         }

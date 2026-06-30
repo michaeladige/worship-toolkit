@@ -31,6 +31,17 @@
     <button class="start-fresh-btn" (click)="startFresh()">✏️ Start from scratch</button>
   </div>
 
+  <div class="start-fresh-row">
+    <span class="start-fresh-divider">or</span>
+    <label class="start-fresh-btn">
+      📂 Load session file
+      <input type="file" accept=".wt,.json" hidden (change)="onSessionFileChange($event)" />
+    </label>
+    @if (sessionImportError) {
+      <span class="session-import-error">{{ sessionImportError }}</span>
+    }
+  </div>
+
   @if (error) {
     <div class="error-msg">{{ error }}</div>
   }

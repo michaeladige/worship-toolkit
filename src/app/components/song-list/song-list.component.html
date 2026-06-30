@@ -3,19 +3,9 @@
     <h3>Songs in Set</h3>
 
     <div class="new-pdf-area">
-      @if (!confirmingUpload) {
-        <button class="new-btn" (click)="requestUploadNew()" title="Replace current set with a new PDF">
-          ↺ New PDF
-        </button>
-      } @else {
-        <div class="upload-confirm">
-          <span class="confirm-warning">Replace set? All edits will be lost.</span>
-          <div class="confirm-actions">
-            <button class="confirm-yes-btn" (click)="confirmUploadNew()">Yes, replace</button>
-            <button class="confirm-cancel-btn" (click)="cancelUploadNew()">Cancel</button>
-          </div>
-        </div>
-      }
+      <button class="new-btn" (click)="requestUploadNew()" title="Replace current set with a new PDF">
+        ↺ New PDF
+      </button>
     </div>
   </div>
 
@@ -29,6 +19,7 @@
         <span cdkDragHandle class="drag-handle" title="Drag to reorder">≡</span>
         <span class="song-title">{{ song.title }}</span>
         <span class="song-key">{{ effectiveKey(song) }}</span>
+        <button class="remove-song-btn" (click)="$event.stopPropagation(); removeSong.emit(i)" title="Remove song">✕</button>
       </li>
     }
   </ul>
@@ -60,3 +51,15 @@
     </div>
   }
 </div>
+
+@if (confirmingUpload) {
+  <div class="confirm-backdrop" (click)="cancelUploadNew()">
+    <div class="confirm-dialog" (click)="$event.stopPropagation()" role="alertdialog">
+      <p class="confirm-msg">Replace your current set with a new PDF? All unsaved edits will be lost.</p>
+      <div class="confirm-actions">
+        <button class="confirm-yes-btn" (click)="confirmUploadNew()">Yes, replace</button>
+        <button class="confirm-cancel-btn" (click)="cancelUploadNew()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}

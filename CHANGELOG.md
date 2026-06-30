@@ -2,6 +2,20 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.1] - 2026-06-30
+
+### Added
+- **Inline song title editing** — click the song title in the editor toolbar to rename it (Enter to save, Esc to cancel). Solves the "New Song" naming problem for blank songs.
+- **Remove songs from the list** — a ✕ button appears on hover for each song in the sidebar. Removing the last song returns to the upload screen.
+- **Load session file from the upload page** — "📂 Load session file" button on the landing page lets users open a `.wt` file directly without navigating to the Sessions panel first.
+- **Autosave to active session** — once a session is named/loaded, every edit (chord, lyric, section, reorder) auto-saves to it silently. The Sessions button in the header shows the active session name (e.g. "💾 Sunday Service"). Active session is remembered across page reloads.
+- **Active session indicator** — active session highlighted with a badge in the Sessions panel.
+- **New Session button** — "+ New" in the Sessions panel header clears the workspace. If current work is unsaved, a prompt lets users name and save it first, or discard it.
+
+### Fixed
+- **New PDF confirmation overflow** — replaced the inline confirmation (clipped on PC/tablet) with a proper full-screen modal dialog.
+- **Annotation gap in editor** — the "add annotation" (`+ note`) button was taking up height even when invisible, creating a visual gap between chords and lyrics on every unannotated line. Now hidden by default and revealed on line hover; touch devices show a compact version.
+
 ## [1.1.0] - 2026-06-30
 
 ### Added

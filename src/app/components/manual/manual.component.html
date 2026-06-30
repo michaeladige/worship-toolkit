@@ -18,7 +18,7 @@
       <li><a routerLink="." fragment="notation">6. Bass notes &amp; Nashville numbers</a></li>
       <li><a routerLink="." fragment="history">7. Undo &amp; redo</a></li>
       <li><a routerLink="." fragment="export">8. Exporting &amp; sharing</a></li>
-      <li><a routerLink="." fragment="sessions">9. Saved sessions</a></li>
+      <li><a routerLink="." fragment="sessions">9. Saved sessions &amp; autosave</a></li>
       <li><a routerLink="." fragment="appearance">10. Appearance &amp; accessibility</a></li>
       <li><a routerLink="." fragment="tips">11. Tips, autosave &amp; troubleshooting</a></li>
       <li><a routerLink="." fragment="changelog">12. What's new</a></li>
@@ -32,7 +32,7 @@
       reshape and export. Everything happens in your browser &mdash; nothing is uploaded to a server.
     </p>
     <ol>
-      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, click <strong>Choose File</strong> to pick one, or click <strong>✏️ Start from scratch</strong> to create a blank song without uploading anything.</li>
+      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, click <strong>Choose File</strong> to pick one, click <strong>✏️ Start from scratch</strong> to create a blank song, or click <strong>📂 Load session file</strong> to resume from a previously exported <code>.wt</code> file.</li>
       <li>The app parses the PDF automatically. Multi-song PDFs are split into individual songs.</li>
       <li>Two-column layouts and superscript chord extensions (e.g. <code>Fm⁷</code>) are recognized and normalized automatically (e.g. to <code>Fm7</code>).</li>
       <li>Direction notes such as <em>To Tag</em> or <em>To Interlude</em>, and bar notation like <code>| Am7 | G |</code>, are preserved as italic annotations under the relevant line.</li>
@@ -51,7 +51,9 @@
     <ul>
       <li>Click any song in the list to switch the editor to that song.</li>
       <li>The current key for each song is shown next to its title.</li>
-      <li>Use <strong>↺ New PDF</strong> to replace the whole set with a different file. You'll be asked to confirm, since this clears all current edits.</li>
+      <li><strong>Rename a song title</strong> &mdash; click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press <kbd>Enter</kbd> to save or <kbd>Esc</kbd> to cancel. This is especially useful for songs added as blank "New Song" entries.</li>
+      <li><strong>Remove a song</strong> &mdash; hover over a song in the list and click the <strong>✕</strong> button that appears on the right. Removing the last song returns you to the upload screen.</li>
+      <li>Use <strong>↺ New PDF</strong> to replace the whole set with a different file. A confirmation modal appears before clearing all current edits.</li>
     </ul>
     <h3>Adding songs to an existing set</h3>
     <ul>
@@ -149,21 +151,32 @@
   </section>
 
   <section id="sessions" class="manual-section">
-    <h2>9. Saved sessions</h2>
+    <h2>9. Saved sessions &amp; autosave</h2>
     <p>
       Sessions let you snapshot your current set and return to it later &mdash; even if you close the browser or start working on a different set in the meantime.
     </p>
-    <p>Click <strong>💾 Sessions</strong> in the header to open the Sessions panel.</p>
+    <p>Click <strong>💾 Sessions</strong> in the header to open the Sessions panel. When a session is active, the button shows the session name (e.g. <strong>💾 Sunday Service</strong>) so you always know which set you're working on.</p>
     <h3>Saving a session</h3>
     <ul>
       <li>Type a name for your session (e.g. <em>Sunday 29 June</em>) in the input at the top of the panel and click <strong>Save</strong> (or press <kbd>Enter</kbd>).</li>
       <li>If you save again with the same name, the existing session is updated in place rather than duplicated.</li>
       <li>Up to 20 sessions can be stored. If you exceed this limit, the oldest session is removed.</li>
     </ul>
+    <h3>Autosave to active session</h3>
+    <ul>
+      <li>Once a session is saved or loaded, it becomes the <em>active session</em>. Every edit you make &mdash; chord changes, transpositions, section moves &mdash; is automatically saved back to that session in real time. No need to keep clicking Save.</li>
+      <li>The active session is highlighted with an <strong>active</strong> badge in the Sessions panel and its name appears in the header button.</li>
+      <li>If you reload the page, the app restores both your songs and the active session so you can continue right where you left off.</li>
+    </ul>
     <h3>Loading a session</h3>
     <ul>
-      <li>Each saved session shows its name, save date, and song count. Click <strong>Load</strong> to restore it &mdash; the editor updates immediately.</li>
-      <li>Your current unsaved work is replaced when you load a different session, so save first if you want to keep it.</li>
+      <li>Each saved session shows its name, save date, and song count. Click <strong>Load</strong> to restore it &mdash; the editor updates immediately and that session becomes the new active session.</li>
+    </ul>
+    <h3>Starting a new session</h3>
+    <ul>
+      <li>Click <strong>+ New</strong> in the Sessions panel header to clear the workspace and start fresh.</li>
+      <li>If you're currently in a named session (it's already autosaved), the workspace clears immediately.</li>
+      <li>If you have unsaved work, a prompt appears: enter a name to save it first, or click <strong>Skip &amp; New</strong> to discard and continue.</li>
     </ul>
     <h3>Managing sessions</h3>
     <ul>
@@ -174,7 +187,8 @@
     <h3>Exporting and importing session files</h3>
     <ul>
       <li><strong>Export (↓)</strong> &mdash; click the download button on any saved session to save it as a <code>.wt</code> file. This file contains the full song data including all edits, transpositions, and chord positions.</li>
-      <li><strong>Import</strong> &mdash; click <strong>↑ Import .wt file</strong> at the top of the Sessions panel, pick a previously exported <code>.wt</code> file, and the session loads into the editor immediately. It's also saved to your session list so you can return to it later.</li>
+      <li><strong>Import from Sessions panel</strong> &mdash; click <strong>↑ Import .wt file</strong> at the top of the Sessions panel, pick a previously exported <code>.wt</code> file, and the session loads into the editor immediately. It's also saved to your session list so you can return to it later.</li>
+      <li><strong>Import from the upload page</strong> &mdash; on the landing/upload page, click <strong>📂 Load session file</strong> to open a <code>.wt</code> file directly without going through the Sessions panel.</li>
       <li><code>.wt</code> files are plain JSON and can be shared via email, cloud drive, AirDrop, or any other file-transfer method.</li>
     </ul>
   </section>
@@ -201,6 +215,19 @@
   <section id="changelog" class="manual-section">
     <h2>12. What's new <span class="version-pill">v{{ version }}</span></h2>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
+
+    <div class="changelog-entry">
+      <h3>1.1.1</h3>
+      <ul>
+        <li><strong>Inline song title editing</strong> &mdash; click the song title in the editor toolbar to rename it. Press <kbd>Enter</kbd> to confirm or <kbd>Esc</kbd> to cancel.</li>
+        <li><strong>Remove songs from the list</strong> &mdash; hover a song in the sidebar and click ✕ to delete it.</li>
+        <li><strong>Load session file from the upload page</strong> &mdash; the landing page now has a <strong>📂 Load session file</strong> button for opening a <code>.wt</code> file without going through the Sessions panel.</li>
+        <li><strong>Autosave to active session</strong> &mdash; once a session is named, every edit automatically saves to it. The Sessions button in the header shows the current session name.</li>
+        <li><strong>New Session button</strong> &mdash; "+ New" in the Sessions panel clears the workspace; prompts to save first if there is unsaved work.</li>
+        <li><strong>New PDF confirmation modal</strong> &mdash; replaced the inline confirmation (which overflowed on larger screens) with a proper centered modal dialog.</li>
+        <li><strong>Cleaner editor view</strong> &mdash; the "add annotation" prompt is hidden by default and appears only when you hover a lyric line, removing visual gaps between chords and lyrics.</li>
+      </ul>
+    </div>
 
     <div class="changelog-entry">
       <h3>1.1.0</h3>

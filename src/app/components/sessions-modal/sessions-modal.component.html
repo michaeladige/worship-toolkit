@@ -3,6 +3,7 @@
 
     <div class="modal-header">
       <h2 class="modal-title">Saved Sessions</h2>
+      <button class="new-session-btn" (click)="requestNewSession()" title="Start a new session">+ New</button>
       <button class="close-btn" (click)="sessionsSvc.closeModal()" title="Close">✕</button>
     </div>
 
@@ -38,7 +39,7 @@
     } @else {
       <ul class="session-list">
         @for (session of sessions; track session.id) {
-          <li class="session-item">
+          <li class="session-item" [class.active-session]="session.id === sessionsSvc.activeSessionId">
             <div class="session-info">
               @if (renamingId === session.id) {
                 <input
@@ -56,6 +57,9 @@
               }
               <span class="session-meta">
                 {{ formatDate(session.savedAt) }} · {{ session.songs.length }} song{{ session.songs.length !== 1 ? 's' : '' }}
+                @if (session.id === sessionsSvc.activeSessionId) {
+                  <span class="active-badge">active</span>
+                }
               </span>
             </div>
             <div class="session-actions">
@@ -67,6 +71,28 @@
           </li>
         }
       </ul>
+    }
+
+    <!-- New session confirmation panel -->
+    @if (showNewSessionConfirm) {
+      <div class="new-session-confirm">
+        <p class="confirm-text">You have unsaved work. Enter a name to keep it, or skip to discard.</p>
+        <input
+          class="save-input"
+          type="text"
+          placeholder="Session name (optional)…"
+          [(ngModel)]="newSessionSaveName"
+          (keydown.enter)="confirmNewSessionWithSave()"
+          maxlength="60"
+          autofocus
+        />
+        <div class="confirm-actions">
+          <button class="save-btn" (click)="confirmNewSessionWithSave()">
+            {{ newSessionSaveName.trim() ? 'Save & New' : 'Skip & New' }}
+          </button>
+          <button class="cancel-btn" (click)="cancelNewSessionConfirm()">Cancel</button>
+        </div>
+      </div>
     }
 
   </div>

@@ -61,6 +61,34 @@
     }
   }
 
+  .editable-title {
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.12s;
+
+    &:hover { border-bottom-color: var(--color-primary); }
+  }
+
+  .title-input {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid var(--color-primary);
+    outline: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 280px;
+    font-family: inherit;
+
+    @media (max-width: 767px) {
+      font-size: 0.95rem;
+      max-width: 200px;
+    }
+  }
+
   .song-authors {
     font-size: 0.78rem;
     color: var(--color-muted);

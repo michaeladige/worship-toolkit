@@ -3,17 +3,42 @@ import { Subject } from 'rxjs';
 import { ParsedSong, SavedSession } from '../models/song.model';
 
 const SESSIONS_KEY = 'worship_toolkit_sessions';
+const ACTIVE_KEY = 'worship_toolkit_active_session';
 const MAX_SESSIONS = 20;
 
 @Injectable({ providedIn: 'root' })
 export class SessionsService {
   showModal = false;
+  activeSessionId: string | null = null;
 
   // WorkspaceComponent keeps this in sync on every setSongs() call
   currentSongs: ParsedSong[] = [];
 
   private loadSubject = new Subject<ParsedSong[]>();
   readonly sessionLoad$ = this.loadSubject.asObservable();
+
+  initActiveSession(): void {
+    this.activeSessionId = localStorage.getItem(ACTIVE_KEY) ?? null;
+  }
+
+  get activeSessionName(): string | null {
+    if (!this.activeSessionId) return null;
+    return this.list().find(s => s.id === this.activeSessionId)?.name ?? null;
+  }
+
+  autosave(songs: ParsedSong[]): void {
+    if (!this.activeSessionId) return;
+    const sessions = this.list();
+    const s = sessions.find(s => s.id === this.activeSessionId);
+    if (!s) {
+      this.activeSessionId = null;
+      localStorage.removeItem(ACTIVE_KEY);
+      return;
+    }
+    s.savedAt = Date.now();
+    s.songs = songs;
+    this.persist(sessions);
+  }
 
   list(): SavedSession[] {
     try {
@@ -35,9 +60,14 @@ export class SessionsService {
     if (existing) {
       existing.savedAt = Date.now();
       existing.songs = songs;
+      this.activeSessionId = existing.id;
+      localStorage.setItem(ACTIVE_KEY, existing.id);
     } else {
-      sessions.unshift({ id: crypto.randomUUID(), name: trimmed, savedAt: Date.now(), songs });
+      const id = crypto.randomUUID();
+      sessions.unshift({ id, name: trimmed, savedAt: Date.now(), songs });
       if (sessions.length > MAX_SESSIONS) sessions.splice(MAX_SESSIONS);
+      this.activeSessionId = id;
+      localStorage.setItem(ACTIVE_KEY, id);
     }
     this.persist(sessions);
   }
@@ -51,11 +81,28 @@ export class SessionsService {
   delete(id: string): void {
     const sessions = this.list().filter(s => s.id !== id);
     this.persist(sessions);
+    if (this.activeSessionId === id) {
+      this.activeSessionId = null;
+      localStorage.removeItem(ACTIVE_KEY);
+    }
   }
 
   triggerLoad(session: SavedSession): void {
+    this.activeSessionId = session.id || null;
+    if (this.activeSessionId) {
+      localStorage.setItem(ACTIVE_KEY, this.activeSessionId);
+    } else {
+      localStorage.removeItem(ACTIVE_KEY);
+    }
     this.showModal = false;
     this.loadSubject.next(session.songs);
+  }
+
+  clearWorkspace(): void {
+    this.activeSessionId = null;
+    localStorage.removeItem(ACTIVE_KEY);
+    this.showModal = false;
+    this.loadSubject.next([]);
   }
 
   openModal(): void { this.showModal = true; }

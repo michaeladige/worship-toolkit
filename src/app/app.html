@@ -14,7 +14,7 @@
         class="ui-ctrl-btn sessions-btn"
         (click)="sessionsSvc.openModal()"
         title="Manage saved sessions"
-      >💾 Sessions</button>
+      >💾 {{ sessionsSvc.activeSessionName ?? 'Sessions' }}</button>
       <span class="ui-label">Text size</span>
       <button
         class="ui-ctrl-btn"
