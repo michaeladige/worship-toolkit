@@ -54,6 +54,7 @@
       <li><strong>Rename a song title</strong> &mdash; click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press <kbd>Enter</kbd> to save or <kbd>Esc</kbd> to cancel. This is especially useful for songs added as blank "New Song" entries.</li>
       <li><strong>Remove a song</strong> &mdash; hover over a song in the list and click the <strong>✕</strong> button that appears on the right. Removing the last song returns you to the upload screen.</li>
       <li>Use <strong>↺ New PDF</strong> to replace the whole set with a different file. A confirmation modal appears before clearing all current edits.</li>
+      <li><strong>Collapse the sidebar</strong> &mdash; on desktop and tablet, click the <strong>◄</strong> button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click <strong>►</strong> to expand it again. On mobile, click <strong>Song List ▲</strong> at the top to collapse the song bar and free up vertical space; tap <strong>Song List ▼</strong> to expand it.</li>
     </ul>
     <h3>Adding songs to an existing set</h3>
     <ul>
@@ -215,6 +216,16 @@
   <section id="changelog" class="manual-section">
     <h2>12. What's new <span class="version-pill">v{{ version }}</span></h2>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
+
+    <div class="changelog-entry">
+      <h3>1.1.2</h3>
+      <ul>
+        <li><strong>Collapsible sidebar on desktop &amp; tablet</strong> &mdash; click ◄ in the sidebar header to collapse it to a thin strip and give more space to the editor. Click ► to expand it again.</li>
+        <li><strong>Collapsible song bar on mobile</strong> &mdash; tap <strong>Song List ▲</strong> in the tab bar to collapse it and reclaim vertical screen space. Tap <strong>Song List ▼</strong> to bring it back.</li>
+        <li><strong>Session-aware New PDF warning</strong> &mdash; clicking ↺ New PDF now prompts differently based on context: if a named session is active (already autosaved) it simply confirms; if there is unsaved work it offers to name and save it first.</li>
+        <li><strong>Fix: "+ New" button disabled on empty workspace</strong> &mdash; the "+ New" button in the Sessions panel is now greyed out when there are no songs loaded, preventing a confusing "unsaved work" prompt from appearing on a blank canvas.</li>
+      </ul>
+    </div>
 
     <div class="changelog-entry">
       <h3>1.1.1</h3>

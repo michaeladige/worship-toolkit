@@ -3,7 +3,12 @@
 
     <div class="modal-header">
       <h2 class="modal-title">Saved Sessions</h2>
-      <button class="new-session-btn" (click)="requestNewSession()" title="Start a new session">+ New</button>
+      <button
+        class="new-session-btn"
+        (click)="requestNewSession()"
+        [disabled]="sessionsSvc.currentSongs.length === 0"
+        title="Start a new session"
+      >+ New</button>
       <button class="close-btn" (click)="sessionsSvc.closeModal()" title="Close">✕</button>
     </div>
 

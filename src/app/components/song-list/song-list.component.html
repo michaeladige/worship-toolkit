@@ -1,5 +1,15 @@
 <div class="song-list">
   <div class="list-header">
+    <!-- Mobile-only: vertical collapse toggle -->
+    <button
+      class="mobile-collapse-btn"
+      (click)="toggleCollapse.emit()"
+      [title]="collapsed ? 'Expand song list' : 'Collapse song list'"
+    >
+      <span>Song List</span>
+      <span>{{ collapsed ? '▼' : '▲' }}</span>
+    </button>
+
     @if (!collapsed) {
       <h3>Songs in Set</h3>
       <div class="new-pdf-area">

@@ -63,11 +63,17 @@
     padding: 0.5rem 0.75rem;
     flex-shrink: 0;
 
-    h3 { display: none; } // hide label to save space
+    h3 { display: none; }
+
+    // When collapsed on mobile: no right border (nothing to its right), fill host width
+    :host.collapsed & {
+      border-right: none;
+      flex: 1;
+    }
   }
 }
 
-// ── Collapse toggle button ────────────────────────────────────────────────────
+// ── PC/tablet collapse toggle ─────────────────────────────────────────────────
 .collapse-btn {
   background: none;
   border: none;
@@ -85,8 +91,39 @@
     background: var(--color-hover);
   }
 
-  // Not applicable on mobile (sidebar is a horizontal tab bar there)
   @media (max-width: 767px) { display: none; }
+}
+
+// ── Mobile vertical collapse toggle ──────────────────────────────────────────
+.mobile-collapse-btn {
+  display: none; // hidden on PC/tablet
+
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    padding: 0.2rem 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: color 0.12s;
+
+    &:hover { color: var(--color-text); }
+
+    // When collapsed: fill the header and push arrow to the right
+    :host.collapsed & {
+      flex: 1;
+      justify-content: space-between;
+      color: var(--color-text);
+    }
+  }
 }
 
 .new-btn {

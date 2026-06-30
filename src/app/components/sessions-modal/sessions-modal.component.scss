@@ -224,9 +224,14 @@
   margin-right: 0.5rem;
   transition: border-color 0.15s, color 0.15s;
 
-  &:hover {
+  &:hover:not(:disabled) {
     border-color: var(--color-secondary);
     color: var(--color-secondary);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
   }
 }
 

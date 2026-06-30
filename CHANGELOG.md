@@ -2,6 +2,16 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.2] - 2026-06-30
+
+### Added
+- **Collapsible sidebar (desktop/tablet)** — click ◄ in the sidebar header to collapse it to a 32 px strip and give more room to the editor. Click ► to expand.
+- **Collapsible song bar (mobile)** — tap "Song List ▲" in the mobile tab bar to collapse it and reclaim vertical screen space. Tap "Song List ▼" to expand.
+- **Session-aware New PDF warning** — clicking ↺ New PDF now shows a context-sensitive confirmation: if a named session is active (already autosaved) it confirms simply; if there is unsaved work it offers to name and save it first.
+
+### Fixed
+- **"+ New" button incorrectly active on empty workspace** — the "+ New" button in the Sessions panel is now disabled when no songs are loaded, preventing a misleading "unsaved work" prompt from appearing on a blank canvas.
+
 ## [1.1.1] - 2026-06-30
 
 ### Added

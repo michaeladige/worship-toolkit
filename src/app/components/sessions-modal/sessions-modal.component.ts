@@ -93,6 +93,7 @@ export class SessionsModalComponent {
   }
 
   requestNewSession() {
+    if (this.sessionsSvc.currentSongs.length === 0) return;
     if (this.sessionsSvc.activeSessionId !== null) {
       // Named session is tracked and auto-saved — just clear
       this.sessionsSvc.clearWorkspace();
