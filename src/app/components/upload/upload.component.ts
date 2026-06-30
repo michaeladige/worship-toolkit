@@ -19,8 +19,9 @@ export class UploadComponent {
   isLoading = false;
   error = '';
   sessionImportError = '';
+  copied = false;
 
-  constructor(private parser: PdfParserService, private exportSvc: ExportService) {}
+  constructor(public parser: PdfParserService, private exportSvc: ExportService) {}
 
   onDragOver(e: DragEvent) {
     e.preventDefault();
@@ -54,6 +55,13 @@ export class UploadComponent {
     } catch (err) {
       this.sessionImportError = err instanceof Error ? err.message : 'Invalid session file.';
     }
+  }
+
+  copyLogs() {
+    navigator.clipboard?.writeText(this.parser.logs.join('\n')).then(() => {
+      this.copied = true;
+      setTimeout(() => { this.copied = false; }, 2000);
+    });
   }
 
   startFresh() {

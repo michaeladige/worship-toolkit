@@ -46,6 +46,16 @@
     <div class="error-msg">{{ error }}</div>
   }
 
+  @if (parser.logs.length > 0) {
+    <div class="debug-log">
+      <div class="debug-log-header">
+        <span>Debug log</span>
+        <button class="debug-copy-btn" (click)="copyLogs()">{{ copied ? 'Copied!' : 'Copy' }}</button>
+      </div>
+      <pre class="debug-log-body">{{ parser.logs.join('\n') }}</pre>
+    </div>
+  }
+
   <div class="info-cards">
     <div class="card">
       <span class="card-icon">🎵</span>
