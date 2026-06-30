@@ -218,6 +218,14 @@
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.1.7</h3></summary>
+      <ul>
+        <li><strong>PDF import fixed on iOS and Android</strong> &mdash; uploading a PDF no longer freezes on the "Parsing PDF…" spinner. Two root causes were fixed: PDF.js was downgraded from v5 to v4 (v5's streaming text-extraction API hangs indefinitely inside iOS Safari web workers), and the PDF.js worker script is now fetched and inlined in a self-contained Blob URL, removing a hidden cross-origin request that was silently failing on GitHub Pages and broke Android.</li>
+        <li><strong>TURNAROUND recognized as a section</strong> &mdash; <code>TURNAROUND</code> is now parsed as a section header (alongside VERSE, CHORUS, BRIDGE, etc.) rather than treated as lyric text.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.1.6</h3></summary>
       <ul>
         <li><strong>Add-songs UI redesigned</strong> &mdash; on desktop and tablet, <strong>+ New Song</strong> and <strong>+ Import PDF</strong> now appear directly as the last item in the song list — no toggle needed. On mobile, a compact <strong>+</strong> button at the end of the tab strip expands a row below as before. The options always sit right after the last song instead of floating at the sidebar bottom.</li>
