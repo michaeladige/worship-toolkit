@@ -70,6 +70,18 @@
       <li>Add a new line under a section with the <strong>+ Line</strong> button in that section's header.</li>
       <li>Remove a line using the <strong>×</strong> button in its left gutter. A section always keeps at least one line.</li>
     </ul>
+    <h3>Tempo &amp; time signature</h3>
+    <ul>
+      <li><strong>Edit tempo</strong> &mdash; click the <strong>BPM</strong> chip in the toolbar, type a new number, then press <kbd>Enter</kbd> (or click elsewhere) to save. Clearing it shows a <strong>+ BPM</strong> placeholder you can click to set a new value. Press <kbd>Esc</kbd> to cancel.</li>
+      <li><strong>Edit time signature</strong> &mdash; click the time signature chip (e.g. <code>4/4</code>) next to the BPM chip, type a new signature such as <code>3/4</code> or <code>6/8</code>, then press <kbd>Enter</kbd> to save. An invalid entry reverts to the previous value. Press <kbd>Esc</kbd> to cancel.</li>
+    </ul>
+    <h3>Annotations</h3>
+    <ul>
+      <li><strong>Add a note</strong> &mdash; on a lyric line with no annotation, hover it and click <strong>+ note</strong>, type a direction note or bar notation (e.g. <code>(To Tag)</code> or <code>| Am7 | G |</code>), then press <kbd>Enter</kbd> to save.</li>
+      <li><strong>Edit a note</strong> &mdash; click an existing annotation to edit it in place.</li>
+      <li><strong>Remove a note</strong> &mdash; while editing, click the <strong>×</strong> next to the annotation input.</li>
+      <li>Annotations are stored untransposed and transposed only for display, so bar notation like <code>| Am7 | G |</code> stays correct no matter how many times you transpose the song.</li>
+    </ul>
   </section>
 
   <section id="sections" class="manual-section">
@@ -146,6 +158,16 @@
   <section id="changelog" class="manual-section">
     <h2>11. What's new <span class="version-pill">v{{ version }}</span></h2>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
+
+    <div class="changelog-entry">
+      <h3>1.0.6</h3>
+      <ul>
+        <li>Make tempo editable — click the BPM chip to set or clear it.</li>
+        <li>Make the time signature pill editable — click it to change it (e.g. <code>3/4</code> &rarr; <code>4/4</code>).</li>
+        <li>Add, edit, and remove annotations (direction notes, bar notation) on any lyric line.</li>
+        <li>Fix inline-edit inputs occasionally losing focus reliability after repeated use.</li>
+      </ul>
+    </div>
 
     <div class="changelog-entry">
       <h3>1.0.5</h3>

@@ -276,6 +276,69 @@
   padding: 0 2px;
 }
 
+.annotation-row--btn {
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.12s;
+
+  &:hover { background: var(--color-hover); }
+}
+
+.annotation-row--editing {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.annotation-input {
+  flex: 1;
+  font-size: 0.78rem;
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-style: italic;
+  color: var(--color-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-primary);
+  border-radius: 3px;
+  padding: 1px 4px;
+  outline: none;
+}
+
+.annotation-remove {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+
+  &:hover { color: #ef4444; }
+}
+
+// Inline prompt shown on lines with no annotation
+.add-annotation-btn {
+  background: none;
+  border: 1px dashed var(--color-border);
+  color: var(--color-muted);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  padding: 0.05rem 0.4rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, border-color 0.12s, color 0.12s;
+  align-self: flex-start;
+
+  .line-group:hover & { opacity: 1; }
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 767px) { opacity: 1; }
+}
+
 .lyric-row {
   font-size: 0.82rem;
   font-family: 'Courier New', 'Consolas', monospace;

@@ -9,11 +9,18 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ParsedSong, SongSection, SongLine, ChordToken } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
+import { AutofocusDirective } from '../../directives/autofocus.directive';
 
 interface EditState {
   sectionIdx: number;
   lineIdx: number;
   chordIdx: number;
+  value: string;
+}
+
+interface AnnotationEditState {
+  sectionIdx: number;
+  lineIdx: number;
   value: string;
 }
 
@@ -31,7 +38,7 @@ interface ChordDrag {
 @Component({
   selector: 'app-song-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle],
+  imports: [CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle, AutofocusDirective],
   templateUrl: './song-section.component.html',
   styleUrl: './song-section.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
@@ -46,6 +53,7 @@ export class SongSectionComponent {
   @ViewChildren('chordRowRef') chordRowRefs!: QueryList<ElementRef<HTMLElement>>;
 
   editing: EditState | null = null;
+  editingAnnotation: AnnotationEditState | null = null;
   chordDrag: ChordDrag | null = null;
 
   constructor(public chordSvc: ChordService) {}
@@ -128,6 +136,47 @@ export class SongSectionComponent {
     const song = this.cloneSong();
     song.sections[si].lines[li].lyric = value;
     this.songChange.emit(song);
+  }
+
+  // ── Annotation CRUD ──────────────────────────────────────────────────────────
+
+  startEditAnnotation(si: number, li: number) {
+    this.editingAnnotation = {
+      sectionIdx: si,
+      lineIdx: li,
+      value: this.song.sections[si].lines[li].annotation ?? '',
+    };
+  }
+
+  commitAnnotation() {
+    if (!this.editingAnnotation) return;
+    const { sectionIdx, lineIdx, value } = this.editingAnnotation;
+    const song = this.cloneSong();
+    song.sections[sectionIdx].lines[lineIdx].annotation = value.trim() || undefined;
+    this.editingAnnotation = null;
+    this.songChange.emit(song);
+  }
+
+  cancelAnnotation() {
+    this.editingAnnotation = null;
+  }
+
+  annotationKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') { e.preventDefault(); this.commitAnnotation(); }
+    if (e.key === 'Escape') { this.cancelAnnotation(); }
+  }
+
+  removeAnnotation(si: number, li: number) {
+    const song = this.cloneSong();
+    song.sections[si].lines[li].annotation = undefined;
+    if (this.editingAnnotation?.sectionIdx === si && this.editingAnnotation?.lineIdx === li) {
+      this.editingAnnotation = null;
+    }
+    this.songChange.emit(song);
+  }
+
+  isEditingAnnotation(si: number, li: number): boolean {
+    return this.editingAnnotation?.sectionIdx === si && this.editingAnnotation?.lineIdx === li;
   }
 
   // ── Section drag-drop reorder ────────────────────────────────────────────────

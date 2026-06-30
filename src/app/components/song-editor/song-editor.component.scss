@@ -88,6 +88,40 @@
       display: none;
     }
   }
+
+  .chip--btn {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.12s, color 0.12s;
+
+    &:hover {
+      background: color-mix(in srgb, var(--color-primary) 15%, var(--color-border));
+      color: var(--color-primary);
+    }
+  }
+
+  .chip--empty {
+    color: var(--color-muted);
+    font-style: italic;
+  }
+
+  .chip--editing {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .chip-input {
+    background: var(--color-bg);
+    border: 1px solid var(--color-primary);
+    border-radius: 12px;
+    padding: 0 0.4rem;
+    font-size: 0.75rem;
+    color: var(--color-text);
+    outline: none;
+    min-width: 1.5rem;
+  }
 }
 
 .key-control {

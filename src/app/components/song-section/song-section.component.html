@@ -43,7 +43,7 @@
                         [(ngModel)]="editing!.value"
                         (keydown)="editKeydown($event)"
                         (blur)="commitEdit()"
-                        autofocus
+                        appAutofocus
                         [style.width.ch]="editing!.value.length + 2"
                       />
                     } @else {
@@ -68,8 +68,35 @@
               </div>
             }
 
-            @if (line.annotation) {
-              <div class="annotation-row">{{ displayAnnotation(line.annotation) }}</div>
+            @if (isEditingAnnotation(si, li)) {
+              <div class="annotation-row annotation-row--editing">
+                <input
+                  class="annotation-input"
+                  type="text"
+                  [(ngModel)]="editingAnnotation!.value"
+                  (keydown)="annotationKeydown($event)"
+                  (blur)="commitAnnotation()"
+                  appAutofocus
+                  title="Editing raw annotation (untransposed)"
+                />
+                <button
+                  class="annotation-remove"
+                  (click)="removeAnnotation(si, li)"
+                  title="Remove annotation"
+                >×</button>
+              </div>
+            } @else if (line.annotation) {
+              <div
+                class="annotation-row annotation-row--btn"
+                (click)="startEditAnnotation(si, li)"
+                title="Click to edit annotation"
+              >{{ displayAnnotation(line.annotation) }}</div>
+            } @else if (showSectionControls && !line.isChordsOnly) {
+              <button
+                class="add-annotation-btn"
+                (click)="startEditAnnotation(si, li)"
+                title="Add annotation"
+              >+ note</button>
             }
             @if (!line.isChordsOnly) {
               <div

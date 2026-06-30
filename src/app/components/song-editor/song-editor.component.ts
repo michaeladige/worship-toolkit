@@ -5,13 +5,14 @@ import { ParsedSong } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
 import { ExportService } from '../../services/export.service';
 import { SongSectionComponent } from '../song-section/song-section.component';
+import { AutofocusDirective } from '../../directives/autofocus.directive';
 
 const QUICK_SECTIONS = ['INTRO', 'VERSE', 'CHORUS', 'PRE-CHORUS', 'BRIDGE', 'OUTRO', 'TAG'];
 
 @Component({
   selector: 'app-song-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule, SongSectionComponent],
+  imports: [CommonModule, FormsModule, SongSectionComponent, AutofocusDirective],
   templateUrl: './song-editor.component.html',
   styleUrl: './song-editor.component.scss',
 })
@@ -30,6 +31,8 @@ export class SongEditorComponent {
 
   exporting = false;
   newSectionName = '';
+  editingTempo: string | null = null;
+  editingTimeSignature: string | null = null;
 
   constructor(
     public chordSvc: ChordService,
@@ -75,6 +78,56 @@ export class SongEditorComponent {
 
   resetTranspose() {
     this.updateSong({ ...this.song, transposeSemitones: 0 });
+  }
+
+  startEditTempo() {
+    this.editingTempo = this.song.tempo ?? '';
+  }
+
+  commitTempo() {
+    if (this.editingTempo === null) return;
+    const cleaned = this.editingTempo.replace(/[^\d]/g, '');
+    this.editingTempo = null;
+    this.setTempo(cleaned);
+  }
+
+  cancelTempo() {
+    this.editingTempo = null;
+  }
+
+  tempoKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') { e.preventDefault(); this.commitTempo(); }
+    if (e.key === 'Escape') { this.cancelTempo(); }
+  }
+
+  setTempo(value: string) {
+    this.updateSong({ ...this.song, tempo: value });
+  }
+
+  startEditTimeSignature() {
+    this.editingTimeSignature = this.song.timeSignature;
+  }
+
+  commitTimeSignature() {
+    if (this.editingTimeSignature === null) return;
+    const cleaned = this.editingTimeSignature.trim();
+    this.editingTimeSignature = null;
+    if (/^\d{1,2}\/\d{1,2}$/.test(cleaned)) {
+      this.setTimeSignature(cleaned);
+    }
+  }
+
+  cancelTimeSignature() {
+    this.editingTimeSignature = null;
+  }
+
+  timeSignatureKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') { e.preventDefault(); this.commitTimeSignature(); }
+    if (e.key === 'Escape') { this.cancelTimeSignature(); }
+  }
+
+  setTimeSignature(value: string) {
+    this.updateSong({ ...this.song, timeSignature: value });
   }
 
   addSection(name: string) {
