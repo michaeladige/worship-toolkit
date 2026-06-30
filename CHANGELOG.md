@@ -2,6 +2,9 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.0.7] - 2026-06-30
+- Fix the manual page's table of contents links navigating away to the landing page instead of scrolling to the target section.
+
 ## [1.0.6] - 2026-06-30
 - Make tempo editable — click the BPM chip to set or clear it.
 - Make the time signature pill editable — click it to change it (e.g. `3/4` → `4/4`).
