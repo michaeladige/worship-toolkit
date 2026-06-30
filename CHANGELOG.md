@@ -2,6 +2,12 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.7] - 2026-06-30
+
+### Fixed
+- **iOS PDF import hang** — uploading a PDF on iOS Safari no longer freezes on the "Parsing PDF…" spinner. The PDF.js worker is now loaded via a Blob URL with `importScripts`, bypassing a GitHub Pages MIME-type issue that silently prevented the worker from starting on iOS. A 20-second timeout also ensures the spinner clears with a user-facing error if the worker fails for any other reason.
+- **TURNAROUND recognized as a section** — the section-name parser now correctly identifies `TURNAROUND` (in addition to VERSE, CHORUS, BRIDGE, etc.) so it is parsed as a section header rather than lyric text.
+
 ## [1.1.6] - 2026-06-30
 
 ### Changed
