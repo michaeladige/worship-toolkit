@@ -41,6 +41,21 @@ export class UploadComponent {
     if (file) this.processFile(file);
   }
 
+  startFresh() {
+    this.songsLoaded.emit([{
+      id: crypto.randomUUID(),
+      title: 'New Song',
+      authors: [],
+      key: 'C',
+      originalKey: 'C',
+      tempo: '',
+      timeSignature: '4/4',
+      sections: [{ name: 'VERSE', lines: [{ chords: [], lyric: '', isChordsOnly: false }] }],
+      transposeSemitones: 0,
+      showBassNotesOnly: false,
+    }]);
+  }
+
   async processFile(file: File) {
     if (!file.name.toLowerCase().endsWith('.pdf')) {
       this.error = 'Please upload a PDF file.';

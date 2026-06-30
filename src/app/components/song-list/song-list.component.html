@@ -19,15 +19,44 @@
     </div>
   </div>
 
-  <ul>
+  <ul cdkDropList (cdkDropListDropped)="dropSong($event)">
     @for (song of songs; track song.id; let i = $index) {
       <li
+        cdkDrag
         [class.active]="i === selectedIndex"
         (click)="selectSong.emit(i)"
       >
+        <span cdkDragHandle class="drag-handle" title="Drag to reorder">≡</span>
         <span class="song-title">{{ song.title }}</span>
         <span class="song-key">{{ effectiveKey(song) }}</span>
       </li>
     }
   </ul>
+
+  <!-- Append row -->
+  <div class="append-row">
+    <button class="append-btn" (click)="addBlankSong.emit()" title="Add a blank song">+ New Song</button>
+    <label class="append-btn" [class.loading]="isAppending" title="Append songs from a PDF">
+      {{ isAppending ? 'Importing…' : '+ Import PDF' }}
+      <input type="file" accept=".pdf" hidden (change)="onAppendFileChange($event)" />
+    </label>
+  </div>
+
+  @if (appendError) {
+    <div class="append-error">{{ appendError }}</div>
+  }
+
+  <!-- Duplicate song warning -->
+  @if (dupeNames.length > 0) {
+    <div class="dupe-warning">
+      <p class="dupe-text">
+        Already in set: <strong>{{ dupeNames.join(', ') }}</strong>
+      </p>
+      <div class="dupe-actions">
+        <button class="dupe-btn dupe-btn--add" (click)="confirmAppendAll()">Add anyway</button>
+        <button class="dupe-btn dupe-btn--skip" (click)="confirmAppendSkipDupes()">Skip duplicates</button>
+        <button class="dupe-btn dupe-btn--cancel" (click)="cancelAppend()">Cancel</button>
+      </div>
+    </div>
+  }
 </div>

@@ -18,9 +18,10 @@
       <li><a routerLink="." fragment="notation">6. Bass notes &amp; Nashville numbers</a></li>
       <li><a routerLink="." fragment="history">7. Undo &amp; redo</a></li>
       <li><a routerLink="." fragment="export">8. Exporting &amp; sharing</a></li>
-      <li><a routerLink="." fragment="appearance">9. Appearance &amp; accessibility</a></li>
-      <li><a routerLink="." fragment="tips">10. Tips, autosave &amp; troubleshooting</a></li>
-      <li><a routerLink="." fragment="changelog">11. What's new</a></li>
+      <li><a routerLink="." fragment="sessions">9. Saved sessions</a></li>
+      <li><a routerLink="." fragment="appearance">10. Appearance &amp; accessibility</a></li>
+      <li><a routerLink="." fragment="tips">11. Tips, autosave &amp; troubleshooting</a></li>
+      <li><a routerLink="." fragment="changelog">12. What's new</a></li>
     </ul>
   </nav>
 
@@ -31,7 +32,7 @@
       reshape and export. Everything happens in your browser &mdash; nothing is uploaded to a server.
     </p>
     <ol>
-      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, or click <strong>Choose File</strong> to pick one from your computer.</li>
+      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, click <strong>Choose File</strong> to pick one, or click <strong>✏️ Start from scratch</strong> to create a blank song without uploading anything.</li>
       <li>The app parses the PDF automatically. Multi-song PDFs are split into individual songs.</li>
       <li>Two-column layouts and superscript chord extensions (e.g. <code>Fm⁷</code>) are recognized and normalized automatically (e.g. to <code>Fm7</code>).</li>
       <li>Direction notes such as <em>To Tag</em> or <em>To Interlude</em>, and bar notation like <code>| Am7 | G |</code>, are preserved as italic annotations under the relevant line.</li>
@@ -44,13 +45,24 @@
   <section id="your-set" class="manual-section">
     <h2>2. Your song set</h2>
     <p>
-      Once a PDF is loaded, every song it contained appears in the <strong>Songs in Set</strong> list on
-      the left (on mobile, this becomes a horizontal scrollable tab bar at the top).
+      Once a PDF is loaded (or you start from scratch), every song appears in the <strong>Songs in Set</strong> list on
+      the left (on mobile, a horizontal scrollable tab bar at the top).
     </p>
     <ul>
       <li>Click any song in the list to switch the editor to that song.</li>
       <li>The current key for each song is shown next to its title.</li>
       <li>Use <strong>↺ New PDF</strong> to replace the whole set with a different file. You'll be asked to confirm, since this clears all current edits.</li>
+    </ul>
+    <h3>Adding songs to an existing set</h3>
+    <ul>
+      <li><strong>+ New Song</strong> &mdash; adds a blank song to the bottom of the list. Give it a name, add sections, and build it from scratch.</li>
+      <li><strong>+ Import PDF</strong> &mdash; appends songs from another PDF <em>without</em> replacing what's already in your set. Great for building a multi-song set from separate files.</li>
+      <li>If any imported song title already exists in the set, a warning appears. You can choose to <strong>Add anyway</strong> (add all including duplicates) or <strong>Skip duplicates</strong> (only import songs with new titles).</li>
+    </ul>
+    <h3>Reordering songs</h3>
+    <ul>
+      <li>Drag the <strong>≡</strong> handle on any song row up or down to reorder the list. This also works on touch screens &mdash; press and hold the handle, then drag.</li>
+      <li>Reordering is undoable with <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd>.</li>
     </ul>
   </section>
 
@@ -136,8 +148,39 @@
     </div>
   </section>
 
+  <section id="sessions" class="manual-section">
+    <h2>9. Saved sessions</h2>
+    <p>
+      Sessions let you snapshot your current set and return to it later &mdash; even if you close the browser or start working on a different set in the meantime.
+    </p>
+    <p>Click <strong>💾 Sessions</strong> in the header to open the Sessions panel.</p>
+    <h3>Saving a session</h3>
+    <ul>
+      <li>Type a name for your session (e.g. <em>Sunday 29 June</em>) in the input at the top of the panel and click <strong>Save</strong> (or press <kbd>Enter</kbd>).</li>
+      <li>If you save again with the same name, the existing session is updated in place rather than duplicated.</li>
+      <li>Up to 20 sessions can be stored. If you exceed this limit, the oldest session is removed.</li>
+    </ul>
+    <h3>Loading a session</h3>
+    <ul>
+      <li>Each saved session shows its name, save date, and song count. Click <strong>Load</strong> to restore it &mdash; the editor updates immediately.</li>
+      <li>Your current unsaved work is replaced when you load a different session, so save first if you want to keep it.</li>
+    </ul>
+    <h3>Managing sessions</h3>
+    <ul>
+      <li><strong>Rename</strong> &mdash; click the pencil icon (✎) on any session to rename it inline, then press <kbd>Enter</kbd> or click elsewhere.</li>
+      <li><strong>Delete</strong> &mdash; click the ✕ button to permanently remove a session from storage.</li>
+      <li>Sessions are stored only in <em>this browser</em> on <em>this device</em>. Use export/import (below) to move them to another device.</li>
+    </ul>
+    <h3>Exporting and importing session files</h3>
+    <ul>
+      <li><strong>Export (↓)</strong> &mdash; click the download button on any saved session to save it as a <code>.wt</code> file. This file contains the full song data including all edits, transpositions, and chord positions.</li>
+      <li><strong>Import</strong> &mdash; click <strong>↑ Import .wt file</strong> at the top of the Sessions panel, pick a previously exported <code>.wt</code> file, and the session loads into the editor immediately. It's also saved to your session list so you can return to it later.</li>
+      <li><code>.wt</code> files are plain JSON and can be shared via email, cloud drive, AirDrop, or any other file-transfer method.</li>
+    </ul>
+  </section>
+
   <section id="appearance" class="manual-section">
-    <h2>9. Appearance &amp; accessibility</h2>
+    <h2>10. Appearance &amp; accessibility</h2>
     <ul>
       <li><strong>Text size</strong> &mdash; use <strong>A-</strong> / <strong>A+</strong> in the header to scale the whole app's text up or down. Your choice is remembered for next time.</li>
       <li><strong>Dark mode</strong> &mdash; click the 🌙 / ☀️ button in the header to switch themes. WorshipToolkit also follows your system's light/dark preference the first time you open it.</li>
@@ -145,7 +188,7 @@
   </section>
 
   <section id="tips" class="manual-section">
-    <h2>10. Tips, autosave &amp; troubleshooting</h2>
+    <h2>11. Tips, autosave &amp; troubleshooting</h2>
     <ul>
       <li><strong>Autosave</strong> &mdash; your set is continuously saved to this browser's local storage. Refreshing or closing the tab won't lose your work; only <strong>↺ New PDF</strong> clears the session.</li>
       <li><strong>Everything is local</strong> &mdash; no song data leaves your device. Clearing your browser's site data will remove the saved session.</li>
@@ -156,8 +199,19 @@
   </section>
 
   <section id="changelog" class="manual-section">
-    <h2>11. What's new <span class="version-pill">v{{ version }}</span></h2>
+    <h2>12. What's new <span class="version-pill">v{{ version }}</span></h2>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
+
+    <div class="changelog-entry">
+      <h3>1.1.0</h3>
+      <ul>
+        <li><strong>Start from scratch</strong> &mdash; create a blank song directly from the upload page without uploading a PDF.</li>
+        <li><strong>Add &amp; import songs</strong> &mdash; append individual blank songs or import from a second PDF without replacing your current set. Duplicate title detection warns before adding.</li>
+        <li><strong>Reorder songs</strong> &mdash; drag the ≡ handle in the song list to reorder songs; works on touch screens too.</li>
+        <li><strong>Saved sessions</strong> &mdash; snapshot any set under a name and restore it later. Up to 20 sessions stored locally per browser.</li>
+        <li><strong>Session export &amp; import</strong> &mdash; export any session as a <code>.wt</code> file and re-import it on another device to continue editing.</li>
+      </ul>
+    </div>
 
     <div class="changelog-entry">
       <h3>1.0.7</h3>

@@ -7,6 +7,9 @@
       [selectedIndex]="selectedIndex"
       (selectSong)="onSelectSong($event)"
       (uploadNew)="onUploadNew()"
+      (reorderSongs)="onReorderSongs($event)"
+      (addBlankSong)="onAddBlankSong()"
+      (appendSongs)="onAppendSongs($event)"
     />
     <app-song-editor
       [songs]="songs"

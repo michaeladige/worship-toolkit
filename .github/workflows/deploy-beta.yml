@@ -2,7 +2,7 @@ name: Deploy Beta to GitHub Pages
 
 on:
   push:
-    branches: [feature/session-sections-nashville]
+    branches-ignore: [main]
   workflow_dispatch:
 
 permissions:

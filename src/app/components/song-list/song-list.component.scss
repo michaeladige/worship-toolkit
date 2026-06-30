@@ -139,6 +139,135 @@ li {
   }
 }
 
+// ── Drag handle ──────────────────────────────────────────────────────────────
+.drag-handle {
+  color: var(--color-muted);
+  font-size: 1rem;
+  cursor: grab;
+  flex-shrink: 0;
+  padding: 0 0.2rem;
+  user-select: none;
+  touch-action: none;
+
+  &:active { cursor: grabbing; }
+
+  @media (max-width: 767px) {
+    display: none; // mobile uses touch drag on whole row
+  }
+}
+
+// CDK drag preview/placeholder
+.cdk-drag-preview {
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.35;
+}
+
+// ── Append row ────────────────────────────────────────────────────────────────
+.append-row {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--color-border);
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    padding: 0.4rem 0.5rem;
+  }
+}
+
+.append-btn {
+  flex: 1;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover:not(.loading) {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  &.loading {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+.append-error {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  color: #b91c1c;
+}
+
+// ── Duplicate warning ─────────────────────────────────────────────────────────
+.dupe-warning {
+  padding: 0.6rem 0.75rem;
+  border-top: 1px solid var(--color-border);
+  background: color-mix(in srgb, #f59e0b 8%, transparent);
+}
+
+.dupe-text {
+  font-size: 0.75rem;
+  color: var(--color-text);
+  margin: 0 0 0.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dupe-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.dupe-btn {
+  padding: 0.22rem 0.55rem;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+
+  &--add {
+    background: var(--color-secondary);
+    color: #fff;
+    &:hover { opacity: 0.85; }
+  }
+
+  &--skip {
+    background: none;
+    border-color: var(--color-border);
+    color: var(--color-text);
+    &:hover { border-color: var(--color-secondary); color: var(--color-secondary); }
+  }
+
+  &--cancel {
+    background: none;
+    border-color: var(--color-border);
+    color: var(--color-muted);
+    &:hover { color: var(--color-text); }
+  }
+}
+
 // ── New PDF confirmation flow ─────────────────────────────────────────────────
 .new-pdf-area {
   display: flex;

@@ -26,6 +26,11 @@
     }
   </div>
 
+  <div class="start-fresh-row">
+    <span class="start-fresh-divider">or</span>
+    <button class="start-fresh-btn" (click)="startFresh()">✏️ Start from scratch</button>
+  </div>
+
   @if (error) {
     <div class="error-msg">{{ error }}</div>
   }

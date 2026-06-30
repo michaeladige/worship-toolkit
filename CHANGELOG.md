@@ -2,6 +2,17 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.0] - 2026-06-30
+
+### Added
+- **Start from scratch** — create a blank song from the upload page without uploading a PDF.
+- **Add songs to a set** — "+ New Song" adds a blank song; "+ Import PDF" appends songs from a second PDF file, without replacing the current set.
+- **Duplicate detection** — when importing a PDF whose songs share titles with existing songs, a warning appears with options to add anyway or skip duplicates.
+- **Reorder songs** — drag the ≡ handle in the song list to reorder songs. Works on touch screens. Reordering is recorded in the undo history.
+- **Saved sessions** — snapshot any set under a name via the new "💾 Sessions" header button. Up to 20 sessions stored in browser localStorage. Supports save, load, rename, and delete.
+- **Session export & import** — export any session as a `.wt` file (structured JSON), then re-import it on another device via the Sessions panel. Enables cross-device workflow without a server.
+- **Beta auto-deploy** — the beta GitHub Pages deploy now triggers on every feature branch automatically (not just a single hardcoded branch name).
+
 ## [1.0.7] - 2026-06-30
 - Fix the manual page's table of contents links navigating away to the landing page instead of scrolling to the target section.
 
