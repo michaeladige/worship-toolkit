@@ -33,7 +33,7 @@ export class App implements OnInit {
 
   // ── Font size ────────────────────────────────────────────────────────────────
   fontSize = 14;
-  readonly fontSizes = [13, 14, 16];
+  readonly fontSizes = [13, 14, 16, 18, 20];
 
   ngOnInit() {
     try {
