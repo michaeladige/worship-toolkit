@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ParsedSong } from '../../models/song.model';
@@ -34,6 +34,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   constructor(
     public ui: UiSettingsService,
     private sessionsSvc: SessionsService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -66,6 +67,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
         try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch {}
       }
       this.selectedIndex = 0;
+      this.cdr.detectChanges();
     });
   }
 

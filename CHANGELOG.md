@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.8] - 2026-07-01
+
+### Fixed
+- **Session file import now loads immediately** — importing a `.wt` file from the Sessions panel now navigates to the editor instantly; previously the view would not update until the user tapped or clicked elsewhere (Angular change detection was not triggered after the async file-read).
+
 ## [1.1.7] - 2026-06-30
 
 ### Fixed

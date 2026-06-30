@@ -218,6 +218,13 @@
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.1.8</h3></summary>
+      <ul>
+        <li><strong>Session file import now loads immediately</strong> &mdash; importing a <code>.wt</code> file from the Sessions panel now navigates to the editor instantly; previously the view would not update until you tapped or clicked elsewhere.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.1.7</h3></summary>
       <ul>
         <li><strong>PDF import fixed on iOS and Android</strong> &mdash; uploading a PDF no longer freezes on the "Parsing PDF…" spinner. Two root causes were fixed: PDF.js was downgraded from v5 to v4 (v5's streaming text-extraction API hangs indefinitely inside iOS Safari web workers), and the PDF.js worker script is now fetched and inlined in a self-contained Blob URL, removing a hidden cross-origin request that was silently failing on GitHub Pages and broke Android.</li>
