@@ -210,9 +210,15 @@
   border-radius: 3px;
   transition: background 0.12s;
   user-select: none;
+  touch-action: none; // let JS-driven pointer drag own the gesture instead of native scroll/zoom
 
   &:hover { background: color-mix(in srgb, var(--color-chord) 12%, transparent); }
   &:active { cursor: grabbing; }
+
+  @media (max-width: 767px) {
+    padding: 2px 5px;
+    min-height: 22px;
+  }
 }
 
 .chord-remove {

@@ -1,0 +1,22 @@
+@if (songs.length === 0) {
+  <app-upload (songsLoaded)="onSongsLoaded($event)" />
+} @else {
+  <div class="workspace">
+    <app-song-list
+      [songs]="songs"
+      [selectedIndex]="selectedIndex"
+      (selectSong)="onSelectSong($event)"
+      (uploadNew)="onUploadNew()"
+    />
+    <app-song-editor
+      [songs]="songs"
+      [selectedIndex]="selectedIndex"
+      [canUndo]="canUndo"
+      [canRedo]="canRedo"
+      [fontSize]="ui.fontSize"
+      (songsChange)="onSongsChange($event)"
+      (undo)="undo()"
+      (redo)="redo()"
+    />
+  </div>
+}

@@ -5,6 +5,8 @@ A chord chart editor for worship teams. Upload a SongSelect PDF, edit and transp
 **Live app:** https://michaeladige.github.io/worship-toolkit/
 **Beta (in-progress features):** https://michaeladige.github.io/worship-toolkit/beta/
 
+New to the app? Open **`/manual`** from the header (📖 Manual) for a full walkthrough of every feature below.
+
 ---
 
 ## Features
@@ -15,6 +17,7 @@ A chord chart editor for worship teams. Upload a SongSelect PDF, edit and transp
 - Handles two-column layouts, superscript chord extensions (e.g. Fm⁷ → Fm7)
 - Preserves direction notes (e.g. *To Tag*, *To Interlude*) and bar notation (e.g. `| Am7 | G |`) as italic annotations
 - Session is saved to `localStorage` — accidental refreshes restore your work; only the **+ New PDF** button resets
+- **Round-trip friendly** — PDFs exported by WorshipToolkit embed their column layout, so re-uploading one parses back exactly as you left it
 
 ### Chord Editing
 - Click any chord to rename it inline
@@ -39,9 +42,18 @@ A chord chart editor for worship teams. Upload a SongSelect PDF, edit and transp
 - All exports respect the current transposition, bass-notes toggle, and Nashville toggle
 - Direction/bar notation annotations are included and transposed correctly
 
+### Editing Aids
+- **Undo / Redo** — every chord, lyric, and section edit is tracked (up to 50 steps); use the toolbar buttons or `Ctrl/Cmd+Z` / `Ctrl/Cmd+Shift+Z`
+- **Dark mode** — toggle from the header; follows your system preference on first visit
+- **Adjustable text size** — scale the whole app up or down with `A-` / `A+`, remembered between sessions
+
 ### Responsive UI
 - Works on desktop, tablet, and mobile
 - On mobile the song list collapses into a horizontal scrollable tab bar at the top
+
+### In-App Manual
+- A dedicated **`/manual`** page documents every feature above in plain language, with a jump-to table of contents
+- Linked from the **📖 Manual** button in the app header on every page
 
 ---
 
@@ -50,6 +62,7 @@ A chord chart editor for worship teams. Upload a SongSelect PDF, edit and transp
 | Layer | Library |
 |---|---|
 | Framework | Angular 21 (standalone components, zoneless) |
+| Routing | Angular Router |
 | PDF parsing | pdfjs-dist |
 | PDF export | jsPDF |
 | Drag & drop | Angular CDK |

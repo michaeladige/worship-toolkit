@@ -1,48 +1,35 @@
 <div class="app-shell">
-  <!-- Slim app header: font size + dark mode, always in flow (never overlaps toolbar) -->
+  <!-- Slim app header: manual link, font size, dark mode, always in flow (never overlaps toolbar) -->
   <div class="app-header">
+    <a class="brand" routerLink="/">WorshipToolkit</a>
+
     <div class="ui-controls">
+      <a
+        class="ui-ctrl-btn manual-link"
+        routerLink="/manual"
+        routerLinkActive="active"
+        title="Open the user manual"
+      >📖 Manual</a>
       <span class="ui-label">Text size</span>
       <button
         class="ui-ctrl-btn"
-        (click)="adjustFontSize(-1)"
-        [disabled]="fontSize <= fontSizes[0]"
+        (click)="ui.adjustFontSize(-1)"
+        [disabled]="ui.fontSize <= ui.fontSizes[0]"
         title="Smaller text"
       >A-</button>
       <button
         class="ui-ctrl-btn"
-        (click)="adjustFontSize(1)"
-        [disabled]="fontSize >= fontSizes[fontSizes.length - 1]"
+        (click)="ui.adjustFontSize(1)"
+        [disabled]="ui.fontSize >= ui.fontSizes[ui.fontSizes.length - 1]"
         title="Larger text"
       >A+</button>
       <button
         class="ui-ctrl-btn theme-toggle"
-        (click)="toggleTheme()"
-        [title]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-      >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+        (click)="ui.toggleTheme()"
+        [title]="ui.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      >{{ ui.theme === 'dark' ? '☀️' : '🌙' }}</button>
     </div>
   </div>
 
-  @if (songs.length === 0) {
-    <app-upload (songsLoaded)="onSongsLoaded($event)" />
-  } @else {
-    <div class="workspace">
-      <app-song-list
-        [songs]="songs"
-        [selectedIndex]="selectedIndex"
-        (selectSong)="onSelectSong($event)"
-        (uploadNew)="onUploadNew()"
-      />
-      <app-song-editor
-        [songs]="songs"
-        [selectedIndex]="selectedIndex"
-        [canUndo]="canUndo"
-        [canRedo]="canRedo"
-        [fontSize]="fontSize"
-        (songsChange)="onSongsChange($event)"
-        (undo)="undo()"
-        (redo)="redo()"
-      />
-    </div>
-  }
+  <router-outlet />
 </div>
