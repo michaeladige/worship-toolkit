@@ -20,6 +20,7 @@
       <li><a href="#export">8. Exporting &amp; sharing</a></li>
       <li><a href="#appearance">9. Appearance &amp; accessibility</a></li>
       <li><a href="#tips">10. Tips, autosave &amp; troubleshooting</a></li>
+      <li><a href="#changelog">11. What's new</a></li>
     </ul>
   </nav>
 
@@ -140,6 +141,63 @@
       <li><strong>Chord didn't land where I dragged it?</strong> Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.</li>
       <li><strong>Want a clean slate for one song only?</strong> You can remove and re-add sections/lines rather than starting a whole new upload.</li>
     </ul>
+  </section>
+
+  <section id="changelog" class="manual-section">
+    <h2>11. What's new <span class="version-pill">v{{ version }}</span></h2>
+    <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
+
+    <div class="changelog-entry">
+      <h3>1.0.5</h3>
+      <ul>
+        <li>Show the app version in the header so the running build is always visible.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <h3>1.0.4</h3>
+      <ul>
+        <li>Fix the upload/landing page not scrolling when its content overflows a short viewport.</li>
+        <li>Make chord drag-to-reposition work reliably on mobile and tablet via Pointer Events.</li>
+        <li>Fix a bug where finishing a chord drag could immediately reopen the inline chord editor.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <h3>1.0.3</h3>
+      <ul>
+        <li>Add this user manual, linked from the header.</li>
+        <li>Refresh the landing page with feature cards for Nashville numbers and undo/redo/dark mode/font size.</li>
+        <li>Add a custom block-chord-notation favicon.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <h3>1.0.2</h3>
+      <ul>
+        <li>Add undo/redo history (up to 50 steps) with toolbar buttons and keyboard shortcuts.</li>
+        <li>Add dark mode and adjustable text size, remembered between sessions.</li>
+        <li>Add round-trip re-import — PDFs exported by WorshipToolkit parse back exactly as left.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <h3>1.0.1</h3>
+      <ul>
+        <li>Add session persistence, section add/remove/drag-reorder, and chord drag-to-reposition.</li>
+        <li>Add the Nashville Number System notation toggle.</li>
+        <li>Add a responsive mobile/tablet layout.</li>
+      </ul>
+    </div>
+
+    <div class="changelog-entry">
+      <h3>1.0.0</h3>
+      <ul>
+        <li>Initial release: upload and parse SongSelect PDF chord charts, including two-column layouts and superscript chord extensions.</li>
+        <li>Inline chord editing and transposition.</li>
+        <li>Export to PDF and Markdown.</li>
+      </ul>
+    </div>
   </section>
 
   <footer class="manual-footer">
