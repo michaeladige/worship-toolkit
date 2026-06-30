@@ -7,16 +7,24 @@
   border-right: 1px solid var(--color-border);
   background: var(--color-surface);
   overflow: hidden;
+  transition: width 0.2s ease, min-width 0.2s ease;
 
-  // Mobile: horizontal tab bar across the top
+  // Collapsed: thin strip showing only the expand button
+  &.collapsed {
+    width: 32px;
+    min-width: 32px;
+  }
+
+  // Mobile: horizontal tab bar across the top (collapse has no effect)
   @media (max-width: 767px) {
-    width: 100%;
-    min-width: 0;
+    width: 100% !important;
+    min-width: 0 !important;
     flex-direction: row;
     border-right: none;
     border-bottom: 1px solid var(--color-border);
     height: auto;
     flex-shrink: 0;
+    transition: none;
   }
 }
 
@@ -30,6 +38,7 @@
   justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
 
   h3 {
     font-size: 0.85rem;
@@ -38,6 +47,14 @@
     letter-spacing: 0.05em;
     color: var(--color-muted);
     margin: 0;
+    flex: 1;
+  }
+
+  // Collapsed: center the expand button, no extra padding
+  :host.collapsed & {
+    justify-content: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-border);
   }
 
   @media (max-width: 767px) {
@@ -48,6 +65,28 @@
 
     h3 { display: none; } // hide label to save space
   }
+}
+
+// ── Collapse toggle button ────────────────────────────────────────────────────
+.collapse-btn {
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.12s, background 0.12s;
+
+  &:hover {
+    color: var(--color-text);
+    background: var(--color-hover);
+  }
+
+  // Not applicable on mobile (sidebar is a horizontal tab bar there)
+  @media (max-width: 767px) { display: none; }
 }
 
 .new-btn {
@@ -295,11 +334,34 @@ li {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
 }
 
+.confirm-dialog--save {
+  max-width: 420px;
+}
+
 .confirm-msg {
   font-size: 0.92rem;
   color: var(--color-text);
-  margin: 0 0 1.25rem;
+  margin: 0 0 1rem;
   line-height: 1.5;
+}
+
+.confirm-save-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-family: inherit;
+  margin-bottom: 0.85rem;
+
+  &:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -1px;
+  }
 }
 
 .confirm-actions {

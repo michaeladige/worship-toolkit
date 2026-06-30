@@ -1,63 +1,97 @@
 <div class="song-list">
   <div class="list-header">
-    <h3>Songs in Set</h3>
-
-    <div class="new-pdf-area">
-      <button class="new-btn" (click)="requestUploadNew()" title="Replace current set with a new PDF">
-        ↺ New PDF
-      </button>
-    </div>
-  </div>
-
-  <ul cdkDropList (cdkDropListDropped)="dropSong($event)">
-    @for (song of songs; track song.id; let i = $index) {
-      <li
-        cdkDrag
-        [class.active]="i === selectedIndex"
-        (click)="selectSong.emit(i)"
-      >
-        <span cdkDragHandle class="drag-handle" title="Drag to reorder">≡</span>
-        <span class="song-title">{{ song.title }}</span>
-        <span class="song-key">{{ effectiveKey(song) }}</span>
-        <button class="remove-song-btn" (click)="$event.stopPropagation(); removeSong.emit(i)" title="Remove song">✕</button>
-      </li>
-    }
-  </ul>
-
-  <!-- Append row -->
-  <div class="append-row">
-    <button class="append-btn" (click)="addBlankSong.emit()" title="Add a blank song">+ New Song</button>
-    <label class="append-btn" [class.loading]="isAppending" title="Append songs from a PDF">
-      {{ isAppending ? 'Importing…' : '+ Import PDF' }}
-      <input type="file" accept=".pdf" hidden (change)="onAppendFileChange($event)" />
-    </label>
-  </div>
-
-  @if (appendError) {
-    <div class="append-error">{{ appendError }}</div>
-  }
-
-  <!-- Duplicate song warning -->
-  @if (dupeNames.length > 0) {
-    <div class="dupe-warning">
-      <p class="dupe-text">
-        Already in set: <strong>{{ dupeNames.join(', ') }}</strong>
-      </p>
-      <div class="dupe-actions">
-        <button class="dupe-btn dupe-btn--add" (click)="confirmAppendAll()">Add anyway</button>
-        <button class="dupe-btn dupe-btn--skip" (click)="confirmAppendSkipDupes()">Skip duplicates</button>
-        <button class="dupe-btn dupe-btn--cancel" (click)="cancelAppend()">Cancel</button>
+    @if (!collapsed) {
+      <h3>Songs in Set</h3>
+      <div class="new-pdf-area">
+        <button class="new-btn" (click)="requestUploadNew()" title="Replace current set with a new PDF">
+          ↺ New PDF
+        </button>
       </div>
+    }
+    <button
+      class="collapse-btn"
+      (click)="toggleCollapse.emit()"
+      [title]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+    >{{ collapsed ? '►' : '◄' }}</button>
+  </div>
+
+  @if (!collapsed) {
+    <ul cdkDropList (cdkDropListDropped)="dropSong($event)">
+      @for (song of songs; track song.id; let i = $index) {
+        <li
+          cdkDrag
+          [class.active]="i === selectedIndex"
+          (click)="selectSong.emit(i)"
+        >
+          <span cdkDragHandle class="drag-handle" title="Drag to reorder">≡</span>
+          <span class="song-title">{{ song.title }}</span>
+          <span class="song-key">{{ effectiveKey(song) }}</span>
+          <button class="remove-song-btn" (click)="$event.stopPropagation(); removeSong.emit(i)" title="Remove song">✕</button>
+        </li>
+      }
+    </ul>
+
+    <!-- Append row -->
+    <div class="append-row">
+      <button class="append-btn" (click)="addBlankSong.emit()" title="Add a blank song">+ New Song</button>
+      <label class="append-btn" [class.loading]="isAppending" title="Append songs from a PDF">
+        {{ isAppending ? 'Importing…' : '+ Import PDF' }}
+        <input type="file" accept=".pdf" hidden (change)="onAppendFileChange($event)" />
+      </label>
     </div>
+
+    @if (appendError) {
+      <div class="append-error">{{ appendError }}</div>
+    }
+
+    <!-- Duplicate song warning -->
+    @if (dupeNames.length > 0) {
+      <div class="dupe-warning">
+        <p class="dupe-text">
+          Already in set: <strong>{{ dupeNames.join(', ') }}</strong>
+        </p>
+        <div class="dupe-actions">
+          <button class="dupe-btn dupe-btn--add" (click)="confirmAppendAll()">Add anyway</button>
+          <button class="dupe-btn dupe-btn--skip" (click)="confirmAppendSkipDupes()">Skip duplicates</button>
+          <button class="dupe-btn dupe-btn--cancel" (click)="cancelAppend()">Cancel</button>
+        </div>
+      </div>
+    }
   }
 </div>
 
-@if (confirmingUpload) {
+<!-- New PDF confirmation modals -->
+@if (newPdfState === 'confirm-named') {
   <div class="confirm-backdrop" (click)="cancelUploadNew()">
     <div class="confirm-dialog" (click)="$event.stopPropagation()" role="alertdialog">
-      <p class="confirm-msg">Replace your current set with a new PDF? All unsaved edits will be lost.</p>
+      <p class="confirm-msg">
+        Your session <strong>{{ sessionsSvc.activeSessionName }}</strong> is auto-saved.
+        Load a new PDF to start fresh?
+      </p>
       <div class="confirm-actions">
-        <button class="confirm-yes-btn" (click)="confirmUploadNew()">Yes, replace</button>
+        <button class="confirm-yes-btn" (click)="confirmUploadNew()">Yes, load new PDF</button>
+        <button class="confirm-cancel-btn" (click)="cancelUploadNew()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (newPdfState === 'confirm-unsaved') {
+  <div class="confirm-backdrop" (click)="cancelUploadNew()">
+    <div class="confirm-dialog confirm-dialog--save" (click)="$event.stopPropagation()" role="alertdialog">
+      <p class="confirm-msg">You have unsaved work. Enter a name to save it first, or discard it.</p>
+      <input
+        class="confirm-save-input"
+        type="text"
+        placeholder="Session name (optional)…"
+        [(ngModel)]="newPdfSaveName"
+        (keydown.enter)="confirmNewPdfWithSave()"
+        maxlength="60"
+      />
+      <div class="confirm-actions">
+        <button class="confirm-yes-btn" (click)="confirmNewPdfWithSave()">
+          {{ newPdfSaveName.trim() ? 'Save & load PDF' : 'Discard & load PDF' }}
+        </button>
         <button class="confirm-cancel-btn" (click)="cancelUploadNew()">Cancel</button>
       </div>
     </div>

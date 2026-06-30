@@ -20,6 +20,7 @@ const SESSION_KEY = 'worship_toolkit_session';
 export class WorkspaceComponent implements OnInit, OnDestroy {
   songs: ParsedSong[] = [];
   selectedIndex = 0;
+  sidebarCollapsed = false;
 
   // ── Undo / Redo ─────────────────────────────────────────────────────────────
   private undoStack: ParsedSong[][] = [];

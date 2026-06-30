@@ -5,12 +5,14 @@
     <app-song-list
       [songs]="songs"
       [selectedIndex]="selectedIndex"
+      [collapsed]="sidebarCollapsed"
       (selectSong)="onSelectSong($event)"
       (uploadNew)="onUploadNew()"
       (reorderSongs)="onReorderSongs($event)"
       (addBlankSong)="onAddBlankSong()"
       (appendSongs)="onAppendSongs($event)"
       (removeSong)="onRemoveSong($event)"
+      (toggleCollapse)="sidebarCollapsed = !sidebarCollapsed"
     />
     <app-song-editor
       [songs]="songs"

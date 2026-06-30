@@ -1,28 +1,37 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, HostBinding, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ParsedSong } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
 import { PdfParserService } from '../../services/pdf-parser.service';
+import { SessionsService } from '../../services/sessions.service';
 
 @Component({
   selector: 'app-song-list',
   standalone: true,
-  imports: [CommonModule, CdkDropList, CdkDrag, CdkDragHandle],
+  imports: [CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle],
   templateUrl: './song-list.component.html',
   styleUrl: './song-list.component.scss',
 })
 export class SongListComponent {
   @Input() songs: ParsedSong[] = [];
   @Input() selectedIndex = 0;
+  @Input() collapsed = false;
   @Output() selectSong = new EventEmitter<number>();
   @Output() uploadNew = new EventEmitter<void>();
   @Output() reorderSongs = new EventEmitter<ParsedSong[]>();
   @Output() addBlankSong = new EventEmitter<void>();
   @Output() appendSongs = new EventEmitter<ParsedSong[]>();
   @Output() removeSong = new EventEmitter<number>();
+  @Output() toggleCollapse = new EventEmitter<void>();
 
-  confirmingUpload = false;
+  @HostBinding('class.collapsed') get isCollapsed() { return this.collapsed; }
+
+  // 'idle' | 'confirm-named' (active session, safe to proceed) | 'confirm-unsaved' (no session, offer save-first)
+  newPdfState: 'idle' | 'confirm-named' | 'confirm-unsaved' = 'idle';
+  newPdfSaveName = '';
+
   isAppending = false;
   appendError = '';
   dupeNames: string[] = [];
@@ -31,15 +40,39 @@ export class SongListComponent {
   constructor(
     public chordSvc: ChordService,
     private parser: PdfParserService,
+    public sessionsSvc: SessionsService,
   ) {}
 
   effectiveKey(song: ParsedSong): string {
     return this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones);
   }
 
-  requestUploadNew() { this.confirmingUpload = true; }
-  cancelUploadNew() { this.confirmingUpload = false; }
-  confirmUploadNew() { this.confirmingUpload = false; this.uploadNew.emit(); }
+  requestUploadNew() {
+    if (this.sessionsSvc.activeSessionId !== null) {
+      this.newPdfState = 'confirm-named';
+    } else {
+      this.newPdfState = 'confirm-unsaved';
+    }
+  }
+
+  cancelUploadNew() {
+    this.newPdfState = 'idle';
+    this.newPdfSaveName = '';
+  }
+
+  confirmUploadNew() {
+    this.newPdfState = 'idle';
+    this.newPdfSaveName = '';
+    this.uploadNew.emit();
+  }
+
+  confirmNewPdfWithSave() {
+    const name = this.newPdfSaveName.trim();
+    if (name) this.sessionsSvc.save(name, this.sessionsSvc.currentSongs);
+    this.newPdfState = 'idle';
+    this.newPdfSaveName = '';
+    this.uploadNew.emit();
+  }
 
   dropSong(event: CdkDragDrop<ParsedSong[]>) {
     if (event.previousIndex === event.currentIndex) return;
