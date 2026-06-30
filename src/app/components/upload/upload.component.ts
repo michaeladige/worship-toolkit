@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { PdfParserService } from '../../services/pdf-parser.service';
 import { ParsedSong } from '../../models/song.model';
 
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
 })
