@@ -10,17 +10,17 @@
   <nav class="toc" aria-label="Table of contents">
     <span class="toc-label">On this page</span>
     <ul>
-      <li><a href="#getting-started">1. Getting started</a></li>
-      <li><a href="#your-set">2. Your song set</a></li>
-      <li><a href="#editing">3. Editing chords &amp; lyrics</a></li>
-      <li><a href="#sections">4. Working with sections</a></li>
-      <li><a href="#keys">5. Keys &amp; transposition</a></li>
-      <li><a href="#notation">6. Bass notes &amp; Nashville numbers</a></li>
-      <li><a href="#history">7. Undo &amp; redo</a></li>
-      <li><a href="#export">8. Exporting &amp; sharing</a></li>
-      <li><a href="#appearance">9. Appearance &amp; accessibility</a></li>
-      <li><a href="#tips">10. Tips, autosave &amp; troubleshooting</a></li>
-      <li><a href="#changelog">11. What's new</a></li>
+      <li><a routerLink="." fragment="getting-started">1. Getting started</a></li>
+      <li><a routerLink="." fragment="your-set">2. Your song set</a></li>
+      <li><a routerLink="." fragment="editing">3. Editing chords &amp; lyrics</a></li>
+      <li><a routerLink="." fragment="sections">4. Working with sections</a></li>
+      <li><a routerLink="." fragment="keys">5. Keys &amp; transposition</a></li>
+      <li><a routerLink="." fragment="notation">6. Bass notes &amp; Nashville numbers</a></li>
+      <li><a routerLink="." fragment="history">7. Undo &amp; redo</a></li>
+      <li><a routerLink="." fragment="export">8. Exporting &amp; sharing</a></li>
+      <li><a routerLink="." fragment="appearance">9. Appearance &amp; accessibility</a></li>
+      <li><a routerLink="." fragment="tips">10. Tips, autosave &amp; troubleshooting</a></li>
+      <li><a routerLink="." fragment="changelog">11. What's new</a></li>
     </ul>
   </nav>
 
@@ -158,6 +158,13 @@
   <section id="changelog" class="manual-section">
     <h2>11. What's new <span class="version-pill">v{{ version }}</span></h2>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
+
+    <div class="changelog-entry">
+      <h3>1.0.7</h3>
+      <ul>
+        <li>Fix the table of contents on this page redirecting to the landing page instead of scrolling to the right section.</li>
+      </ul>
+    </div>
 
     <div class="changelog-entry">
       <h3>1.0.6</h3>
