@@ -28,39 +28,39 @@ const SUPERSCRIPT_RE = /^(\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\(\d+\))$/i;
 
 @Injectable({ providedIn: 'root' })
 export class PdfParserService {
-  // Cached blob URL for the PDF.js worker. Wrapping the .mjs file in a
-  // Blob + importScripts gives it a guaranteed text/javascript MIME type,
-  // which fixes iOS Safari's refusal to execute workers served with an
-  // incorrect or missing content-type for .mjs files on GitHub Pages.
-  private workerBlobUrl: string | null = null;
+  // Fetches the worker script once and inlines it in a Blob URL so the worker
+  // runs without any importScripts() cross-origin calls. iOS Safari treats blob
+  // URL workers as having a null origin, so importScripts to the real server URL
+  // is cross-origin and silently fails (GitHub Pages has no CORS headers). Fetching
+  // the code here (same-origin, no CORS needed) and creating a self-contained blob
+  // avoids that entirely. The promise is cached so the fetch only happens once.
+  private workerBlobUrlPromise: Promise<string> | null = null;
 
   constructor(private chordSvc: ChordService) {}
 
-  private getWorkerBlobUrl(): string {
-    if (!this.workerBlobUrl) {
+  private getWorkerBlobUrl(): Promise<string> {
+    if (!this.workerBlobUrlPromise) {
       const src = new URL('assets/pdf.worker.mjs', document.baseURI).href;
-      const blob = new Blob([`importScripts('${src}');`], { type: 'text/javascript' });
-      this.workerBlobUrl = URL.createObjectURL(blob);
+      this.workerBlobUrlPromise = fetch(src)
+        .then(r => {
+          if (!r.ok) throw new Error(`Worker fetch: HTTP ${r.status}`);
+          return r.text();
+        })
+        .then(code => URL.createObjectURL(
+          new Blob([code], { type: 'application/javascript' }),
+        ));
     }
-    return this.workerBlobUrl;
+    return this.workerBlobUrlPromise;
   }
 
   // ── Public API ────────────────────────────────────────────────────────────────
   async parsePdf(file: File): Promise<ParsedSong[]> {
     const pdfjsLib = await import('pdfjs-dist');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = this.getWorkerBlobUrl();
+    pdfjsLib.GlobalWorkerOptions.workerSrc = await this.getWorkerBlobUrl();
 
-    // FileReader is more reliable than file.arrayBuffer() on iOS Safari.
-    const ab = await new Promise<ArrayBuffer>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result as ArrayBuffer);
-      reader.onerror = () => reject(reader.error);
-      reader.readAsArrayBuffer(file);
-    });
+    const ab = await file.arrayBuffer();
 
-    // 20-second timeout prevents the spinner hanging forever if the worker
-    // fails to start (iOS Safari silent worker failures).
-    const loadTask = pdfjsLib.getDocument({ data: new Uint8Array(ab) });
+    const loadTask = pdfjsLib.getDocument({ data: ab });
     const pdf = await Promise.race([
       loadTask.promise,
       new Promise<never>((_, reject) =>
