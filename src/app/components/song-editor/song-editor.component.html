@@ -10,7 +10,29 @@
       </div>
 
       <div class="meta-chips">
-        <span class="chip">{{ song.tempo ? 'BPM ' + song.tempo : '' }}</span>
+        @if (editingTempo !== null) {
+          <span class="chip chip--editing">
+            BPM
+            <input
+              class="chip-input"
+              type="text"
+              inputmode="numeric"
+              maxlength="3"
+              [(ngModel)]="editingTempo"
+              (keydown)="tempoKeydown($event)"
+              (blur)="commitTempo()"
+              appAutofocus
+              [style.width.ch]="(editingTempo.length || 1) + 1"
+            />
+          </span>
+        } @else {
+          <button
+            class="chip chip--btn"
+            [class.chip--empty]="!song.tempo"
+            (click)="startEditTempo()"
+            title="Click to edit tempo"
+          >{{ song.tempo ? 'BPM ' + song.tempo : '+ BPM' }}</button>
+        }
         <span class="chip">{{ song.timeSignature }}</span>
       </div>
 
