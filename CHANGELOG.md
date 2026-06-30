@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.9] - 2026-07-01
+
+### Fixed
+- **PDF upload and append-PDF now render immediately** — the same change-detection gap fixed in 1.1.8 for Sessions-panel import also affected uploading a PDF from the landing page, loading a `.wt` file via "📂 Load session file," and appending a PDF via "+ Import PDF" inside the editor. All three now render the editor instantly instead of requiring an extra tap or click elsewhere.
+
 ## [1.1.8] - 2026-07-01
 
 ### Fixed
