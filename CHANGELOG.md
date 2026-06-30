@@ -2,6 +2,13 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.5] - 2026-06-30
+
+### Fixed
+- **Mobile "Songs in Set" left padding** — text was flush against the left edge when the song bar was collapsed; restored correct horizontal padding.
+- **Song list items now 2 rows on mobile** — each song tab shows `[≡] [title] [✕]` on the first row and the key badge on the second row, replacing the previous 3-row layout that wasted space.
+- **Drag-to-reorder now works on mobile** — the `≡` drag handle is now visible in the song tab strip; touch-drag to reorder songs works the same way as on desktop.
+
 ## [1.1.4] - 2026-06-30
 
 ### Fixed

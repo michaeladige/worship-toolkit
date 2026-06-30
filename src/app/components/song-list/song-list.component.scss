@@ -68,11 +68,12 @@
 
     h3 { display: none; }
 
-    // When collapsed on mobile: no right border, fill host width
+    // When collapsed on mobile: no right border, fill host width, restore horizontal padding
     :host.collapsed & {
       border-right: none;
       flex: 1;
       gap: 0;
+      padding: 0.5rem 0.75rem;
     }
   }
 }
@@ -211,14 +212,18 @@ li {
   }
 
   @media (max-width: 767px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
     padding: 0.5rem 0.75rem;
     border-left: none;
     border-bottom: 3px solid transparent;
     flex-shrink: 0;
     white-space: nowrap;
+
+    // Move ✕ button after title on row 1; key badge wraps to row 2
+    .remove-song-btn { order: 2; }
 
     &.active {
       border-left: none;
@@ -236,7 +241,7 @@ li {
 
   @media (max-width: 767px) {
     font-size: 0.82rem;
-    max-width: 120px;
+    min-width: 0;
   }
 }
 
@@ -252,7 +257,10 @@ li {
 
   &:active { cursor: grabbing; }
 
-  @media (max-width: 767px) { display: none; }
+  @media (max-width: 767px) {
+    display: flex;
+    font-size: 0.85rem;
+  }
 }
 
 // CDK drag preview/placeholder
@@ -407,6 +415,8 @@ li {
   flex-shrink: 0;
 
   @media (max-width: 767px) {
+    order: 3;
+    flex-basis: 100%;   // pushes key to its own row below title + ✕
     font-size: 0.7rem;
     padding: 0.05rem 0.3rem;
   }
