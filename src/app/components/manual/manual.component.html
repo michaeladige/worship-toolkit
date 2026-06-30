@@ -1,0 +1,148 @@
+<div class="manual">
+  <header class="manual-hero">
+    <a class="back-link" routerLink="/">&larr; Back to WorshipToolkit</a>
+    <h1>User Manual</h1>
+    <p class="subtitle">
+      Everything you need to upload, edit, transpose, and share chord charts with your worship team.
+    </p>
+  </header>
+
+  <nav class="toc" aria-label="Table of contents">
+    <span class="toc-label">On this page</span>
+    <ul>
+      <li><a href="#getting-started">1. Getting started</a></li>
+      <li><a href="#your-set">2. Your song set</a></li>
+      <li><a href="#editing">3. Editing chords &amp; lyrics</a></li>
+      <li><a href="#sections">4. Working with sections</a></li>
+      <li><a href="#keys">5. Keys &amp; transposition</a></li>
+      <li><a href="#notation">6. Bass notes &amp; Nashville numbers</a></li>
+      <li><a href="#history">7. Undo &amp; redo</a></li>
+      <li><a href="#export">8. Exporting &amp; sharing</a></li>
+      <li><a href="#appearance">9. Appearance &amp; accessibility</a></li>
+      <li><a href="#tips">10. Tips, autosave &amp; troubleshooting</a></li>
+    </ul>
+  </nav>
+
+  <section id="getting-started" class="manual-section">
+    <h2>1. Getting started</h2>
+    <p>
+      WorshipToolkit turns a SongSelect chord chart PDF into an editable, transposable chart you can
+      reshape and export. Everything happens in your browser &mdash; nothing is uploaded to a server.
+    </p>
+    <ol>
+      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, or click <strong>Choose File</strong> to pick one from your computer.</li>
+      <li>The app parses the PDF automatically. Multi-song PDFs are split into individual songs.</li>
+      <li>Two-column layouts and superscript chord extensions (e.g. <code>Fm⁷</code>) are recognized and normalized automatically (e.g. to <code>Fm7</code>).</li>
+      <li>Direction notes such as <em>To Tag</em> or <em>To Interlude</em>, and bar notation like <code>| Am7 | G |</code>, are preserved as italic annotations under the relevant line.</li>
+    </ol>
+    <div class="callout">
+      <strong>Only PDF files are supported.</strong> If nothing is detected, double-check that the file is a SongSelect-style chord chart PDF, not a scanned image.
+    </div>
+  </section>
+
+  <section id="your-set" class="manual-section">
+    <h2>2. Your song set</h2>
+    <p>
+      Once a PDF is loaded, every song it contained appears in the <strong>Songs in Set</strong> list on
+      the left (on mobile, this becomes a horizontal scrollable tab bar at the top).
+    </p>
+    <ul>
+      <li>Click any song in the list to switch the editor to that song.</li>
+      <li>The current key for each song is shown next to its title.</li>
+      <li>Use <strong>↺ New PDF</strong> to replace the whole set with a different file. You'll be asked to confirm, since this clears all current edits.</li>
+    </ul>
+  </section>
+
+  <section id="editing" class="manual-section">
+    <h2>3. Editing chords &amp; lyrics</h2>
+    <p>The editor mirrors the printed layout: chords float above the lyric line they belong to.</p>
+    <h3>Chords</h3>
+    <ul>
+      <li><strong>Rename a chord</strong> &mdash; click it, type the new chord, then press <kbd>Enter</kbd> (or click elsewhere) to save. Press <kbd>Esc</kbd> to cancel.</li>
+      <li><strong>Reposition a chord</strong> &mdash; click and drag it left or right to line it up exactly where it falls in the lyric.</li>
+      <li><strong>Add a chord</strong> &mdash; use the <strong>+</strong> button in the left gutter of a line, or click <strong>+ chord</strong> on an empty line. New chords start as <code>C</code> and open for editing immediately.</li>
+      <li><strong>Remove a chord</strong> &mdash; hover over it and click the small <strong>×</strong> that appears.</li>
+    </ul>
+    <h3>Lyrics &amp; lines</h3>
+    <ul>
+      <li>Click directly into any lyric line to edit the text in place.</li>
+      <li>Add a new line under a section with the <strong>+ Line</strong> button in that section's header.</li>
+      <li>Remove a line using the <strong>×</strong> button in its left gutter. A section always keeps at least one line.</li>
+    </ul>
+  </section>
+
+  <section id="sections" class="manual-section">
+    <h2>4. Working with sections</h2>
+    <ul>
+      <li><strong>Add a section</strong> &mdash; below the song, use the quick-pick buttons (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) or type a custom name and click <strong>Add</strong> / press <kbd>Enter</kbd>.</li>
+      <li><strong>Reorder sections</strong> &mdash; grab the <strong>⠿</strong> drag handle in a section's header and drop it where you want it.</li>
+      <li><strong>Remove a section</strong> &mdash; click the <strong>✕</strong> button in the section header.</li>
+    </ul>
+  </section>
+
+  <section id="keys" class="manual-section">
+    <h2>5. Keys &amp; transposition</h2>
+    <ul>
+      <li><strong>Step transpose</strong> &mdash; use the <strong>▲</strong> / <strong>▼</strong> buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.</li>
+      <li><strong>Jump to a key</strong> &mdash; pick any key directly from the <strong>Jump to</strong> dropdown.</li>
+      <li><strong>Reset</strong> &mdash; once you've transposed, a <strong>Reset</strong> button appears showing the original key; click it to snap straight back.</li>
+      <li>Whenever the song is transposed, a banner above the chart confirms the change, e.g. <em>Transposed from G &rarr; A (+2 semitones)</em>.</li>
+    </ul>
+  </section>
+
+  <section id="notation" class="manual-section">
+    <h2>6. Bass notes &amp; Nashville numbers</h2>
+    <ul>
+      <li><strong>🎹 Bass Notes</strong> &mdash; toggles every chord down to just its root/bass note (e.g. <code>D/F♯</code> &rarr; <code>D</code>). Handy for simplified or beginner charts.</li>
+      <li><strong>1 2 3 Nashville</strong> &mdash; converts every chord to a scale-degree number (1&ndash;7, with ♭/♯ prefixes for accidentals), relative to the song's current key. Useful for ear-trained players and key-independent charts.</li>
+      <li>Both toggles can be combined with transposition, and both are respected by every export.</li>
+    </ul>
+  </section>
+
+  <section id="history" class="manual-section">
+    <h2>7. Undo &amp; redo</h2>
+    <p>Every edit &mdash; chord changes, lyric edits, section moves, additions and removals &mdash; can be undone.</p>
+    <ul>
+      <li>Use the <strong>↩ Undo</strong> / <strong>↪ Redo</strong> buttons in the toolbar.</li>
+      <li>Or use the keyboard: <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd> to undo, <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> (or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Y</kbd>) to redo.</li>
+      <li>History holds up to 50 steps per editing session, and is cleared whenever you load a new PDF.</li>
+    </ul>
+  </section>
+
+  <section id="export" class="manual-section">
+    <h2>8. Exporting &amp; sharing</h2>
+    <p>Export buttons live in the song toolbar:</p>
+    <ul>
+      <li><strong>↓ Song PDF</strong> &mdash; exports just the song you're currently viewing as a clean, two-column, monospace chord chart PDF.</li>
+      <li><strong>↓ All PDF</strong> &mdash; exports every song in the set into a single PDF, in list order.</li>
+      <li><strong>↓ Markdown</strong> &mdash; exports the full set as a <code>.md</code> file, with chord rows placed above each lyric line, viewable in any Markdown reader.</li>
+    </ul>
+    <p>All exports respect your current transposition, the Bass Notes toggle, and the Nashville toggle, and include any direction/bar-notation annotations, correctly transposed.</p>
+    <div class="callout">
+      <strong>Round-trip friendly:</strong> PDFs exported from WorshipToolkit can be re-uploaded later. The app embeds the exact column layout in the file so your edits, chord positions, and structure come back intact &mdash; no need to keep a separate source file.
+    </div>
+  </section>
+
+  <section id="appearance" class="manual-section">
+    <h2>9. Appearance &amp; accessibility</h2>
+    <ul>
+      <li><strong>Text size</strong> &mdash; use <strong>A-</strong> / <strong>A+</strong> in the header to scale the whole app's text up or down. Your choice is remembered for next time.</li>
+      <li><strong>Dark mode</strong> &mdash; click the 🌙 / ☀️ button in the header to switch themes. WorshipToolkit also follows your system's light/dark preference the first time you open it.</li>
+    </ul>
+  </section>
+
+  <section id="tips" class="manual-section">
+    <h2>10. Tips, autosave &amp; troubleshooting</h2>
+    <ul>
+      <li><strong>Autosave</strong> &mdash; your set is continuously saved to this browser's local storage. Refreshing or closing the tab won't lose your work; only <strong>↺ New PDF</strong> clears the session.</li>
+      <li><strong>Everything is local</strong> &mdash; no song data leaves your device. Clearing your browser's site data will remove the saved session.</li>
+      <li><strong>Nothing parsed from my PDF?</strong> Make sure it's an actual SongSelect chord chart export, not a scanned/photographed image &mdash; the parser reads text, not pixels.</li>
+      <li><strong>Chord didn't land where I dragged it?</strong> Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.</li>
+      <li><strong>Want a clean slate for one song only?</strong> You can remove and re-add sections/lines rather than starting a whole new upload.</li>
+    </ul>
+  </section>
+
+  <footer class="manual-footer">
+    <a class="back-link" routerLink="/">&larr; Back to WorshipToolkit</a>
+  </footer>
+</div>
