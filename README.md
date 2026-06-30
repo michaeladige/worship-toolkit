@@ -7,6 +7,8 @@ A chord chart editor for worship teams. Upload a SongSelect PDF, edit and transp
 
 New to the app? Open **`/manual`** from the header (📖 Manual) for a full walkthrough of every feature below.
 
+See [CHANGELOG.md](./CHANGELOG.md) for release history.
+
 ---
 
 ## Features
