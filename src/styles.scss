@@ -15,6 +15,19 @@
   --color-hover: #f3f4f6;
 }
 
+[data-theme="dark"] {
+  --color-primary:      #3b82f6;
+  --color-primary-dark: #2563eb;
+  --color-secondary:    #10b981;
+  --color-chord:        #60a5fa;
+  --color-text:         #f9fafb;
+  --color-muted:        #9ca3af;
+  --color-bg:           #111827;
+  --color-surface:      #1f2937;
+  --color-border:       #374151;
+  --color-hover:        #374151;
+}
+
 html, body {
   margin: 0;
   padding: 0;

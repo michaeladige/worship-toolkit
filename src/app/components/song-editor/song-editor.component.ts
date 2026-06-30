@@ -21,7 +21,12 @@ export class SongEditorComponent {
 
   @Input() songs: ParsedSong[] = [];
   @Input() selectedIndex = 0;
+  @Input() canUndo = false;
+  @Input() canRedo = false;
+  @Input() fontSize = 14;
   @Output() songsChange = new EventEmitter<ParsedSong[]>();
+  @Output() undo = new EventEmitter<void>();
+  @Output() redo = new EventEmitter<void>();
 
   exporting = false;
   newSectionName = '';
@@ -99,7 +104,7 @@ export class SongEditorComponent {
   async exportPdf() {
     this.exporting = true;
     try {
-      await this.exportSvc.toPdf(this.songs);
+      await this.exportSvc.toPdf(this.songs, this.fontSize);
     } finally {
       this.exporting = false;
       this.cdr.detectChanges();
@@ -113,7 +118,7 @@ export class SongEditorComponent {
   async exportCurrentSongPdf() {
     this.exporting = true;
     try {
-      await this.exportSvc.toPdf([this.song]);
+      await this.exportSvc.toPdf([this.song], this.fontSize);
     } finally {
       this.exporting = false;
       this.cdr.detectChanges();

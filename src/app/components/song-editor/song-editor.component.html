@@ -13,6 +13,11 @@
         <span class="chip">{{ song.tempo ? 'BPM ' + song.tempo : '' }}</span>
         <span class="chip">{{ song.timeSignature }}</span>
       </div>
+
+      <div class="undo-redo-group">
+        <button class="history-btn" [disabled]="!canUndo" (click)="undo.emit()" title="Undo (Ctrl+Z)">↩ Undo</button>
+        <button class="history-btn" [disabled]="!canRedo" (click)="redo.emit()" title="Redo (Ctrl+Shift+Z)">↪ Redo</button>
+      </div>
     </div>
 
     <div class="toolbar-right">
