@@ -50,7 +50,7 @@
                       <button
                         class="chord-btn"
                         (click)="startEdit(si, li, ci, displayChord(ct.chord))"
-                        (mousedown)="startChordDrag($event, si, li, ci, chordRowRef)"
+                        (pointerdown)="startChordDrag($event, si, li, ci, chordRowRef)"
                         title="Click to edit · drag to reposition"
                       >{{ displayChord(ct.chord) }}</button>
                       <button

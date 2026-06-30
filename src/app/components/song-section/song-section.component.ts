@@ -66,7 +66,13 @@ export class SongSectionComponent {
 
   // ── Chord edit ──────────────────────────────────────────────────────────────
 
+  // Set after a real drag completes, to swallow the native click that always
+  // follows a mouseup/touchend on the same element — without this, finishing
+  // a drag would immediately reopen the inline editor.
+  private suppressNextClick = false;
+
   startEdit(si: number, li: number, ci: number, currentDisplay: string) {
+    if (this.suppressNextClick) { this.suppressNextClick = false; return; }
     this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: currentDisplay };
   }
 
@@ -135,7 +141,7 @@ export class SongSectionComponent {
 
   // ── Chord horizontal drag (reposition charPos) ──────────────────────────────
 
-  startChordDrag(e: MouseEvent, si: number, li: number, ci: number, rowEl: HTMLElement) {
+  startChordDrag(e: PointerEvent, si: number, li: number, ci: number, rowEl: HTMLElement) {
     // Don't start a drag if we're already editing this chord
     if (this.isEditing(si, li, ci)) return;
     e.preventDefault();
@@ -150,23 +156,27 @@ export class SongSectionComponent {
     };
   }
 
-  @HostListener('document:mousemove', ['$event'])
-  onMouseMove(e: MouseEvent) {
+  // Pointer Events unify mouse, touch, and pen — this is what makes chord
+  // dragging work on phones/tablets, not just with a mouse.
+  @HostListener('document:pointermove', ['$event'])
+  onPointerMove(e: PointerEvent) {
     if (!this.chordDrag) return;
     const deltaX = e.clientX - this.chordDrag.startX;
-    // Only activate drag after moving more than 4px (avoids suppressing plain clicks)
-    if (!this.chordDrag.moved && Math.abs(deltaX) < 4) return;
+    // Only activate drag after moving more than a few px (avoids suppressing plain taps/clicks)
+    if (!this.chordDrag.moved && Math.abs(deltaX) < 6) return;
     this.chordDrag.moved = true;
     const deltaChar = Math.round(deltaX / this.chordDrag.chPx);
     this.chordDrag.currentCharPos = Math.max(0, this.chordDrag.startCharPos + deltaChar);
   }
 
-  @HostListener('document:mouseup')
-  onMouseUp() {
+  @HostListener('document:pointerup')
+  @HostListener('document:pointercancel')
+  onPointerUp() {
     if (!this.chordDrag) return;
     const { si, li, ci, currentCharPos, moved } = this.chordDrag;
     this.chordDrag = null;
-    if (!moved) return; // was just a click → let the click handler open the editor
+    if (!moved) return; // was just a tap/click → let the click handler open the editor
+    this.suppressNextClick = true; // the click that follows this mouseup/touchend isn't a tap
     const song = this.cloneSong();
     song.sections[si].lines[li].chords[ci].charPos = currentCharPos;
     this.songChange.emit(song);
