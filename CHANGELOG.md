@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.0.6] - 2026-06-30
+- Make tempo editable — click the BPM chip to set or clear it.
+- Add the ability to add, edit, and remove direction/bar-notation annotations on any lyric line.
+- Fix inline-edit inputs (chord/tempo/annotation) silently losing focusability after the first one used in a session.
+
 ## [1.0.5] - 2026-06-30
 - Show the app version in the header so the running build is always visible.
 
