@@ -220,7 +220,7 @@
     <details class="changelog-entry" open>
       <summary><h3>1.1.7</h3></summary>
       <ul>
-        <li><strong>PDF import fixed on iOS and some Android browsers</strong> &mdash; uploading a PDF no longer freezes on the "Parsing PDF…" spinner. The PDF.js worker is now loaded by fetching the script and inlining it in a self-contained Blob — this removes a hidden cross-origin request that was silently failing on GitHub Pages (which does not serve CORS headers on asset files). A 20-second safety timeout also clears the spinner with a plain error message if loading still fails.</li>
+        <li><strong>PDF import fixed on iOS and Android</strong> &mdash; uploading a PDF no longer freezes on the "Parsing PDF…" spinner. Two root causes were fixed: PDF.js was downgraded from v5 to v4 (v5's streaming text-extraction API hangs indefinitely inside iOS Safari web workers), and the PDF.js worker script is now fetched and inlined in a self-contained Blob URL, removing a hidden cross-origin request that was silently failing on GitHub Pages and broke Android.</li>
         <li><strong>TURNAROUND recognized as a section</strong> &mdash; <code>TURNAROUND</code> is now parsed as a section header (alongside VERSE, CHORUS, BRIDGE, etc.) rather than treated as lyric text.</li>
       </ul>
     </details>

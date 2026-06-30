@@ -1,4 +1,4 @@
-import { Injectable, ApplicationRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ChordService } from './chord.service';
 import { ParsedSong, SongLine, SongSection, ChordToken } from '../models/song.model';
 
@@ -28,53 +28,27 @@ const SUPERSCRIPT_RE = /^(\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\(\d+\))$/i;
 
 @Injectable({ providedIn: 'root' })
 export class PdfParserService {
-  // Fetches the worker script once and inlines it in a Blob URL so the worker
-  // runs without any importScripts() cross-origin calls. iOS Safari treats blob
-  // URL workers as having a null origin, so importScripts to the real server URL
+  // Fetches the worker script once and inlines it in a Blob URL. Blob URL workers
+  // have a null origin on iOS Safari, so importScripts() to the real server URL
   // is cross-origin and silently fails (GitHub Pages has no CORS headers). Fetching
-  // the code here (same-origin, no CORS needed) and creating a self-contained blob
-  // avoids that entirely. The promise is cached so the fetch only happens once.
+  // the code here and embedding it in the blob avoids any cross-origin requests.
   private workerBlobUrlPromise: Promise<string> | null = null;
-  logs: string[] = [];
 
-  constructor(private chordSvc: ChordService, private appRef: ApplicationRef) {}
-
-  private log(msg: string): void {
-    const line = `[${new Date().toISOString().slice(11, 23)}] ${msg}`;
-    this.logs.push(line);
-    console.log('[PDF]', msg);
-    try { this.appRef.tick(); } catch { /* ignore if called during an existing tick */ }
-  }
-
-  private logErr(msg: string, err?: unknown): void {
-    const detail = err instanceof Error ? err.message : String(err ?? '');
-    const line = `[${new Date().toISOString().slice(11, 23)}] ERROR: ${msg}${detail ? ' — ' + detail : ''}`;
-    this.logs.push(line);
-    console.error('[PDF] ERROR:', msg, err);
-    try { this.appRef.tick(); } catch { /* ignore */ }
-  }
+  constructor(private chordSvc: ChordService) {}
 
   private getWorkerBlobUrl(): Promise<string> {
     if (!this.workerBlobUrlPromise) {
       const src = new URL('assets/pdf.worker.mjs', document.baseURI).href;
-      this.log(`fetching worker from ${src}`);
       this.workerBlobUrlPromise = fetch(src)
         .then(r => {
-          this.log(`worker fetch response: HTTP ${r.status} ${r.ok ? 'OK' : 'FAIL'}`);
           if (!r.ok) throw new Error(`Worker fetch: HTTP ${r.status}`);
           return r.text();
         })
-        .then(code => {
-          this.log(`worker code length: ${code.length} chars`);
-          const blobUrl = URL.createObjectURL(
-            new Blob([code], { type: 'application/javascript' }),
-          );
-          this.log(`worker blob URL created: ${blobUrl.slice(0, 50)}`);
-          return blobUrl;
-        })
+        .then(code => URL.createObjectURL(
+          new Blob([code], { type: 'application/javascript' }),
+        ))
         .catch(err => {
-          this.logErr('worker setup failed', err);
-          this.workerBlobUrlPromise = null;
+          this.workerBlobUrlPromise = null; // allow retry on failure
           throw err;
         });
     }
@@ -83,34 +57,16 @@ export class PdfParserService {
 
   // ── Public API ────────────────────────────────────────────────────────────────
   async parsePdf(file: File): Promise<ParsedSong[]> {
-    this.logs = [];
-    this.log(`parsePdf start — "${file.name}" ${file.size} bytes, type: "${file.type}"`);
-
-    this.log('importing pdfjs-dist...');
     const pdfjsLib = await import('pdfjs-dist');
-    this.log(`pdfjs-dist loaded, version: ${(pdfjsLib as any).version ?? 'unknown'}`);
+    pdfjsLib.GlobalWorkerOptions.workerSrc = await this.getWorkerBlobUrl();
 
-    this.log('setting up worker blob URL...');
-    const workerSrc = await this.getWorkerBlobUrl();
-    pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
-    this.log('workerSrc set OK');
-
-    this.log('reading file as ArrayBuffer...');
     const ab = await file.arrayBuffer();
-    this.log(`arrayBuffer ready: ${ab.byteLength} bytes`);
 
-    this.log('calling getDocument...');
     const loadTask = pdfjsLib.getDocument({ data: ab });
-    this.log('getDocument task created — awaiting PDF load (20s timeout)...');
-
     const pdf = await Promise.race([
-      loadTask.promise.then(p => {
-        this.log(`getDocument resolved — ${p.numPages} page(s)`);
-        return p;
-      }),
+      loadTask.promise,
       new Promise<never>((_, reject) =>
         setTimeout(() => {
-          this.logErr('20s timeout reached — worker likely failed to start on this device');
           try { loadTask.destroy(); } catch { /* ignore */ }
           reject(new Error('PDF loading timed out — please try again.'));
         }, 20000),
@@ -124,28 +80,15 @@ export class PdfParserService {
       const info = meta?.info as Record<string, string> | undefined;
       if (info?.['Subject'] === 'WorshipToolkit') {
         wtCol2X = parseInt(info['Keywords'] ?? '316', 10) || 316;
-        this.log(`WorshipToolkit PDF detected, col2X: ${wtCol2X}`);
       }
-    } catch (e) {
-      this.log(`getMetadata failed (non-fatal): ${e}`);
-    }
+    } catch { /* non-critical — fall back to heuristic detection */ }
 
     // 1. Extract items per page
-    this.log(`extracting text from ${pdf.numPages} page(s)...`);
     const rawPages: { items: RawItem[]; height: number }[] = [];
     for (let p = 1; p <= pdf.numPages; p++) {
-      this.log(`getting page ${p}...`);
       const page = await pdf.getPage(p);
       const vp = page.getViewport({ scale: 1 });
-      this.log(`page ${p} viewport: ${vp.width.toFixed(0)}×${vp.height.toFixed(0)}`);
-      this.log(`page ${p} calling getTextContent...`);
-      const tc = await Promise.race([
-        page.getTextContent(),
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error(`getTextContent timed out on page ${p}`)), 15000)
-        ),
-      ]);
-      this.log(`page ${p} raw text items: ${tc.items.length}`);
+      const tc = await page.getTextContent();
       const items: RawItem[] = [];
       for (const item of tc.items) {
         if (!('str' in item) || !item.str.trim()) continue;
@@ -157,7 +100,6 @@ export class PdfParserService {
           width: +(item.width || 0).toFixed(2),
         });
       }
-      this.log(`page ${p} non-empty items: ${items.length}`);
       rawPages.push({ items, height: vp.height });
     }
 
@@ -170,7 +112,6 @@ export class PdfParserService {
     const pageLinesList: RawLine[][] = rawPages.map(p =>
       this.pageToLines(p.items, p.height, wtCol2X)
     );
-    this.log(`lines per page: [${pageLinesList.map(l => l.length).join(', ')}]`);
 
     // 4. Split into song groups: a page that contains a META_RE line starts new song
     const songGroups: RawLine[][][] = [];
@@ -184,14 +125,11 @@ export class PdfParserService {
       currentGroup.push(lines);
     }
     if (currentGroup.length > 0) songGroups.push(currentGroup);
-    this.log(`song groups found: ${songGroups.length}`);
 
     // 5. Parse each song group
-    const songs = songGroups
+    return songGroups
       .map(group => this.parseSongGroup(group))
       .filter((s): s is ParsedSong => s !== null);
-    this.log(`done — parsed ${songs.length} song(s): ${songs.map(s => `"${s.title}"`).join(', ')}`);
-    return songs;
   }
 
   // ── Superscript merging ───────────────────────────────────────────────────────
