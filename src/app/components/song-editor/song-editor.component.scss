@@ -267,7 +267,41 @@
   overflow-y: auto;
 }
 
-// ── Add Section ──────────────────────────────────────────────────────────────
+// ── Undo / Redo ───────────────────────────────────────────────────────────────
+.undo-redo-group {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.history-btn {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 0.72rem;
+    padding: 0.25rem 0.45rem;
+  }
+}
+
+// ── Add Section ───────────────────────────────────────────────────────────────
 .add-section-row {
   display: flex;
   align-items: center;

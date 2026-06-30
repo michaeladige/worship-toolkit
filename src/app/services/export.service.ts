@@ -73,7 +73,7 @@ export class ExportService {
     return transposed;
   }
 
-  async toPdf(songs: ParsedSong[]): Promise<void> {
+  async toPdf(songs: ParsedSong[], fontSize = 14): Promise<void> {
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
 
@@ -83,14 +83,17 @@ export class ExportService {
     const colGap     = 20;
     const colWidth   = (pageW - margin * 2 - colGap) / 2;
 
+    // Scale all PDF sizes proportionally to the user's font size preference (default 14px base)
+    const scale = fontSize / 14;
+
     // Match the editor: Courier New monospace, same sizes as the CSS (0.82rem ≈ 8pt print)
     const MONO      = 'courier';
-    const FONT_PT   = 8;
+    const FONT_PT   = 8 * scale;
     const CHAR_W    = FONT_PT * 0.6; // Courier: every char is exactly 60% of the point size
-    const CHORD_H   = 10;            // vertical space consumed by a chord row
-    const ANNOT_H   = 9;             // vertical space consumed by an annotation row
-    const LYRIC_H   = 11;            // vertical space consumed by a lyric row
-    const SEC_GAP   = 14;            // space before a section label
+    const CHORD_H   = 10 * scale;    // vertical space consumed by a chord row
+    const ANNOT_H   = 9  * scale;    // vertical space consumed by an annotation row
+    const LYRIC_H   = 11 * scale;    // vertical space consumed by a lyric row
+    const SEC_GAP   = 14 * scale;    // space before a section label
 
     // CSS variable equivalents: --color-chord / --color-text / --color-muted
     const setChordColor  = () => doc.setTextColor(29,  78,  216); // #1d4ed8
