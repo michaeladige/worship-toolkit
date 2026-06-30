@@ -30,6 +30,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 - Drag-and-drop to reorder sections within a song
 - Quick-add sections by name (INTRO / VERSE / CHORUS / PRE-CHORUS / BRIDGE / OUTRO / TAG) or enter a custom name
 - Click the **BPM** chip in the toolbar to edit tempo; clear it to show a `+ BPM` placeholder
+- Click the time signature chip (e.g. `4/4`) to edit it — type a new signature like `3/4` or `6/8` and press Enter
 - Add, edit, or remove direction/bar-notation annotations on any lyric line — click an existing note to edit it, or use the **+ note** hover button on lines without one
 
 ### Key & Notation

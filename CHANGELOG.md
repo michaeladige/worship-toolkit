@@ -4,8 +4,9 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 
 ## [1.0.6] - 2026-06-30
 - Make tempo editable — click the BPM chip to set or clear it.
+- Make the time signature pill editable — click it to change it (e.g. `3/4` → `4/4`).
 - Add the ability to add, edit, and remove direction/bar-notation annotations on any lyric line.
-- Fix inline-edit inputs (chord/tempo/annotation) silently losing focusability after the first one used in a session.
+- Fix inline-edit inputs (chord/tempo/annotation/time signature) silently losing focusability after the first one used in a session.
 
 ## [1.0.5] - 2026-06-30
 - Show the app version in the header so the running build is always visible.
