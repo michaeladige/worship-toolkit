@@ -239,7 +239,7 @@
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--color-chord);
-  background: color-mix(in srgb, var(--color-chord) 8%, white);
+  background: color-mix(in srgb, var(--color-chord) 8%, var(--color-bg));
   border: 1px solid var(--color-chord);
   border-radius: 3px;
   padding: 0 3px;
@@ -288,5 +288,5 @@
   transition: background 0.12s;
 
   &:hover { background: var(--color-hover); }
-  &:focus { background: color-mix(in srgb, var(--color-primary) 6%, white); }
+  &:focus { background: color-mix(in srgb, var(--color-primary) 6%, var(--color-bg)); }
 }
