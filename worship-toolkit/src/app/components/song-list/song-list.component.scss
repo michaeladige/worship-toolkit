@@ -1,10 +1,27 @@
-.song-list {
-  width: 220px;
-  min-width: 200px;
-  border-right: 1px solid var(--color-border);
+:host {
   display: flex;
   flex-direction: column;
+  width: 220px;
+  min-width: 200px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--color-border);
   background: var(--color-surface);
+  overflow: hidden;
+
+  // Mobile: horizontal tab bar across the top
+  @media (max-width: 767px) {
+    width: 100%;
+    min-width: 0;
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    height: auto;
+    flex-shrink: 0;
+  }
+}
+
+.song-list {
+  display: contents;
 }
 
 .list-header {
@@ -22,6 +39,15 @@
     color: var(--color-muted);
     margin: 0;
   }
+
+  @media (max-width: 767px) {
+    border-bottom: none;
+    border-right: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    flex-shrink: 0;
+
+    h3 { display: none; } // hide label to save space
+  }
 }
 
 .new-btn {
@@ -33,6 +59,7 @@
   font-size: 0.78rem;
   cursor: pointer;
   font-weight: 600;
+  white-space: nowrap;
 
   &:hover {
     background: var(--color-primary);
@@ -46,6 +73,17 @@ ul {
   padding: 0.5rem 0;
   overflow-y: auto;
   flex: 1;
+
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    // Hide scrollbar on mobile (still scrollable)
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
 }
 
 li {
@@ -70,6 +108,22 @@ li {
       font-weight: 600;
     }
   }
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+    padding: 0.5rem 0.75rem;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    flex-shrink: 0;
+    white-space: nowrap;
+
+    &.active {
+      border-left: none;
+      border-bottom-color: var(--color-primary);
+    }
+  }
 }
 
 .song-title {
@@ -78,6 +132,82 @@ li {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  @media (max-width: 767px) {
+    font-size: 0.82rem;
+    max-width: 120px;
+  }
+}
+
+// ── New PDF confirmation flow ─────────────────────────────────────────────────
+.new-pdf-area {
+  display: flex;
+  align-items: center;
+}
+
+.upload-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+
+  @media (max-width: 767px) {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+  }
+}
+
+.confirm-warning {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  white-space: nowrap;
+  line-height: 1.3;
+
+  @media (max-width: 767px) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 140px;
+  }
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.confirm-yes-btn {
+  padding: 0.22rem 0.55rem;
+  border: none;
+  border-radius: 5px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #b91c1c;
+  }
+}
+
+.confirm-cancel-btn {
+  padding: 0.22rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.75rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
 }
 
 .song-key {
@@ -88,4 +218,9 @@ li {
   padding: 0.1rem 0.4rem;
   border-radius: 4px;
   flex-shrink: 0;
+
+  @media (max-width: 767px) {
+    font-size: 0.7rem;
+    padding: 0.05rem 0.3rem;
+  }
 }

@@ -13,6 +13,11 @@
         <span class="chip">{{ song.tempo ? 'BPM ' + song.tempo : '' }}</span>
         <span class="chip">{{ song.timeSignature }}</span>
       </div>
+
+      <div class="undo-redo-group">
+        <button class="history-btn" [disabled]="!canUndo" (click)="undo.emit()" title="Undo (Ctrl+Z)">↩ Undo</button>
+        <button class="history-btn" [disabled]="!canRedo" (click)="redo.emit()" title="Redo (Ctrl+Shift+Z)">↪ Redo</button>
+      </div>
     </div>
 
     <div class="toolbar-right">
@@ -49,6 +54,16 @@
         🎹 Bass Notes
       </button>
 
+      <!-- Nashville notation toggle -->
+      <button
+        class="toggle-btn"
+        [class.active]="song.showNashville"
+        (click)="toggleNashville()"
+        title="Nashville number notation"
+      >
+        1 2 3 Nashville
+      </button>
+
       <!-- Export -->
       <div class="export-group">
         <button class="export-btn" (click)="exportCurrentSongPdf()" [disabled]="exporting">
@@ -76,7 +91,34 @@
   <div class="content">
     <app-song-section
       [song]="song"
+      [showSectionControls]="true"
       (songChange)="updateSong($event)"
+      (addLine)="addLineToSection($event)"
+      (removeSection)="removeSection($event)"
     />
+
+    <!-- Add Section -->
+    <div class="add-section-row">
+      <span class="add-section-label">Add section</span>
+      <div class="quick-picks">
+        @for (name of quickSections; track name) {
+          <button class="quick-pick-btn" (click)="addSection(name)">{{ name }}</button>
+        }
+      </div>
+      <div class="custom-section">
+        <input
+          class="custom-section-input"
+          placeholder="Custom name…"
+          [(ngModel)]="newSectionName"
+          (keydown.enter)="addSection(newSectionName)"
+          maxlength="32"
+        />
+        <button
+          class="custom-section-add"
+          [disabled]="!newSectionName.trim()"
+          (click)="addSection(newSectionName)"
+        >Add</button>
+      </div>
+    </div>
   </div>
 </div>

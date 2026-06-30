@@ -1,7 +1,22 @@
 <div class="song-list">
   <div class="list-header">
     <h3>Songs in Set</h3>
-    <button class="new-btn" (click)="uploadNew.emit()">+ New PDF</button>
+
+    <div class="new-pdf-area">
+      @if (!confirmingUpload) {
+        <button class="new-btn" (click)="requestUploadNew()" title="Replace current set with a new PDF">
+          ↺ New PDF
+        </button>
+      } @else {
+        <div class="upload-confirm">
+          <span class="confirm-warning">Replace set? All edits will be lost.</span>
+          <div class="confirm-actions">
+            <button class="confirm-yes-btn" (click)="confirmUploadNew()">Yes, replace</button>
+            <button class="confirm-cancel-btn" (click)="cancelUploadNew()">Cancel</button>
+          </div>
+        </div>
+      }
+    </div>
   </div>
 
   <ul>

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ChordService } from './chord.service';
 import { ParsedSong, SongLine, SongSection, ChordToken } from '../models/song.model';
 
-interface TextItem {
+interface RawItem {
   text: string;
   x: number;
   y: number;
@@ -10,212 +10,279 @@ interface TextItem {
 }
 
 interface RawLine {
-  items: TextItem[];
-  y: number;
+  items: RawItem[];
+  y: number;          // virtual y (ordering, not physical)
   text: string;
+  colMinX: number;    // left edge of the column this line belongs to
+  colWidth: number;   // usable width of the column
 }
 
-// Section header patterns
-const SECTION_RE = /^(VERSE\s*\d*|CHORUS\s*\d*|PRE[-\s]?CHORUS\s*\d*|BRIDGE\s*\d*|INTRO|OUTRO|TAG|ENDING|INTERLUDE\s*\w*|INSTRUMENTAL|CODA|VAMP|TURNAROUND)\s*$/i;
+const SECTION_RE =
+  /^(VERSE\s*\d*|CHORUS\s*\d*|PRE[-\s]?CHORUS\s*\d*|BRIDGE\s*\d*|INTRO|OUTRO|TAG|ENDING|INTERLUDE\s*[\w\d]*|INSTRUMENTAL|CODA|VAMP)\s*$/i;
 
-// Song metadata from header line e.g. "Key - C | Tempo - 82 | Time - 3/4"
-const META_RE = /Key\s*[-–]\s*([A-G][b#]?)\s*(?:\|.*Tempo\s*[-–]\s*(\d+))?\s*(?:\|.*Time\s*[-–]\s*([\d/]+))?/i;
+const META_RE =
+  /Key\s*[-–]\s*([A-G][b#]?)\s*\|.*Tempo\s*[-–]\s*(\d*)\s*\|.*Time\s*[-–]\s*([\d/]+)/i;
+
+// Superscript suffixes emitted as separate PDF items above the chord root
+const SUPERSCRIPT_RE = /^(\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\(\d+\))$/i;
 
 @Injectable({ providedIn: 'root' })
 export class PdfParserService {
 
   constructor(private chordSvc: ChordService) {}
 
+  // ── Public API ────────────────────────────────────────────────────────────────
   async parsePdf(file: File): Promise<ParsedSong[]> {
     const pdfjsLib = await import('pdfjs-dist');
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'assets/pdf.worker.mjs';
 
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const ab = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
 
-    // Collect all text items across all pages with their positions
-    const allItems: TextItem[] = [];
-    let pageOffsetY = 0;
-    const PAGE_GAP = 20; // virtual gap between pages
-
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum);
-      const viewport = page.getViewport({ scale: 1 });
-      const textContent = await page.getTextContent();
-
-      const pageHeight = viewport.height;
-
-      for (const item of textContent.items) {
-        if ('str' in item && item.str.trim()) {
-          const tx = item.transform as number[];
-          const x = tx[4];
-          // PDF y is bottom-up; convert to top-down within page
-          const yOnPage = pageHeight - tx[5];
-          allItems.push({
-            text: item.str,
-            x,
-            y: pageOffsetY + yOnPage,
-            width: item.width ?? 0,
-          });
-        }
+    // 1. Extract items per page
+    const rawPages: { items: RawItem[]; height: number }[] = [];
+    for (let p = 1; p <= pdf.numPages; p++) {
+      const page = await pdf.getPage(p);
+      const vp = page.getViewport({ scale: 1 });
+      const tc = await page.getTextContent();
+      const items: RawItem[] = [];
+      for (const item of tc.items) {
+        if (!('str' in item) || !item.str.trim()) continue;
+        const tx = item.transform as number[];
+        items.push({
+          text: item.str,
+          x: +tx[4].toFixed(2),
+          y: +(vp.height - tx[5]).toFixed(2),
+          width: +(item.width || 0).toFixed(2),
+        });
       }
-      pageOffsetY += pageHeight + PAGE_GAP;
+      rawPages.push({ items, height: vp.height });
     }
 
-    // Group items into lines by y-coordinate (within 3pt tolerance)
-    const rawLines = this.groupIntoLines(allItems);
+    // 2. Merge superscripts within each page
+    for (const p of rawPages) this.mergeSuperscripts(p.items);
 
-    // Split into per-song blocks based on presence of "Key -" metadata line
-    const songBlocks = this.splitIntoSongBlocks(rawLines);
+    // 3. Convert each page into an ordered list of RawLines, handling two-column
+    const pageLinesList: RawLine[][] = rawPages.map(p =>
+      this.pageToLines(p.items, p.height)
+    );
 
-    const songs: ParsedSong[] = [];
-    for (const block of songBlocks) {
-      const song = this.parseSongBlock(block);
-      if (song) songs.push(song);
+    // 4. Split into song groups: a page that contains a META_RE line starts new song
+    const songGroups: RawLine[][][] = [];
+    let currentGroup: RawLine[][] = [];
+    for (const lines of pageLinesList) {
+      const hasMeta = lines.some(l => META_RE.test(l.text));
+      if (hasMeta && currentGroup.length > 0) {
+        songGroups.push(currentGroup);
+        currentGroup = [];
+      }
+      currentGroup.push(lines);
     }
+    if (currentGroup.length > 0) songGroups.push(currentGroup);
 
-    return songs;
+    // 5. Parse each song group
+    return songGroups
+      .map(group => this.parseSongGroup(group))
+      .filter((s): s is ParsedSong => s !== null);
   }
 
-  private groupIntoLines(items: TextItem[]): RawLine[] {
-    if (items.length === 0) return [];
-
-    // Sort by y then x
-    items.sort((a, b) => a.y !== b.y ? a.y - b.y : a.x - b.x);
-
-    const lines: RawLine[] = [];
-    let currentLine: TextItem[] = [items[0]];
-    let currentY = items[0].y;
-
-    for (let i = 1; i < items.length; i++) {
-      if (Math.abs(items[i].y - currentY) < 3) {
-        currentLine.push(items[i]);
-      } else {
-        lines.push(this.makeRawLine(currentLine));
-        currentLine = [items[i]];
-        currentY = items[i].y;
+  // ── Superscript merging ───────────────────────────────────────────────────────
+  // e.g. "Fm"(y=149) + "7"(y=145) → "Fm7"(y=149), "7" removed
+  // Match: superscript.x ≈ root.x + root.width, root.y - sup.y between 1-9 px
+  private mergeSuperscripts(items: RawItem[]): void {
+    const dead = new Set<RawItem>();
+    for (const sup of items) {
+      if (!SUPERSCRIPT_RE.test(sup.text.trim())) continue;
+      let best: RawItem | null = null;
+      let bestDist = Infinity;
+      for (const root of items) {
+        if (root === sup || dead.has(root)) continue;
+        const dy = root.y - sup.y;
+        if (dy < 1 || dy > 9) continue;
+        const dx = Math.abs(sup.x - (root.x + root.width));
+        if (dx > 6) continue;
+        if (dx < bestDist) { bestDist = dx; best = root; }
+      }
+      if (best) {
+        best.text += sup.text;
+        best.width += sup.width;
+        dead.add(sup);
       }
     }
-    lines.push(this.makeRawLine(currentLine));
+    for (let i = items.length - 1; i >= 0; i--) {
+      if (dead.has(items[i])) items.splice(i, 1);
+    }
+  }
 
+  // ── Column detection & line ordering ─────────────────────────────────────────
+  // Returns an ordered list of RawLines for the page, left column first then right.
+  private pageToLines(items: RawItem[], pageHeight: number): RawLine[] {
+    const splitX = this.detectColumnSplit(items);
+
+    if (splitX === null) {
+      // Single-column: straightforward grouping
+      const minX = items.length ? Math.min(...items.map(i => i.x)) : 40;
+      const maxX = items.length ? Math.max(...items.map(i => i.x + i.width)) : 560;
+      return this.groupItems(items, minX, maxX - minX);
+    }
+
+    // Two-column: process each column independently, right after left
+    const left  = items.filter(i => i.x < splitX);
+    const right = items.filter(i => i.x >= splitX);
+
+    const leftMinX  = left.length  ? Math.min(...left.map(i => i.x))  : 40;
+    const rightMinX = right.length ? Math.min(...right.map(i => i.x)) : splitX;
+    const colWidth  = splitX - leftMinX - 10; // approximate column content width
+
+    const leftLines  = this.groupItems(left,  leftMinX,  colWidth);
+    const rightLines = this.groupItems(right, rightMinX, colWidth);
+
+    // Give right-column lines a virtual y offset so they sort AFTER left-column
+    // Use pageHeight + 1000 as base so they're clearly after
+    const yBase = pageHeight + 1000;
+    for (const l of rightLines) {
+      l.y = yBase + l.y;
+    }
+
+    return [...leftLines, ...rightLines];
+  }
+
+  // Detect where to split the page into two columns.
+  // Step 1: check that section headers appear at two distinct x positions (>50 pt apart).
+  // Step 2: find the actual empty gap between the two content clusters (not just the
+  //         midpoint of header x-positions, which cuts through the left column).
+  private detectColumnSplit(items: RawItem[]): number | null {
+    const headerXs = items
+      .filter(i => SECTION_RE.test(i.text.trim()))
+      .map(i => i.x);
+
+    if (headerXs.length < 2) return null;
+
+    const minHX = Math.min(...headerXs);
+    const maxHX = Math.max(...headerXs);
+    if (maxHX - minHX < 50) return null;
+
+    // Find the actual gap between the two content clusters.
+    // Search within (minHX, maxHX) — the full span between the two column starts.
+    // The inter-column whitespace will be the largest x-gap in this range.
+    const allXs = [...new Set(items.map(i => i.x))].sort((a, b) => a - b);
+
+    let bestGapCenter = (minHX + maxHX) / 2; // fallback
+    let bestGapSize = 0;
+
+    for (let i = 1; i < allXs.length; i++) {
+      const gap = allXs[i] - allXs[i - 1];
+      const center = (allXs[i] + allXs[i - 1]) / 2;
+      if (center > minHX && center < maxHX && gap > bestGapSize) {
+        bestGapSize = gap;
+        bestGapCenter = center;
+      }
+    }
+
+    // A real column gap should be at least 15 pt wide
+    return bestGapSize > 15 ? bestGapCenter : null;
+  }
+
+  // Group sorted items into lines (tolerance 4 px), annotated with column info
+  private groupItems(items: RawItem[], colMinX: number, colWidth: number): RawLine[] {
+    if (items.length === 0) return [];
+    const sorted = [...items].sort((a, b) => a.y !== b.y ? a.y - b.y : a.x - b.x);
+    const lines: RawLine[] = [];
+    let group: RawItem[] = [sorted[0]];
+    let groupY = sorted[0].y;
+
+    for (let i = 1; i < sorted.length; i++) {
+      if (Math.abs(sorted[i].y - groupY) <= 4) {
+        group.push(sorted[i]);
+      } else {
+        lines.push(this.makeRawLine(group, colMinX, colWidth));
+        group = [sorted[i]];
+        groupY = sorted[i].y;
+      }
+    }
+    lines.push(this.makeRawLine(group, colMinX, colWidth));
     return lines;
   }
 
-  private makeRawLine(items: TextItem[]): RawLine {
-    items.sort((a, b) => a.x - b.x);
-    // Join items, preserving x-gaps as spaces
+  private makeRawLine(items: RawItem[], colMinX: number, colWidth: number): RawLine {
+    const sorted = [...items].sort((a, b) => a.x - b.x);
     let text = '';
-    for (let i = 0; i < items.length; i++) {
+    for (let i = 0; i < sorted.length; i++) {
       if (i > 0) {
-        const gap = items[i].x - (items[i - 1].x + items[i - 1].width);
-        if (gap > 4) text += ' ';
+        const gap = sorted[i].x - (sorted[i - 1].x + sorted[i - 1].width);
+        // gap > 1 means there's visible space between the two items
+        if (gap > 1) text += ' ';
       }
-      text += items[i].text;
+      text += sorted[i].text;
     }
-    return { items, y: items[0].y, text };
+    return { items: sorted, y: sorted[0].y, text: text.trim(), colMinX, colWidth };
   }
 
-  private splitIntoSongBlocks(lines: RawLine[]): RawLine[][] {
-    const blocks: RawLine[][] = [];
-    let current: RawLine[] = [];
-
-    for (const line of lines) {
-      // A new song starts when we see a Key - X | Tempo - X | Time - X line
-      if (META_RE.test(line.text) && current.length > 0) {
-        // Walk back to find the title (lines before this meta line in current block)
-        // actually meta line belongs to the NEW song block we're about to start
-        // but title should already be in current. Let's split here.
-        blocks.push(current);
-        current = [];
+  // ── Song parsing ──────────────────────────────────────────────────────────────
+  private parseSongGroup(pageLines: RawLine[][]): ParsedSong | null {
+    // Flatten pages, assigning increasing virtual y so page order is preserved
+    const allLines: RawLine[] = [];
+    let yBase = 0;
+    for (const lines of pageLines) {
+      const pageMax = lines.reduce((m, l) => Math.max(m, l.y), 0);
+      for (const line of lines) {
+        allLines.push({ ...line, y: line.y + yBase });
       }
-      current.push(line);
+      yBase += pageMax + 500;
     }
-    if (current.length > 0) blocks.push(current);
 
-    return blocks.filter(b => b.length > 2);
-  }
+    if (allLines.length < 3) return null;
 
-  private parseSongBlock(lines: RawLine[]): ParsedSong | null {
-    if (lines.length === 0) return null;
-
+    // Parse header
     let title = '';
     let authors: string[] = [];
-    let key = 'C';
-    let tempo = '';
-    let timeSignature = '4/4';
-    let ccliNumber = '';
-    let copyright = '';
-
-    // Find title, authors, meta in first ~6 lines
+    let key = 'C', tempo = '', timeSignature = '4/4';
+    let ccliNumber = '', copyright = '';
     let contentStart = 0;
-    for (let i = 0; i < Math.min(10, lines.length); i++) {
-      const text = lines[i].text.trim();
+
+    for (let i = 0; i < Math.min(10, allLines.length); i++) {
+      const text = allLines[i].text.trim();
       const metaMatch = text.match(META_RE);
       if (metaMatch) {
-        key = metaMatch[1] ?? 'C';
+        key = metaMatch[1];
         tempo = metaMatch[2] ?? '';
         timeSignature = metaMatch[3] ?? '4/4';
         contentStart = i + 1;
         break;
       }
-      if (i === 0) {
-        title = text;
-      } else if (i < 4 && !text.startsWith('Key')) {
-        // Author lines come after title
-        if (text && !text.match(/^\(as published/i)) {
-          authors.push(text);
-        }
-      }
+      if (i === 0) title = text;
+      else if (!text.match(/^\(as published|^\(based on/i)) authors.push(text);
     }
 
-    // Find CCLI info at the bottom
-    for (let i = lines.length - 1; i >= lines.length - 6 && i >= 0; i--) {
-      const t = lines[i].text;
-      const ccliMatch = t.match(/CCLI Song\s*#\s*(\d+)/i);
-      if (ccliMatch) ccliNumber = ccliMatch[1];
-      if (t.match(/©|Copyright|Words:|Music:/i)) copyright = t;
+    for (let i = allLines.length - 1; i >= Math.max(0, allLines.length - 8); i--) {
+      const m = allLines[i].text.match(/CCLI Song\s*#\s*(\d+)/i);
+      if (m) { ccliNumber = m[1]; break; }
     }
 
-    // Parse sections from contentStart onward
+    if (!title) return null;
+
+    // Parse sections
     const sections: SongSection[] = [];
     let currentSection: SongSection | null = null;
-    let pendingChordLine: { items: TextItem[]; text: string; lineY: number } | null = null;
+    let pendingChordLine: RawLine | null = null;
+    let pendingAnnotation = '';
 
-    // Get the x-range for percentage calculation
-    const allX = lines.slice(contentStart).flatMap(l => l.items.map(it => it.x));
-    const minX = allX.length ? Math.min(...allX) : 0;
-    const maxX = allX.length ? Math.max(...allX) : 600;
-    const xRange = maxX - minX || 600;
-
-    for (let i = contentStart; i < lines.length; i++) {
-      const line = lines[i];
+    for (let i = contentStart; i < allLines.length; i++) {
+      const line = allLines[i];
       const text = line.text.trim();
-
       if (!text) continue;
-
-      // Skip CCLI/copyright footer
-      if (text.match(/CCLI Song|For use solely|©|www\.ccli/i)) continue;
-
-      // Section header?
-      if (SECTION_RE.test(text)) {
-        if (pendingChordLine) {
-          // chord line with no lyric below - add as chord-only line
-          if (currentSection) {
-            currentSection.lines.push(this.makeChordOnlyLine(pendingChordLine.items, minX, xRange));
-          }
-          pendingChordLine = null;
-        }
-        currentSection = { name: text.trim().toUpperCase(), lines: [] };
-        sections.push(currentSection);
+      if (/CCLI Song|For use solely|©|www\.ccli|License #/i.test(text)) continue;
+      if (/^Key\s*[-–]\s*[A-G][b#]?$/i.test(text)) {
+        this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
+        pendingChordLine = null; pendingAnnotation = '';
         continue;
       }
 
-      // Key change annotation? e.g. "Key - D" appearing mid-song
-      if (text.match(/^Key\s*[-–]\s*[A-G][b#]?$/i)) {
-        if (pendingChordLine && currentSection) {
-          currentSection.lines.push(this.makeChordOnlyLine(pendingChordLine.items, minX, xRange));
-          pendingChordLine = null;
-        }
+      if (SECTION_RE.test(text)) {
+        this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
+        pendingChordLine = null; pendingAnnotation = '';
+        currentSection = { name: text.toUpperCase().trim(), lines: [] };
+        sections.push(currentSection);
         continue;
       }
 
@@ -224,29 +291,25 @@ export class PdfParserService {
         sections.push(currentSection);
       }
 
-      // Detect chord vs lyric line
       if (this.chordSvc.isChordLine(text)) {
         if (pendingChordLine) {
-          // Two chord lines in a row → first one is chord-only
-          currentSection.lines.push(this.makeChordOnlyLine(pendingChordLine.items, minX, xRange));
+          this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
         }
-        pendingChordLine = { items: line.items, text, lineY: line.y };
+        pendingChordLine = line;
+        pendingAnnotation = this.extractAnnotation(text);
       } else {
-        // Lyric line
+        // Lyric line — pass lyric items so chords get accurate charPos
         const chords = pendingChordLine
-          ? this.extractChordPositions(pendingChordLine.items, text, minX, xRange)
+          ? this.extractChords(pendingChordLine, line.items)
           : [];
-        currentSection.lines.push({ chords, lyric: text, isChordsOnly: false });
-        pendingChordLine = null;
+        currentSection.lines.push({
+          chords, lyric: text, isChordsOnly: false,
+          annotation: pendingAnnotation || undefined,
+        });
+        pendingChordLine = null; pendingAnnotation = '';
       }
     }
-
-    // Flush any remaining chord line
-    if (pendingChordLine && currentSection) {
-      currentSection.lines.push(this.makeChordOnlyLine(pendingChordLine.items, minX, xRange));
-    }
-
-    if (!title) return null;
+    this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
 
     return {
       id: crypto.randomUUID(),
@@ -264,68 +327,91 @@ export class PdfParserService {
     };
   }
 
-  private extractChordPositions(chordItems: TextItem[], lyric: string, minX: number, xRange: number): ChordToken[] {
-    const tokens: ChordToken[] = [];
-
-    // For each chord text item, compute xPercent
-    // Then estimate character position in lyric
-    const lyricMinX = chordItems.length > 0
-      ? Math.min(...chordItems.map(it => it.x))
-      : minX;
-
-    // Group chord items into tokens (items that are close together = one chord)
-    const chordGroups = this.groupChordItems(chordItems);
-
-    for (const group of chordGroups) {
-      const groupX = group[0].x;
-      const chordText = group.map(it => it.text).join('');
-      if (!this.chordSvc.isChord(chordText.trim())) continue;
-
-      const xPercent = Math.max(0, Math.min(100, ((groupX - minX) / xRange) * 100));
-
-      // Estimate char position based on x relative to lyric
-      const charPos = this.xToCharPos(groupX, lyric);
-
-      tokens.push({ chord: chordText.trim(), xPercent, charPos });
+  private flushChordOnly(line: RawLine | null, section: SongSection | null, annotation = ''): void {
+    if (line && section) {
+      section.lines.push({
+        chords: this.extractChords(line, null),
+        lyric: '', isChordsOnly: true,
+        annotation: annotation || undefined,
+      });
     }
+  }
 
+  // Extract annotation text from a chord line to display alongside the chords.
+  // Bar-notation lines return their full text so the bar structure is visible.
+  // Other chord lines return any direction/repeat markers embedded in them.
+  private extractAnnotation(lineText: string): string {
+    // Bar notation: preserve the full line so musicians see "| Am7 | G | Fmaj7 |"
+    if (lineText.includes('|')) return lineText.trim();
+
+    const parts: string[] = [];
+    // (1.) (2.) numbered repeat markers
+    for (const m of lineText.matchAll(/\(\d+\.\)/g)) parts.push(m[0]);
+    // (To Tag) (Last time) (To Interlude 1a) — multi-word direction notes
+    for (const m of lineText.matchAll(/\([^)]*\s[^)]*\)/g)) {
+      if (!parts.includes(m[0])) parts.push(m[0]);
+    }
+    return parts.join(' ').trim();
+  }
+
+  // Extract chord tokens from a chord line.
+  // lyricItems: raw items from the lyric line directly below — used to compute charPos.
+  // When null (chord-only line), charPos is estimated proportionally from x position.
+  private extractChords(line: RawLine, lyricItems: RawItem[] | null): ChordToken[] {
+    const tokens: ChordToken[] = [];
+    const { colMinX, colWidth } = line;
+    const range = colWidth || 240;
+
+    for (const item of line.items) {
+      // Strip leading bar/repeat markers so "| Am7", "||: C2", "| Fmaj7" etc.
+      // yield just the chord text. Purely structural items like ":||" become empty.
+      const stripped = item.text.trim().replace(/^[|:]+\s*/, '').trim();
+      if (!stripped) continue;
+
+      // An item may contain multiple space-separated chords (e.g. after stripping "| C2 D/C")
+      for (const chord of stripped.split(/\s+/)) {
+        if (!this.chordSvc.isChord(chord)) continue;
+        const xPercent = Math.max(0, Math.min(100, ((item.x - colMinX) / range) * 100));
+        const charPos = lyricItems
+          ? this.xToCharPos(item.x, lyricItems)
+          : Math.round(((item.x - colMinX) / range) * 40);
+        tokens.push({ chord, xPercent, charPos });
+      }
+    }
     return tokens;
   }
 
-  private groupChordItems(items: TextItem[]): TextItem[][] {
-    if (items.length === 0) return [];
-    const sorted = [...items].sort((a, b) => a.x - b.x);
-    const groups: TextItem[][] = [[sorted[0]]];
+  // Map a chord's PDF x coordinate to the character offset in the reconstructed lyric string.
+  // lyricItems must be sorted by x (makeRawLine already sorts them).
+  // When the chord lies beyond the last lyric item, extrapolate using the average character
+  // width so chords that overflow the lyric spread out rather than all stacking at lyric end.
+  private xToCharPos(chordX: number, lyricItems: RawItem[]): number {
+    if (!lyricItems.length) return 0;
+    let charCount = 0;
+    let lastEnd = lyricItems[0].x;
 
-    for (let i = 1; i < sorted.length; i++) {
-      const prev = sorted[i - 1];
-      const gap = sorted[i].x - (prev.x + (prev.width || prev.text.length * 6));
-      if (gap < 8) {
-        groups[groups.length - 1].push(sorted[i]);
-      } else {
-        groups.push([sorted[i]]);
+    for (let i = 0; i < lyricItems.length; i++) {
+      const item = lyricItems[i];
+      if (i > 0 && item.x > lastEnd + 1) charCount++; // inter-word space
+
+      if (chordX <= item.x) return charCount; // chord falls before this word
+
+      if (chordX < item.x + item.width) {
+        // chord falls within this item — interpolate character offset
+        const fraction = (chordX - item.x) / Math.max(item.width, 1);
+        return charCount + Math.round(fraction * item.text.length);
       }
-    }
-    return groups;
-  }
 
-  private xToCharPos(x: number, lyric: string): number {
-    // Approximate: assume ~6.5px per character in the PDF's font
-    const charWidth = 6.5;
-    return Math.max(0, Math.round(x / charWidth));
-  }
-
-  private makeChordOnlyLine(items: TextItem[], minX: number, xRange: number): SongLine {
-    const chordGroups = this.groupChordItems(items);
-    const chords: ChordToken[] = [];
-
-    for (const group of chordGroups) {
-      const chordText = group.map(it => it.text).join('').trim();
-      if (!chordText) continue;
-      const xPercent = Math.max(0, Math.min(100, ((group[0].x - minX) / xRange) * 100));
-      chords.push({ chord: chordText, xPercent, charPos: 0 });
+      charCount += item.text.length;
+      lastEnd = item.x + item.width;
     }
 
-    return { chords, lyric: '', isChordsOnly: true };
+    // Chord is past the last lyric item — extrapolate with average character width
+    // so overflowing chords spread out instead of all collapsing to the same position.
+    const totalChars = lyricItems.reduce((s, i) => s + i.text.length, 0);
+    const totalWidth = lastEnd - lyricItems[0].x;
+    const avgCharWidth = totalWidth / Math.max(totalChars, 1);
+    const overflow = chordX - lastEnd;
+    return charCount + Math.max(1, Math.round(overflow / Math.max(avgCharWidth, 4)));
   }
 }

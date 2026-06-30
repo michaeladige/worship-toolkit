@@ -1,4 +1,25 @@
 <div class="app-shell">
+  <!-- Persistent UI controls: font size + dark mode (always visible) -->
+  <div class="ui-controls">
+    <button
+      class="ui-ctrl-btn"
+      (click)="adjustFontSize(-1)"
+      [disabled]="fontSize <= fontSizes[0]"
+      title="Smaller text"
+    >A-</button>
+    <button
+      class="ui-ctrl-btn"
+      (click)="adjustFontSize(1)"
+      [disabled]="fontSize >= fontSizes[fontSizes.length - 1]"
+      title="Larger text"
+    >A+</button>
+    <button
+      class="ui-ctrl-btn theme-toggle"
+      (click)="toggleTheme()"
+      [title]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+    >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+  </div>
+
   @if (songs.length === 0) {
     <app-upload (songsLoaded)="onSongsLoaded($event)" />
   } @else {
@@ -12,7 +33,12 @@
       <app-song-editor
         [songs]="songs"
         [selectedIndex]="selectedIndex"
+        [canUndo]="canUndo"
+        [canRedo]="canRedo"
+        [fontSize]="fontSize"
         (songsChange)="onSongsChange($event)"
+        (undo)="undo()"
+        (redo)="redo()"
       />
     </div>
   }

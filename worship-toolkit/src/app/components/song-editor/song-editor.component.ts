@@ -1,10 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParsedSong } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
 import { ExportService } from '../../services/export.service';
 import { SongSectionComponent } from '../song-section/song-section.component';
+
+const QUICK_SECTIONS = ['INTRO', 'VERSE', 'CHORUS', 'PRE-CHORUS', 'BRIDGE', 'OUTRO', 'TAG'];
 
 @Component({
   selector: 'app-song-editor',
@@ -15,13 +17,25 @@ import { SongSectionComponent } from '../song-section/song-section.component';
 })
 export class SongEditorComponent {
   readonly Math = Math;
+  readonly quickSections = QUICK_SECTIONS;
+
   @Input() songs: ParsedSong[] = [];
   @Input() selectedIndex = 0;
+  @Input() canUndo = false;
+  @Input() canRedo = false;
+  @Input() fontSize = 14;
   @Output() songsChange = new EventEmitter<ParsedSong[]>();
+  @Output() undo = new EventEmitter<void>();
+  @Output() redo = new EventEmitter<void>();
 
   exporting = false;
+  newSectionName = '';
 
-  constructor(public chordSvc: ChordService, private exportSvc: ExportService) {}
+  constructor(
+    public chordSvc: ChordService,
+    private exportSvc: ExportService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   get song(): ParsedSong {
     return this.songs[this.selectedIndex];
@@ -55,16 +69,45 @@ export class SongEditorComponent {
     this.updateSong({ ...this.song, showBassNotesOnly: !this.song.showBassNotesOnly });
   }
 
+  toggleNashville() {
+    this.updateSong({ ...this.song, showNashville: !this.song.showNashville });
+  }
+
   resetTranspose() {
     this.updateSong({ ...this.song, transposeSemitones: 0 });
+  }
+
+  addSection(name: string) {
+    const trimmed = name.trim().toUpperCase();
+    if (!trimmed) return;
+    const song = JSON.parse(JSON.stringify(this.song)) as ParsedSong;
+    song.sections.push({
+      name: trimmed,
+      lines: [{ chords: [], lyric: '', isChordsOnly: false }],
+    });
+    this.updateSong(song);
+    this.newSectionName = '';
+  }
+
+  addLineToSection(si: number) {
+    const song = JSON.parse(JSON.stringify(this.song)) as ParsedSong;
+    song.sections[si].lines.push({ chords: [], lyric: '', isChordsOnly: false });
+    this.updateSong(song);
+  }
+
+  removeSection(si: number) {
+    const song = JSON.parse(JSON.stringify(this.song)) as ParsedSong;
+    song.sections.splice(si, 1);
+    this.updateSong(song);
   }
 
   async exportPdf() {
     this.exporting = true;
     try {
-      await this.exportSvc.toPdf(this.songs);
+      await this.exportSvc.toPdf(this.songs, this.fontSize);
     } finally {
       this.exporting = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -72,8 +115,13 @@ export class SongEditorComponent {
     this.exportSvc.downloadMarkdown(this.songs);
   }
 
-  exportCurrentSongPdf() {
+  async exportCurrentSongPdf() {
     this.exporting = true;
-    this.exportSvc.toPdf([this.song]).finally(() => this.exporting = false);
+    try {
+      await this.exportSvc.toPdf([this.song], this.fontSize);
+    } finally {
+      this.exporting = false;
+      this.cdr.detectChanges();
+    }
   }
 }

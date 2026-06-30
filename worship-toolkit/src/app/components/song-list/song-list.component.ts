@@ -16,9 +16,24 @@ export class SongListComponent {
   @Output() selectSong = new EventEmitter<number>();
   @Output() uploadNew = new EventEmitter<void>();
 
+  confirmingUpload = false;
+
   constructor(public chordSvc: ChordService) {}
 
   effectiveKey(song: ParsedSong): string {
     return this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones);
+  }
+
+  requestUploadNew() {
+    this.confirmingUpload = true;
+  }
+
+  cancelUploadNew() {
+    this.confirmingUpload = false;
+  }
+
+  confirmUploadNew() {
+    this.confirmingUpload = false;
+    this.uploadNew.emit();
   }
 }

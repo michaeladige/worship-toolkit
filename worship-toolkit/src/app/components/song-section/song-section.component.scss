@@ -1,9 +1,63 @@
 .sections {
   padding: 1rem 1.5rem 2rem;
+
+  @media (max-width: 767px) {
+    padding: 0.75rem 1rem 1.5rem;
+  }
 }
 
 .section {
   margin-bottom: 1.8rem;
+  border-radius: 6px;
+
+  &.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  &.cdk-drag-preview {
+    background: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    padding: 0.5rem 0.75rem;
+    opacity: 0.92;
+  }
+}
+
+.section-drag-placeholder {
+  border: 2px dashed var(--color-border);
+  border-radius: 6px;
+  min-height: 2rem;
+  margin-bottom: 1.8rem;
+  background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.sections.cdk-drop-list-dragging .section:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// ── Section header ────────────────────────────────────────────────────────────
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.drag-handle {
+  color: var(--color-muted);
+  font-size: 1rem;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.15s;
+  user-select: none;
+  line-height: 1;
+
+  .section:hover & { opacity: 1; }
+  &:active { cursor: grabbing; }
+
+  @media (max-width: 767px) { opacity: 1; }
 }
 
 .section-label {
@@ -12,11 +66,40 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-muted);
-  margin-bottom: 0.6rem;
 }
 
+.section-actions {
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  .section:hover & { opacity: 1; }
+
+  @media (max-width: 767px) { opacity: 1; }
+}
+
+.section-action-btn {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-bg);
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: border-color 0.12s, color 0.12s;
+
+  &:hover { border-color: var(--color-primary); color: var(--color-primary); }
+  &--danger:hover { border-color: #ef4444; color: #ef4444; }
+}
+
+// ── Line group ────────────────────────────────────────────────────────────────
+
 .line-group {
-  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.25rem;
   margin-bottom: 0.15rem;
   min-height: 2.4rem;
 
@@ -26,18 +109,69 @@
   }
 }
 
+// Left gutter: + chord and ✕ line buttons
+.line-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+  width: 18px;
+  padding-top: 1px;
+  opacity: 0;
+  transition: opacity 0.15s;
+
+  .line-group:hover & { opacity: 1; }
+
+  @media (max-width: 767px) { opacity: 1; }
+}
+
+.line-ctrl-btn {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--color-border);
+  border-radius: 3px;
+  background: none;
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+
+  &:hover {
+    border-style: solid;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: color-mix(in srgb, var(--color-primary) 8%, transparent);
+  }
+
+  &--danger:hover {
+    border-color: #ef4444;
+    color: #ef4444;
+    background: color-mix(in srgb, #ef4444 8%, transparent);
+  }
+}
+
+.line-body {
+  flex: 1;
+  min-width: 0;
+}
+
+// ── Chord row ─────────────────────────────────────────────────────────────────
+
 .chord-row {
   position: relative;
   height: 1.4rem;
   margin-bottom: 0.1rem;
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-size: 0.82rem;
 
   &--empty {
-    opacity: 0;
-    transition: opacity 0.15s;
-
-    .line-group:hover & {
-      opacity: 1;
-    }
+    display: flex;
+    align-items: center;
   }
 }
 
@@ -47,10 +181,20 @@
   align-items: center;
   gap: 1px;
   transform: translateY(-1px);
+  transition: left 0.05s;
 
-  &:hover .chord-remove {
-    opacity: 1;
+  &.dragging {
+    transition: none;
+    z-index: 10;
+
+    .chord-btn {
+      color: var(--color-primary-dark);
+      background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+      cursor: grabbing;
+    }
   }
+
+  &:hover .chord-remove { opacity: 1; }
 }
 
 .chord-btn {
@@ -60,15 +204,15 @@
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--color-chord);
-  cursor: pointer;
-  font-family: inherit;
+  cursor: grab;
+  font-family: 'Courier New', 'Consolas', monospace;
   line-height: 1;
   border-radius: 3px;
   transition: background 0.12s;
+  user-select: none;
 
-  &:hover {
-    background: color-mix(in srgb, var(--color-chord) 12%, transparent);
-  }
+  &:hover { background: color-mix(in srgb, var(--color-chord) 12%, transparent); }
+  &:active { cursor: grabbing; }
 }
 
 .chord-remove {
@@ -82,9 +226,7 @@
   opacity: 0;
   transition: opacity 0.12s;
 
-  &:hover {
-    color: #ef4444;
-  }
+  &:hover { color: #ef4444; }
 }
 
 .chord-input {
@@ -96,42 +238,41 @@
   border-radius: 3px;
   padding: 0 3px;
   min-width: 2rem;
-  font-family: inherit;
+  font-family: 'Courier New', 'Consolas', monospace;
   outline: none;
 }
 
-.add-chord-btn {
-  position: absolute;
-  right: -16px;
-  top: 50%;
-  transform: translateY(-50%);
+// Inline prompt shown on empty chord rows
+.add-chord-btn--inline {
   background: none;
   border: 1px dashed var(--color-border);
   color: var(--color-muted);
   border-radius: 4px;
-  width: 18px;
-  height: 18px;
-  font-size: 0.8rem;
+  font-size: 0.72rem;
+  padding: 0.1rem 0.45rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.15s;
-
-  .line-group:hover & {
-    opacity: 1;
-  }
+  transition: border-color 0.12s, color 0.12s;
 
   &:hover {
-    background: var(--color-primary);
     border-color: var(--color-primary);
-    color: #fff;
+    color: var(--color-primary);
   }
 }
 
+// ── Annotation & lyric rows ───────────────────────────────────────────────────
+
+.annotation-row {
+  font-size: 0.78rem;
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-style: italic;
+  color: var(--color-muted);
+  line-height: 1.3;
+  padding: 0 2px;
+}
+
 .lyric-row {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
+  font-family: 'Courier New', 'Consolas', monospace;
   color: var(--color-text);
   line-height: 1.45;
   white-space: pre-wrap;
@@ -140,11 +281,6 @@
   padding: 1px 2px;
   transition: background 0.12s;
 
-  &:hover {
-    background: var(--color-hover);
-  }
-
-  &:focus {
-    background: color-mix(in srgb, var(--color-primary) 6%, white);
-  }
+  &:hover { background: var(--color-hover); }
+  &:focus { background: color-mix(in srgb, var(--color-primary) 6%, white); }
 }
