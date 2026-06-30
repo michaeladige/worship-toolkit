@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ApplicationRef } from '@angular/core';
 import { ChordService } from './chord.service';
 import { ParsedSong, SongLine, SongSection, ChordToken } from '../models/song.model';
 
@@ -37,12 +37,13 @@ export class PdfParserService {
   private workerBlobUrlPromise: Promise<string> | null = null;
   logs: string[] = [];
 
-  constructor(private chordSvc: ChordService) {}
+  constructor(private chordSvc: ChordService, private appRef: ApplicationRef) {}
 
   private log(msg: string): void {
     const line = `[${new Date().toISOString().slice(11, 23)}] ${msg}`;
     this.logs.push(line);
     console.log('[PDF]', msg);
+    try { this.appRef.tick(); } catch { /* ignore if called during an existing tick */ }
   }
 
   private logErr(msg: string, err?: unknown): void {
@@ -50,6 +51,7 @@ export class PdfParserService {
     const line = `[${new Date().toISOString().slice(11, 23)}] ERROR: ${msg}${detail ? ' — ' + detail : ''}`;
     this.logs.push(line);
     console.error('[PDF] ERROR:', msg, err);
+    try { this.appRef.tick(); } catch { /* ignore */ }
   }
 
   private getWorkerBlobUrl(): Promise<string> {
@@ -136,7 +138,13 @@ export class PdfParserService {
       const page = await pdf.getPage(p);
       const vp = page.getViewport({ scale: 1 });
       this.log(`page ${p} viewport: ${vp.width.toFixed(0)}×${vp.height.toFixed(0)}`);
-      const tc = await page.getTextContent();
+      this.log(`page ${p} calling getTextContent...`);
+      const tc = await Promise.race([
+        page.getTextContent(),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error(`getTextContent timed out on page ${p}`)), 15000)
+        ),
+      ]);
       this.log(`page ${p} raw text items: ${tc.items.length}`);
       const items: RawItem[] = [];
       for (const item of tc.items) {
