@@ -126,6 +126,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.sessionsSvc.currentSongs = songs;
     try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch {}
     this.selectedIndex = 0;
+    this.cdr.detectChanges();
   }
 
   onUploadNew() {
@@ -176,6 +177,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     const updated = [...this.songs, ...newSongs];
     this.setSongs(updated);
     this.selectedIndex = this.songs.length - newSongs.length; // select first appended
+    this.cdr.detectChanges();
   }
 
   onRemoveSong(i: number) {
