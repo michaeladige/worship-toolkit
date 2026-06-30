@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { UiSettingsService } from './services/ui-settings.service';
+import { version } from '../../package.json';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,8 @@ import { UiSettingsService } from './services/ui-settings.service';
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
+  readonly version = version;
+
   constructor(public ui: UiSettingsService) {}
 
   ngOnInit() {

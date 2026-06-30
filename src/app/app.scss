@@ -37,6 +37,13 @@
   }
 }
 
+.version-tag {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  vertical-align: super;
+}
+
 .ui-controls {
   display: flex;
   gap: 0.4rem;
