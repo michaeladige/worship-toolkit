@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.6] - 2026-06-30
+
+### Changed
+- **Add-songs UI redesigned** — on desktop/tablet, `+ New Song` and `+ Import PDF` now appear directly as the last item in the song list (no "+" toggle needed). On mobile, a `+` toggle at the end of the horizontal tab strip expands a compact row below, same as before. In both cases the options sit immediately after the last song, not floating at the sidebar bottom.
+
 ## [1.1.5] - 2026-06-30
 
 ### Fixed

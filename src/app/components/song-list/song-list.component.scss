@@ -130,18 +130,35 @@
   }
 }
 
-// ── Add-row (wraps the "+" toggle below the song list) ───────────────────────
-.add-row {
+// ── Add songs at end of item list ────────────────────────────────────────────
+.add-song-item {
   display: flex;
   align-items: center;
+  gap: 0.4rem;
   padding: 0.5rem 0.75rem;
   border-top: 1px solid var(--color-border);
+  cursor: default;
   flex-shrink: 0;
 
+  &:hover { background: transparent; }  // override li:hover
+
+  .add-song-mobile { display: none; }   // + toggle hidden on PC/tablet
+
   @media (max-width: 767px) {
+    // In the horizontal tab strip: no border-top, slim padding, separator on left
+    flex-wrap: nowrap;
+    padding: 0;
     border-top: none;
-    padding: 0 0.5rem;
-    align-self: center;
+    border-bottom: none;
+    border-left: 1px solid var(--color-border);
+    align-self: stretch;
+    align-items: center;
+
+    .add-song-pc { display: none; }      // hide direct buttons on mobile
+    .add-song-mobile {                    // show + toggle on mobile
+      display: flex;
+      margin: 0 0.5rem;
+    }
   }
 }
 

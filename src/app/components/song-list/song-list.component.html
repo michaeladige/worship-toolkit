@@ -34,18 +34,25 @@
           <button class="remove-song-btn" (click)="$event.stopPropagation(); removeSong.emit(i)" title="Remove song">✕</button>
         </li>
       }
+      <!-- Non-draggable add-songs item: shows buttons directly on PC/tablet, + toggle on mobile -->
+      <li class="add-song-item" (click)="$event.stopPropagation()">
+        <!-- PC/tablet: show + New Song and + Import PDF directly -->
+        <button class="append-btn add-song-pc" (click)="onAddBlankSong()" title="Add a blank song">+ New Song</button>
+        <label class="append-btn add-song-pc" [class.loading]="isAppending" title="Append songs from a PDF">
+          {{ isAppending ? 'Importing…' : '+ Import PDF' }}
+          <input type="file" accept=".pdf" hidden (change)="onAppendFileChange($event)" />
+        </label>
+        <!-- Mobile only: + toggle -->
+        <button
+          class="add-btn add-song-mobile"
+          [class.open]="appendMenuOpen"
+          (click)="appendMenuOpen = !appendMenuOpen"
+          title="Add songs"
+        >+</button>
+      </li>
     </ul>
 
-    <!-- "+" toggle at the end of the song list; append-row expands directly below -->
-    <div class="add-row">
-      <button
-        class="add-btn"
-        [class.open]="appendMenuOpen"
-        (click)="appendMenuOpen = !appendMenuOpen"
-        title="Add songs"
-      >+</button>
-    </div>
-
+    <!-- Mobile-only expand row — appears below the tab strip when + is tapped -->
     @if (appendMenuOpen) {
       <div class="append-row">
         <button class="append-btn" (click)="onAddBlankSong()" title="Add a blank song">+ New Song</button>
