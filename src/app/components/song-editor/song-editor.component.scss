@@ -282,13 +282,12 @@
 
 .export-group {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  align-items: flex-end;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 
   @media (max-width: 767px) {
     margin-left: auto;
-    align-items: flex-start;
   }
 }
 
