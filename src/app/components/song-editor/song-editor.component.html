@@ -87,9 +87,9 @@
 
       <div class="key-jump">
         <label>{{ ui.t('Jump to', 'Salire ad') }}</label>
-        <select (change)="setKey($any($event.target).value)">
+        <select [ngModel]="effectiveKey" (ngModelChange)="setKey($event)">
           @for (k of allKeys; track k) {
-            <option [value]="k" [selected]="k === effectiveKey">{{ k }}</option>
+            <option [value]="k">{{ k }}</option>
           }
         </select>
       </div>
