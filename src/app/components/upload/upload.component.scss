@@ -177,6 +177,22 @@
   }
 }
 
+.beta-cta {
+  display: block;
+  text-align: center;
+  margin-top: 0.65rem;
+  color: var(--color-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+}
+
 .spinner {
   width: 40px;
   height: 40px;

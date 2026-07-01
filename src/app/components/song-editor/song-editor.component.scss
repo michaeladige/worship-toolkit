@@ -282,11 +282,28 @@
 
 .export-group {
   display: flex;
-  gap: 0.4rem;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-end;
 
   @media (max-width: 767px) {
     margin-left: auto;
+    align-items: flex-start;
   }
+}
+
+.export-label {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-left: 2px;
+}
+
+.export-btns {
+  display: flex;
+  gap: 0.4rem;
 }
 
 .export-btn {

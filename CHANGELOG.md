@@ -2,7 +2,13 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
-## [1.1.13] - 2026-07-01
+## [1.1.14] - 2026-07-02
+
+### Changed
+- **Export buttons regrouped** — the three export buttons (Song PDF, Set PDF, Markdown) are now visually grouped under a small "Export" label, making it immediately clear what they do. "↓ All PDF" renamed to "↓ Set PDF" to match the "set" terminology used throughout the app.
+- **Beta link on landing page** — a subtle "🧪 Try the beta — new features land here first →" link at the bottom of the upload page lets curious users jump to the beta deployment.
+
+## [1.1.13] - 2026-07-02
 
 ### Fixed
 - **Latin mode toast now auto-dismisses** — the "Modus Latinus Activatus" toast previously required a tap or click elsewhere before disappearing. The state is now an Angular signal, so the 3-second timer correctly triggers a re-render without relying on zone.js or `ApplicationRef.tick()`.
