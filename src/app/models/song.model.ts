@@ -21,7 +21,8 @@ export interface SavedSession {
   name: string;
   savedAt: number; // Unix ms timestamp
   songs: ParsedSong[];
-  latinMode?: boolean;
+  language?: string;   // 'en' | 'la' | 'zh-TW' | 'id' | 'jv'
+  latinMode?: boolean; // kept for migration of old saved sets
 }
 
 export interface ParsedSong {

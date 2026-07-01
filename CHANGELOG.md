@@ -2,6 +2,17 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.3.0] - 2026-07-01
+
+### Added
+- **Color themes** — five accent color themes in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, Green. Each theme has automatic light and dark mode variants via a new `data-color` HTML attribute layered independently of the existing `data-theme` (brightness). Color preference is saved to `localStorage`.
+- **Multi-language UI** — five languages supported: English, 🏛️ Latina, 🀄 繁體中文 (Traditional Chinese), 🌴 Bahasa Indonesia, 🌾 Basa Jawa (Javanese). A pill-button row in ⚙️ Settings → Language (and at the top of the manual page) switches the language globally. Every switch shows a fun toast notification. Language preference is saved to `localStorage` and per-set (saved with each set, restored on load).
+- **Funny app names and taglines** — the home page title and subtitle adapt per language for each locale.
+
+### Changed
+- Language system refactored from a binary `latinMode: boolean` to a `language: 'en'|'la'|'zh-TW'|'id'|'jv'` field throughout the service, preferences, and per-set session data. Old sets with `latinMode: true` migrate automatically to `language: 'la'`.
+- All 89 `ui.t(en, la)` inline-pairs replaced by a single-argument `ui.t(key)` backed by a centralized TRANSLATIONS dictionary.
+
 ## [1.2.2] - 2026-07-01
 
 ### Added

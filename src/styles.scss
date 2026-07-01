@@ -28,6 +28,18 @@
   --color-hover:        #374151;
 }
 
+/* ── Color theme accents (only primary/chord vars change per accent) ── */
+[data-color="pink"]  { --color-primary: #ec4899; --color-primary-dark: #db2777; --color-chord: #db2777; }
+[data-color="red"]   { --color-primary: #ef4444; --color-primary-dark: #dc2626; --color-chord: #dc2626; }
+[data-color="amber"] { --color-primary: #d97706; --color-primary-dark: #b45309; --color-chord: #b45309; }
+[data-color="green"] { --color-primary: #059669; --color-primary-dark: #047857; --color-chord: #047857; }
+
+/* ── Dark mode overrides per accent (need lighter shades for contrast) ── */
+[data-theme="dark"][data-color="pink"]  { --color-primary: #f472b6; --color-primary-dark: #ec4899; --color-chord: #f9a8d4; }
+[data-theme="dark"][data-color="red"]   { --color-primary: #f87171; --color-primary-dark: #ef4444; --color-chord: #fca5a5; }
+[data-theme="dark"][data-color="amber"] { --color-primary: #fbbf24; --color-primary-dark: #f59e0b; --color-chord: #fde68a; }
+[data-theme="dark"][data-color="green"] { --color-primary: #10b981; --color-primary-dark: #059669; --color-chord: #6ee7b7; }
+
 html, body {
   margin: 0;
   padding: 0;

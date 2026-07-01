@@ -5,9 +5,13 @@
     <p class="subtitle">
       Everything you need to upload, edit, transpose, and share chord charts with your worship team.
     </p>
-    <button class="latin-toggle-pill" (click)="ui.toggleLatinMode()">
-      🏛️ {{ ui.latinMode ? 'Revertere ad Anglicam' : 'Switch to Latin' }}
-    </button>
+    <div class="lang-pills lang-pills--manual">
+      <button class="lang-pill" [class.lang-pill--active]="ui.language === 'en'"    (click)="ui.setLanguage('en')">🌐 English</button>
+      <button class="lang-pill" [class.lang-pill--active]="ui.language === 'la'"    (click)="ui.setLanguage('la')">🏛️ Latina</button>
+      <button class="lang-pill" [class.lang-pill--active]="ui.language === 'zh-TW'" (click)="ui.setLanguage('zh-TW')">🀄 繁體中文</button>
+      <button class="lang-pill" [class.lang-pill--active]="ui.language === 'id'"    (click)="ui.setLanguage('id')">🌴 Bahasa Indonesia</button>
+      <button class="lang-pill" [class.lang-pill--active]="ui.language === 'jv'"    (click)="ui.setLanguage('jv')">🌾 Basa Jawa</button>
+    </div>
   </header>
 
   @if (ui.latinMode) {
@@ -245,6 +249,7 @@ Sephiroth!</pre>
     <p>Click the <strong>⚙️ Settings</strong> button in the app header to open the Settings panel. All display and export preferences live here and are remembered between visits.</p>
     <h3>Appearance</h3>
     <ul>
+      <li><strong>Color</strong> &mdash; choose an accent color theme: Blue (default), Pink, Red, Amber, or Green. The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.</li>
       <li><strong>Theme</strong> &mdash; toggle between Light and Dark mode. WorshipToolkit follows your system's preference the first time you open it.</li>
       <li><strong>Accidentals</strong> &mdash; choose how chord and key names are spelled:
         <ul>
@@ -261,9 +266,15 @@ Sephiroth!</pre>
       <li><strong>PDF font size</strong> &mdash; sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.</li>
     </ul>
     <h3>Language</h3>
+    <p>Five UI languages are available. Switch using the pill buttons in <strong>⚙️ Settings → Language</strong> or directly from the row of pills at the top of this manual page.</p>
     <ul>
-      <li><strong>Latin mode</strong> &mdash; flips every UI label to humorous Latin. You can also toggle it from the <strong>🏛️ Switch to Latin</strong> pill on this manual page.</li>
+      <li><strong>🌐 English</strong> (default)</li>
+      <li><strong>🏛️ Latina</strong> &mdash; humorous Latin. Activating it shows a toast notification. Unlocks the <em>Cantus Secretus</em> section on this page.</li>
+      <li><strong>🀄 繁體中文</strong> &mdash; Traditional Chinese</li>
+      <li><strong>🌴 Bahasa Indonesia</strong></li>
+      <li><strong>🌾 Basa Jawa</strong> &mdash; Javanese</li>
     </ul>
+    <p>Language preference is saved per set — loading a saved set restores the language it was saved with. The home page app name and tagline also change per language (because why not).</p>
   </section>
 
   <section id="tips" class="manual-section">
@@ -282,6 +293,15 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.3.0</h3></summary>
+      <ul>
+        <li><strong>Color themes</strong> &mdash; five accent color themes now available in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, and Green. Each color has automatic light and dark mode variants. The color swatch picker and brightness toggle are independent controls.</li>
+        <li><strong>Multi-language UI</strong> &mdash; the app now supports five languages: English, 🏛️ Latina, 🀄 繁體中文, 🌴 Bahasa Indonesia, and 🌾 Basa Jawa. Switch using the pill buttons in ⚙️ Settings → Language or from the top of this manual page. Every language switch shows a toast notification. Language preference is saved and restored per set.</li>
+        <li><strong>Funny app names</strong> &mdash; the home page title and tagline adapt per language: <em>Arca Musica</em> (Latin), <em>讚美神器</em> (Chinese), <em>Koper Pujian</em> (Indonesian), <em>Piranti Puji-Pujian</em> (Javanese).</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.2</h3></summary>
       <ul>
         <li><strong>Accidentals preference</strong> &mdash; ⚙️ Settings now has a <strong>♭ Flats / Auto / ♯ Sharps</strong> control. Your choice applies everywhere at once: chord buttons in the editor, toolbar and sidebar key display, "Jump to" dropdown, and PDF/Markdown exports. <em>Auto</em> (default) uses conventional key-context spelling.</li>

@@ -48,7 +48,7 @@ export class SessionsService {
     }
     s.savedAt = Date.now();
     s.songs = songs;
-    s.latinMode = this.ui.latinMode;
+    s.language = this.ui.language;
     this.persist(sessions);
   }
 
@@ -68,17 +68,17 @@ export class SessionsService {
   save(name: string, songs: ParsedSong[]): void {
     const sessions = this.list();
     const trimmed = name.trim() || 'Unnamed Session';
-    const latinMode = this.ui.latinMode;
+    const language = this.ui.language;
     const existing = sessions.find(s => s.name.toLowerCase() === trimmed.toLowerCase());
     if (existing) {
       existing.savedAt = Date.now();
       existing.songs = songs;
-      existing.latinMode = latinMode;
+      existing.language = language;
       this.activeSessionId = existing.id;
       localStorage.setItem(ACTIVE_KEY, existing.id);
     } else {
       const id = crypto.randomUUID();
-      sessions.unshift({ id, name: trimmed, savedAt: Date.now(), songs, latinMode });
+      sessions.unshift({ id, name: trimmed, savedAt: Date.now(), songs, language });
       if (sessions.length > MAX_SESSIONS) sessions.splice(MAX_SESSIONS);
       this.activeSessionId = id;
       localStorage.setItem(ACTIVE_KEY, id);
@@ -109,9 +109,8 @@ export class SessionsService {
     } else {
       localStorage.removeItem(ACTIVE_KEY);
     }
-    if (session.latinMode !== undefined) {
-      this.ui.setLatinMode(session.latinMode);
-    }
+    const lang = session.language ?? (session.latinMode ? 'la' : 'en');
+    this.ui.setLanguage(lang as any, true);
     this.showModal = false;
     this.loadSubject.next(session.songs);
   }

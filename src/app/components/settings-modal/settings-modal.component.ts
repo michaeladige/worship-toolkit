@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { UiSettingsService } from '../../services/ui-settings.service';
+import { UiSettingsService, ColorTheme } from '../../services/ui-settings.service';
 
 @Component({
   selector: 'app-settings-modal',
@@ -17,5 +17,10 @@ export class SettingsModalComponent {
   onBackdropClick(e: MouseEvent) {
     if ((e.target as HTMLElement).classList.contains('modal-backdrop'))
       this.ui.closeSettingsModal();
+  }
+
+  colorLabel(c: ColorTheme): string {
+    const labels: Record<ColorTheme, string> = { blue: 'Blue', pink: 'Pink', red: 'Red', amber: 'Amber', green: 'Green' };
+    return labels[c];
   }
 }
