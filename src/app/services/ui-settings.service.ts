@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Accidentals } from './chord.service';
 
 const PREFS_KEY = 'worship_toolkit_prefs';
 
@@ -15,6 +16,8 @@ export class UiSettingsService {
 
   pdfFontSize = 14;
   readonly pdfFontSizes = [10, 12, 14, 16, 18, 20];
+
+  chordAccidentals: Accidentals = 'auto';
 
   latinMode = false;
   readonly toastMsg = signal('');
@@ -35,6 +38,8 @@ export class UiSettingsService {
         this.fontSize = this.fontSizes.includes(sz) ? sz : 14;
         const psz = (p as any).pdfFontSize ?? 14;
         this.pdfFontSize = this.pdfFontSizes.includes(psz) ? psz : 14;
+        const acc = (p as any).chordAccidentals;
+        this.chordAccidentals = (acc === 'sharps' || acc === 'flats') ? acc : 'auto';
         this.latinMode = p.latinMode === true;
       } catch {
         this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -59,6 +64,7 @@ export class UiSettingsService {
       theme: this.theme,
       fontSize: this.fontSize,
       pdfFontSize: this.pdfFontSize,
+      chordAccidentals: this.chordAccidentals,
       latinMode: this.latinMode,
     }));
   }
@@ -75,6 +81,11 @@ export class UiSettingsService {
     this.fontSize = this.fontSizes[newIdx];
     this.savePrefs();
     this.applyFontSize();
+  }
+
+  setChordAccidentals(val: Accidentals) {
+    this.chordAccidentals = val;
+    this.savePrefs();
   }
 
   adjustPdfFontSize(dir: 1 | -1) {

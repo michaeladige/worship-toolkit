@@ -138,6 +138,34 @@
   text-align: center;
 }
 
+.seg-group {
+  display: flex;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.seg-btn {
+  background: var(--color-bg);
+  border: none;
+  border-left: 1px solid var(--color-border);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.1s, color 0.1s;
+
+  &:first-child { border-left: none; }
+  &:hover:not(.seg-btn--active) { color: var(--color-text); }
+
+  &--active {
+    background: var(--color-primary);
+    color: #fff;
+  }
+}
+
 .pdf-size-warn {
   margin: 0;
   padding: 0.35rem 1.25rem 0.6rem;

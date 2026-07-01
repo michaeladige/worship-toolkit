@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ParsedSong, SongLine, ChordToken } from '../models/song.model';
-import { ChordService } from './chord.service';
+import { Accidentals, ChordService } from './chord.service';
 
 @Injectable({ providedIn: 'root' })
 export class ExportService {
 
   constructor(private chordSvc: ChordService) {}
 
-  toMarkdown(songs: ParsedSong[]): string {
-    return songs.map(song => this.songToMarkdown(song)).join('\n\n---\n\n');
+  toMarkdown(songs: ParsedSong[], accidentals: Accidentals = 'auto'): string {
+    return songs.map(song => this.songToMarkdown(song, accidentals)).join('\n\n---\n\n');
   }
 
-  private songToMarkdown(song: ParsedSong): string {
-    const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones);
+  private songToMarkdown(song: ParsedSong, accidentals: Accidentals = 'auto'): string {
+    const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
     const lines: string[] = [];
 
     lines.push(`# ${song.title}`);
@@ -24,10 +24,10 @@ export class ExportService {
       lines.push(`**${section.name}**`);
       lines.push('');
       for (const line of section.lines) {
-        const chordLine = this.renderChordRow(line, song);
+        const chordLine = this.renderChordRow(line, song, accidentals);
         if (chordLine.trim()) lines.push(chordLine);
         if (line.annotation) {
-          const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey);
+          const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey, accidentals);
           lines.push(`*${ann}*`);
         }
         if (line.lyric.trim()) lines.push(line.lyric);
@@ -43,7 +43,7 @@ export class ExportService {
     return lines.join('\n');
   }
 
-  private renderChordRow(line: SongLine, song: ParsedSong): string {
+  private renderChordRow(line: SongLine, song: ParsedSong, accidentals: Accidentals = 'auto'): string {
     if (line.chords.length === 0) return '';
 
     // Build a character array
@@ -54,7 +54,7 @@ export class ExportService {
 
     let cursor = 0;
     for (const ct of sortedChords) {
-      const chord = this.getDisplayChord(ct.chord, song);
+      const chord = this.getDisplayChord(ct.chord, song, accidentals);
       const pos = Math.max(cursor, ct.charPos ?? 0);
       for (let j = 0; j < chord.length; j++) {
         if (pos + j < chars.length) chars[pos + j] = chord[j];
@@ -65,15 +65,15 @@ export class ExportService {
     return chars.join('').trimEnd();
   }
 
-  getDisplayChord(chord: string, song: ParsedSong): string {
-    const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones);
-    let transposed = this.chordSvc.transposeChord(chord, song.transposeSemitones, effectiveKey);
+  getDisplayChord(chord: string, song: ParsedSong, accidentals: Accidentals = 'auto'): string {
+    const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
+    let transposed = this.chordSvc.transposeChord(chord, song.transposeSemitones, effectiveKey, accidentals);
     if (song.showBassNotesOnly) transposed = this.chordSvc.getBassNote(transposed);
     if (song.showNashville) transposed = this.chordSvc.toNashville(transposed, effectiveKey);
     return transposed;
   }
 
-  async toPdf(songs: ParsedSong[], pdfFontSize = 14): Promise<void> {
+  async toPdf(songs: ParsedSong[], pdfFontSize = 14, accidentals: Accidentals = 'auto'): Promise<void> {
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
 
@@ -119,7 +119,7 @@ export class ExportService {
       const song = songs[si];
       if (si > 0) doc.addPage();
 
-      const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones);
+      const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
 
       // ── Header (Helvetica, like the editor toolbar) ──────────────────────────
       doc.setFont('helvetica', 'bold');
@@ -202,7 +202,7 @@ export class ExportService {
 
             let cursor = 0;
             for (const { ct } of sorted) {
-              const chord  = this.getDisplayChord(ct.chord, song);
+              const chord  = this.getDisplayChord(ct.chord, song, accidentals);
               const pos    = Math.max(cursor, ct.charPos ?? 0);
               const chordX = colX(col) + pos * CHAR_W;
               // Clamp: skip chords that would start past the right column edge
@@ -218,7 +218,7 @@ export class ExportService {
             doc.setFont(MONO, 'italic');
             doc.setFontSize(FONT_PT - 0.5);
             setMutedColor();
-            const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey);
+            const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey, accidentals);
             const annLines = doc.splitTextToSize(ann, colWidth) as string[];
             ensureSpace(ANNOT_H * annLines.length);
             doc.text(annLines, colX(col), y);
@@ -286,8 +286,8 @@ export class ExportService {
     };
   }
 
-  downloadMarkdown(songs: ParsedSong[]): void {
-    const content = this.toMarkdown(songs);
+  downloadMarkdown(songs: ParsedSong[], accidentals: Accidentals = 'auto'): void {
+    const content = this.toMarkdown(songs, accidentals);
     const blob = new Blob([content], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

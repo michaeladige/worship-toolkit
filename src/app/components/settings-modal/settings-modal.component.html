@@ -18,6 +18,18 @@
       </div>
 
       <div class="setting-row">
+        <span class="setting-label">{{ ui.t('Accidentals', 'Accidentalia') }}</span>
+        <div class="seg-group">
+          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'flats'"
+                  (click)="ui.setChordAccidentals('flats')">♭ {{ ui.t('Flats', 'Bemolia') }}</button>
+          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'auto'"
+                  (click)="ui.setChordAccidentals('auto')">{{ ui.t('Auto', 'Automatice') }}</button>
+          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'sharps'"
+                  (click)="ui.setChordAccidentals('sharps')">♯ {{ ui.t('Sharps', 'Diesis') }}</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
         <span class="setting-label">{{ ui.t('Text size', 'Magnitudo Textus') }}</span>
         <div class="font-size-controls">
           <button
