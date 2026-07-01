@@ -2,7 +2,7 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
-## [1.3.0] - 2026-07-01
+## [1.2.3] - 2026-07-01
 
 ### Added
 - **Color themes** — five accent color themes in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, Green. Each theme has automatic light and dark mode variants via a new `data-color` HTML attribute layered independently of the existing `data-theme` (brightness). Color preference is saved to `localStorage`.
