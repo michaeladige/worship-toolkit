@@ -21,7 +21,7 @@ const SECTION_RE =
   /^(VERSE\s*\d*|CHORUS\s*\d*|PRE[-\s]?CHORUS\s*\d*|BRIDGE\s*\d*|INTRO|OUTRO|TAG|ENDING|TURNAROUND|INTERLUDE\s*[\w\d]*|INSTRUMENTAL|CODA|VAMP)\s*$/i;
 
 const META_RE =
-  /Key\s*[-–]\s*([A-G][b#]?)\s*\|.*Tempo\s*[-–]\s*(\d*)\s*\|.*Time\s*[-–]\s*([\d/]+)/i;
+  /Key\s*[-–]\s*([A-G][b#]?)\s*\|(?:.*Tempo\s*[-–]\s*(\d*)\s*\|)?.*Time\s*[-–]\s*([\d/]+)/i;
 
 // Superscript suffixes emitted as separate PDF items above the chord root
 const SUPERSCRIPT_RE = /^(\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\(\d+\))$/i;

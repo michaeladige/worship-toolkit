@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.10] - 2026-07-01
+
+### Fixed
+- **Songs without a Tempo field now split correctly** — PDFs where a song's metadata line omits the tempo (e.g. `Key - D | Time - 4/4` instead of `Key - D | Tempo - 120 | Time - 4/4`) were not recognised as a new song boundary, causing the following pages to be merged into the previous song. The meta-line pattern now accepts tempo as optional.
+
 ## [1.1.9] - 2026-07-01
 
 ### Fixed
