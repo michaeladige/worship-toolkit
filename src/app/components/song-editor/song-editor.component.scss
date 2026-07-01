@@ -61,12 +61,33 @@
     }
   }
 
-  .editable-title {
+  .title-edit-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
     cursor: pointer;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.12s;
 
-    &:hover { border-bottom-color: var(--color-primary); }
+    h2 {
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.12s;
+    }
+
+    .edit-pencil {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      opacity: 0;
+      transition: opacity 0.12s;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    &:hover h2 { border-bottom-color: var(--color-primary); }
+    &:hover .edit-pencil { opacity: 1; }
+
+    // On touch devices hover never fires — show pencil faintly so the tap target is obvious
+    @media (hover: none) {
+      .edit-pencil { opacity: 0.4; }
+    }
   }
 
   .title-input {

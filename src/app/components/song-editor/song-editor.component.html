@@ -14,7 +14,10 @@
             maxlength="120"
           />
         } @else {
-          <h2 class="song-title editable-title" (click)="startEditTitle()" title="Click to rename">{{ song.title }}</h2>
+          <div class="title-edit-trigger" (click)="startEditTitle()" title="Click to rename">
+            <h2 class="song-title">{{ song.title }}</h2>
+            <span class="edit-pencil" aria-hidden="true">✎</span>
+          </div>
         }
         @if (song.authors.length) {
           <span class="song-authors">{{ song.authors[0] }}</span>
