@@ -61,12 +61,33 @@
     }
   }
 
-  .editable-title {
+  .title-edit-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
     cursor: pointer;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.12s;
 
-    &:hover { border-bottom-color: var(--color-primary); }
+    h2 {
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.12s;
+    }
+
+    .edit-pencil {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      opacity: 0;
+      transition: opacity 0.12s;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    &:hover h2 { border-bottom-color: var(--color-primary); }
+    &:hover .edit-pencil { opacity: 1; }
+
+    // On touch devices hover never fires — show pencil faintly so the tap target is obvious
+    @media (hover: none) {
+      .edit-pencil { opacity: 0.4; }
+    }
   }
 
   .title-input {
@@ -259,57 +280,6 @@
   }
 }
 
-.export-group {
-  display: flex;
-  gap: 0.4rem;
-
-  @media (max-width: 767px) {
-    margin-left: auto;
-  }
-}
-
-.export-btn {
-  padding: 0.35rem 0.75rem;
-  background: var(--color-primary);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s;
-  white-space: nowrap;
-
-  &:hover:not(:disabled) {
-    background: var(--color-primary-dark);
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  &--all {
-    background: var(--color-secondary);
-
-    &:hover:not(:disabled) {
-      filter: brightness(0.9);
-    }
-  }
-
-  &--md {
-    background: #6366f1;
-
-    &:hover:not(:disabled) {
-      background: #4f46e5;
-    }
-  }
-
-  @media (max-width: 767px) {
-    font-size: 0.72rem;
-    padding: 0.3rem 0.5rem;
-  }
-}
 
 .key-banner {
   padding: 0.5rem 1.5rem;

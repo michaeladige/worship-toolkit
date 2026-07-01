@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 const SHARPS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const FLATS  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
-// Keys that prefer flats
-const FLAT_KEYS = new Set(['F','Bb','Eb','Ab','Db','Gb','Dm','Gm','Cm','Fm','Bbm','Ebm']);
+// Keys that prefer flats (includes enharmonic sharps so transposeKey() always matches allKeys())
+const FLAT_KEYS = new Set(['F','Bb','Eb','Ab','Db','Gb','C#','D#','G#','A#','Dm','Gm','Cm','Fm','Bbm','Ebm']);
 
 // Quality alternatives ordered longest-first so "maj" beats "m", etc.
 const CHORD_RE =

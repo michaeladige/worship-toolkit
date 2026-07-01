@@ -9,6 +9,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ParsedSong, SongSection, SongLine, ChordToken } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
+import { UiSettingsService } from '../../services/ui-settings.service';
 import { AutofocusDirective } from '../../directives/autofocus.directive';
 
 interface EditState {
@@ -56,7 +57,7 @@ export class SongSectionComponent {
   editingAnnotation: AnnotationEditState | null = null;
   chordDrag: ChordDrag | null = null;
 
-  constructor(public chordSvc: ChordService) {}
+  constructor(public chordSvc: ChordService, public ui: UiSettingsService) {}
 
   get effectiveKey(): string {
     return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones);

@@ -73,22 +73,29 @@ export class ExportService {
     return transposed;
   }
 
-  async toPdf(songs: ParsedSong[], fontSize = 14): Promise<void> {
+  async toPdf(songs: ParsedSong[], pdfFontSize = 14): Promise<void> {
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
 
-    const margin     = 40;
-    const pageW      = doc.internal.pageSize.getWidth();
-    const pageH      = doc.internal.pageSize.getHeight();
-    const colGap     = 20;
-    const colWidth   = (pageW - margin * 2 - colGap) / 2;
-    const col2X      = Math.round(margin + colWidth + colGap); // right column x start
+    const margin        = 40;
+    const pageW         = doc.internal.pageSize.getWidth();
+    const pageH         = doc.internal.pageSize.getHeight();
+    const colGap        = 20;
+    // Above 14px: single-column layout so text doesn't overflow or wrap unexpectedly
+    const splitColumns  = pdfFontSize <= 14;
+    const colWidth      = splitColumns
+      ? (pageW - margin * 2 - colGap) / 2   // 256pt each
+      : (pageW - margin * 2);                // 532pt full width
+    const col2X         = Math.round(margin + colWidth + colGap);
 
-    // Embed WT marker + column geometry so the parser can round-trip this PDF reliably
-    doc.setProperties({ subject: 'WorshipToolkit', keywords: String(col2X) });
+    // Embed WT marker; only embed column geometry when actually splitting (for round-trip parser)
+    doc.setProperties({ subject: 'WorshipToolkit', keywords: splitColumns ? String(col2X) : '' });
 
-    // Scale all PDF sizes proportionally to the user's font size preference (default 14px base)
-    const scale = fontSize / 14;
+    // Scale body font relative to 14px base.
+    // In split-column mode cap at 10pt so chars never overflow the 256pt column.
+    // In single-column mode no cap is needed — the 532pt width comfortably fits larger text.
+    const rawScale = pdfFontSize / 14;
+    const scale    = splitColumns ? Math.min(rawScale, 10 / 8) : rawScale;
 
     // Match the editor: Courier New monospace, same sizes as the CSS (0.82rem ≈ 8pt print)
     const MONO         = 'courier';
@@ -96,9 +103,12 @@ export class ExportService {
     const SEC_LABEL_PT = 9 * scale; // section labels slightly larger than body (9pt vs 8pt)
     const CHAR_W       = FONT_PT * 0.6; // Courier: every char is exactly 60% of the point size
     const CHORD_H      = 10 * scale;    // vertical space consumed by a chord row
-    const ANNOT_H      = 9  * scale;    // vertical space consumed by an annotation row
-    const LYRIC_H      = 11 * scale;    // vertical space consumed by a lyric row
+    const ANNOT_H      = 9  * scale;    // vertical space consumed by an annotation row (single line)
+    const LYRIC_H      = 11 * scale;    // vertical space consumed by a lyric row (single line)
     const SEC_GAP      = 16 * scale;    // space before a section label (bumped for larger label)
+
+    // Max characters that fit horizontally in one column at this font size
+    const maxCharsPerCol = Math.floor(colWidth / CHAR_W);
 
     // CSS variable equivalents: --color-chord / --color-text / --color-muted
     const setChordColor  = () => doc.setTextColor(29,  78,  216); // #1d4ed8
@@ -142,20 +152,27 @@ export class ExportService {
 
       const colX      = (c: number) => margin + c * (colWidth + colGap);
       const newColumn = () => {
-        if (col === 0) { col = 1; y = margin + headerH; }
-        else           { doc.addPage(); col = 0; y = margin + 20; }
+        if (splitColumns && col === 0) { col = 1; y = margin + headerH; }
+        else { doc.addPage(); col = 0; y = margin + 20; }
       };
       const ensureSpace = (needed: number) => {
         if (y + needed > pageH - margin) newColumn();
       };
 
       for (const section of song.sections) {
-        // Estimate height so we don't orphan a section header at the column bottom
+        // Estimate height so we don't orphan a section header at the column bottom.
+        // Account for lyric/annotation wrapping at the current font size.
         let needed = SEC_GAP;
         for (const line of section.lines) {
-          if (line.chords.length > 0)  needed += CHORD_H;
-          if (line.annotation)         needed += ANNOT_H;
-          if (!line.isChordsOnly)      needed += LYRIC_H;
+          if (line.chords.length > 0) needed += CHORD_H;
+          if (line.annotation) {
+            const annWraps = Math.ceil((line.annotation.length || 1) / maxCharsPerCol);
+            needed += ANNOT_H * Math.max(1, annWraps);
+          }
+          if (!line.isChordsOnly) {
+            const lyricWraps = Math.ceil((line.lyric?.length || 1) / maxCharsPerCol);
+            needed += LYRIC_H * Math.max(1, lyricWraps);
+          }
         }
         ensureSpace(needed);
 
@@ -185,31 +202,37 @@ export class ExportService {
 
             let cursor = 0;
             for (const { ct } of sorted) {
-              const chord = this.getDisplayChord(ct.chord, song);
-              const pos   = Math.max(cursor, ct.charPos ?? 0);
-              doc.text(chord, colX(col) + pos * CHAR_W, y);
+              const chord  = this.getDisplayChord(ct.chord, song);
+              const pos    = Math.max(cursor, ct.charPos ?? 0);
+              const chordX = colX(col) + pos * CHAR_W;
+              // Clamp: skip chords that would start past the right column edge
+              if (chordX + chord.length * CHAR_W <= colX(col) + colWidth + CHAR_W) {
+                doc.text(chord, chordX, y);
+              }
               cursor = pos + chord.length + 1;
             }
             y += CHORD_H;
           }
 
           if (line.annotation) {
-            ensureSpace(ANNOT_H);
             doc.setFont(MONO, 'italic');
             doc.setFontSize(FONT_PT - 0.5);
             setMutedColor();
             const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey);
-            doc.text(ann, colX(col), y, { maxWidth: colWidth });
-            y += ANNOT_H;
+            const annLines = doc.splitTextToSize(ann, colWidth) as string[];
+            ensureSpace(ANNOT_H * annLines.length);
+            doc.text(annLines, colX(col), y);
+            y += ANNOT_H * annLines.length;
           }
 
           if (hasLyric) {
-            ensureSpace(LYRIC_H);
             doc.setFont(MONO, 'normal');
             doc.setFontSize(FONT_PT);
             setTextColor();
-            doc.text(line.lyric, colX(col), y);
-            y += LYRIC_H;
+            const lyricLines = doc.splitTextToSize(line.lyric, colWidth) as string[];
+            ensureSpace(LYRIC_H * lyricLines.length);
+            doc.text(lyricLines, colX(col), y);
+            y += LYRIC_H * lyricLines.length;
           }
 
           if (!hasChords && !line.annotation && !hasLyric) y += LYRIC_H * 0.4;

@@ -14,27 +14,27 @@
   >
     @if (isLoading) {
       <div class="spinner"></div>
-      <p>Parsing PDF...</p>
+      <p>{{ ui.t('Parsing PDF…', 'Legendo PDF…') }}</p>
     } @else {
       <div class="upload-icon">📄</div>
-      <p class="drop-text">Drag &amp; drop your SongSelect PDF here</p>
-      <p class="or-text">or</p>
+      <p class="drop-text">{{ ui.t('Drag &amp; drop your SongSelect PDF here', 'Huc trahere documentum PDF') }}</p>
+      <p class="or-text">{{ ui.t('or', 'vel') }}</p>
       <label class="file-btn">
-        Choose File
+        {{ ui.t('Choose File', 'Eligere Fasciculum') }}
         <input type="file" accept=".pdf" (change)="onFileChange($event)" />
       </label>
     }
   </div>
 
   <div class="start-fresh-row">
-    <span class="start-fresh-divider">or</span>
-    <button class="start-fresh-btn" (click)="startFresh()">✏️ Start from scratch</button>
+    <span class="start-fresh-divider">{{ ui.t('or', 'vel') }}</span>
+    <button class="start-fresh-btn" (click)="startFresh()">{{ ui.t('✏️ Start from scratch', '✏️ Incipere ab Initio') }}</button>
   </div>
 
   <div class="start-fresh-row">
-    <span class="start-fresh-divider">or</span>
+    <span class="start-fresh-divider">{{ ui.t('or', 'vel') }}</span>
     <label class="start-fresh-btn">
-      📂 Load set file
+      {{ ui.t('📂 Load set file', '📂 Onerare Fasciculum') }}
       <input type="file" accept=".wt,.json" hidden (change)="onSessionFileChange($event)" />
     </label>
     @if (sessionImportError) {
@@ -49,35 +49,39 @@
   <div class="info-cards">
     <div class="card">
       <span class="card-icon">🎵</span>
-      <strong>Transpose Keys</strong>
-      <p>Shift the entire song up or down by semitones, or jump directly to a target key</p>
+      <strong>{{ ui.t('Transpose Keys', 'Claves Transponere') }}</strong>
+      <p>{{ ui.t('Shift the entire song up or down by semitones, or jump directly to a target key', 'Totum cantum sursum vel deorsum per semitonos muta, vel salta ad clavem destinatam') }}</p>
     </div>
     <div class="card">
       <span class="card-icon">✏️</span>
-      <strong>Edit Chords</strong>
-      <p>Click any chord to rename it inline, or change individual chord placements</p>
+      <strong>{{ ui.t('Edit Chords', 'Chordas Emendare') }}</strong>
+      <p>{{ ui.t('Click any chord to rename it inline, or change individual chord placements', 'Clicca chordas ut renomines in situ, vel muta positiones chordas singularum') }}</p>
     </div>
     <div class="card">
       <span class="card-icon">🎹</span>
-      <strong>Bass Notes</strong>
-      <p>Toggle to show just the root/bass note of every chord — great for beginners</p>
+      <strong>{{ ui.t('Bass Notes', 'Notae Bassi') }}</strong>
+      <p>{{ ui.t('Toggle to show just the root/bass note of every chord — great for beginners', 'Commuta ut solum notam radicem/bassi cuiusque chordae videas — optimum pro initiis') }}</p>
     </div>
     <div class="card">
       <span class="card-icon">📤</span>
-      <strong>Export</strong>
-      <p>Download updated sheet as a formatted PDF or Markdown file to share with your team</p>
+      <strong>{{ ui.t('Export', 'Exportare') }}</strong>
+      <p>{{ ui.t('Download updated sheet as a formatted PDF or Markdown file to share with your team', 'Descarga schedam renovatam ut PDF formatum vel Markdown ad socios tuos') }}</p>
     </div>
     <div class="card">
       <span class="card-icon">🔢</span>
-      <strong>Nashville Numbers</strong>
-      <p>Switch every chord to scale-degree numbers — key-independent charts for ear-trained players</p>
+      <strong>{{ ui.t('Nashville Numbers', 'Numeri Nashville') }}</strong>
+      <p>{{ ui.t('Switch every chord to scale-degree numbers — key-independent charts for ear-trained players', 'Muta omnes chordas ad numeros graduum — chartae independentes pro musicis auribus exercitatis') }}</p>
     </div>
     <div class="card">
       <span class="card-icon">↩️</span>
-      <strong>Undo, Dark Mode &amp; More</strong>
-      <p>Full undo/redo history, a dark theme, and adjustable text size — all remembered between visits</p>
+      <strong>{{ ui.t('Undo, Dark Mode &amp; More', 'Rescindere, Modus Obscurus &amp; Plus') }}</strong>
+      <p>{{ ui.t('Full undo/redo history, a dark theme, and adjustable text size — all remembered between visits', 'Historia plena rescindendi/refaciendi, thema obscurum, et magnitudo textus adaptabilis — omnia inter visitas memoria tenentur') }}</p>
     </div>
   </div>
 
-  <a class="manual-cta" routerLink="/manual">📖 New here? Read the full user manual &rarr;</a>
+  <a class="manual-cta" routerLink="/manual">{{ ui.t('📖 New here? Read the full user manual →', '📖 Novus hic? Lege manuale completum →') }}</a>
+
+  <a class="beta-cta" href="https://michaeladige.github.io/worship-toolkit/beta/" target="_blank" rel="noopener">
+    {{ ui.t('🧪 Try the beta — new features land here first →', '🧪 Experire betam — nova hic primo adsunt →') }}
+  </a>
 </div>

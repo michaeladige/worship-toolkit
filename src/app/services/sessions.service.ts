@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ParsedSong, SavedSession } from '../models/song.model';
+import { UiSettingsService } from './ui-settings.service';
 
 const SESSIONS_KEY = 'worship_toolkit_sessions';
 const ACTIVE_KEY = 'worship_toolkit_active_session';
@@ -9,7 +10,11 @@ const MAX_SESSIONS = 20;
 @Injectable({ providedIn: 'root' })
 export class SessionsService {
   showModal = false;
+  showExportModal = false;
+  currentSongIndex = 0;
   activeSessionId: string | null = null;
+
+  constructor(private ui: UiSettingsService) {}
 
   // Set by the header "➕ New" button when there is unsaved work: tells the
   // modal to open straight into the "start a new set" confirmation.
@@ -43,6 +48,7 @@ export class SessionsService {
     }
     s.savedAt = Date.now();
     s.songs = songs;
+    s.latinMode = this.ui.latinMode;
     this.persist(sessions);
   }
 
@@ -62,15 +68,17 @@ export class SessionsService {
   save(name: string, songs: ParsedSong[]): void {
     const sessions = this.list();
     const trimmed = name.trim() || 'Unnamed Session';
+    const latinMode = this.ui.latinMode;
     const existing = sessions.find(s => s.name.toLowerCase() === trimmed.toLowerCase());
     if (existing) {
       existing.savedAt = Date.now();
       existing.songs = songs;
+      existing.latinMode = latinMode;
       this.activeSessionId = existing.id;
       localStorage.setItem(ACTIVE_KEY, existing.id);
     } else {
       const id = crypto.randomUUID();
-      sessions.unshift({ id, name: trimmed, savedAt: Date.now(), songs });
+      sessions.unshift({ id, name: trimmed, savedAt: Date.now(), songs, latinMode });
       if (sessions.length > MAX_SESSIONS) sessions.splice(MAX_SESSIONS);
       this.activeSessionId = id;
       localStorage.setItem(ACTIVE_KEY, id);
@@ -101,6 +109,9 @@ export class SessionsService {
     } else {
       localStorage.removeItem(ACTIVE_KEY);
     }
+    if (session.latinMode !== undefined) {
+      this.ui.setLatinMode(session.latinMode);
+    }
     this.showModal = false;
     this.loadSubject.next(session.songs);
   }
@@ -114,8 +125,11 @@ export class SessionsService {
     this.loadSubject.next([]);
   }
 
-  openModal(): void { this.showModal = true; }
+  openModal(): void  { this.showModal = true; }
   closeModal(): void { this.showModal = false; }
+
+  openExportModal(): void  { this.showExportModal = true; }
+  closeExportModal(): void { this.showExportModal = false; }
 
   private persist(sessions: SavedSession[]): void {
     try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch { /* quota */ }

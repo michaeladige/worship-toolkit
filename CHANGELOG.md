@@ -2,6 +2,48 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.1] - 2026-07-01
+
+### Added
+- **PDF font size setting** — a new "PDF font size" control in the ⚙️ Settings modal (10–20 px, default 14 px) sets the export font independently of the on-screen text size. Font sizes above 14 px automatically switch from split-column to single-column layout so lyrics don't overflow or spill across columns.
+
+### Fixed
+- **"Jump to" key dropdown going blank** — transposing to Db, Eb, Ab, or Bb could produce a mismatched enharmonic spelling (e.g. C# instead of Db) that didn't match any option in the dropdown, leaving it visually blank. Key resolution now always returns the conventional flat-preferred spelling that matches the dropdown list.
+
+## [1.2.0] - 2026-07-02
+
+### Added
+- **`📤 Export` modal** — a new header button opens a clean modal with three export options (Song PDF, Set PDF, Markdown), each with an icon and description. The export buttons are removed from the editor toolbar entirely, decluttering the song editing view.
+- **`⚙️ Settings` modal** — a new header button consolidates appearance and language preferences in one place: theme (light/dark), text size, and Latin mode. The font size and dark mode controls are removed from the header bar.
+- **Larger text sizes** — font size now goes up to 32 px (new steps: 24, 28, 32), useful for large-screen presentations.
+
+### Changed
+- **Unified preferences storage** — theme, font size, and Latin mode are now stored as a single JSON object under `worship_toolkit_prefs` instead of three separate `localStorage` keys. Existing preferences are migrated automatically on first load.
+
+### Fixed
+- **"Jump to" key dropdown** — the dropdown now correctly shows the song's current key on load and after transposition. Previously it always appeared to default to C, and re-selecting C when the song was already in C had no effect.
+
+## [1.1.14] - 2026-07-02
+
+### Changed
+- **Export buttons regrouped** — the three export buttons (Song PDF, Set PDF, Markdown) are now visually grouped under a small "Export" label, making it immediately clear what they do. "↓ All PDF" renamed to "↓ Set PDF" to match the "set" terminology used throughout the app.
+- **Beta link on landing page** — a subtle "🧪 Try the beta — new features land here first →" link at the bottom of the upload page lets curious users jump to the beta deployment.
+
+## [1.1.13] - 2026-07-02
+
+### Fixed
+- **Latin mode toast now auto-dismisses** — the "Modus Latinus Activatus" toast previously required a tap or click elsewhere before disappearing. The state is now an Angular signal, so the 3-second timer correctly triggers a re-render without relying on zone.js or `ApplicationRef.tick()`.
+
+### Added
+- **Pencil affordance on song title** — a ✎ icon appears to the right of the song title in the editor toolbar when you hover it, making it clearer that the title is editable. On mobile and tablet the pencil is always faintly visible (since hover never fires on touch) so the tap target is obvious.
+- **Extended Latin coverage** — Latin mode now translates the remaining bare UI strings: `+ Line`, `+ chord`, `+ note` in the chord/lyric editor; `Already in set:` in the duplicate-song warning; and `Text size` in the header.
+
+## [1.1.12] - 2026-07-01
+
+### Added
+- **Latin Easter Egg** — a "🏛️ Switch to Latin" pill button in the user manual flips every UI label in the app to humorous Latin (buttons, headers, card text, modal wording, and more). Activating shows a "Modus Latinus Activatus 🏛️" toast; deactivating shows "Modus Latinus Deactivatus". Latin mode is saved with each set and restored when that set is loaded.
+- **Cantus Secretus** — with Latin mode active, a secret collapsible section appears in the manual page containing the Latin lyrics of *Unus Angelus Alae* (Nobuo Uematsu, 1997).
+
 ## [1.1.11] - 2026-07-01
 
 ### Changed

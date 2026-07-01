@@ -42,6 +42,69 @@
   }
 }
 
+.latin-toggle-pill {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.4rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}
+
+.secret-cantus {
+  margin: 0 0 1.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  overflow: hidden;
+
+  details > summary {
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    list-style: none;
+    user-select: none;
+    &::-webkit-details-marker { display: none; }
+    &:hover { background: var(--color-hover); }
+  }
+
+  .cantus-content {
+    padding: 0.75rem 1.25rem 1rem;
+  }
+
+  .cantus-title {
+    margin: 0 0 0.15rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .cantus-subtitle {
+    margin: 0 0 0.75rem;
+    font-size: 0.78rem;
+    color: var(--color-muted);
+  }
+
+  .cantus-lyrics {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    white-space: pre-wrap;
+    margin: 0;
+    color: var(--color-text);
+  }
+}
+
 .toc {
   background: var(--color-surface);
   border: 1px solid var(--color-border);

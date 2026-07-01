@@ -5,7 +5,52 @@
     <p class="subtitle">
       Everything you need to upload, edit, transpose, and share chord charts with your worship team.
     </p>
+    <button class="latin-toggle-pill" (click)="ui.toggleLatinMode()">
+      🏛️ {{ ui.latinMode ? 'Revertere ad Anglicam' : 'Switch to Latin' }}
+    </button>
   </header>
+
+  @if (ui.latinMode) {
+    <div class="secret-cantus">
+      <details>
+        <summary>🏛️ Cantus Secretus</summary>
+        <div class="cantus-content">
+          <p class="cantus-title"><em>Unus Angelus Alae</em></p>
+          <p class="cantus-subtitle">Nobuo Uematsu · MCMXCVII</p>
+          <pre class="cantus-lyrics">Estuans interius
+Ira vehementi
+Estuans interius
+Ira vehementi
+Sephiroth
+Sephiroth
+
+Noli manere
+Noli manere
+In memoria
+Noli manere
+Noli manere
+In memoria
+Sephiroth
+
+Ille iterum veniet
+Ille iterum veniet
+
+Et igni et ferro
+Et igni et ferro
+
+Fac me vivere
+Fac me fugere
+Fac me volare super aethera
+Fac me volare
+
+Sephiroth!
+
+Veniet! Veniet! Veniet! Veniet!
+Sephiroth!</pre>
+        </div>
+      </details>
+    </div>
+  }
 
   <nav class="toc" aria-label="Table of contents">
     <span class="toc-label">On this page</span>
@@ -218,6 +263,50 @@
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.1</h3></summary>
+      <ul>
+        <li><strong>PDF font size</strong> &mdash; a new control in ⚙️ Settings sets the export font size independently (10–20 px, default 14 px). Sizes above 14 px switch automatically to single-column layout so text never overflows the page.</li>
+        <li><strong>Fix: "Jump to" dropdown going blank</strong> &mdash; transposing to Db, Eb, Ab, or Bb could produce a mismatched enharmonic spelling (e.g. C# vs Db) that didn't match any dropdown option, leaving it blank. Key resolution now always returns the conventional flat spelling that matches the list.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.2.0</h3></summary>
+      <ul>
+        <li><strong>📤 Export modal</strong> &mdash; a header button opens a modal with three clearly-labelled export options (Song PDF, Set PDF, Markdown). The export buttons are removed from the editor toolbar.</li>
+        <li><strong>⚙️ Settings modal</strong> &mdash; a header button collects theme, text size, and Latin mode in one place. The font size and dark mode controls are removed from the header bar.</li>
+        <li><strong>Larger text sizes</strong> &mdash; font size now goes up to 32 px (new steps: 24, 28, 32 px), useful for big-screen presentations.</li>
+        <li><strong>Unified preferences</strong> &mdash; theme, font size, and Latin mode are now stored as one JSON object; existing preferences migrate automatically.</li>
+        <li><strong>Fix: "Jump to" key dropdown</strong> &mdash; the dropdown now correctly shows the song's current key. Previously it always appeared to default to C, and selecting C when already in C had no effect.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.14</h3></summary>
+      <ul>
+        <li><strong>Export buttons regrouped</strong> &mdash; the three export buttons are now grouped under a small "Export" label in the editor toolbar, making their purpose immediately clear. <strong>↓ All PDF</strong> is renamed to <strong>↓ Set PDF</strong> to match the "set" terminology used everywhere else in the app.</li>
+        <li><strong>Beta link on landing page</strong> &mdash; a subtle link at the bottom of the upload page points to the beta deployment where new features land first.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.13</h3></summary>
+      <ul>
+        <li><strong>Latin mode toast now auto-dismisses</strong> &mdash; the "Modus Latinus Activatus" toast previously required a tap elsewhere before disappearing. Switching to an Angular signal fixes the 3-second timer in zoneless mode.</li>
+        <li><strong>Pencil affordance on song title</strong> &mdash; a ✎ icon appears beside the song title on hover (desktop) or faintly at all times (mobile/tablet), making it clear the title is editable.</li>
+        <li><strong>Extended Latin coverage</strong> &mdash; Latin mode now translates the remaining UI strings: <strong>+ Line</strong>, <strong>+ chord</strong>, <strong>+ note</strong> in the editor; <strong>Already in set:</strong> in the duplicate warning; and <strong>Text size</strong> in the header.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.12</h3></summary>
+      <ul>
+        <li><strong>Latin Easter Egg</strong> &mdash; a <strong>🏛️ Switch to Latin</strong> pill button (right here in this manual) flips every UI label in the app to humorous Latin. A toast notification confirms activation. Latin mode is saved with each set and restored when that set is loaded.</li>
+        <li><strong>Cantus Secretus</strong> &mdash; activate Latin mode to unlock a hidden collapsible section on this page containing the Latin lyrics of <em>Unus Angelus Alae</em> (Nobuo Uematsu, 1997). 🏛️</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.1.11</h3></summary>
       <ul>
         <li><strong>Easier to find where sets live</strong> &mdash; the header now shows the name of the set you're working in (e.g. <strong>💾 Sunday Service ▾</strong>, or <strong>💾 Untitled set ▾</strong> when nothing is saved) and a dedicated <strong>➕ New</strong> button starts a fresh set in one click. On mobile these collapse to compact icons to save space.</li>
