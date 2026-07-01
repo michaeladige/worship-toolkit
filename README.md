@@ -24,12 +24,12 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 - **Remove songs** — hover a song in the list and click ✕; removing the last song returns to the upload screen
 - **Round-trip friendly** — PDFs exported by WorshipToolkit embed their column layout, so re-uploading one parses back exactly as you left it
 
-### Saved Sessions & Autosave
-- **Saved sessions** — snapshot any set under a name via **💾 Sessions**; up to 20 sessions stored in browser localStorage
-- **Autosave** — once a session is named or loaded, every edit saves to it automatically in real time
-- **Session export/import** — export any session as a `.wt` file (structured JSON); re-import it on another device via the Sessions panel or the upload page
-- **Active session indicator** — Sessions panel shows the current session name and last-modified time at the top; each list item also shows when it was last saved
-- Active session is remembered across page reloads — your work survives refreshes
+### Saved Sets & Autosave
+- **Saved sets** — snapshot any set under a name via **💾 Sessions**; up to 20 sets stored in browser localStorage
+- **Autosave** — once a set is named or loaded, every edit saves to it automatically in real time
+- **Set export/import** — export any set as a `.wt` file (structured JSON); re-import it on another device via the Sessions panel or the upload page
+- **Active set indicator** — Sessions panel shows the current set name and last-modified time at the top; each list item also shows when it was last saved
+- Active set is remembered across page reloads — your work survives refreshes
 
 ### Chord Editing
 - Click any chord to rename it inline
@@ -45,20 +45,34 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 
 ### Key & Notation
 - Transpose up/down by semitone with arrow buttons, or jump directly to a target key
+- **Accidentals preference** — choose ♭ Flats, Auto (key-context), or ♯ Sharps; applies everywhere simultaneously (editor, toolbar, exports)
 - Reset to the original PDF key at any time
 - **Bass Notes** toggle — displays only the root/bass note of every chord
 - **Nashville Number System** toggle — converts all chords to scale-degree numbers (1–7 with ♭/♯ prefixes), relative to the current key
 
 ### Export
-- **Song PDF** — exports the current song as a two-column monospace PDF matching the editor layout
-- **All PDF** — exports every song in the set in one file, in list order
+- **Song PDF** — exports the current song as a clean monospace chord chart PDF (two-column at default 14 px, single-column at larger sizes)
+- **Set PDF** — exports every song in the set in one file, in list order
 - **Markdown** — exports the full set as a `.md` file with chord rows above lyrics
-- All exports respect the current transposition, bass-notes toggle, Nashville toggle, and annotations
+- All exports respect the current transposition, bass-notes toggle, Nashville toggle, accidentals preference, and annotations
+- **PDF font size** — configurable independently from the on-screen text size (10–20 px, default 14 px) via ⚙️ Settings
 
-### Editing Aids
-- **Undo / Redo** — every chord, lyric, and section change is tracked (up to 50 steps); toolbar buttons or `Ctrl/Cmd+Z` / `Ctrl/Cmd+Shift+Z`
-- **Dark mode** — toggle from the header; follows system preference on first visit
-- **Adjustable text size** — scale the app up or down with `A-` / `A+`, remembered between visits
+### Appearance & Accessibility
+- **Color themes** — five accent color themes in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, Green; each works with both light and dark mode
+- **Light / Dark mode** — toggle from ⚙️ Settings; follows system preference on first visit
+- **Adjustable text size** — scale the app up or down with A− / A+ (13–32 px), remembered between visits
+
+### Multi-Language UI
+- Five UI languages selectable via ⚙️ Settings → Language or from the pill row at the top of the manual page:
+  - 🌐 **English** (default)
+  - 🏛️ **Latina** — humorous Latin; unlocks a hidden *Cantus Secretus* on the manual page
+  - 🀄 **繁體中文** — Traditional Chinese
+  - 🌴 **Bahasa Indonesia**
+  - 🌾 **Basa Jawa** — Javanese
+- Every language switch shows a toast notification
+- Language preference is saved per set and restored when that set is loaded
+- The home page app name and tagline adapt per language
+- The full user manual (§1–§11) is translated into all four non-English languages, each with a distinct humorous tone
 
 ### Responsive UI
 - Works on desktop, tablet, and mobile
@@ -67,6 +81,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 
 ### In-App Manual
 - A dedicated **`/manual`** page documents every feature in plain language, with a collapsible changelog and jump-to table of contents
+- Fully translated into all five app languages (§12 changelog stays in English)
 - Linked from the **📖 Manual** button in the app header
 
 ---

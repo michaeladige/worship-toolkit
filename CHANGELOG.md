@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.4] - 2026-07-02
+
+### Added
+- **Manual page translations** — all 11 content sections (§1–§11) of the user manual are now translated into all five app languages. Each language has a distinct humorous tone: Latin is pompous Roman-senator energy, Traditional Chinese is warm big-sister energy, Bahasa Indonesia is casual Gen-Z internet slang, and Basa Jawa is slow wise elder-uncle energy. §12 (Changelog) intentionally remains in English for easy editing.
+
 ## [1.2.3] - 2026-07-01
 
 ### Added
