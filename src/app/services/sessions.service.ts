@@ -15,7 +15,9 @@ export class SessionsService {
   // modal to open straight into the "start a new set" confirmation.
   pendingNewSet = false;
 
-  // WorkspaceComponent keeps this in sync on every setSongs() call
+  // Source of truth for the current song list. WorkspaceComponent keeps this
+  // in sync via setSongs(); clearWorkspace() and triggerLoad() also update it
+  // directly so the header disabled-state is accurate on any route.
   currentSongs: ParsedSong[] = [];
 
   private loadSubject = new Subject<ParsedSong[]>();
@@ -93,6 +95,7 @@ export class SessionsService {
 
   triggerLoad(session: SavedSession): void {
     this.activeSessionId = session.id || null;
+    this.currentSongs = session.songs;
     if (this.activeSessionId) {
       localStorage.setItem(ACTIVE_KEY, this.activeSessionId);
     } else {
@@ -104,7 +107,9 @@ export class SessionsService {
 
   clearWorkspace(): void {
     this.activeSessionId = null;
+    this.currentSongs = [];
     localStorage.removeItem(ACTIVE_KEY);
+    localStorage.removeItem('worship_toolkit_session');
     this.showModal = false;
     this.loadSubject.next([]);
   }
