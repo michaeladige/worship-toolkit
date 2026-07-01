@@ -1,13 +1,13 @@
 <div class="modal-backdrop" (click)="onBackdropClick($event)">
-  <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Saved Sessions">
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Saved Sets">
 
     <div class="modal-header">
-      <h2 class="modal-title">Saved Sessions</h2>
+      <h2 class="modal-title">Saved Sets</h2>
       <button
         class="new-session-btn"
         (click)="requestNewSession()"
         [disabled]="sessionsSvc.currentSongs.length === 0"
-        title="Start a new session"
+        title="Start a new set"
       >+ New</button>
       <button class="close-btn" (click)="sessionsSvc.closeModal()" title="Close">✕</button>
     </div>
@@ -18,7 +18,7 @@
         <span class="cs-name">{{ activeSession.name }}</span>
         <span class="cs-meta">Modified {{ formatDate(activeSession.savedAt) }}</span>
       } @else {
-        <em class="cs-unsaved">Unsaved session</em>
+        <em class="cs-unsaved">Unsaved set</em>
       }
     </div>
 
@@ -27,7 +27,7 @@
       <input
         class="save-input"
         type="text"
-        placeholder="Session name…"
+        placeholder="Set name…"
         [(ngModel)]="saveName"
         (keydown.enter)="saveSession()"
         maxlength="60"
@@ -37,7 +37,7 @@
 
     <!-- Import from file -->
     <div class="import-row">
-      <label class="import-btn" title="Import a .wt session file from another device">
+      <label class="import-btn" title="Import a .wt set file from another device">
         ↑ Import .wt file
         <input type="file" accept=".wt,.json" hidden (change)="onImportFile($event)" />
       </label>
@@ -50,7 +50,7 @@
 
     <!-- Session list -->
     @if (sessions.length === 0) {
-      <p class="empty-msg">No saved sessions yet. Enter a name above and click Save.</p>
+      <p class="empty-msg">No saved sets yet. Enter a name above and click Save.</p>
     } @else {
       <ul class="session-list">
         @for (session of sessions; track session.id) {
@@ -78,7 +78,7 @@
               </span>
             </div>
             <div class="session-actions">
-              <button class="action-btn load-btn" (click)="loadSession(session)" title="Load this session">Load</button>
+              <button class="action-btn load-btn" (click)="loadSession(session)" title="Load this set">Load</button>
               <button class="action-btn" (click)="startRename(session)" title="Rename">✎</button>
               <button class="action-btn" (click)="exportSession(session)" title="Export as .wt file">↓</button>
               <button class="action-btn delete-btn" (click)="deleteSession(session.id)" title="Delete">✕</button>
@@ -95,7 +95,7 @@
         <input
           class="save-input"
           type="text"
-          placeholder="Session name (optional)…"
+          placeholder="Set name (optional)…"
           [(ngModel)]="newSessionSaveName"
           (keydown.enter)="confirmNewSessionWithSave()"
           maxlength="60"

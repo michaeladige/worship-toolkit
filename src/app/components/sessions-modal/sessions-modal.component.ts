@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SessionsService } from '../../services/sessions.service';
@@ -12,7 +12,7 @@ import { SavedSession } from '../../models/song.model';
   templateUrl: './sessions-modal.component.html',
   styleUrl: './sessions-modal.component.scss',
 })
-export class SessionsModalComponent {
+export class SessionsModalComponent implements OnInit {
   saveName = '';
   renamingId: string | null = null;
   renameValue = '';
@@ -24,6 +24,14 @@ export class SessionsModalComponent {
     public sessionsSvc: SessionsService,
     private exportSvc: ExportService,
   ) {}
+
+  ngOnInit() {
+    // Opened via the header "➕ New" with unsaved work — jump straight to the confirm.
+    if (this.sessionsSvc.pendingNewSet) {
+      this.sessionsSvc.pendingNewSet = false;
+      this.showNewSessionConfirm = true;
+    }
+  }
 
   get sessions(): SavedSession[] {
     return this.sessionsSvc.list();

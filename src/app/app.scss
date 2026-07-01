@@ -67,6 +67,29 @@
   }
 }
 
+// The active set name, shown in the Sessions button. Truncate long names on
+// desktop; hide entirely on mobile (the name is still shown inside the panel).
+.set-name {
+  display: inline-block;
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: bottom;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+// Text label beside a control glyph (e.g. " New", " Manual"). Hidden on mobile
+// so the header collapses to a compact icon row.
+.ctrl-label {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
 .ui-ctrl-btn {
   background: var(--color-bg);
   border: 1px solid var(--color-border);

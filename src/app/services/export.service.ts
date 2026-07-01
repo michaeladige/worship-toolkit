@@ -255,7 +255,7 @@ export class ExportService {
       throw new Error('Invalid file — not valid JSON.');
     }
     if (!parsed['wtVersion'] || !Array.isArray(parsed['songs']) || parsed['songs'].length === 0) {
-      throw new Error('Invalid session file — missing required fields.');
+      throw new Error('Invalid set file — missing required fields.');
     }
     return {
       name: (parsed['sessionName'] as string) || file.name.replace(/\.wt$/i, ''),

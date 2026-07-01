@@ -18,7 +18,7 @@
       <li><a routerLink="." fragment="notation">6. Bass notes &amp; Nashville numbers</a></li>
       <li><a routerLink="." fragment="history">7. Undo &amp; redo</a></li>
       <li><a routerLink="." fragment="export">8. Exporting &amp; sharing</a></li>
-      <li><a routerLink="." fragment="sessions">9. Saved sessions &amp; autosave</a></li>
+      <li><a routerLink="." fragment="sessions">9. Saved sets &amp; autosave</a></li>
       <li><a routerLink="." fragment="appearance">10. Appearance &amp; accessibility</a></li>
       <li><a routerLink="." fragment="tips">11. Tips, autosave &amp; troubleshooting</a></li>
       <li><a routerLink="." fragment="changelog">12. What's new</a></li>
@@ -32,7 +32,7 @@
       reshape and export. Everything happens in your browser &mdash; nothing is uploaded to a server.
     </p>
     <ol>
-      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, click <strong>Choose File</strong> to pick one, click <strong>✏️ Start from scratch</strong> to create a blank song, or click <strong>📂 Load session file</strong> to resume from a previously exported <code>.wt</code> file.</li>
+      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, click <strong>Choose File</strong> to pick one, click <strong>✏️ Start from scratch</strong> to create a blank song, or click <strong>📂 Load set file</strong> to resume from a previously exported <code>.wt</code> file.</li>
       <li>The app parses the PDF automatically. Multi-song PDFs are split into individual songs.</li>
       <li>Two-column layouts and superscript chord extensions (e.g. <code>Fm⁷</code>) are recognized and normalized automatically (e.g. to <code>Fm7</code>).</li>
       <li>Direction notes such as <em>To Tag</em> or <em>To Interlude</em>, and bar notation like <code>| Am7 | G |</code>, are preserved as italic annotations under the relevant line.</li>
@@ -152,44 +152,44 @@
   </section>
 
   <section id="sessions" class="manual-section">
-    <h2>9. Saved sessions &amp; autosave</h2>
+    <h2>9. Saved sets &amp; autosave</h2>
     <p>
-      Sessions let you snapshot your current set and return to it later &mdash; even if you close the browser or start working on a different set in the meantime.
+      A <em>set</em> is your current collection of songs. Saving a set lets you snapshot it and return to it later &mdash; even if you close the browser or start working on a different set in the meantime.
     </p>
-    <p>Click <strong>💾 Sessions</strong> in the header to open the Sessions panel. At the top of the panel, the current session name and last-modified time are shown — or <em>Unsaved session</em> if no session is active yet.</p>
-    <h3>Saving a session</h3>
+    <p>The header shows the active set's name (e.g. <strong>💾 Sunday Service ▾</strong>), or <strong>💾 Untitled set ▾</strong> if nothing is saved yet. Click it to open the <strong>Saved Sets</strong> panel. At the top of the panel, the current set name and last-modified time are shown — or <em>Unsaved set</em> if no set is active yet.</p>
+    <h3>Starting a new set</h3>
     <ul>
-      <li>Type a name for your session (e.g. <em>Sunday 29 June</em>) in the input at the top of the panel and click <strong>Save</strong> (or press <kbd>Enter</kbd>).</li>
-      <li>If you save again with the same name, the existing session is updated in place rather than duplicated.</li>
-      <li>Up to 20 sessions can be stored. If you exceed this limit, the oldest session is removed.</li>
-    </ul>
-    <h3>Autosave to active session</h3>
-    <ul>
-      <li>Once a session is saved or loaded, it becomes the <em>active session</em>. Every edit you make &mdash; chord changes, transpositions, section moves &mdash; is automatically saved back to that session in real time. No need to keep clicking Save.</li>
-      <li>The active session is highlighted with an <strong>active</strong> badge in the Sessions panel and its name appears in the header button.</li>
-      <li>If you reload the page, the app restores both your songs and the active session so you can continue right where you left off.</li>
-    </ul>
-    <h3>Loading a session</h3>
-    <ul>
-      <li>Each saved session shows its name, save date, and song count. Click <strong>Load</strong> to restore it &mdash; the editor updates immediately and that session becomes the new active session.</li>
-    </ul>
-    <h3>Starting a new session</h3>
-    <ul>
-      <li>Click <strong>+ New</strong> in the Sessions panel header to clear the workspace and start fresh.</li>
-      <li>If you're currently in a named session (it's already autosaved), the workspace clears immediately.</li>
+      <li>Click <strong>➕ New</strong> in the header (or <strong>+ New</strong> inside the Saved Sets panel) to clear the workspace and start fresh. On mobile the header button shows just the <strong>➕</strong> icon.</li>
+      <li>If you're currently in a named set (it's already autosaved), the workspace clears immediately.</li>
       <li>If you have unsaved work, a prompt appears: enter a name to save it first, or click <strong>Skip &amp; New</strong> to discard and continue.</li>
     </ul>
-    <h3>Managing sessions</h3>
+    <h3>Saving a set</h3>
     <ul>
-      <li><strong>Rename</strong> &mdash; click the pencil icon (✎) on any session to rename it inline, then press <kbd>Enter</kbd> or click elsewhere.</li>
-      <li><strong>Delete</strong> &mdash; click the ✕ button to permanently remove a session from storage.</li>
-      <li>Sessions are stored only in <em>this browser</em> on <em>this device</em>. Use export/import (below) to move them to another device.</li>
+      <li>Type a name for your set (e.g. <em>Sunday 29 June</em>) in the input at the top of the panel and click <strong>Save</strong> (or press <kbd>Enter</kbd>).</li>
+      <li>If you save again with the same name, the existing set is updated in place rather than duplicated.</li>
+      <li>Up to 20 sets can be stored. If you exceed this limit, the oldest set is removed.</li>
     </ul>
-    <h3>Exporting and importing session files</h3>
+    <h3>Autosave to the active set</h3>
     <ul>
-      <li><strong>Export (↓)</strong> &mdash; click the download button on any saved session to save it as a <code>.wt</code> file. This file contains the full song data including all edits, transpositions, and chord positions.</li>
-      <li><strong>Import from Sessions panel</strong> &mdash; click <strong>↑ Import .wt file</strong> at the top of the Sessions panel, pick a previously exported <code>.wt</code> file, and the session loads into the editor immediately. It's also saved to your session list so you can return to it later.</li>
-      <li><strong>Import from the upload page</strong> &mdash; on the landing/upload page, click <strong>📂 Load session file</strong> to open a <code>.wt</code> file directly without going through the Sessions panel.</li>
+      <li>Once a set is saved or loaded, it becomes the <em>active set</em>. Every edit you make &mdash; chord changes, transpositions, section moves &mdash; is automatically saved back to that set in real time. No need to keep clicking Save.</li>
+      <li>The active set is highlighted with an <strong>active</strong> badge in the panel, and its name appears in the header button.</li>
+      <li>If you reload the page, the app restores both your songs and the active set so you can continue right where you left off.</li>
+    </ul>
+    <h3>Loading a set</h3>
+    <ul>
+      <li>Each saved set shows its name, save date, and song count. Click <strong>Load</strong> to restore it &mdash; the editor updates immediately and that set becomes the new active set.</li>
+    </ul>
+    <h3>Managing sets</h3>
+    <ul>
+      <li><strong>Rename</strong> &mdash; click the pencil icon (✎) on any set to rename it inline, then press <kbd>Enter</kbd> or click elsewhere.</li>
+      <li><strong>Delete</strong> &mdash; click the ✕ button to permanently remove a set from storage.</li>
+      <li>Sets are stored only in <em>this browser</em> on <em>this device</em>. Use export/import (below) to move them to another device.</li>
+    </ul>
+    <h3>Exporting and importing set files</h3>
+    <ul>
+      <li><strong>Export (↓)</strong> &mdash; click the download button on any saved set to save it as a <code>.wt</code> file. This file contains the full song data including all edits, transpositions, and chord positions.</li>
+      <li><strong>Import from the Saved Sets panel</strong> &mdash; click <strong>↑ Import .wt file</strong> at the top of the panel, pick a previously exported <code>.wt</code> file, and the set loads into the editor immediately. It's also saved to your set list so you can return to it later.</li>
+      <li><strong>Import from the upload page</strong> &mdash; on the landing/upload page, click <strong>📂 Load set file</strong> to open a <code>.wt</code> file directly without going through the panel.</li>
       <li><code>.wt</code> files are plain JSON and can be shared via email, cloud drive, AirDrop, or any other file-transfer method.</li>
     </ul>
   </section>
@@ -205,8 +205,8 @@
   <section id="tips" class="manual-section">
     <h2>11. Tips, autosave &amp; troubleshooting</h2>
     <ul>
-      <li><strong>Autosave</strong> &mdash; your set is continuously saved to this browser's local storage. Refreshing or closing the tab won't lose your work; only starting a new session via <strong>💾 Sessions → + New</strong> clears the workspace.</li>
-      <li><strong>Everything is local</strong> &mdash; no song data leaves your device. Clearing your browser's site data will remove the saved session.</li>
+      <li><strong>Autosave</strong> &mdash; your set is continuously saved to this browser's local storage. Refreshing or closing the tab won't lose your work; only starting a new set via <strong>➕ New</strong> in the header clears the workspace.</li>
+      <li><strong>Everything is local</strong> &mdash; no song data leaves your device. Clearing your browser's site data will remove your saved sets.</li>
       <li><strong>Nothing parsed from my PDF?</strong> Make sure it's an actual SongSelect chord chart export, not a scanned/photographed image &mdash; the parser reads text, not pixels.</li>
       <li><strong>Chord didn't land where I dragged it?</strong> Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.</li>
       <li><strong>Want a clean slate for one song only?</strong> You can remove and re-add sections/lines rather than starting a whole new upload.</li>
@@ -218,6 +218,14 @@
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.1.11</h3></summary>
+      <ul>
+        <li><strong>Easier to find where sets live</strong> &mdash; the header now shows the name of the set you're working in (e.g. <strong>💾 Sunday Service ▾</strong>, or <strong>💾 Untitled set ▾</strong> when nothing is saved) and a dedicated <strong>➕ New</strong> button starts a fresh set in one click. On mobile these collapse to compact icons to save space.</li>
+        <li><strong>Consistent wording</strong> &mdash; what used to be called a "session" is now called a <strong>set</strong> throughout the app, matching the "Songs in Set" list.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.1.10</h3></summary>
       <ul>
         <li><strong>Songs without a Tempo field now split correctly</strong> &mdash; PDFs where a song's metadata line omits the tempo (e.g. <code>Key - D | Time - 4/4</code>) were not recognised as a new song boundary, causing subsequent pages to be merged into the previous song. The meta-line pattern now accepts tempo as optional.</li>

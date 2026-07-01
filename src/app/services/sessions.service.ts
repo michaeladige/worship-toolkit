@@ -11,6 +11,10 @@ export class SessionsService {
   showModal = false;
   activeSessionId: string | null = null;
 
+  // Set by the header "➕ New" button when there is unsaved work: tells the
+  // modal to open straight into the "start a new set" confirmation.
+  pendingNewSet = false;
+
   // WorkspaceComponent keeps this in sync on every setSongs() call
   currentSongs: ParsedSong[] = [];
 
