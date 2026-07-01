@@ -157,7 +157,7 @@ Sephiroth!</pre>
     <h2>5. Keys &amp; transposition</h2>
     <ul>
       <li><strong>Step transpose</strong> &mdash; use the <strong>▲</strong> / <strong>▼</strong> buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.</li>
-      <li><strong>Jump to a key</strong> &mdash; pick any key directly from the <strong>Jump to</strong> dropdown.</li>
+      <li><strong>Jump to a key</strong> &mdash; pick any key directly from the <strong>Jump to</strong> dropdown. The list uses your current Accidentals preference (see §10).</li>
       <li><strong>Reset</strong> &mdash; once you've transposed, a <strong>Reset</strong> button appears showing the original key; click it to snap straight back.</li>
       <li>Whenever the song is transposed, a banner above the chart confirms the change, e.g. <em>Transposed from G &rarr; A (+2 semitones)</em>.</li>
     </ul>
@@ -184,13 +184,14 @@ Sephiroth!</pre>
 
   <section id="export" class="manual-section">
     <h2>8. Exporting &amp; sharing</h2>
-    <p>Export buttons live in the song toolbar:</p>
+    <p>Click the <strong>📤 Export</strong> button in the app header to open the export panel. Three options are available:</p>
     <ul>
-      <li><strong>↓ Song PDF</strong> &mdash; exports just the song you're currently viewing as a clean, two-column, monospace chord chart PDF.</li>
-      <li><strong>↓ All PDF</strong> &mdash; exports every song in the set into a single PDF, in list order.</li>
-      <li><strong>↓ Markdown</strong> &mdash; exports the full set as a <code>.md</code> file, with chord rows placed above each lyric line, viewable in any Markdown reader.</li>
+      <li><strong>📄 Song PDF</strong> &mdash; exports just the song you're currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.</li>
+      <li><strong>📋 Set PDF</strong> &mdash; exports every song in the set into a single PDF, in list order, one song per page.</li>
+      <li><strong>📝 Markdown</strong> &mdash; exports the full set as a <code>.md</code> file, with chord rows placed above each lyric line, viewable in any Markdown reader.</li>
     </ul>
-    <p>All exports respect your current transposition, the Bass Notes toggle, and the Nashville toggle, and include any direction/bar-notation annotations, correctly transposed.</p>
+    <p>All exports respect your current transposition, the Bass Notes toggle, the Nashville toggle, your Accidentals preference, and include any direction/bar-notation annotations, correctly transposed.</p>
+    <p>To adjust the <strong>PDF font size</strong> (10–20 px, default 14 px), open ⚙️ Settings &rarr; Export. Sizes above 14 px switch the PDF to a single-column layout; a warning is shown in Settings when this threshold is exceeded.</p>
     <div class="callout">
       <strong>Round-trip friendly:</strong> PDFs exported from WorshipToolkit can be re-uploaded later. The app embeds the exact column layout in the file so your edits, chord positions, and structure come back intact &mdash; no need to keep a separate source file.
     </div>
@@ -241,9 +242,27 @@ Sephiroth!</pre>
 
   <section id="appearance" class="manual-section">
     <h2>10. Appearance &amp; accessibility</h2>
+    <p>Click the <strong>⚙️ Settings</strong> button in the app header to open the Settings panel. All display and export preferences live here and are remembered between visits.</p>
+    <h3>Appearance</h3>
     <ul>
-      <li><strong>Text size</strong> &mdash; use <strong>A-</strong> / <strong>A+</strong> in the header to scale the whole app's text up or down. Your choice is remembered for next time.</li>
-      <li><strong>Dark mode</strong> &mdash; click the 🌙 / ☀️ button in the header to switch themes. WorshipToolkit also follows your system's light/dark preference the first time you open it.</li>
+      <li><strong>Theme</strong> &mdash; toggle between Light and Dark mode. WorshipToolkit follows your system's preference the first time you open it.</li>
+      <li><strong>Accidentals</strong> &mdash; choose how chord and key names are spelled:
+        <ul>
+          <li><strong>♭ Flats</strong> &mdash; always use flat notation (Db, Eb, Ab, Bb, Gb) everywhere.</li>
+          <li><strong>Auto</strong> (default) &mdash; uses conventional key-context spelling: flat keys use flats, sharp keys use sharps.</li>
+          <li><strong>♯ Sharps</strong> &mdash; always use sharp notation (C#, D#, G#, A#, F#) everywhere.</li>
+        </ul>
+        The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.
+      </li>
+      <li><strong>Text size</strong> &mdash; use <strong>A&minus;</strong> / <strong>A+</strong> to scale the whole app's text up or down (13–32 px). Useful for large-screen presentations at the larger end.</li>
+    </ul>
+    <h3>Export</h3>
+    <ul>
+      <li><strong>PDF font size</strong> &mdash; sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.</li>
+    </ul>
+    <h3>Language</h3>
+    <ul>
+      <li><strong>Latin mode</strong> &mdash; flips every UI label to humorous Latin. You can also toggle it from the <strong>🏛️ Switch to Latin</strong> pill on this manual page.</li>
     </ul>
   </section>
 
