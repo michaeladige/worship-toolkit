@@ -82,18 +82,23 @@ export class ExportService {
     const pageH      = doc.internal.pageSize.getHeight();
     const colGap     = 20;
     const colWidth   = (pageW - margin * 2 - colGap) / 2;
+    const col2X      = Math.round(margin + colWidth + colGap); // right column x start
+
+    // Embed WT marker + column geometry so the parser can round-trip this PDF reliably
+    doc.setProperties({ subject: 'WorshipToolkit', keywords: String(col2X) });
 
     // Scale all PDF sizes proportionally to the user's font size preference (default 14px base)
     const scale = fontSize / 14;
 
     // Match the editor: Courier New monospace, same sizes as the CSS (0.82rem ≈ 8pt print)
-    const MONO      = 'courier';
-    const FONT_PT   = 8 * scale;
-    const CHAR_W    = FONT_PT * 0.6; // Courier: every char is exactly 60% of the point size
-    const CHORD_H   = 10 * scale;    // vertical space consumed by a chord row
-    const ANNOT_H   = 9  * scale;    // vertical space consumed by an annotation row
-    const LYRIC_H   = 11 * scale;    // vertical space consumed by a lyric row
-    const SEC_GAP   = 14 * scale;    // space before a section label
+    const MONO         = 'courier';
+    const FONT_PT      = 8 * scale;
+    const SEC_LABEL_PT = 9 * scale; // section labels slightly larger than body (9pt vs 8pt)
+    const CHAR_W       = FONT_PT * 0.6; // Courier: every char is exactly 60% of the point size
+    const CHORD_H      = 10 * scale;    // vertical space consumed by a chord row
+    const ANNOT_H      = 9  * scale;    // vertical space consumed by an annotation row
+    const LYRIC_H      = 11 * scale;    // vertical space consumed by a lyric row
+    const SEC_GAP      = 16 * scale;    // space before a section label (bumped for larger label)
 
     // CSS variable equivalents: --color-chord / --color-text / --color-muted
     const setChordColor  = () => doc.setTextColor(29,  78,  216); // #1d4ed8
@@ -154,9 +159,9 @@ export class ExportService {
         }
         ensureSpace(needed);
 
-        // Section label — uppercase, muted, small
+        // Section label — uppercase, bold, larger than body text
         doc.setFont(MONO, 'bold');
-        doc.setFontSize(6.5);
+        doc.setFontSize(SEC_LABEL_PT);
         setMutedColor();
         doc.text(section.name, colX(col), y);
         y += SEC_GAP;
@@ -223,6 +228,39 @@ export class ExportService {
     }
 
     doc.save('worship-set.pdf');
+  }
+
+  downloadSession(songs: ParsedSong[], name: string): void {
+    const payload = {
+      wtVersion: '1.1.0',
+      exportedAt: new Date().toISOString(),
+      sessionName: name,
+      songs,
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${name.replace(/[^a-z0-9]/gi, '-')}.wt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async parseSessionFile(file: File): Promise<{ name: string; songs: ParsedSong[] }> {
+    const text = await file.text();
+    let parsed: Record<string, unknown>;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      throw new Error('Invalid file — not valid JSON.');
+    }
+    if (!parsed['wtVersion'] || !Array.isArray(parsed['songs']) || parsed['songs'].length === 0) {
+      throw new Error('Invalid set file — missing required fields.');
+    }
+    return {
+      name: (parsed['sessionName'] as string) || file.name.replace(/\.wt$/i, ''),
+      songs: parsed['songs'] as ParsedSong[],
+    };
   }
 
   downloadMarkdown(songs: ParsedSong[]): void {

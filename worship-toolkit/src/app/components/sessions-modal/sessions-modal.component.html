@@ -1,0 +1,114 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-label="Saved Sets">
+
+    <div class="modal-header">
+      <h2 class="modal-title">{{ ui.t('Saved Sets', 'Collectiones Servatae') }}</h2>
+      <button
+        class="new-session-btn"
+        (click)="requestNewSession()"
+        [disabled]="sessionsSvc.currentSongs.length === 0"
+        title="Start a new set"
+      >{{ ui.t('+ New', '+ Novum') }}</button>
+      <button class="close-btn" (click)="sessionsSvc.closeModal()" title="Close">✕</button>
+    </div>
+
+    <!-- Current session info -->
+    <div class="current-session-row">
+      @if (activeSession) {
+        <span class="cs-name">{{ activeSession.name }}</span>
+        <span class="cs-meta">{{ ui.t('Modified', 'Mutatum') }} {{ formatDate(activeSession.savedAt) }}</span>
+      } @else {
+        <em class="cs-unsaved">{{ ui.t('Unsaved set', 'Collectio Non Servata') }}</em>
+      }
+    </div>
+
+    <!-- Save current set -->
+    <div class="save-row">
+      <input
+        class="save-input"
+        type="text"
+        [placeholder]="ui.t('Set name…', 'Nomen Collectionis…')"
+        [(ngModel)]="saveName"
+        (keydown.enter)="saveSession()"
+        maxlength="60"
+      />
+      <button class="save-btn" [disabled]="!saveName.trim()" (click)="saveSession()">{{ ui.t('Save', 'Servare') }}</button>
+    </div>
+
+    <!-- Import from file -->
+    <div class="import-row">
+      <label class="import-btn" title="Import a .wt set file from another device">
+        {{ ui.t('↑ Import .wt file', '↑ Importare Fasciculum .wt') }}
+        <input type="file" accept=".wt,.json" hidden (change)="onImportFile($event)" />
+      </label>
+      @if (importError) {
+        <span class="import-error">{{ importError }}</span>
+      }
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Session list -->
+    @if (sessions.length === 0) {
+      <p class="empty-msg">{{ ui.t('No saved sets yet. Enter a name above and click Save.', 'Nulla collectio servata. Inscribere nomen et premere Servare.') }}</p>
+    } @else {
+      <ul class="session-list">
+        @for (session of sessions; track session.id) {
+          <li class="session-item" [class.active-session]="session.id === sessionsSvc.activeSessionId">
+            <div class="session-info">
+              @if (renamingId === session.id) {
+                <input
+                  class="rename-input"
+                  type="text"
+                  [(ngModel)]="renameValue"
+                  (keydown.enter)="commitRename(session.id)"
+                  (keydown.escape)="cancelRename()"
+                  (blur)="commitRename(session.id)"
+                  maxlength="60"
+                  autofocus
+                />
+              } @else {
+                <span class="session-name">{{ session.name }}</span>
+              }
+              <span class="session-meta">
+                {{ ui.t('Modified', 'Mutatum') }} {{ formatDate(session.savedAt) }} · {{ session.songs.length }} {{ ui.t(session.songs.length !== 1 ? 'songs' : 'song', 'cantus') }}
+                @if (session.id === sessionsSvc.activeSessionId) {
+                  <span class="active-badge">{{ ui.t('active', 'activum') }}</span>
+                }
+              </span>
+            </div>
+            <div class="session-actions">
+              <button class="action-btn load-btn" (click)="loadSession(session)" title="Load this set">{{ ui.t('Load', 'Onerare') }}</button>
+              <button class="action-btn" (click)="startRename(session)" title="Rename">✎</button>
+              <button class="action-btn" (click)="exportSession(session)" title="Export as .wt file">↓</button>
+              <button class="action-btn delete-btn" (click)="deleteSession(session.id)" title="Delete">✕</button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+
+    <!-- New session confirmation panel -->
+    @if (showNewSessionConfirm) {
+      <div class="new-session-confirm">
+        <p class="confirm-text">{{ ui.t('You have unsaved work. Enter a name to keep it, or skip to discard.', 'Habes laborem non servatum. Inscribere nomen ut serves, vel omitte ut omittas.') }}</p>
+        <input
+          class="save-input"
+          type="text"
+          [placeholder]="ui.t('Set name (optional)…', 'Nomen (optionale)…')"
+          [(ngModel)]="newSessionSaveName"
+          (keydown.enter)="confirmNewSessionWithSave()"
+          maxlength="60"
+          autofocus
+        />
+        <div class="confirm-actions">
+          <button class="save-btn" (click)="confirmNewSessionWithSave()">
+            {{ newSessionSaveName.trim() ? ui.t('Save & New', 'Servare & Novum') : ui.t('Skip & New', 'Omittere & Novum') }}
+          </button>
+          <button class="cancel-btn" (click)="cancelNewSessionConfirm()">{{ ui.t('Cancel', 'Cancellare') }}</button>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

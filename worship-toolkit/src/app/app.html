@@ -1,45 +1,54 @@
 <div class="app-shell">
-  <!-- Persistent UI controls: font size + dark mode (always visible) -->
-  <div class="ui-controls">
-    <button
-      class="ui-ctrl-btn"
-      (click)="adjustFontSize(-1)"
-      [disabled]="fontSize <= fontSizes[0]"
-      title="Smaller text"
-    >A-</button>
-    <button
-      class="ui-ctrl-btn"
-      (click)="adjustFontSize(1)"
-      [disabled]="fontSize >= fontSizes[fontSizes.length - 1]"
-      title="Larger text"
-    >A+</button>
-    <button
-      class="ui-ctrl-btn theme-toggle"
-      (click)="toggleTheme()"
-      [title]="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-    >{{ theme === 'dark' ? '☀️' : '🌙' }}</button>
+  <!-- Slim app header: manual link, font size, dark mode, always in flow (never overlaps toolbar) -->
+  <div class="app-header">
+    <a class="brand" routerLink="/">WorshipToolkit <span class="version-tag">v{{ version }}</span></a>
+
+    <div class="ui-controls">
+      <a
+        class="ui-ctrl-btn manual-link"
+        routerLink="/manual"
+        routerLinkActive="active"
+        title="Open the user manual"
+      >📖<span class="ctrl-label"> {{ ui.t('Manual', 'Libellus') }}</span></a>
+      <button
+        class="ui-ctrl-btn new-set-btn"
+        (click)="onNewSet()"
+        [disabled]="sessionsSvc.currentSongs.length === 0"
+        title="Start a new set"
+      >➕<span class="ctrl-label"> {{ ui.t('New', 'Novum') }}</span></button>
+      <button
+        class="ui-ctrl-btn sessions-btn"
+        (click)="sessionsSvc.openModal()"
+        title="Saved sets"
+      >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set', 'Collectio Innominata') }}</span> ▾</button>
+      <span class="ui-label">Text size</span>
+      <button
+        class="ui-ctrl-btn"
+        (click)="ui.adjustFontSize(-1)"
+        [disabled]="ui.fontSize <= ui.fontSizes[0]"
+        title="Smaller text"
+      >A-</button>
+      <button
+        class="ui-ctrl-btn"
+        (click)="ui.adjustFontSize(1)"
+        [disabled]="ui.fontSize >= ui.fontSizes[ui.fontSizes.length - 1]"
+        title="Larger text"
+      >A+</button>
+      <button
+        class="ui-ctrl-btn theme-toggle"
+        (click)="ui.toggleTheme()"
+        [title]="ui.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      >{{ ui.theme === 'dark' ? '☀️' : '🌙' }}</button>
+    </div>
   </div>
 
-  @if (songs.length === 0) {
-    <app-upload (songsLoaded)="onSongsLoaded($event)" />
-  } @else {
-    <div class="workspace">
-      <app-song-list
-        [songs]="songs"
-        [selectedIndex]="selectedIndex"
-        (selectSong)="onSelectSong($event)"
-        (uploadNew)="onUploadNew()"
-      />
-      <app-song-editor
-        [songs]="songs"
-        [selectedIndex]="selectedIndex"
-        [canUndo]="canUndo"
-        [canRedo]="canRedo"
-        [fontSize]="fontSize"
-        (songsChange)="onSongsChange($event)"
-        (undo)="undo()"
-        (redo)="redo()"
-      />
-    </div>
+  <router-outlet />
+
+  @if (sessionsSvc.showModal) {
+    <app-sessions-modal />
+  }
+
+  @if (ui.toastMsg) {
+    <div class="latin-toast">{{ ui.toastMsg }}</div>
   }
 </div>

@@ -1,0 +1,458 @@
+<div class="manual">
+  <header class="manual-hero">
+    <a class="back-link" routerLink="/">&larr; Back to WorshipToolkit</a>
+    <h1>User Manual</h1>
+    <p class="subtitle">
+      Everything you need to upload, edit, transpose, and share chord charts with your worship team.
+    </p>
+    <button class="latin-toggle-pill" (click)="ui.toggleLatinMode()">
+      🏛️ {{ ui.latinMode ? 'Revertere ad Anglicam' : 'Switch to Latin' }}
+    </button>
+  </header>
+
+  @if (ui.latinMode) {
+    <div class="secret-cantus">
+      <details>
+        <summary>🏛️ Cantus Secretus</summary>
+        <div class="cantus-content">
+          <p class="cantus-title"><em>Unus Angelus Alae</em></p>
+          <p class="cantus-subtitle">Nobuo Uematsu · MCMXCVII</p>
+          <pre class="cantus-lyrics">Estuans interius
+Ira vehementi
+Estuans interius
+Ira vehementi
+Sephiroth
+Sephiroth
+
+Noli manere
+Noli manere
+In memoria
+Noli manere
+Noli manere
+In memoria
+Sephiroth
+
+Ille iterum veniet
+Ille iterum veniet
+
+Et igni et ferro
+Et igni et ferro
+
+Fac me vivere
+Fac me fugere
+Fac me volare super aethera
+Fac me volare
+
+Sephiroth!
+
+Veniet! Veniet! Veniet! Veniet!
+Sephiroth!</pre>
+        </div>
+      </details>
+    </div>
+  }
+
+  <nav class="toc" aria-label="Table of contents">
+    <span class="toc-label">On this page</span>
+    <ul>
+      <li><a routerLink="." fragment="getting-started">1. Getting started</a></li>
+      <li><a routerLink="." fragment="your-set">2. Your song set</a></li>
+      <li><a routerLink="." fragment="editing">3. Editing chords &amp; lyrics</a></li>
+      <li><a routerLink="." fragment="sections">4. Working with sections</a></li>
+      <li><a routerLink="." fragment="keys">5. Keys &amp; transposition</a></li>
+      <li><a routerLink="." fragment="notation">6. Bass notes &amp; Nashville numbers</a></li>
+      <li><a routerLink="." fragment="history">7. Undo &amp; redo</a></li>
+      <li><a routerLink="." fragment="export">8. Exporting &amp; sharing</a></li>
+      <li><a routerLink="." fragment="sessions">9. Saved sets &amp; autosave</a></li>
+      <li><a routerLink="." fragment="appearance">10. Appearance &amp; accessibility</a></li>
+      <li><a routerLink="." fragment="tips">11. Tips, autosave &amp; troubleshooting</a></li>
+      <li><a routerLink="." fragment="changelog">12. What's new</a></li>
+    </ul>
+  </nav>
+
+  <section id="getting-started" class="manual-section">
+    <h2>1. Getting started</h2>
+    <p>
+      WorshipToolkit turns a SongSelect chord chart PDF into an editable, transposable chart you can
+      reshape and export. Everything happens in your browser &mdash; nothing is uploaded to a server.
+    </p>
+    <ol>
+      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, click <strong>Choose File</strong> to pick one, click <strong>✏️ Start from scratch</strong> to create a blank song, or click <strong>📂 Load set file</strong> to resume from a previously exported <code>.wt</code> file.</li>
+      <li>The app parses the PDF automatically. Multi-song PDFs are split into individual songs.</li>
+      <li>Two-column layouts and superscript chord extensions (e.g. <code>Fm⁷</code>) are recognized and normalized automatically (e.g. to <code>Fm7</code>).</li>
+      <li>Direction notes such as <em>To Tag</em> or <em>To Interlude</em>, and bar notation like <code>| Am7 | G |</code>, are preserved as italic annotations under the relevant line.</li>
+    </ol>
+    <div class="callout">
+      <strong>Only PDF files are supported.</strong> If nothing is detected, double-check that the file is a SongSelect-style chord chart PDF, not a scanned image.
+    </div>
+  </section>
+
+  <section id="your-set" class="manual-section">
+    <h2>2. Your song set</h2>
+    <p>
+      Once a PDF is loaded (or you start from scratch), every song appears in the <strong>Songs in Set</strong> list on
+      the left (on mobile, a horizontal scrollable tab bar at the top).
+    </p>
+    <ul>
+      <li>Click any song in the list to switch the editor to that song.</li>
+      <li>The current key for each song is shown next to its title.</li>
+      <li><strong>Rename a song title</strong> &mdash; click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press <kbd>Enter</kbd> to save or <kbd>Esc</kbd> to cancel. This is especially useful for songs added as blank "New Song" entries.</li>
+      <li><strong>Remove a song</strong> &mdash; hover over a song in the list and click the <strong>✕</strong> button that appears on the right. Removing the last song returns you to the upload screen.</li>
+      <li><strong>Collapse the sidebar</strong> &mdash; on desktop and tablet, click the <strong>◄</strong> button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click <strong>►</strong> to expand it again. On mobile, tap <strong>Songs in Set ▼</strong> to collapse the song bar and free up vertical space; tap again (<strong>Songs in Set ▲</strong>) to expand it.</li>
+    </ul>
+    <h3>Adding songs to an existing set</h3>
+    <p>On desktop and tablet, <strong>+ New Song</strong> and <strong>+ Import PDF</strong> appear directly at the end of the song list (below the last song). On mobile, tap the <strong>+</strong> button at the end of the tab strip to reveal them:</p>
+    <ul>
+      <li><strong>+ New Song</strong> &mdash; adds a blank song to the bottom of the list. Give it a name, add sections, and build it from scratch.</li>
+      <li><strong>+ Import PDF</strong> &mdash; appends songs from another PDF <em>without</em> replacing what's already in your set. Great for building a multi-song set from separate files.</li>
+      <li>If any imported song title already exists in the set, a warning appears. You can choose to <strong>Add anyway</strong> (add all including duplicates) or <strong>Skip duplicates</strong> (only import songs with new titles).</li>
+    </ul>
+    <h3>Reordering songs</h3>
+    <ul>
+      <li>Drag the <strong>≡</strong> handle on any song row up or down to reorder the list. This also works on touch screens &mdash; press and hold the handle, then drag.</li>
+      <li>Reordering is undoable with <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd>.</li>
+    </ul>
+  </section>
+
+  <section id="editing" class="manual-section">
+    <h2>3. Editing chords &amp; lyrics</h2>
+    <p>The editor mirrors the printed layout: chords float above the lyric line they belong to.</p>
+    <h3>Chords</h3>
+    <ul>
+      <li><strong>Rename a chord</strong> &mdash; click it, type the new chord, then press <kbd>Enter</kbd> (or click elsewhere) to save. Press <kbd>Esc</kbd> to cancel.</li>
+      <li><strong>Reposition a chord</strong> &mdash; click and drag it left or right to line it up exactly where it falls in the lyric.</li>
+      <li><strong>Add a chord</strong> &mdash; use the <strong>+</strong> button in the left gutter of a line, or click <strong>+ chord</strong> on an empty line. New chords start as <code>C</code> and open for editing immediately.</li>
+      <li><strong>Remove a chord</strong> &mdash; hover over it and click the small <strong>×</strong> that appears.</li>
+    </ul>
+    <h3>Lyrics &amp; lines</h3>
+    <ul>
+      <li>Click directly into any lyric line to edit the text in place.</li>
+      <li>Add a new line under a section with the <strong>+ Line</strong> button in that section's header.</li>
+      <li>Remove a line using the <strong>×</strong> button in its left gutter. A section always keeps at least one line.</li>
+    </ul>
+    <h3>Tempo &amp; time signature</h3>
+    <ul>
+      <li><strong>Edit tempo</strong> &mdash; click the <strong>BPM</strong> chip in the toolbar, type a new number, then press <kbd>Enter</kbd> (or click elsewhere) to save. Clearing it shows a <strong>+ BPM</strong> placeholder you can click to set a new value. Press <kbd>Esc</kbd> to cancel.</li>
+      <li><strong>Edit time signature</strong> &mdash; click the time signature chip (e.g. <code>4/4</code>) next to the BPM chip, type a new signature such as <code>3/4</code> or <code>6/8</code>, then press <kbd>Enter</kbd> to save. An invalid entry reverts to the previous value. Press <kbd>Esc</kbd> to cancel.</li>
+    </ul>
+    <h3>Annotations</h3>
+    <ul>
+      <li><strong>Add a note</strong> &mdash; on a lyric line with no annotation, hover it and click <strong>+ note</strong>, type a direction note or bar notation (e.g. <code>(To Tag)</code> or <code>| Am7 | G |</code>), then press <kbd>Enter</kbd> to save.</li>
+      <li><strong>Edit a note</strong> &mdash; click an existing annotation to edit it in place.</li>
+      <li><strong>Remove a note</strong> &mdash; while editing, click the <strong>×</strong> next to the annotation input.</li>
+      <li>Annotations are stored untransposed and transposed only for display, so bar notation like <code>| Am7 | G |</code> stays correct no matter how many times you transpose the song.</li>
+    </ul>
+  </section>
+
+  <section id="sections" class="manual-section">
+    <h2>4. Working with sections</h2>
+    <ul>
+      <li><strong>Add a section</strong> &mdash; below the song, use the quick-pick buttons (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) or type a custom name and click <strong>Add</strong> / press <kbd>Enter</kbd>.</li>
+      <li><strong>Reorder sections</strong> &mdash; grab the <strong>⠿</strong> drag handle in a section's header and drop it where you want it.</li>
+      <li><strong>Remove a section</strong> &mdash; click the <strong>✕</strong> button in the section header.</li>
+    </ul>
+  </section>
+
+  <section id="keys" class="manual-section">
+    <h2>5. Keys &amp; transposition</h2>
+    <ul>
+      <li><strong>Step transpose</strong> &mdash; use the <strong>▲</strong> / <strong>▼</strong> buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.</li>
+      <li><strong>Jump to a key</strong> &mdash; pick any key directly from the <strong>Jump to</strong> dropdown.</li>
+      <li><strong>Reset</strong> &mdash; once you've transposed, a <strong>Reset</strong> button appears showing the original key; click it to snap straight back.</li>
+      <li>Whenever the song is transposed, a banner above the chart confirms the change, e.g. <em>Transposed from G &rarr; A (+2 semitones)</em>.</li>
+    </ul>
+  </section>
+
+  <section id="notation" class="manual-section">
+    <h2>6. Bass notes &amp; Nashville numbers</h2>
+    <ul>
+      <li><strong>🎹 Bass Notes</strong> &mdash; toggles every chord down to just its root/bass note (e.g. <code>D/F♯</code> &rarr; <code>D</code>). Handy for simplified or beginner charts.</li>
+      <li><strong>1 2 3 Nashville</strong> &mdash; converts every chord to a scale-degree number (1&ndash;7, with ♭/♯ prefixes for accidentals), relative to the song's current key. Useful for ear-trained players and key-independent charts.</li>
+      <li>Both toggles can be combined with transposition, and both are respected by every export.</li>
+    </ul>
+  </section>
+
+  <section id="history" class="manual-section">
+    <h2>7. Undo &amp; redo</h2>
+    <p>Every edit &mdash; chord changes, lyric edits, section moves, additions and removals &mdash; can be undone.</p>
+    <ul>
+      <li>Use the <strong>↩ Undo</strong> / <strong>↪ Redo</strong> buttons in the toolbar.</li>
+      <li>Or use the keyboard: <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd> to undo, <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> (or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Y</kbd>) to redo.</li>
+      <li>History holds up to 50 steps per editing session, and is cleared whenever you load a new PDF.</li>
+    </ul>
+  </section>
+
+  <section id="export" class="manual-section">
+    <h2>8. Exporting &amp; sharing</h2>
+    <p>Export buttons live in the song toolbar:</p>
+    <ul>
+      <li><strong>↓ Song PDF</strong> &mdash; exports just the song you're currently viewing as a clean, two-column, monospace chord chart PDF.</li>
+      <li><strong>↓ All PDF</strong> &mdash; exports every song in the set into a single PDF, in list order.</li>
+      <li><strong>↓ Markdown</strong> &mdash; exports the full set as a <code>.md</code> file, with chord rows placed above each lyric line, viewable in any Markdown reader.</li>
+    </ul>
+    <p>All exports respect your current transposition, the Bass Notes toggle, and the Nashville toggle, and include any direction/bar-notation annotations, correctly transposed.</p>
+    <div class="callout">
+      <strong>Round-trip friendly:</strong> PDFs exported from WorshipToolkit can be re-uploaded later. The app embeds the exact column layout in the file so your edits, chord positions, and structure come back intact &mdash; no need to keep a separate source file.
+    </div>
+  </section>
+
+  <section id="sessions" class="manual-section">
+    <h2>9. Saved sets &amp; autosave</h2>
+    <p>
+      A <em>set</em> is your current collection of songs. Saving a set lets you snapshot it and return to it later &mdash; even if you close the browser or start working on a different set in the meantime.
+    </p>
+    <p>The header shows the active set's name (e.g. <strong>💾 Sunday Service ▾</strong>), or <strong>💾 Untitled set ▾</strong> if nothing is saved yet. Click it to open the <strong>Saved Sets</strong> panel. At the top of the panel, the current set name and last-modified time are shown — or <em>Unsaved set</em> if no set is active yet.</p>
+    <h3>Starting a new set</h3>
+    <ul>
+      <li>Click <strong>➕ New</strong> in the header (or <strong>+ New</strong> inside the Saved Sets panel) to clear the workspace and start fresh. On mobile the header button shows just the <strong>➕</strong> icon.</li>
+      <li>If you're currently in a named set (it's already autosaved), the workspace clears immediately.</li>
+      <li>If you have unsaved work, a prompt appears: enter a name to save it first, or click <strong>Skip &amp; New</strong> to discard and continue.</li>
+    </ul>
+    <h3>Saving a set</h3>
+    <ul>
+      <li>Type a name for your set (e.g. <em>Sunday 29 June</em>) in the input at the top of the panel and click <strong>Save</strong> (or press <kbd>Enter</kbd>).</li>
+      <li>If you save again with the same name, the existing set is updated in place rather than duplicated.</li>
+      <li>Up to 20 sets can be stored. If you exceed this limit, the oldest set is removed.</li>
+    </ul>
+    <h3>Autosave to the active set</h3>
+    <ul>
+      <li>Once a set is saved or loaded, it becomes the <em>active set</em>. Every edit you make &mdash; chord changes, transpositions, section moves &mdash; is automatically saved back to that set in real time. No need to keep clicking Save.</li>
+      <li>The active set is highlighted with an <strong>active</strong> badge in the panel, and its name appears in the header button.</li>
+      <li>If you reload the page, the app restores both your songs and the active set so you can continue right where you left off.</li>
+    </ul>
+    <h3>Loading a set</h3>
+    <ul>
+      <li>Each saved set shows its name, save date, and song count. Click <strong>Load</strong> to restore it &mdash; the editor updates immediately and that set becomes the new active set.</li>
+    </ul>
+    <h3>Managing sets</h3>
+    <ul>
+      <li><strong>Rename</strong> &mdash; click the pencil icon (✎) on any set to rename it inline, then press <kbd>Enter</kbd> or click elsewhere.</li>
+      <li><strong>Delete</strong> &mdash; click the ✕ button to permanently remove a set from storage.</li>
+      <li>Sets are stored only in <em>this browser</em> on <em>this device</em>. Use export/import (below) to move them to another device.</li>
+    </ul>
+    <h3>Exporting and importing set files</h3>
+    <ul>
+      <li><strong>Export (↓)</strong> &mdash; click the download button on any saved set to save it as a <code>.wt</code> file. This file contains the full song data including all edits, transpositions, and chord positions.</li>
+      <li><strong>Import from the Saved Sets panel</strong> &mdash; click <strong>↑ Import .wt file</strong> at the top of the panel, pick a previously exported <code>.wt</code> file, and the set loads into the editor immediately. It's also saved to your set list so you can return to it later.</li>
+      <li><strong>Import from the upload page</strong> &mdash; on the landing/upload page, click <strong>📂 Load set file</strong> to open a <code>.wt</code> file directly without going through the panel.</li>
+      <li><code>.wt</code> files are plain JSON and can be shared via email, cloud drive, AirDrop, or any other file-transfer method.</li>
+    </ul>
+  </section>
+
+  <section id="appearance" class="manual-section">
+    <h2>10. Appearance &amp; accessibility</h2>
+    <ul>
+      <li><strong>Text size</strong> &mdash; use <strong>A-</strong> / <strong>A+</strong> in the header to scale the whole app's text up or down. Your choice is remembered for next time.</li>
+      <li><strong>Dark mode</strong> &mdash; click the 🌙 / ☀️ button in the header to switch themes. WorshipToolkit also follows your system's light/dark preference the first time you open it.</li>
+    </ul>
+  </section>
+
+  <section id="tips" class="manual-section">
+    <h2>11. Tips, autosave &amp; troubleshooting</h2>
+    <ul>
+      <li><strong>Autosave</strong> &mdash; your set is continuously saved to this browser's local storage. Refreshing or closing the tab won't lose your work; only starting a new set via <strong>➕ New</strong> in the header clears the workspace.</li>
+      <li><strong>Everything is local</strong> &mdash; no song data leaves your device. Clearing your browser's site data will remove your saved sets.</li>
+      <li><strong>Nothing parsed from my PDF?</strong> Make sure it's an actual SongSelect chord chart export, not a scanned/photographed image &mdash; the parser reads text, not pixels.</li>
+      <li><strong>Chord didn't land where I dragged it?</strong> Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.</li>
+      <li><strong>Want a clean slate for one song only?</strong> You can remove and re-add sections/lines rather than starting a whole new upload.</li>
+    </ul>
+  </section>
+
+  <section id="changelog" class="manual-section">
+    <h2>12. What's new <span class="version-pill">v{{ version }}</span></h2>
+    <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
+
+    <details class="changelog-entry" open>
+      <summary><h3>1.1.12</h3></summary>
+      <ul>
+        <li><strong>Latin Easter Egg</strong> &mdash; hidden in this manual: a <strong>🏛️ Switch to Latin</strong> pill button flips every UI label in the app to humorous Latin. A toast confirms activation. Latin mode is saved per-set and restored when that set is loaded.</li>
+        <li><strong>Cantus Secretus</strong> &mdash; activate Latin mode to unlock a hidden collapsible section on this page containing the full Latin lyrics of <em>Unus Angelus Alae</em> (Nobuo Uematsu, 1997). 🏛️</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.11</h3></summary>
+      <ul>
+        <li><strong>Easier to find where sets live</strong> &mdash; the header now shows the name of the set you're working in (e.g. <strong>💾 Sunday Service ▾</strong>, or <strong>💾 Untitled set ▾</strong> when nothing is saved) and a dedicated <strong>➕ New</strong> button starts a fresh set in one click. On mobile these collapse to compact icons to save space.</li>
+        <li><strong>Consistent wording</strong> &mdash; what used to be called a "session" is now called a <strong>set</strong> throughout the app, matching the "Songs in Set" list.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.10</h3></summary>
+      <ul>
+        <li><strong>Songs without a Tempo field now split correctly</strong> &mdash; PDFs where a song's metadata line omits the tempo (e.g. <code>Key - D | Time - 4/4</code>) were not recognised as a new song boundary, causing subsequent pages to be merged into the previous song. The meta-line pattern now accepts tempo as optional.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.9</h3></summary>
+      <ul>
+        <li><strong>PDF upload and append-PDF now render immediately</strong> &mdash; the same change-detection gap fixed in 1.1.8 for Sessions-panel import also affected uploading a PDF from the landing page, loading a <code>.wt</code> file via "📂 Load session file," and appending a PDF via "+ Import PDF" inside the editor. All three now render the editor instantly instead of requiring an extra tap or click elsewhere.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.8</h3></summary>
+      <ul>
+        <li><strong>Session file import now loads immediately</strong> &mdash; importing a <code>.wt</code> file from the Sessions panel now navigates to the editor instantly; previously the view would not update until you tapped or clicked elsewhere.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.7</h3></summary>
+      <ul>
+        <li><strong>PDF import fixed on iOS and Android</strong> &mdash; uploading a PDF no longer freezes on the "Parsing PDF…" spinner. Two root causes were fixed: PDF.js was downgraded from v5 to v4 (v5's streaming text-extraction API hangs indefinitely inside iOS Safari web workers), and the PDF.js worker script is now fetched and inlined in a self-contained Blob URL, removing a hidden cross-origin request that was silently failing on GitHub Pages and broke Android.</li>
+        <li><strong>TURNAROUND recognized as a section</strong> &mdash; <code>TURNAROUND</code> is now parsed as a section header (alongside VERSE, CHORUS, BRIDGE, etc.) rather than treated as lyric text.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.6</h3></summary>
+      <ul>
+        <li><strong>Add-songs UI redesigned</strong> &mdash; on desktop and tablet, <strong>+ New Song</strong> and <strong>+ Import PDF</strong> now appear directly as the last item in the song list — no toggle needed. On mobile, a compact <strong>+</strong> button at the end of the tab strip expands a row below as before. The options always sit right after the last song instead of floating at the sidebar bottom.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.5</h3></summary>
+      <ul>
+        <li><strong>Mobile "Songs in Set" left padding</strong> &mdash; the collapsed song bar text was flush against the left edge; corrected horizontal padding is now applied.</li>
+        <li><strong>Song tabs now show 2 rows on mobile</strong> &mdash; each song tab shows the drag handle, title, and ✕ button on the first row, with the key badge below. Previously all items were stacked in 3 separate rows.</li>
+        <li><strong>Drag-to-reorder on mobile</strong> &mdash; the <strong>≡</strong> drag handle is now visible in the mobile tab strip. Touch and hold the handle, then drag to reorder songs.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.4</h3></summary>
+      <ul>
+        <li><strong>Mobile toggle consistent in both states</strong> &mdash; "Songs in Set" label now appears in both expanded (<strong>Songs in Set ▲</strong>) and collapsed (<strong>Songs in Set ▼</strong>) states. Previously only the collapsed state showed the label.</li>
+        <li><strong>Mobile toggle spacing fixed</strong> &mdash; the text and arrow are now consistently spaced in both states; the collapsed state no longer spreads them to opposite ends of the bar.</li>
+        <li><strong>"+" button moved to end of song list</strong> &mdash; the add-songs toggle now sits below the last song in the sidebar (end of the horizontal tab strip on mobile), making it intuitive to find.</li>
+        <li><strong>Append menu opens directly below "+"</strong> &mdash; <strong>+ New Song</strong> and <strong>+ Import PDF</strong> now expand immediately below the <strong>+</strong> button, not at the far bottom of the sidebar.</li>
+        <li><strong>Append options slim and centered on mobile</strong> &mdash; the expanded append row is compact and both options are vertically centered so the tab bar does not grow excessively tall.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.3</h3></summary>
+      <ul>
+        <li><strong>Removed "↺ New PDF" button</strong> &mdash; replaced by the <strong>+ New</strong> action in the Sessions panel, eliminating redundancy. Use <strong>💾 Sessions → + New</strong> to clear the workspace and start a fresh set.</li>
+        <li><strong>"+" add-songs menu in the sidebar</strong> &mdash; a <strong>+</strong> button in the sidebar header expands to reveal <strong>+ New Song</strong> and <strong>+ Import PDF</strong>, keeping the song list clean when not in use. The button rotates to × when open; collapses automatically when you collapse the sidebar.</li>
+        <li><strong>Current session info in Sessions panel</strong> &mdash; the top of the Sessions panel now shows the active session name and last-modified time, or <em>Unsaved session</em> in italic when no session is active. The header button always reads <strong>💾 Sessions</strong>.</li>
+        <li><strong>Last-modified timestamp on session list items</strong> &mdash; each saved session now shows "Modified [date &amp; time]" so you can tell at a glance when each one was last edited.</li>
+        <li><strong>Collapsible sidebar (desktop/tablet)</strong> &mdash; click ◄ to collapse the sidebar to a thin strip; click ► to expand. Gives the editor more horizontal space when you don't need the song list.</li>
+        <li><strong>Collapsible song bar (mobile)</strong> &mdash; the tab bar now shows <strong>Songs in Set ▼</strong> when collapsed (tap to expand) and a compact <strong>▲</strong> button when expanded (tap to collapse), freeing vertical space.</li>
+        <li><strong>Fix: "+ New" disabled on empty workspace</strong> &mdash; the "+ New" button is greyed out when no songs are loaded, preventing a misleading "unsaved work" prompt on a blank canvas.</li>
+        <li><strong>Collapsible changelog entries</strong> &mdash; version entries on this page now open and close on click; only the latest entry is expanded by default.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.2</h3></summary>
+      <ul>
+        <li><strong>Collapsible sidebar on desktop &amp; tablet</strong> &mdash; click ◄ in the sidebar header to collapse it to a thin strip and give more space to the editor. Click ► to expand it again.</li>
+        <li><strong>Collapsible song bar on mobile</strong> &mdash; tap <strong>Song List ▲</strong> in the tab bar to collapse it and reclaim vertical screen space. Tap <strong>Song List ▼</strong> to bring it back.</li>
+        <li><strong>Session-aware New PDF warning</strong> &mdash; clicking ↺ New PDF now prompts differently based on context: if a named session is active (already autosaved) it simply confirms; if there is unsaved work it offers to name and save it first.</li>
+        <li><strong>Fix: "+ New" button disabled on empty workspace</strong> &mdash; the "+ New" button in the Sessions panel is now greyed out when there are no songs loaded, preventing a confusing "unsaved work" prompt from appearing on a blank canvas.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.1</h3></summary>
+      <ul>
+        <li><strong>Inline song title editing</strong> &mdash; click the song title in the editor toolbar to rename it. Press <kbd>Enter</kbd> to confirm or <kbd>Esc</kbd> to cancel.</li>
+        <li><strong>Remove songs from the list</strong> &mdash; hover a song in the sidebar and click ✕ to delete it.</li>
+        <li><strong>Load session file from the upload page</strong> &mdash; the landing page now has a <strong>📂 Load session file</strong> button for opening a <code>.wt</code> file without going through the Sessions panel.</li>
+        <li><strong>Autosave to active session</strong> &mdash; once a session is named, every edit automatically saves to it. The Sessions button in the header shows the current session name.</li>
+        <li><strong>New Session button</strong> &mdash; "+ New" in the Sessions panel clears the workspace; prompts to save first if there is unsaved work.</li>
+        <li><strong>New PDF confirmation modal</strong> &mdash; replaced the inline confirmation (which overflowed on larger screens) with a proper centered modal dialog.</li>
+        <li><strong>Cleaner editor view</strong> &mdash; the "add annotation" prompt is hidden by default and appears only when you hover a lyric line, removing visual gaps between chords and lyrics.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.1.0</h3></summary>
+      <ul>
+        <li><strong>Start from scratch</strong> &mdash; create a blank song directly from the upload page without uploading a PDF.</li>
+        <li><strong>Add &amp; import songs</strong> &mdash; append individual blank songs or import from a second PDF without replacing your current set. Duplicate title detection warns before adding.</li>
+        <li><strong>Reorder songs</strong> &mdash; drag the ≡ handle in the song list to reorder songs; works on touch screens too.</li>
+        <li><strong>Saved sessions</strong> &mdash; snapshot any set under a name and restore it later. Up to 20 sessions stored locally per browser.</li>
+        <li><strong>Session export &amp; import</strong> &mdash; export any session as a <code>.wt</code> file and re-import it on another device to continue editing.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.0.7</h3></summary>
+      <ul>
+        <li>Fix the table of contents on this page redirecting to the landing page instead of scrolling to the right section.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.0.6</h3></summary>
+      <ul>
+        <li>Make tempo editable — click the BPM chip to set or clear it.</li>
+        <li>Make the time signature pill editable — click it to change it (e.g. <code>3/4</code> &rarr; <code>4/4</code>).</li>
+        <li>Add, edit, and remove annotations (direction notes, bar notation) on any lyric line.</li>
+        <li>Fix inline-edit inputs occasionally losing focus reliability after repeated use.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.0.5</h3></summary>
+      <ul>
+        <li>Show the app version in the header so the running build is always visible.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.0.4</h3></summary>
+      <ul>
+        <li>Fix the upload/landing page not scrolling when its content overflows a short viewport.</li>
+        <li>Make chord drag-to-reposition work reliably on mobile and tablet via Pointer Events.</li>
+        <li>Fix a bug where finishing a chord drag could immediately reopen the inline chord editor.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.0.3</h3></summary>
+      <ul>
+        <li>Add this user manual, linked from the header.</li>
+        <li>Refresh the landing page with feature cards for Nashville numbers and undo/redo/dark mode/font size.</li>
+        <li>Add a custom block-chord-notation favicon.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.0.2</h3></summary>
+      <ul>
+        <li>Add undo/redo history (up to 50 steps) with toolbar buttons and keyboard shortcuts.</li>
+        <li>Add dark mode and adjustable text size, remembered between sessions.</li>
+        <li>Add round-trip re-import — PDFs exported by WorshipToolkit parse back exactly as left.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.0.1</h3></summary>
+      <ul>
+        <li>Add session persistence, section add/remove/drag-reorder, and chord drag-to-reposition.</li>
+        <li>Add the Nashville Number System notation toggle.</li>
+        <li>Add a responsive mobile/tablet layout.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.0.0</h3></summary>
+      <ul>
+        <li>Initial release: upload and parse SongSelect PDF chord charts, including two-column layouts and superscript chord extensions.</li>
+        <li>Inline chord editing and transposition.</li>
+        <li>Export to PDF and Markdown.</li>
+      </ul>
+    </details>
+  </section>
+
+  <footer class="manual-footer">
+    <a class="back-link" routerLink="/">&larr; Back to WorshipToolkit</a>
+  </footer>
+</div>

@@ -1,33 +1,84 @@
 <div class="song-list">
   <div class="list-header">
-    <h3>Songs in Set</h3>
+    <!-- Mobile-only: always shows Songs in Set label + directional arrow -->
+    <button
+      class="mobile-collapse-btn"
+      (click)="toggleCollapse.emit()"
+      [title]="collapsed ? 'Expand song list' : 'Collapse song list'"
+    >
+      <span>{{ ui.t('Songs in Set', 'Cantus in Collectione') }}</span>
+      <span>{{ collapsed ? '▼' : '▲' }}</span>
+    </button>
 
-    <div class="new-pdf-area">
-      @if (!confirmingUpload) {
-        <button class="new-btn" (click)="requestUploadNew()" title="Replace current set with a new PDF">
-          ↺ New PDF
-        </button>
-      } @else {
-        <div class="upload-confirm">
-          <span class="confirm-warning">Replace set? All edits will be lost.</span>
-          <div class="confirm-actions">
-            <button class="confirm-yes-btn" (click)="confirmUploadNew()">Yes, replace</button>
-            <button class="confirm-cancel-btn" (click)="cancelUploadNew()">Cancel</button>
-          </div>
-        </div>
-      }
-    </div>
+    @if (!collapsed) {
+      <h3>{{ ui.t('Songs in Set', 'Cantus in Collectione') }}</h3>
+    }
+    <button
+      class="collapse-btn"
+      (click)="toggleCollapse.emit()"
+      [title]="collapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+    >{{ collapsed ? '►' : '◄' }}</button>
   </div>
 
-  <ul>
-    @for (song of songs; track song.id; let i = $index) {
-      <li
-        [class.active]="i === selectedIndex"
-        (click)="selectSong.emit(i)"
-      >
-        <span class="song-title">{{ song.title }}</span>
-        <span class="song-key">{{ effectiveKey(song) }}</span>
+  @if (!collapsed) {
+    <ul cdkDropList (cdkDropListDropped)="dropSong($event)">
+      @for (song of songs; track song.id; let i = $index) {
+        <li
+          cdkDrag
+          [class.active]="i === selectedIndex"
+          (click)="selectSong.emit(i)"
+        >
+          <span cdkDragHandle class="drag-handle" title="Drag to reorder">≡</span>
+          <span class="song-title">{{ song.title }}</span>
+          <span class="song-key">{{ effectiveKey(song) }}</span>
+          <button class="remove-song-btn" (click)="$event.stopPropagation(); removeSong.emit(i)" title="Remove song">✕</button>
+        </li>
+      }
+      <!-- Non-draggable add-songs item: shows buttons directly on PC/tablet, + toggle on mobile -->
+      <li class="add-song-item" (click)="$event.stopPropagation()">
+        <!-- PC/tablet: show + New Song and + Import PDF directly -->
+        <button class="append-btn add-song-pc" (click)="onAddBlankSong()" title="Add a blank song">{{ ui.t('+ New Song', '+ Cantus Novus') }}</button>
+        <label class="append-btn add-song-pc" [class.loading]="isAppending" title="Append songs from a PDF">
+          {{ isAppending ? ui.t('Importing…', 'Importando…') : ui.t('+ Import PDF', '+ Importare PDF') }}
+          <input type="file" accept=".pdf" hidden (change)="onAppendFileChange($event)" />
+        </label>
+        <!-- Mobile only: + toggle -->
+        <button
+          class="add-btn add-song-mobile"
+          [class.open]="appendMenuOpen"
+          (click)="appendMenuOpen = !appendMenuOpen"
+          title="Add songs"
+        >+</button>
       </li>
+    </ul>
+
+    <!-- Mobile-only expand row — appears below the tab strip when + is tapped -->
+    @if (appendMenuOpen) {
+      <div class="append-row">
+        <button class="append-btn" (click)="onAddBlankSong()" title="Add a blank song">{{ ui.t('+ New Song', '+ Cantus Novus') }}</button>
+        <label class="append-btn" [class.loading]="isAppending" title="Append songs from a PDF">
+          {{ isAppending ? ui.t('Importing…', 'Importando…') : ui.t('+ Import PDF', '+ Importare PDF') }}
+          <input type="file" accept=".pdf" hidden (change)="onAppendFileChange($event)" />
+        </label>
+      </div>
     }
-  </ul>
+
+    @if (appendError) {
+      <div class="append-error">{{ appendError }}</div>
+    }
+
+    <!-- Duplicate song warning -->
+    @if (dupeNames.length > 0) {
+      <div class="dupe-warning">
+        <p class="dupe-text">
+          Already in set: <strong>{{ dupeNames.join(', ') }}</strong>
+        </p>
+        <div class="dupe-actions">
+          <button class="dupe-btn dupe-btn--add" (click)="confirmAppendAll()">{{ ui.t('Add anyway', 'Addere Nihilominus') }}</button>
+          <button class="dupe-btn dupe-btn--skip" (click)="confirmAppendSkipDupes()">{{ ui.t('Skip duplicates', 'Omittere Similes') }}</button>
+          <button class="dupe-btn dupe-btn--cancel" (click)="cancelAppend()">{{ ui.t('Cancel', 'Cancellare') }}</button>
+        </div>
+      </div>
+    }
+  }
 </div>

@@ -1,0 +1,27 @@
+@if (songs.length === 0) {
+  <app-upload (songsLoaded)="onSongsLoaded($event)" />
+} @else {
+  <div class="workspace">
+    <app-song-list
+      [songs]="songs"
+      [selectedIndex]="selectedIndex"
+      [collapsed]="sidebarCollapsed"
+      (selectSong)="onSelectSong($event)"
+(reorderSongs)="onReorderSongs($event)"
+      (addBlankSong)="onAddBlankSong()"
+      (appendSongs)="onAppendSongs($event)"
+      (removeSong)="onRemoveSong($event)"
+      (toggleCollapse)="sidebarCollapsed = !sidebarCollapsed"
+    />
+    <app-song-editor
+      [songs]="songs"
+      [selectedIndex]="selectedIndex"
+      [canUndo]="canUndo"
+      [canRedo]="canRedo"
+      [fontSize]="ui.fontSize"
+      (songsChange)="onSongsChange($event)"
+      (undo)="undo()"
+      (redo)="redo()"
+    />
+  </div>
+}

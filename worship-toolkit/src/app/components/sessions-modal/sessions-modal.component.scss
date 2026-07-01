@@ -1,0 +1,319 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 5rem;
+
+  @media (max-width: 600px) {
+    padding-top: 0;
+    align-items: flex-end;
+  }
+}
+
+.modal-dialog {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 600px) {
+    border-radius: 12px 12px 0 0;
+    max-height: 88vh;
+    max-width: 100%;
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  line-height: 1;
+
+  &:hover { color: var(--color-text); }
+}
+
+.current-session-row {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  min-height: 2.4rem;
+  justify-content: center;
+}
+
+.cs-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.cs-meta {
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  margin-top: 0.15rem;
+}
+
+.cs-unsaved {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.save-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem 0;
+}
+
+.save-input {
+  flex: 1;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-family: inherit;
+
+  &:focus { outline: 2px solid var(--color-primary); outline-offset: -1px; }
+}
+
+.save-btn {
+  padding: 0.45rem 1rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) { background: var(--color-primary-dark); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+}
+
+.import-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1.25rem 0.75rem;
+}
+
+.import-btn {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
+.import-error {
+  font-size: 0.8rem;
+  color: #b91c1c;
+}
+
+.divider {
+  height: 1px;
+  background: var(--color-border);
+  margin: 0 1.25rem;
+}
+
+.empty-msg {
+  padding: 1.5rem 1.25rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.session-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.session-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+
+  &:last-child { border-bottom: none; }
+
+  &:hover { background: var(--color-hover); }
+}
+
+.session-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.session-name {
+  display: block;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.session-meta {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+  margin-top: 0.1rem;
+}
+
+.rename-input {
+  width: 100%;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid var(--color-primary);
+  border-radius: 4px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.session-actions {
+  display: flex;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.action-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.78rem;
+  color: var(--color-text);
+  cursor: pointer;
+  line-height: 1;
+  white-space: nowrap;
+
+  &:hover { border-color: var(--color-primary); color: var(--color-primary); }
+}
+
+.load-btn {
+  font-weight: 600;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+
+  &:hover { background: var(--color-primary); color: #fff; }
+}
+
+.delete-btn {
+  &:hover { border-color: #dc2626; color: #dc2626; }
+}
+
+.new-session-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: 0.5rem;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}
+
+.active-session {
+  background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.active-badge {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  border-radius: 3px;
+  padding: 0.05rem 0.35rem;
+}
+
+.new-session-confirm {
+  border-top: 1px solid var(--color-border);
+  padding: 1rem 1.25rem;
+  background: color-mix(in srgb, var(--color-secondary) 5%, transparent);
+
+  .confirm-text {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    margin: 0 0 0.75rem;
+  }
+
+  .save-input {
+    margin-bottom: 0.6rem;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
+
+.cancel-btn {
+  padding: 0.45rem 1rem;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+}

@@ -210,9 +210,15 @@
   border-radius: 3px;
   transition: background 0.12s;
   user-select: none;
+  touch-action: none; // let JS-driven pointer drag own the gesture instead of native scroll/zoom
 
   &:hover { background: color-mix(in srgb, var(--color-chord) 12%, transparent); }
   &:active { cursor: grabbing; }
+
+  @media (max-width: 767px) {
+    padding: 2px 5px;
+    min-height: 22px;
+  }
 }
 
 .chord-remove {
@@ -233,7 +239,7 @@
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--color-chord);
-  background: color-mix(in srgb, var(--color-chord) 8%, white);
+  background: color-mix(in srgb, var(--color-chord) 8%, var(--color-bg));
   border: 1px solid var(--color-chord);
   border-radius: 3px;
   padding: 0 3px;
@@ -270,6 +276,75 @@
   padding: 0 2px;
 }
 
+.annotation-row--btn {
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 0.12s;
+
+  &:hover { background: var(--color-hover); }
+}
+
+.annotation-row--editing {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.annotation-input {
+  flex: 1;
+  font-size: 0.78rem;
+  font-family: 'Courier New', 'Consolas', monospace;
+  font-style: italic;
+  color: var(--color-muted);
+  background: var(--color-bg);
+  border: 1px solid var(--color-primary);
+  border-radius: 3px;
+  padding: 1px 4px;
+  outline: none;
+}
+
+.annotation-remove {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.7rem;
+  color: var(--color-muted);
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+
+  &:hover { color: #ef4444; }
+}
+
+// Inline prompt shown on lines with no annotation
+.add-annotation-btn {
+  display: none;
+  background: none;
+  border: 1px dashed var(--color-border);
+  color: var(--color-muted);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  padding: 0.05rem 0.4rem;
+  cursor: pointer;
+  transition: border-color 0.12s, color 0.12s;
+  align-self: flex-start;
+
+  .line-group:hover & { display: block; }
+
+  &:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+
+  // Touch devices have no hover — keep visible but compact so gap is minimal
+  @media (hover: none) {
+    display: block;
+    font-size: 0.65rem;
+    padding: 0.02rem 0.3rem;
+    opacity: 0.45;
+  }
+}
+
 .lyric-row {
   font-size: 0.82rem;
   font-family: 'Courier New', 'Consolas', monospace;
@@ -282,5 +357,5 @@
   transition: background 0.12s;
 
   &:hover { background: var(--color-hover); }
-  &:focus { background: color-mix(in srgb, var(--color-primary) 6%, white); }
+  &:focus { background: color-mix(in srgb, var(--color-primary) 6%, var(--color-bg)); }
 }

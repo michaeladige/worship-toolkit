@@ -7,16 +7,26 @@
   border-right: 1px solid var(--color-border);
   background: var(--color-surface);
   overflow: hidden;
+  transition: width 0.2s ease, min-width 0.2s ease;
+
+  // Collapsed: thin strip showing only the expand button
+  &.collapsed {
+    width: 32px;
+    min-width: 32px;
+  }
 
   // Mobile: horizontal tab bar across the top
   @media (max-width: 767px) {
-    width: 100%;
-    min-width: 0;
+    width: 100% !important;
+    min-width: 0 !important;
     flex-direction: row;
     border-right: none;
     border-bottom: 1px solid var(--color-border);
     height: auto;
     flex-shrink: 0;
+    transition: none;
+
+    &.append-open { flex-wrap: wrap; }
   }
 }
 
@@ -28,8 +38,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
   padding: 1rem;
   border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
 
   h3 {
     font-size: 0.85rem;
@@ -38,6 +50,14 @@
     letter-spacing: 0.05em;
     color: var(--color-muted);
     margin: 0;
+    flex: 1;
+  }
+
+  // Collapsed: center the expand button, no extra padding
+  :host.collapsed & {
+    justify-content: center;
+    padding: 0.75rem 0;
+    gap: 0;
   }
 
   @media (max-width: 767px) {
@@ -46,24 +66,124 @@
     padding: 0.5rem 0.75rem;
     flex-shrink: 0;
 
-    h3 { display: none; } // hide label to save space
+    h3 { display: none; }
+
+    // When collapsed on mobile: no right border, fill host width, restore horizontal padding
+    :host.collapsed & {
+      border-right: none;
+      flex: 1;
+      gap: 0;
+      padding: 0.5rem 0.75rem;
+    }
   }
 }
 
-.new-btn {
+// ── PC/tablet collapse toggle ─────────────────────────────────────────────────
+.collapse-btn {
   background: none;
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
-  border-radius: 6px;
-  padding: 0.25rem 0.6rem;
-  font-size: 0.78rem;
+  border: none;
+  color: var(--color-muted);
+  font-size: 0.7rem;
   cursor: pointer;
-  font-weight: 600;
-  white-space: nowrap;
+  padding: 0.2rem 0.3rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.12s, background 0.12s;
 
   &:hover {
-    background: var(--color-primary);
-    color: #fff;
+    color: var(--color-text);
+    background: var(--color-hover);
+  }
+
+  @media (max-width: 767px) { display: none; }
+}
+
+// ── Mobile vertical collapse toggle ──────────────────────────────────────────
+.mobile-collapse-btn {
+  display: none;
+
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    padding: 0.2rem 0;
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: color 0.12s;
+
+    &:hover { color: var(--color-text); }
+
+    // Collapsed: fill header, keep consistent gap-based spacing
+    :host.collapsed & {
+      flex: 1;
+      color: var(--color-text);
+    }
+  }
+}
+
+// ── Add songs at end of item list ────────────────────────────────────────────
+.add-song-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--color-border);
+  cursor: default;
+  flex-shrink: 0;
+
+  &:hover { background: transparent; }  // override li:hover
+
+  .add-song-mobile { display: none; }   // + toggle hidden on PC/tablet
+
+  @media (max-width: 767px) {
+    // In the horizontal tab strip: no border-top, slim padding, separator on left
+    flex-wrap: nowrap;
+    padding: 0;
+    border-top: none;
+    border-bottom: none;
+    border-left: 1px solid var(--color-border);
+    align-self: stretch;
+    align-items: center;
+
+    .add-song-pc { display: none; }      // hide direct buttons on mobile
+    .add-song-mobile {                    // show + toggle on mobile
+      display: flex;
+      margin: 0 0.5rem;
+    }
+  }
+}
+
+// ── Add songs toggle button ───────────────────────────────────────────────────
+.add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-text);
+  flex-shrink: 0;
+  transition: transform 0.18s ease, border-color 0.12s, color 0.12s;
+
+  &.open { transform: rotate(45deg); }
+
+  &:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
   }
 }
 
@@ -80,7 +200,6 @@ ul {
     padding: 0;
     overflow-x: auto;
     overflow-y: hidden;
-    // Hide scrollbar on mobile (still scrollable)
     scrollbar-width: none;
     &::-webkit-scrollbar { display: none; }
   }
@@ -110,14 +229,18 @@ li {
   }
 
   @media (max-width: 767px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
     padding: 0.5rem 0.75rem;
     border-left: none;
     border-bottom: 3px solid transparent;
     flex-shrink: 0;
     white-space: nowrap;
+
+    // Move ✕ button after title on row 1; key badge wraps to row 2
+    .remove-song-btn { order: 2; }
 
     &.active {
       border-left: none;
@@ -135,79 +258,168 @@ li {
 
   @media (max-width: 767px) {
     font-size: 0.82rem;
-    max-width: 120px;
+    min-width: 0;
   }
 }
 
-// ── New PDF confirmation flow ─────────────────────────────────────────────────
-.new-pdf-area {
+// ── Drag handle ──────────────────────────────────────────────────────────────
+.drag-handle {
+  color: var(--color-muted);
+  font-size: 1rem;
+  cursor: grab;
+  flex-shrink: 0;
+  padding: 0 0.2rem;
+  user-select: none;
+  touch-action: none;
+
+  &:active { cursor: grabbing; }
+
+  @media (max-width: 767px) {
+    display: flex;
+    font-size: 0.85rem;
+  }
+}
+
+// CDK drag preview/placeholder
+.cdk-drag-preview {
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  padding: 0.6rem 1rem;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
 }
 
-.upload-confirm {
+.cdk-drag-placeholder {
+  opacity: 0.35;
+}
+
+// ── Append row ────────────────────────────────────────────────────────────────
+.append-row {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.35rem;
+  gap: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--color-border);
 
   @media (max-width: 767px) {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.4rem;
+    width: 100%;         // wraps to its own row below the mobile tab strip
+    padding: 0.25rem 0.5rem;
+    border-bottom: none;
   }
 }
 
-.confirm-warning {
-  font-size: 0.72rem;
-  color: var(--color-muted);
+.append-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: center;
   white-space: nowrap;
-  line-height: 1.3;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover:not(.loading) {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  &.loading {
+    opacity: 0.6;
+    cursor: default;
+  }
 
   @media (max-width: 767px) {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 140px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.74rem;
   }
 }
 
-.confirm-actions {
+.append-error {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  color: #b91c1c;
+}
+
+// ── Duplicate warning ─────────────────────────────────────────────────────────
+.dupe-warning {
+  padding: 0.6rem 0.75rem;
+  border-top: 1px solid var(--color-border);
+  background: color-mix(in srgb, #f59e0b 8%, transparent);
+}
+
+.dupe-text {
+  font-size: 0.75rem;
+  color: var(--color-text);
+  margin: 0 0 0.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dupe-actions {
   display: flex;
   gap: 0.3rem;
+  flex-wrap: wrap;
 }
 
-.confirm-yes-btn {
+.dupe-btn {
   padding: 0.22rem 0.55rem;
-  border: none;
   border-radius: 5px;
-  background: #dc2626;
-  color: #fff;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
+  border: 1px solid transparent;
 
-  &:hover {
-    background: #b91c1c;
+  &--add {
+    background: var(--color-secondary);
+    color: #fff;
+    &:hover { opacity: 0.85; }
+  }
+
+  &--skip {
+    background: none;
+    border-color: var(--color-border);
+    color: var(--color-text);
+    &:hover { border-color: var(--color-secondary); color: var(--color-secondary); }
+  }
+
+  &--cancel {
+    background: none;
+    border-color: var(--color-border);
+    color: var(--color-muted);
+    &:hover { color: var(--color-text); }
   }
 }
 
-.confirm-cancel-btn {
-  padding: 0.22rem 0.55rem;
-  border: 1px solid var(--color-border);
-  border-radius: 5px;
-  background: var(--color-bg);
-  color: var(--color-text);
+// ── Remove song button ────────────────────────────────────────────────────────
+.remove-song-btn {
+  background: none;
+  border: none;
+  color: var(--color-muted);
   font-size: 0.75rem;
   cursor: pointer;
-  white-space: nowrap;
-  transition: border-color 0.15s;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.12s, color 0.12s;
+  line-height: 1;
 
-  &:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-  }
+  li:hover & { opacity: 1; }
+
+  &:hover { color: #ef4444; }
+
+  @media (hover: none) { opacity: 1; }
 }
 
 .song-key {
@@ -220,6 +432,8 @@ li {
   flex-shrink: 0;
 
   @media (max-width: 767px) {
+    order: 3;
+    flex-basis: 100%;   // pushes key to its own row below title + ✕
     font-size: 0.7rem;
     padding: 0.05rem 0.3rem;
   }

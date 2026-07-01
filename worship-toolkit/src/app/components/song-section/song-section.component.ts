@@ -9,11 +9,18 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ParsedSong, SongSection, SongLine, ChordToken } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
+import { AutofocusDirective } from '../../directives/autofocus.directive';
 
 interface EditState {
   sectionIdx: number;
   lineIdx: number;
   chordIdx: number;
+  value: string;
+}
+
+interface AnnotationEditState {
+  sectionIdx: number;
+  lineIdx: number;
   value: string;
 }
 
@@ -31,7 +38,7 @@ interface ChordDrag {
 @Component({
   selector: 'app-song-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle],
+  imports: [CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle, AutofocusDirective],
   templateUrl: './song-section.component.html',
   styleUrl: './song-section.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
@@ -46,6 +53,7 @@ export class SongSectionComponent {
   @ViewChildren('chordRowRef') chordRowRefs!: QueryList<ElementRef<HTMLElement>>;
 
   editing: EditState | null = null;
+  editingAnnotation: AnnotationEditState | null = null;
   chordDrag: ChordDrag | null = null;
 
   constructor(public chordSvc: ChordService) {}
@@ -66,7 +74,13 @@ export class SongSectionComponent {
 
   // ── Chord edit ──────────────────────────────────────────────────────────────
 
+  // Set after a real drag completes, to swallow the native click that always
+  // follows a mouseup/touchend on the same element — without this, finishing
+  // a drag would immediately reopen the inline editor.
+  private suppressNextClick = false;
+
   startEdit(si: number, li: number, ci: number, currentDisplay: string) {
+    if (this.suppressNextClick) { this.suppressNextClick = false; return; }
     this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: currentDisplay };
   }
 
@@ -124,6 +138,47 @@ export class SongSectionComponent {
     this.songChange.emit(song);
   }
 
+  // ── Annotation CRUD ──────────────────────────────────────────────────────────
+
+  startEditAnnotation(si: number, li: number) {
+    this.editingAnnotation = {
+      sectionIdx: si,
+      lineIdx: li,
+      value: this.song.sections[si].lines[li].annotation ?? '',
+    };
+  }
+
+  commitAnnotation() {
+    if (!this.editingAnnotation) return;
+    const { sectionIdx, lineIdx, value } = this.editingAnnotation;
+    const song = this.cloneSong();
+    song.sections[sectionIdx].lines[lineIdx].annotation = value.trim() || undefined;
+    this.editingAnnotation = null;
+    this.songChange.emit(song);
+  }
+
+  cancelAnnotation() {
+    this.editingAnnotation = null;
+  }
+
+  annotationKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter') { e.preventDefault(); this.commitAnnotation(); }
+    if (e.key === 'Escape') { this.cancelAnnotation(); }
+  }
+
+  removeAnnotation(si: number, li: number) {
+    const song = this.cloneSong();
+    song.sections[si].lines[li].annotation = undefined;
+    if (this.editingAnnotation?.sectionIdx === si && this.editingAnnotation?.lineIdx === li) {
+      this.editingAnnotation = null;
+    }
+    this.songChange.emit(song);
+  }
+
+  isEditingAnnotation(si: number, li: number): boolean {
+    return this.editingAnnotation?.sectionIdx === si && this.editingAnnotation?.lineIdx === li;
+  }
+
   // ── Section drag-drop reorder ────────────────────────────────────────────────
 
   dropSection(event: CdkDragDrop<SongSection[]>) {
@@ -135,7 +190,7 @@ export class SongSectionComponent {
 
   // ── Chord horizontal drag (reposition charPos) ──────────────────────────────
 
-  startChordDrag(e: MouseEvent, si: number, li: number, ci: number, rowEl: HTMLElement) {
+  startChordDrag(e: PointerEvent, si: number, li: number, ci: number, rowEl: HTMLElement) {
     // Don't start a drag if we're already editing this chord
     if (this.isEditing(si, li, ci)) return;
     e.preventDefault();
@@ -150,23 +205,27 @@ export class SongSectionComponent {
     };
   }
 
-  @HostListener('document:mousemove', ['$event'])
-  onMouseMove(e: MouseEvent) {
+  // Pointer Events unify mouse, touch, and pen — this is what makes chord
+  // dragging work on phones/tablets, not just with a mouse.
+  @HostListener('document:pointermove', ['$event'])
+  onPointerMove(e: PointerEvent) {
     if (!this.chordDrag) return;
     const deltaX = e.clientX - this.chordDrag.startX;
-    // Only activate drag after moving more than 4px (avoids suppressing plain clicks)
-    if (!this.chordDrag.moved && Math.abs(deltaX) < 4) return;
+    // Only activate drag after moving more than a few px (avoids suppressing plain taps/clicks)
+    if (!this.chordDrag.moved && Math.abs(deltaX) < 6) return;
     this.chordDrag.moved = true;
     const deltaChar = Math.round(deltaX / this.chordDrag.chPx);
     this.chordDrag.currentCharPos = Math.max(0, this.chordDrag.startCharPos + deltaChar);
   }
 
-  @HostListener('document:mouseup')
-  onMouseUp() {
+  @HostListener('document:pointerup')
+  @HostListener('document:pointercancel')
+  onPointerUp() {
     if (!this.chordDrag) return;
     const { si, li, ci, currentCharPos, moved } = this.chordDrag;
     this.chordDrag = null;
-    if (!moved) return; // was just a click → let the click handler open the editor
+    if (!moved) return; // was just a tap/click → let the click handler open the editor
+    this.suppressNextClick = true; // the click that follows this mouseup/touchend isn't a tap
     const song = this.cloneSong();
     song.sections[si].lines[li].chords[ci].charPos = currentCharPos;
     this.songChange.emit(song);

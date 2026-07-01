@@ -1,0 +1,15 @@
+:host {
+  display: block;
+  flex: 1;
+  overflow: hidden;
+}
+
+.workspace {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+}
