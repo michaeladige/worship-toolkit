@@ -19,6 +19,7 @@
       <button
         class="ui-ctrl-btn sessions-btn"
         (click)="sessionsSvc.openModal()"
+        [disabled]="sessionsSvc.currentSongs.length === 0 && !sessionsSvc.activeSessionId"
         title="Saved sets"
       >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set', 'Collectio Innominata') }}</span> ▾</button>
       <span class="ui-label">Text size</span>
