@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.5] - 2026-07-02
+
+### Changed
+- **Tinted backgrounds per color theme** — switching to Pink, Red, Amber, or Green now also tints the app background, surface, border, and hover colors with a very subtle hue matching the accent. Works in both light and dark mode. Blue (default) keeps the neutral grey palette.
+
 ## [1.2.4] - 2026-07-02
 
 ### Added
