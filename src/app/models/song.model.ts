@@ -21,6 +21,7 @@ export interface SavedSession {
   name: string;
   savedAt: number; // Unix ms timestamp
   songs: ParsedSong[];
+  latinMode?: boolean;
 }
 
 export interface ParsedSong {

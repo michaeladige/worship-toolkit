@@ -5,6 +5,7 @@ import { CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, moveItemInArray } fro
 import { ParsedSong } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
 import { PdfParserService } from '../../services/pdf-parser.service';
+import { UiSettingsService } from '../../services/ui-settings.service';
 
 @Component({
   selector: 'app-song-list',
@@ -37,6 +38,7 @@ export class SongListComponent implements OnChanges {
   constructor(
     public chordSvc: ChordService,
     private parser: PdfParserService,
+    public ui: UiSettingsService,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {

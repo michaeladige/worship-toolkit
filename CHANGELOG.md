@@ -2,6 +2,12 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.12] - 2026-07-01
+
+### Added
+- **Latin Easter Egg** — a "🏛️ Switch to Latin" pill button in the user manual flips every UI label in the app to humorous Latin (buttons, headers, card text, modal wording, and more). Activating shows a "Modus Latinus Activatus 🏛️" toast; deactivating shows "Modus Latinus Deactivatus". Latin mode is saved with each set and restored when that set is loaded.
+- **Cantus Secretus** — with Latin mode active, a secret collapsible section appears in the manual page containing the Latin lyrics of *Unus Angelus Alae* (Nobuo Uematsu, 1997).
+
 ## [1.1.11] - 2026-07-01
 
 ### Changed

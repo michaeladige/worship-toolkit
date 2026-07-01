@@ -68,22 +68,22 @@
       </div>
 
       <div class="undo-redo-group">
-        <button class="history-btn" [disabled]="!canUndo" (click)="undo.emit()" title="Undo (Ctrl+Z)">↩ Undo</button>
-        <button class="history-btn" [disabled]="!canRedo" (click)="redo.emit()" title="Redo (Ctrl+Shift+Z)">↪ Redo</button>
+        <button class="history-btn" [disabled]="!canUndo" (click)="undo.emit()" title="Undo (Ctrl+Z)">{{ ui.t('↩ Undo', '↩ Rescindere') }}</button>
+        <button class="history-btn" [disabled]="!canRedo" (click)="redo.emit()" title="Redo (Ctrl+Shift+Z)">{{ ui.t('↪ Redo', '↪ Refacere') }}</button>
       </div>
     </div>
 
     <div class="toolbar-right">
       <!-- Key / Transpose -->
       <div class="key-control">
-        <label>Key</label>
+        <label>{{ ui.t('Key', 'Clavis') }}</label>
         <button class="step-btn" (click)="transpose(-1)" title="Transpose down">&#9660;</button>
         <span class="key-display">{{ effectiveKey }}</span>
         <button class="step-btn" (click)="transpose(1)" title="Transpose up">&#9650;</button>
       </div>
 
       <div class="key-jump">
-        <label>Jump to</label>
+        <label>{{ ui.t('Jump to', 'Salire ad') }}</label>
         <select [value]="effectiveKey" (change)="setKey($any($event.target).value)">
           @for (k of allKeys; track k) {
             <option [value]="k">{{ k }}</option>
@@ -93,7 +93,7 @@
 
       @if (song.transposeSemitones !== 0) {
         <button class="reset-btn" (click)="resetTranspose()" title="Reset to original key">
-          Reset ({{ song.originalKey }})
+          {{ ui.t('Reset', 'Reponere') }} ({{ song.originalKey }})
         </button>
       }
 
@@ -104,7 +104,7 @@
         (click)="toggleBassNotes()"
         title="Show bass/root notes only"
       >
-        🎹 Bass Notes
+        {{ ui.t('🎹 Bass Notes', '🎹 Notae Bassi') }}
       </button>
 
       <!-- Nashville notation toggle -->
@@ -114,16 +114,16 @@
         (click)="toggleNashville()"
         title="Nashville number notation"
       >
-        1 2 3 Nashville
+        {{ ui.t('1 2 3 Nashville', 'I II III Nashville') }}
       </button>
 
       <!-- Export -->
       <div class="export-group">
         <button class="export-btn" (click)="exportCurrentSongPdf()" [disabled]="exporting">
-          {{ exporting ? 'Generating...' : '↓ Song PDF' }}
+          {{ exporting ? ui.t('Generating…', 'Generando…') : ui.t('↓ Song PDF', '↓ PDF Cantus') }}
         </button>
         <button class="export-btn export-btn--all" (click)="exportPdf()" [disabled]="exporting">
-          ↓ All PDF
+          {{ ui.t('↓ All PDF', '↓ PDF Omnium') }}
         </button>
         <button class="export-btn export-btn--md" (click)="exportMarkdown()">
           ↓ Markdown
@@ -152,7 +152,7 @@
 
     <!-- Add Section -->
     <div class="add-section-row">
-      <span class="add-section-label">Add section</span>
+      <span class="add-section-label">{{ ui.t('Add section', 'Addere Sectionem') }}</span>
       <div class="quick-picks">
         @for (name of quickSections; track name) {
           <button class="quick-pick-btn" (click)="addSection(name)">{{ name }}</button>
@@ -161,7 +161,7 @@
       <div class="custom-section">
         <input
           class="custom-section-input"
-          placeholder="Custom name…"
+          [placeholder]="ui.t('Custom name…', 'Nomen proprium…')"
           [(ngModel)]="newSectionName"
           (keydown.enter)="addSection(newSectionName)"
           maxlength="32"
@@ -170,7 +170,7 @@
           class="custom-section-add"
           [disabled]="!newSectionName.trim()"
           (click)="addSection(newSectionName)"
-        >Add</button>
+        >{{ ui.t('Add', 'Addere') }}</button>
       </div>
     </div>
   </div>

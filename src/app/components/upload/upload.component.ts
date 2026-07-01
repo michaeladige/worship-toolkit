@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { PdfParserService } from '../../services/pdf-parser.service';
 import { ExportService } from '../../services/export.service';
 import { ParsedSong } from '../../models/song.model';
+import { UiSettingsService } from '../../services/ui-settings.service';
 
 @Component({
   selector: 'app-upload',
@@ -20,7 +21,7 @@ export class UploadComponent {
   error = '';
   sessionImportError = '';
 
-  constructor(private parser: PdfParserService, private exportSvc: ExportService) {}
+  constructor(private parser: PdfParserService, private exportSvc: ExportService, public ui: UiSettingsService) {}
 
   onDragOver(e: DragEvent) {
     e.preventDefault();

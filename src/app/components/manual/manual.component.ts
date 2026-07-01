@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { version } from '../../../../package.json';
+import { UiSettingsService } from '../../services/ui-settings.service';
 
 @Component({
   selector: 'app-manual',
@@ -15,7 +16,7 @@ export class ManualComponent implements OnDestroy {
   readonly version = version;
   private fragmentSub: Subscription;
 
-  constructor(route: ActivatedRoute) {
+  constructor(public ui: UiSettingsService, route: ActivatedRoute) {
     this.fragmentSub = route.fragment.subscribe((fragment) => {
       if (!fragment) return;
       setTimeout(() => {
