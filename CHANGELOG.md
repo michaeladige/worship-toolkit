@@ -2,6 +2,15 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.6] - 2026-07-02
+
+### Fixed
+- **Section drag placeholder build warning** — the section reorder drag-and-drop placeholder directive was used without being imported, which risked breaking on a future Angular upgrade. Now correctly imported.
+- **Duplicate section names could confuse the editor** — two sections sharing the same name (e.g. two unnumbered "VERSE" sections) could cause Angular to reuse the wrong section's editing state after an edit. Sections are now tracked by position instead of by name.
+
+### Performance
+- **Faster chord repositioning on chord-dense lines** — chord position calculations are now cached per line instead of being recomputed from scratch for every chord on every render. A stress test (60 chords across a single line, 40 such lines) dropped transpose-click latency from ~126ms to ~20ms.
+
 ## [1.2.5] - 2026-07-02
 
 ### Changed

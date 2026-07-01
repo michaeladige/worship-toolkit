@@ -291,6 +291,15 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.6</h3></summary>
+      <ul>
+        <li><strong>Fixed a build-time warning</strong> &mdash; the section reorder drag placeholder is now correctly imported, preventing a possible break on a future Angular upgrade.</li>
+        <li><strong>Fixed duplicate section names</strong> &mdash; two sections sharing the same name (e.g. two unnumbered "VERSE" sections) no longer risk mixing up editing state between them.</li>
+        <li><strong>Faster chord repositioning</strong> &mdash; chord position calculations are now cached per line instead of recomputed from scratch on every render, speeding up transposition on chord-dense charts.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.5</h3></summary>
       <ul>
         <li><strong>Tinted backgrounds per color theme</strong> &mdash; switching to Pink, Red, Amber, or Green now also tints the app background, surface, border, and hover colors with a subtle hue matching the accent. Works in both Light and Dark mode. Blue (default) keeps the neutral grey palette.</li>
