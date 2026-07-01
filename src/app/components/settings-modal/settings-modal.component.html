@@ -1,36 +1,51 @@
 <div class="modal-backdrop" (click)="onBackdropClick($event)">
-  <div class="modal-dialog" role="dialog" aria-modal="true" [attr.aria-label]="ui.t('Settings', 'Optiones')">
+  <div class="modal-dialog" role="dialog" aria-modal="true" [attr.aria-label]="ui.t('Settings')">
 
     <div class="modal-header">
-      <h2 class="modal-title">{{ ui.t('Settings', 'Optiones') }}</h2>
+      <h2 class="modal-title">{{ ui.t('Settings') }}</h2>
       <button class="close-btn" (click)="ui.closeSettingsModal()" title="Close">✕</button>
     </div>
 
     <!-- Appearance -->
     <div class="settings-section">
-      <h3 class="settings-heading">{{ ui.t('Appearance', 'Aspectus') }}</h3>
+      <h3 class="settings-heading">{{ ui.t('Appearance') }}</h3>
 
       <div class="setting-row">
-        <span class="setting-label">{{ ui.t('Theme', 'Thema') }}</span>
-        <button class="setting-btn" (click)="ui.toggleTheme()">
-          {{ ui.theme === 'dark' ? '☀️ ' + ui.t('Light', 'Lux') : '🌙 ' + ui.t('Dark', 'Tenebrae') }}
-        </button>
-      </div>
-
-      <div class="setting-row">
-        <span class="setting-label">{{ ui.t('Accidentals', 'Accidentalia') }}</span>
-        <div class="seg-group">
-          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'flats'"
-                  (click)="ui.setChordAccidentals('flats')">♭ {{ ui.t('Flats', 'Bemolia') }}</button>
-          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'auto'"
-                  (click)="ui.setChordAccidentals('auto')">{{ ui.t('Auto', 'Automatice') }}</button>
-          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'sharps'"
-                  (click)="ui.setChordAccidentals('sharps')">♯ {{ ui.t('Sharps', 'Diesis') }}</button>
+        <span class="setting-label">{{ ui.t('Color') }}</span>
+        <div class="color-swatches">
+          @for (c of ui.colorThemes; track c) {
+            <button
+              class="swatch"
+              [attr.data-color-swatch]="c"
+              [class.swatch--active]="ui.colorTheme === c"
+              (click)="ui.setColorTheme(c)"
+              [title]="colorLabel(c)"
+            ></button>
+          }
         </div>
       </div>
 
       <div class="setting-row">
-        <span class="setting-label">{{ ui.t('Text size', 'Magnitudo Textus') }}</span>
+        <span class="setting-label">{{ ui.t('Theme') }}</span>
+        <button class="setting-btn" (click)="ui.toggleTheme()">
+          {{ ui.theme === 'dark' ? '🌙 ' + ui.t('Dark') : '☀️ ' + ui.t('Light') }}
+        </button>
+      </div>
+
+      <div class="setting-row">
+        <span class="setting-label">{{ ui.t('Accidentals') }}</span>
+        <div class="seg-group">
+          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'flats'"
+                  (click)="ui.setChordAccidentals('flats')">♭ {{ ui.t('Flats') }}</button>
+          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'auto'"
+                  (click)="ui.setChordAccidentals('auto')">{{ ui.t('Auto') }}</button>
+          <button class="seg-btn" [class.seg-btn--active]="ui.chordAccidentals === 'sharps'"
+                  (click)="ui.setChordAccidentals('sharps')">♯ {{ ui.t('Sharps') }}</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <span class="setting-label">{{ ui.t('Text size') }}</span>
         <div class="font-size-controls">
           <button
             class="font-step-btn"
@@ -49,10 +64,10 @@
 
     <!-- Export -->
     <div class="settings-section">
-      <h3 class="settings-heading">{{ ui.t('Export', 'Exportare') }}</h3>
+      <h3 class="settings-heading">{{ ui.t('Export') }}</h3>
 
       <div class="setting-row">
-        <span class="setting-label">{{ ui.t('PDF font size', 'Magnitudo PDF') }}</span>
+        <span class="setting-label">{{ ui.t('PDF font size') }}</span>
         <div class="font-size-controls">
           <button
             class="font-step-btn"
@@ -69,23 +84,22 @@
       </div>
 
       @if (ui.pdfFontSize > 14) {
-        <p class="pdf-size-warn">{{ ui.t('⚠️ Above 14px PDFs use a single column — lyrics may still wrap.', '⚠️ Supra 14px PDF unam columnam adhibet — verba adhuc frangi possunt.') }}</p>
+        <p class="pdf-size-warn">{{ ui.t('⚠️ Above 14px PDFs use a single column — lyrics may still wrap.') }}</p>
       }
     </div>
 
     <!-- Language -->
     <div class="settings-section settings-section--last">
-      <h3 class="settings-heading">{{ ui.t('Language', 'Lingua') }}</h3>
-
+      <h3 class="settings-heading">{{ ui.t('Language') }}</h3>
       <div class="setting-row">
-        <span class="setting-label">{{ ui.t('Latin mode', 'Modus Latinus') }} 🏛️</span>
-        <button
-          class="setting-btn"
-          [class.setting-btn--active]="ui.latinMode"
-          (click)="ui.toggleLatinMode()"
-        >
-          {{ ui.latinMode ? ui.t('On', 'Activus') : ui.t('Off', 'Inactivus') }}
-        </button>
+        <span class="setting-label">{{ ui.t('Language') }}</span>
+        <div class="lang-pills">
+          <button class="lang-pill" [class.lang-pill--active]="ui.language === 'en'"    (click)="ui.setLanguage('en')">🌐 EN</button>
+          <button class="lang-pill" [class.lang-pill--active]="ui.language === 'la'"    (click)="ui.setLanguage('la')">🏛️ LA</button>
+          <button class="lang-pill" [class.lang-pill--active]="ui.language === 'zh-TW'" (click)="ui.setLanguage('zh-TW')">🀄 中</button>
+          <button class="lang-pill" [class.lang-pill--active]="ui.language === 'id'"    (click)="ui.setLanguage('id')">🌴 ID</button>
+          <button class="lang-pill" [class.lang-pill--active]="ui.language === 'jv'"    (click)="ui.setLanguage('jv')">🌾 JV</button>
+        </div>
       </div>
     </div>
 

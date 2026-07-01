@@ -166,6 +166,60 @@
   }
 }
 
+.color-swatches {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.12s, transform 0.1s;
+  outline-offset: 2px;
+
+  &--active { border-color: var(--color-text); transform: scale(1.18); }
+  &:hover:not(.swatch--active) { transform: scale(1.1); }
+}
+
+[data-color-swatch="blue"]  { background: #2563eb; }
+[data-color-swatch="pink"]  { background: #ec4899; }
+[data-color-swatch="red"]   { background: #ef4444; }
+[data-color-swatch="amber"] { background: #d97706; }
+[data-color-swatch="green"] { background: #059669; }
+
+.lang-pills {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.lang-pill {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+  white-space: nowrap;
+
+  &:hover:not(.lang-pill--active) { border-color: var(--color-primary); color: var(--color-primary); }
+
+  &--active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+}
+
 .pdf-size-warn {
   margin: 0;
   padding: 0.35rem 1.25rem 0.6rem;

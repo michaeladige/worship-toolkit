@@ -71,22 +71,22 @@
       </div>
 
       <div class="undo-redo-group">
-        <button class="history-btn" [disabled]="!canUndo" (click)="undo.emit()" title="Undo (Ctrl+Z)">{{ ui.t('↩ Undo', '↩ Rescindere') }}</button>
-        <button class="history-btn" [disabled]="!canRedo" (click)="redo.emit()" title="Redo (Ctrl+Shift+Z)">{{ ui.t('↪ Redo', '↪ Refacere') }}</button>
+        <button class="history-btn" [disabled]="!canUndo" (click)="undo.emit()" title="Undo (Ctrl+Z)">{{ ui.t('↩ Undo') }}</button>
+        <button class="history-btn" [disabled]="!canRedo" (click)="redo.emit()" title="Redo (Ctrl+Shift+Z)">{{ ui.t('↪ Redo') }}</button>
       </div>
     </div>
 
     <div class="toolbar-right">
       <!-- Key / Transpose -->
       <div class="key-control">
-        <label>{{ ui.t('Key', 'Clavis') }}</label>
+        <label>{{ ui.t('Key') }}</label>
         <button class="step-btn" (click)="transpose(-1)" title="Transpose down">&#9660;</button>
         <span class="key-display">{{ effectiveKey }}</span>
         <button class="step-btn" (click)="transpose(1)" title="Transpose up">&#9650;</button>
       </div>
 
       <div class="key-jump">
-        <label>{{ ui.t('Jump to', 'Salire ad') }}</label>
+        <label>{{ ui.t('Jump to') }}</label>
         <select [ngModel]="effectiveKey" (ngModelChange)="setKey($event)">
           @for (k of allKeys; track k) {
             <option [value]="k">{{ k }}</option>
@@ -96,7 +96,7 @@
 
       @if (song.transposeSemitones !== 0) {
         <button class="reset-btn" (click)="resetTranspose()" title="Reset to original key">
-          {{ ui.t('Reset', 'Reponere') }} ({{ song.originalKey }})
+          {{ ui.t('Reset') }} ({{ song.originalKey }})
         </button>
       }
 
@@ -107,7 +107,7 @@
         (click)="toggleBassNotes()"
         title="Show bass/root notes only"
       >
-        {{ ui.t('🎹 Bass Notes', '🎹 Notae Bassi') }}
+        {{ ui.t('🎹 Bass Notes') }}
       </button>
 
       <!-- Nashville notation toggle -->
@@ -117,7 +117,7 @@
         (click)="toggleNashville()"
         title="Nashville number notation"
       >
-        {{ ui.t('1 2 3 Nashville', 'I II III Nashville') }}
+        {{ ui.t('1 2 3 Nashville') }}
       </button>
 
     </div>
@@ -143,7 +143,7 @@
 
     <!-- Add Section -->
     <div class="add-section-row">
-      <span class="add-section-label">{{ ui.t('Add section', 'Addere Sectionem') }}</span>
+      <span class="add-section-label">{{ ui.t('Add section') }}</span>
       <div class="quick-picks">
         @for (name of quickSections; track name) {
           <button class="quick-pick-btn" (click)="addSection(name)">{{ name }}</button>
@@ -152,7 +152,7 @@
       <div class="custom-section">
         <input
           class="custom-section-input"
-          [placeholder]="ui.t('Custom name…', 'Nomen proprium…')"
+          [placeholder]="ui.t('Custom name…')"
           [(ngModel)]="newSectionName"
           (keydown.enter)="addSection(newSectionName)"
           maxlength="32"
@@ -161,7 +161,7 @@
           class="custom-section-add"
           [disabled]="!newSectionName.trim()"
           (click)="addSection(newSectionName)"
-        >{{ ui.t('Add', 'Addere') }}</button>
+        >{{ ui.t('Add') }}</button>
       </div>
     </div>
   </div>

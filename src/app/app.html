@@ -8,30 +8,30 @@
         routerLink="/manual"
         routerLinkActive="active"
         title="Open the user manual"
-      >📖<span class="ctrl-label"> {{ ui.t('Manual', 'Libellus') }}</span></a>
+      >📖<span class="ctrl-label"> {{ ui.t('Manual') }}</span></a>
       <button
         class="ui-ctrl-btn new-set-btn"
         (click)="onNewSet()"
         [disabled]="sessionsSvc.currentSongs.length === 0"
         title="Start a new set"
-      >➕<span class="ctrl-label"> {{ ui.t('New', 'Novum') }}</span></button>
+      >➕<span class="ctrl-label"> {{ ui.t('New') }}</span></button>
       <button
         class="ui-ctrl-btn sessions-btn"
         (click)="sessionsSvc.openModal()"
         [disabled]="sessionsSvc.currentSongs.length === 0 && !sessionsSvc.activeSessionId"
         title="Saved sets"
-      >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set', 'Collectio Innominata') }}</span> ▾</button>
+      >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set') }}</span> ▾</button>
       <button
         class="ui-ctrl-btn"
         (click)="sessionsSvc.openExportModal()"
         [disabled]="sessionsSvc.currentSongs.length === 0"
         title="Export songs"
-      >📤<span class="ctrl-label"> {{ ui.t('Export', 'Exportare') }}</span></button>
+      >📤<span class="ctrl-label"> {{ ui.t('Export') }}</span></button>
       <button
         class="ui-ctrl-btn"
         (click)="ui.openSettingsModal()"
         title="Settings"
-      >⚙️<span class="ctrl-label"> {{ ui.t('Settings', 'Optiones') }}</span></button>
+      >⚙️<span class="ctrl-label"> {{ ui.t('Settings') }}</span></button>
     </div>
   </div>
 

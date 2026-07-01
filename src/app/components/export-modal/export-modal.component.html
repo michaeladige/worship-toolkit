@@ -1,8 +1,8 @@
 <div class="modal-backdrop" (click)="onBackdropClick($event)">
-  <div class="modal-dialog" role="dialog" aria-modal="true" [attr.aria-label]="ui.t('Export', 'Exportare')">
+  <div class="modal-dialog" role="dialog" aria-modal="true" [attr.aria-label]="ui.t('Export')">
 
     <div class="modal-header">
-      <h2 class="modal-title">{{ ui.t('Export', 'Exportare') }}</h2>
+      <h2 class="modal-title">{{ ui.t('Export') }}</h2>
       <button class="close-btn" (click)="sessionsSvc.closeExportModal()" title="Close">✕</button>
     </div>
 
@@ -11,8 +11,8 @@
       <button class="export-option" (click)="exportSongPdf()" [disabled]="exporting">
         <span class="opt-icon">📄</span>
         <span class="opt-body">
-          <strong>{{ ui.t('Song PDF', 'PDF Cantus') }}</strong>
-          <span class="opt-desc">{{ ui.t('Current song only', 'Solum cantus currens') }}</span>
+          <strong>{{ ui.t('Song PDF') }}</strong>
+          <span class="opt-desc">{{ ui.t('Current song only') }}</span>
         </span>
         @if (exporting) { <span class="opt-spinner"></span> }
       </button>
@@ -20,8 +20,8 @@
       <button class="export-option" (click)="exportSetPdf()" [disabled]="exporting">
         <span class="opt-icon">📋</span>
         <span class="opt-body">
-          <strong>{{ ui.t('Set PDF', 'PDF Collectionis') }}</strong>
-          <span class="opt-desc">{{ ui.t('All songs in one file', 'Omnes cantus in uno fasciculo') }}</span>
+          <strong>{{ ui.t('Set PDF') }}</strong>
+          <span class="opt-desc">{{ ui.t('All songs in one file') }}</span>
         </span>
         @if (exporting) { <span class="opt-spinner"></span> }
       </button>
@@ -30,14 +30,14 @@
         <span class="opt-icon">📝</span>
         <span class="opt-body">
           <strong>Markdown</strong>
-          <span class="opt-desc">{{ ui.t('Full set as .md file', 'Collectio ut fasciculus .md') }}</span>
+          <span class="opt-desc">{{ ui.t('Full set as .md file') }}</span>
         </span>
       </button>
 
     </div>
 
     @if (exporting) {
-      <p class="generating-msg">{{ ui.t('Generating…', 'Generando…') }}</p>
+      <p class="generating-msg">{{ ui.t('Generating…') }}</p>
     }
 
   </div>
