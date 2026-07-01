@@ -257,6 +257,7 @@ Sephiroth!</pre>
         </ul>
         {{ ui.t('The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.') }}
       </li>
+      <li><strong>{{ ui.t('Chord font') }}</strong> &mdash; {{ ui.t('choose between Classic (Courier New) and Readable (JetBrains Mono). Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.') }}</li>
       <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.') }}</li>
     </ul>
     <h3>{{ ui.t('Export') }}</h3>
@@ -293,6 +294,7 @@ Sephiroth!</pre>
     <details class="changelog-entry" open>
       <summary><h3>1.2.7</h3></summary>
       <ul>
+        <li><strong>Readable chord font</strong> &mdash; a second monospace font (JetBrains Mono) is now available alongside Courier New, in ⚙️ Settings → Appearance → Chord font. Used in both the editor and PDF exports.</li>
         <li><strong>Clearer Export icon</strong> &mdash; changed from 📤 to ⬇️ everywhere it appears, matching the download icon already used for exporting a saved set.</li>
         <li><strong>Funnier Bahasa Indonesia and Basa Jawa</strong> &mdash; punched up the humor throughout the hero copy, feature cards, toasts, and manual sections in both languages.</li>
         <li><strong>Deleting a saved set now requires confirmation</strong> &mdash; the delete button arms on the first click (turning into a red "Delete?") and only deletes on a second click within 3 seconds, since unlike song edits it can't be undone.</li>

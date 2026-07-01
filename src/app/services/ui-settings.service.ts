@@ -3,6 +3,7 @@ import { Accidentals } from './chord.service';
 
 export type Language = 'en' | 'la' | 'zh-TW' | 'id' | 'jv';
 export type ColorTheme = 'blue' | 'pink' | 'red' | 'amber' | 'green';
+export type ChordFont = 'classic' | 'readable';
 
 const PREFS_KEY = 'worship_toolkit_prefs';
 
@@ -71,6 +72,15 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Flats':        { la: 'Bemolia',           'zh-TW': '降號 (♭)',    id: 'Mol (♭)',         jv: 'Mol (♭)'       },
   'Auto':         { la: 'Automatice',        'zh-TW': '自動',         id: 'Otomatis',       jv: 'Otomatis'      },
   'Sharps':       { la: 'Diesis',            'zh-TW': '升號 (♯)',    id: 'Kres (♯)',        jv: 'Kres (♯)'      },
+  'Chord font':   { la: 'Character Chordae', 'zh-TW': '和弦字型',     id: 'Font Akor',      jv: 'Font Akor'     },
+  'Classic':      { la: 'Classicum',         'zh-TW': '經典',         id: 'Klasik',         jv: 'Klasik'        },
+  'Readable':     { la: 'Legibile',          'zh-TW': '易讀',         id: 'Gampang Dibaca', jv: 'Gampang Diwaca'},
+  'choose between Classic (Courier New) and Readable (JetBrains Mono). Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.': {
+    la:      'elige inter Classicum (Courier New) et Legibile (JetBrains Mono). Ambo sunt fontes vere monospatiati, ita compositio chordarum et verborum exacta manet utroque modo. Applicatur editori et exportationibus PDF.',
+    'zh-TW': '在經典（Courier New）和易讀（JetBrains Mono）之間選擇。兩者都是真正的等寬字型，所以無論選哪個，和弦與歌詞的對齊都完全準確。同時套用於編輯器與 PDF 匯出。',
+    id:      'pilih antara Classic (Courier New) dan Readable (JetBrains Mono). Keduanya monospace asli, jadi posisi akor dan lirik tetap presisi apa pun pilihannya. Berlaku di editor maupun ekspor PDF.',
+    jv:      'pilih antarane Classic (Courier New) lan Readable (JetBrains Mono). Loro-lorone monospace asli, dadi posisi akor lan lirik tetep pas senajan milih sing endi wae. Ditrapake ing editor lan uga ing ekspor PDF, nak.',
+  },
   'Text size':    { la: 'Magnitudo Textus',  'zh-TW': '文字大小',     id: 'Ukuran Teks',    jv: 'Ukuran Teks'   },
   'PDF font size':{ la: 'Magnitudo PDF',     'zh-TW': 'PDF 字型大小', id: 'Ukuran Font PDF',jv: 'Ukuran Font PDF'},
   'Language':     { la: 'Lingua',            'zh-TW': '語言',         id: 'Bahasa',         jv: 'Basa'          },
@@ -1647,6 +1657,8 @@ export class UiSettingsService {
   colorTheme: ColorTheme = 'blue';
   readonly colorThemes: ColorTheme[] = ['blue', 'pink', 'red', 'amber', 'green'];
 
+  chordFont: ChordFont = 'classic';
+
   readonly toastMsg = signal('');
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -1677,6 +1689,12 @@ export class UiSettingsService {
     this.applyColorTheme();
   }
 
+  setChordFont(font: ChordFont) {
+    this.chordFont = font;
+    this.savePrefs();
+    this.applyChordFont();
+  }
+
   init() {
     const raw = localStorage.getItem(PREFS_KEY);
     if (raw) {
@@ -1699,6 +1717,8 @@ export class UiSettingsService {
         }
         const ct = p['colorTheme'] as string;
         this.colorTheme = (this.colorThemes as string[]).includes(ct) ? ct as ColorTheme : 'blue';
+        const cf = p['chordFont'] as string;
+        this.chordFont = cf === 'readable' ? 'readable' : 'classic';
       } catch {
         this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
@@ -1715,6 +1735,7 @@ export class UiSettingsService {
     this.applyTheme();
     this.applyFontSize();
     this.applyColorTheme();
+    this.applyChordFont();
   }
 
   private savePrefs() {
@@ -1725,6 +1746,7 @@ export class UiSettingsService {
       chordAccidentals: this.chordAccidentals,
       language: this.language,
       colorTheme: this.colorTheme,
+      chordFont: this.chordFont,
     }));
   }
 
@@ -1765,5 +1787,38 @@ export class UiSettingsService {
   private applyColorTheme() {
     if (this.colorTheme === 'blue') document.documentElement.removeAttribute('data-color');
     else document.documentElement.setAttribute('data-color', this.colorTheme);
+  }
+
+  private readableFontLoaded = false;
+
+  private applyChordFont() {
+    if (this.chordFont === 'classic') {
+      document.documentElement.removeAttribute('data-font');
+      return;
+    }
+    document.documentElement.setAttribute('data-font', this.chordFont);
+    this.loadReadableFont();
+  }
+
+  // Registers "JetBrains Mono" with the CSS Font Loading API instead of a
+  // @font-face src: url() in global CSS — see the comment in styles.scss for
+  // why (GitHub Pages subpath deploys break a plain CSS url()). Runs once;
+  // the browser only actually fetches each file once something on the page
+  // renders with that font-family, same laziness a @font-face would have had.
+  private loadReadableFont(): void {
+    if (this.readableFontLoaded) return;
+    this.readableFontLoaded = true;
+    const variants: { style: string; weight: string; path: string }[] = [
+      { style: 'normal', weight: '400', path: 'fonts/JetBrainsMono-Regular.ttf' },
+      { style: 'normal', weight: '700', path: 'fonts/JetBrainsMono-Bold.ttf' },
+      { style: 'italic', weight: '400', path: 'fonts/JetBrainsMono-Italic.ttf' },
+    ];
+    for (const { style, weight, path } of variants) {
+      const url = new URL(path, document.baseURI).href;
+      const face = new FontFace('JetBrains Mono', `url(${url})`, { style, weight });
+      face.load()
+        .then(loaded => document.fonts.add(loaded))
+        .catch(() => { /* offline or blocked — falls back to the Courier stack */ });
+    }
   }
 }

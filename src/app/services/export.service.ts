@@ -1,11 +1,40 @@
 import { Injectable } from '@angular/core';
 import { ParsedSong, SongLine, ChordToken } from '../models/song.model';
 import { Accidentals, ChordService } from './chord.service';
+import { ChordFont } from './ui-settings.service';
 
 @Injectable({ providedIn: 'root' })
 export class ExportService {
 
+  // Fetched once per session and reused across every PDF export, rather than
+  // re-fetching ~800KB of font files (and re-doing the base64 conversion)
+  // every time the user exports another PDF in the "readable" font.
+  private jetbrainsMonoPromise: Promise<{ regular: string; bold: string; italic: string }> | null = null;
+
   constructor(private chordSvc: ChordService) {}
+
+  private async fetchFontBase64(relPath: string): Promise<string> {
+    const url = new URL(relPath, document.baseURI).href;
+    const buf = await (await fetch(url)).arrayBuffer();
+    const bytes = new Uint8Array(buf);
+    let binary = '';
+    const chunkSize = 0x8000;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+    }
+    return btoa(binary);
+  }
+
+  private getJetbrainsMonoFonts(): Promise<{ regular: string; bold: string; italic: string }> {
+    if (!this.jetbrainsMonoPromise) {
+      this.jetbrainsMonoPromise = Promise.all([
+        this.fetchFontBase64('fonts/JetBrainsMono-Regular.ttf'),
+        this.fetchFontBase64('fonts/JetBrainsMono-Bold.ttf'),
+        this.fetchFontBase64('fonts/JetBrainsMono-Italic.ttf'),
+      ]).then(([regular, bold, italic]) => ({ regular, bold, italic }));
+    }
+    return this.jetbrainsMonoPromise;
+  }
 
   toMarkdown(songs: ParsedSong[], accidentals: Accidentals = 'auto'): string {
     return songs.map(song => this.songToMarkdown(song, accidentals)).join('\n\n---\n\n');
@@ -73,7 +102,7 @@ export class ExportService {
     return transposed;
   }
 
-  async toPdf(songs: ParsedSong[], pdfFontSize = 14, accidentals: Accidentals = 'auto'): Promise<void> {
+  async toPdf(songs: ParsedSong[], pdfFontSize = 14, accidentals: Accidentals = 'auto', fontChoice: ChordFont = 'classic'): Promise<void> {
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
 
@@ -97,11 +126,27 @@ export class ExportService {
     const rawScale = pdfFontSize / 14;
     const scale    = splitColumns ? Math.min(rawScale, 10 / 8) : rawScale;
 
-    // Match the editor: Courier New monospace, same sizes as the CSS (0.82rem ≈ 8pt print)
-    const MONO         = 'courier';
+    // Match the editor: same sizes as the CSS (0.82rem ≈ 8pt print). "courier" is
+    // one of jsPDF's built-in base-14 fonts; "readable" embeds JetBrains Mono TTFs.
+    let MONO = 'courier';
+    if (fontChoice === 'readable') {
+      MONO = 'JetBrainsMono';
+      const fonts = await this.getJetbrainsMonoFonts();
+      doc.addFileToVFS('JetBrainsMono-Regular.ttf', fonts.regular);
+      doc.addFont('JetBrainsMono-Regular.ttf', MONO, 'normal');
+      doc.addFileToVFS('JetBrainsMono-Bold.ttf', fonts.bold);
+      doc.addFont('JetBrainsMono-Bold.ttf', MONO, 'bold');
+      doc.addFileToVFS('JetBrainsMono-Italic.ttf', fonts.italic);
+      doc.addFont('JetBrainsMono-Italic.ttf', MONO, 'italic');
+    }
     const FONT_PT      = 8 * scale;
     const SEC_LABEL_PT = 9 * scale; // section labels slightly larger than body (9pt vs 8pt)
-    const CHAR_W       = FONT_PT * 0.6; // Courier: every char is exactly 60% of the point size
+    // Measured from the actual font's metrics rather than assumed, since different
+    // monospace fonts have different advance-width-to-point-size ratios (Courier's
+    // happens to be exactly 0.6, JetBrains Mono's is not).
+    doc.setFont(MONO, 'normal');
+    doc.setFontSize(FONT_PT);
+    const CHAR_W       = doc.getTextWidth('0');
     const CHORD_H      = 10 * scale;    // vertical space consumed by a chord row
     const ANNOT_H      = 9  * scale;    // vertical space consumed by an annotation row (single line)
     const LYRIC_H      = 11 * scale;    // vertical space consumed by a lyric row (single line)
