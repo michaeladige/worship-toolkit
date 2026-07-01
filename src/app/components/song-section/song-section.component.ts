@@ -5,7 +5,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-  CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, moveItemInArray
+  CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, CdkDragPlaceholder, moveItemInArray
 } from '@angular/cdk/drag-drop';
 import { ParsedSong, SongSection, SongLine, ChordToken } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
@@ -39,7 +39,7 @@ interface ChordDrag {
 @Component({
   selector: 'app-song-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle, AutofocusDirective],
+  imports: [CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle, CdkDragPlaceholder, AutofocusDirective],
   templateUrl: './song-section.component.html',
   styleUrl: './song-section.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
@@ -238,17 +238,34 @@ export class SongSectionComponent {
     return positions[idx] + 'ch';
   }
 
+  // Cached per line object: charPos/length only change when transpose, key,
+  // accidentals, bass-notes/Nashville toggles, or (for the line being actively
+  // dragged) the drag preview change — everything else re-renders this line's
+  // chords unchanged, so recomputing all N positions on each of the N per-chord
+  // bindings would be O(N²) work for an O(N) result.
+  private positionsCache = new WeakMap<SongLine, { key: string; positions: number[] }>();
+
   private resolveChordPositions(line: SongLine, si: number, li: number): number[] {
+    const dragging = this.chordDrag && this.chordDrag.si === si && this.chordDrag.li === li
+      ? this.chordDrag
+      : null;
+    const key = [
+      this.song.transposeSemitones,
+      this.effectiveKey,
+      this.ui.chordAccidentals,
+      this.song.showBassNotesOnly,
+      this.song.showNashville,
+      dragging ? `${dragging.ci}:${dragging.currentCharPos}` : '',
+    ].join('|');
+
+    const cached = this.positionsCache.get(line);
+    if (cached && cached.key === key) return cached.positions;
+
     const chords = line.chords.map((ct, i) => {
       let charPos = ct.charPos ?? 0;
       // Apply live drag preview for the chord being dragged
-      if (
-        this.chordDrag &&
-        this.chordDrag.si === si &&
-        this.chordDrag.li === li &&
-        this.chordDrag.ci === i
-      ) {
-        charPos = this.chordDrag.currentCharPos;
+      if (dragging && dragging.ci === i) {
+        charPos = dragging.currentCharPos;
       }
       return { charPos, len: this.displayChord(ct.chord).length, i };
     }).sort((a, b) => a.charPos - b.charPos);
@@ -260,6 +277,7 @@ export class SongSectionComponent {
       result[entry.i] = pos;
       cursor = pos + entry.len + 1;
     }
+    this.positionsCache.set(line, { key, positions: result });
     return result;
   }
 
@@ -297,7 +315,7 @@ export class SongSectionComponent {
     );
   }
 
-  trackSection(_: number, s: SongSection) { return s.name; }
+  trackSection(i: number, _: SongSection) { return i; }
   trackLine(i: number, _: SongLine) { return i; }
   trackChord(i: number, _: ChordToken) { return i; }
 }
