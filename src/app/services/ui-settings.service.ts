@@ -1,4 +1,4 @@
-import { Injectable, ApplicationRef } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 const THEME_KEY = 'worship_toolkit_theme';
 const FONT_SIZE_KEY = 'worship_toolkit_font_size';
@@ -11,10 +11,8 @@ export class UiSettingsService {
   readonly fontSizes = [13, 14, 16, 18, 20];
 
   latinMode = false;
-  toastMsg = '';
+  readonly toastMsg = signal('');
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
-
-  constructor(private appRef: ApplicationRef) {}
 
   init() {
     const savedTheme = localStorage.getItem(THEME_KEY) as 'light' | 'dark' | null;
@@ -47,13 +45,8 @@ export class UiSettingsService {
   toggleLatinMode() {
     this.setLatinMode(!this.latinMode);
     if (this.toastTimer) clearTimeout(this.toastTimer);
-    this.toastMsg = this.latinMode
-      ? 'Modus Latinus Activatus 🏛️'
-      : 'Modus Latinus Deactivatus';
-    this.toastTimer = setTimeout(() => {
-      this.toastMsg = '';
-      this.appRef.tick();
-    }, 3000);
+    this.toastMsg.set(this.latinMode ? 'Modus Latinus Activatus 🏛️' : 'Modus Latinus Deactivatus');
+    this.toastTimer = setTimeout(() => { this.toastMsg.set(''); }, 3000);
   }
 
   setLatinMode(mode: boolean) {

@@ -49,7 +49,7 @@
     <app-sessions-modal />
   }
 
-  @if (ui.toastMsg) {
-    <div class="latin-toast">{{ ui.toastMsg }}</div>
+  @if (ui.toastMsg()) {
+    <div class="latin-toast">{{ ui.toastMsg() }}</div>
   }
 </div>
