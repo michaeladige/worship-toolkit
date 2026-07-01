@@ -2,6 +2,15 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.13] - 2026-07-01
+
+### Fixed
+- **Latin mode toast now auto-dismisses** — the "Modus Latinus Activatus" toast previously required a tap or click elsewhere before disappearing. The state is now an Angular signal, so the 3-second timer correctly triggers a re-render without relying on zone.js or `ApplicationRef.tick()`.
+
+### Added
+- **Pencil affordance on song title** — a ✎ icon appears to the right of the song title in the editor toolbar when you hover it, making it clearer that the title is editable. On mobile and tablet the pencil is always faintly visible (since hover never fires on touch) so the tap target is obvious.
+- **Extended Latin coverage** — Latin mode now translates the remaining bare UI strings: `+ Line`, `+ chord`, `+ note` in the chord/lyric editor; `Already in set:` in the duplicate-song warning; and `Text size` in the header.
+
 ## [1.1.12] - 2026-07-01
 
 ### Added

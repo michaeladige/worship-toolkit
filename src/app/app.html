@@ -22,7 +22,7 @@
         [disabled]="sessionsSvc.currentSongs.length === 0 && !sessionsSvc.activeSessionId"
         title="Saved sets"
       >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set', 'Collectio Innominata') }}</span> ▾</button>
-      <span class="ui-label">Text size</span>
+      <span class="ui-label">{{ ui.t('Text size', 'Magnitudo Textus') }}</span>
       <button
         class="ui-ctrl-btn"
         (click)="ui.adjustFontSize(-1)"

@@ -71,7 +71,7 @@
     @if (dupeNames.length > 0) {
       <div class="dupe-warning">
         <p class="dupe-text">
-          Already in set: <strong>{{ dupeNames.join(', ') }}</strong>
+          {{ ui.t('Already in set:', 'Iam in collectione:') }} <strong>{{ dupeNames.join(', ') }}</strong>
         </p>
         <div class="dupe-actions">
           <button class="dupe-btn dupe-btn--add" (click)="confirmAppendAll()">{{ ui.t('Add anyway', 'Addere Nihilominus') }}</button>
