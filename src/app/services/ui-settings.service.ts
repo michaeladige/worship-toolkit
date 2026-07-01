@@ -14,8 +14,8 @@ const LANG_TOASTS: Record<Language, string> = {
   en:      'Switched to English 🌐',
   la:      'Modus Latinus Activatus 🏛️',
   'zh-TW': '已切換至繁體中文 🀄',
-  id:      'Mode Bahasa Indonesia Aktif 🌴',
-  jv:      'Basa Jawa sampun aktif 🌾',
+  id:      'Mode Bahasa Indonesia: ON! Gaskeun, lur 🌴🔥',
+  jv:      'Basa Jawa sampun mlebu, Cah! Ayo garap lagune karo tentrem 🌾😌',
 };
 
 const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
@@ -119,8 +119,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Upload a SongSelect PDF to edit keys, transpose chords, and export your set': {
     la:      'Trade mihi PDF et carmina tua in ordinem redigentur',
     'zh-TW': '丟個 PDF 進來，我幫你轉調，你負責唱歌！',
-    id:      'Upload PDF kamu, kami yang atur nadanya, kamu yang nyanyi!',
-    jv:      'Lebokno PDF-mu, aku sing ngurus lagune, kowe sing nyanyi!',
+    id:      'Upload PDF kamu, biar kita yang atur nadanya, kamu tinggal nyanyi — gaskeun!',
+    jv:      'Lebokna PDF-mu, Cah, ben tak-urus lagune, kowe kari nyanyi karo ngguyu 😊',
   },
 
   // ── upload page — other ──
@@ -139,22 +139,22 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Shift the entire song up or down by semitones, or jump directly to a target key': {
     la:      'Totum cantum sursum vel deorsum per semitonos muta, vel salta ad clavem destinatam',
     'zh-TW': '將整首歌上移或下移半音，或直接跳至目標調性',
-    id:      'Geser nada lagu secara keseluruhan, atau langsung ke nada target',
-    jv:      'Geser nada lagu, utawa langsung menyang nada sing dikarepake',
+    id:      'Geser nada lagu naik-turun sesuka hati, atau langsung cus ke nada target — gak pake ribet!',
+    jv:      'Geser nada lagu alon-alon utawa langsung mlumpat menyang nada sing dikarepake, ora perlu kesusu, Cah.',
   },
   'Edit Chords':     { la: 'Chordas Emendare',      'zh-TW': '編輯和弦',       id: 'Edit Akor',            jv: 'Edit Akor'            },
   'Click any chord to rename it inline, or change individual chord placements': {
     la:      'Clicca chordas ut renomines in situ, vel muta positiones chordas singularum',
     'zh-TW': '點擊任意和弦以重新命名，或調整和弦位置',
-    id:      'Klik akor untuk mengganti nama, atau ubah posisi akor',
-    jv:      'Klik akor kanggo ngganti jeneng, utawa ngowahi posisine',
+    id:      'Klik akor mana aja buat ganti nama, atau geser posisinya sesuka hati — anti ribet!',
+    jv:      'Klik akor sing dikarepake kanggo ngganti jeneng, utawa geser panggonane, alon-alon ora perlu kesusu.',
   },
   'Bass Notes':      { la: 'Notae Bassi',            'zh-TW': '低音音符',       id: 'Not Bass',             jv: 'Not Bass'             },
   'Toggle to show just the root/bass note of every chord — great for beginners': {
     la:      'Commuta ut solum notam radicem/bassi cuiusque chordae videas — optimum pro initiis',
     'zh-TW': '切換顯示每個和弦的根音/低音，適合初學者',
-    id:      'Tampilkan hanya not bass dari setiap akor — cocok untuk pemula',
-    jv:      'Tampilake mung not bass saben akor — cocok kanggo pemula',
+    id:      'Tampilin cuma not bass tiap akor — cocok banget buat pemula yang masih newbie!',
+    jv:      'Tampilake mung not bass saben akor — pas kanggo sing lagi sinau, ora usah kesusu.',
   },
   'Download updated sheet as a formatted PDF or Markdown file to share with your team': {
     la:      'Descarga schedam renovatam ut PDF formatum vel Markdown ad socios tuos',
@@ -166,8 +166,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Switch every chord to scale-degree numbers — key-independent charts for ear-trained players': {
     la:      'Muta omnes chordas ad numeros graduum — chartae independentes pro musicis auribus exercitatis',
     'zh-TW': '將每個和弦轉換為音階度數數字，與調性無關',
-    id:      'Ubah setiap akor menjadi nomor skala — bebas kunci!',
-    jv:      'Ganti saben akor dadi nomor skala — bebas kunci!',
+    id:      'Ubah semua akor jadi angka skala — bebas kunci, buat kamu yang kupingnya udah jago!',
+    jv:      'Ganti saben akor dadi angka skala — bebas kunci, kanggo sing kupinge wis pinter.',
   },
   'Undo, Dark Mode & More': {
     la:      'Rescindere, Modus Obscurus & Plus',
@@ -178,20 +178,20 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Full undo/redo history, a dark theme, and adjustable text size — all remembered between visits': {
     la:      'Historia plena rescindendi/refaciendi, thema obscurum, et magnitudo textus adaptabilis — omnia inter visitas memoria tenentur',
     'zh-TW': '完整撤銷/取消撤銷記錄、深色主題、文字大小調整 — 跨訪問記憶',
-    id:      'Riwayat undo/redo penuh, tema gelap, ukuran teks — semua tersimpan',
-    jv:      'Riwayat undo/redo lengkap, tema peteng, ukuran teks — kabeh kasimpen',
+    id:      'Riwayat undo/redo lengkap, tema gelap buat begadang, ukuran teks bisa diatur — semua diinget, santuy!',
+    jv:      'Riwayat undo/redo lengkap, tema peteng kanggo sing seneng ngedit bengi, ukuran teks iso disetel — kabeh dieling-eling, tenang wae.',
   },
   '📖 New here? Read the full user manual →': {
     la:      '📖 Novus hic? Lege manuale completum →',
     'zh-TW': '📖 第一次使用？閱讀完整使用手冊 →',
-    id:      '📖 Baru di sini? Baca panduan lengkap →',
-    jv:      '📖 Anyar ing kene? Waca pandhuan lengkap →',
+    id:      '📖 Baru gabung? Cus baca manualnya biar gak nyasar →',
+    jv:      '📖 Anyar mrene, Cah? Wacanen pandhuane sik, ben ora bingung →',
   },
   '🧪 Try the beta — new features land here first →': {
     la:      '🧪 Experire betam — nova hic primo adsunt →',
     'zh-TW': '🧪 試用 Beta 版 — 新功能先在這裡登場 →',
-    id:      '🧪 Coba versi beta — fitur baru hadir di sini lebih awal →',
-    jv:      '🧪 Coba beta — fitur anyar teka dhisik ing kene →',
+    id:      '🧪 Cobain versi beta — fitur baru mejeng di sini duluan, jadi anak paling update!',
+    jv:      '🧪 Coba beta, Cah — fitur anyar mrene dhisik, kowe dadi sing paling ngerti dhisik →',
   },
 
   // ── manual page — header ──
@@ -210,8 +210,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Everything you need to upload, edit, transpose, and share chord charts with your worship team.': {
     la:      'Omnia quae tibi opus sunt ad documenta chordarum chori tui sacri importandum, emendandum, transponendum et communicandum. Senatus Romanus adprobat.',
     'zh-TW': '姐幫你整理好了——上傳、編輯、移調、分享，一條龍全搞定！',
-    id:      'Semua yang lo butuhin buat upload, edit, transpose, dan share chord ke tim praise — semuanya ada di sini, gaskeun!',
-    jv:      'Kabeh sing kok butuhake kanggo upload, ngedit, transpose, lan bagi-bagi chord karo tim puji-pujian, nak.',
+    id:      'Semua yang lo butuhin buat upload, edit, transpose, dan share chord ke tim praise — semuanya ada di sini, no drama, gaskeun!',
+    jv:      'Kabeh sing kok butuhake kanggo upload, ngedit, transpose, lan ngedum chord karo tim puji-pujian, ora usah bingung, nak.',
   },
 
   // ── manual page — TOC ──
@@ -292,8 +292,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'WorshipToolkit turns a SongSelect chord chart PDF into an editable, transposable chart you can reshape and export. Everything happens in your browser — nothing is uploaded to a server.': {
     la:      'WorshipToolkit documentum PDF chordarum SongSelect in tabulam editabilem et transponibilem mutat, quam reformare et exportare potes. Omnia in navigatro tuo fiunt — nihil ad servitorem transmittitur. Magnum est!',
     'zh-TW': 'WorshipToolkit 把你的 SongSelect PDF 變成可以隨意編輯、移調的和弦圖，全部在你的瀏覽器裡搞定——沒有任何東西被上傳到伺服器，姐保證！',
-    id:      'WorshipToolkit ubah PDF chord SongSelect kamu jadi chart yang bisa diedit dan ditranspose sesuka hati. Semua terjadi di browser kamu — gak ada yang diupload ke server, sumpah deh!',
-    jv:      'WorshipToolkit ngowahi PDF chord SongSelect dadi chart sing iso diedit lan ditranspose, nak. Kabeh kedadean ing browser-mu — ora ana sing diunggah menyang server, dijamin.',
+    id:      'WorshipToolkit ubah PDF chord SongSelect kamu jadi chart yang bisa diedit dan ditranspose sesuka hati. Semua terjadi di browser kamu — gak ada yang diupload ke server, sumpah deh, aman total!',
+    jv:      'WorshipToolkit ngowahi PDF chord SongSelect dadi chart sing iso diedit lan ditranspose, nak. Kabeh kedadean ing browser-mu — ora ana sing diunggah menyang server, tentrem uwis, ora usah kuatir.',
   },
   'Open the app and either': {
     la:      'Aperi applicationem et aut',
@@ -403,7 +403,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     la:      'Clicca quemvis cantum in lista ut editorem ad illum commutes.',
     'zh-TW': '點擊列表中的任一首歌，即可切換到該歌曲的編輯器。',
     id:      'Klik lagu apa aja di daftar buat pindah ke editor lagu itu, gampang kan?',
-    jv:      'Klik lagu apa wae ing dhaftar kanggo pindhah menyang editor lagu kasebut.',
+    jv:      'Klik lagu apa wae ing dhaftar, mengko langsung pindhah menyang editor lagu kuwi, gampang ta?',
   },
   'The current key for each song is shown next to its title.': {
     la:      'Clavis actualis cuiusque cantus proxima titulo demonstratur.',
@@ -638,8 +638,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'click and drag it left or right to line it up exactly where it falls in the lyric.': {
     la:      'premes et trahe sinistrorsum vel dextrorsum ut eum colloces exacte ubi in verbis cadit.',
     'zh-TW': '點擊並左右拖動，將其精確對準歌詞中的位置。',
-    id:      'klik dan seret ke kiri atau kanan untuk menempatkannya tepat di posisi lirik yang sesuai.',
-    jv:      'klik lan seret menyang kiwa utawa tengen kanggo nempatake persis ing posisi lirik sing cocog.',
+    id:      'klik terus seret ke kiri-kanan sampai pas banget di posisi liriknya, no asal-asalan!',
+    jv:      'klik banjur seret mengiwa utawa mengetan, nganti pas persis ing lirike, ora usah kesusu.',
   },
   'Add a chord': {
     la:      'Addere Chordam',
@@ -930,8 +930,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.': {
     la:      'papiliones iuxta ostentationem clavis ut totum cantum sursum vel deorsum per semitonum moveant. Omnis chorda in pagina statim renovatur. Mirabile!',
     'zh-TW': '調性顯示旁的按鈕，每次上移或下移整首歌一個半音。頁面上所有和弦即時更新！',
-    id:      'tombol di samping tampilan kunci untuk naik/turun satu semitone sekaligus. Semua akor di halaman langsung update!',
-    jv:      'tombol ing jejere tampilan kunci kanggo munggah utawa mudhun siji semitone. Kabeh akor ing kaca langsung diperbarui.',
+    id:      'tombol di samping tampilan kunci untuk naik/turun satu semitone sekaligus. Semua akor di halaman auto-update, secepat kilat!',
+    jv:      'tombol ing jejere tampilan kunci kanggo munggah utawa mudhun siji semitone. Kabeh akor ing kaca langsung dianyari, cepet kaya kilat, nak.',
   },
   'Jump to a key': {
     la:      'Saltire ad Clavem',
@@ -986,8 +986,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   '). Handy for simplified or beginner charts.': {
     la:      '). Utile pro tabulis simplicioribus vel pro initiis. Optima!',
     'zh-TW': '）。非常適合簡化版或初學者使用！',
-    id:      '). Cocok banget untuk chart yang disederhanakan atau pemula!',
-    jv:      '). Migunani banget kanggo chart sing disederhanakake utawa kanggo pemula.',
+    id:      '). Cocok banget untuk chart yang disederhanakan atau pemula, dijamin gak pusing!',
+    jv:      '). Migunani banget kanggo chart sing disederhanakake utawa kanggo pemula, ora usah bingung.',
   },
   'converts every chord to a scale-degree number (1–7, with ♭/♯ prefixes for accidentals), relative to the song\'s current key. Useful for ear-trained players and key-independent charts.': {
     la:      'omnes chordas ad numerum gradus scalae (1–7, cum praefixis ♭/♯ pro accidentalibus), relative ad clavem cantus currentem, convertit. Utile pro musicis auribus exercitatis et tabulis a clave independentibus.',
@@ -1130,8 +1130,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'is your current collection of songs. Saving a set lets you snapshot it and return to it later — even if you close the browser or start working on a different set in the meantime.': {
     la:      'est collectio tua actualis cantuum. Servatio collectionis te sinit eam in imagine congelata capere et ad eam postea redire — etiam si navigatrum claudis vel interea aliam collectionem laborans.',
     'zh-TW': '是你目前的歌曲集合。儲存集合讓你可以快照它並在之後返回——即使你關閉瀏覽器或開始處理其他集合。',
-    id:      'adalah koleksi lagu kamu saat ini. Menyimpan set memungkinkan kamu snapshot dan kembali ke sana nanti — bahkan kalau browser ditutup atau lagi ngerjain set lain.',
-    jv:      'yaiku koleksi lagumu saiki. Nyimpen set ngidini kowe snapshot-e lan bali mengko — sanajan browser ditutup utawa lagi nggarap set liya.',
+    id:      'adalah koleksi lagu kamu saat ini. Menyimpan set itu kayak nge-save game — bisa balik kapan aja, biar browser ditutup atau kamu lagi sibuk ngerjain set lain!',
+    jv:      'yaiku koleksi lagumu saiki. Nyimpen set kuwi kaya nyelehke gaweyan ing lemari, mengko iso dijupuk maneh kapan wae, senajan browser ditutup utawa lagi nggarap set liya, nak.',
   },
   'The header shows the active set\'s name (e.g.': {
     la:      'Caput ostendit nomen collectionis activae (e.g.',
@@ -1462,8 +1462,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'toggle between Light and Dark mode. WorshipToolkit follows your system\'s preference the first time you open it.': {
     la:      'commuta inter modum Lucis et Tenebrarum. WorshipToolkit praeferentiam systematis tui prima vice qua eam aperis sequitur.',
     'zh-TW': '在淺色和深色模式之間切換。WorshipToolkit 第一次開啟時會跟隨你的系統偏好設定。',
-    id:      'beralih antara mode Terang dan Gelap. WorshipToolkit mengikuti preferensi sistem kamu saat pertama kali dibuka.',
-    jv:      'ngalih antarane mode Padhang lan Peteng. WorshipToolkit ngikuti preferensi sistem-mu nalika pisanan dibukak.',
+    id:      'beralih antara mode Terang dan Gelap. Pertama kali dibuka, WorshipToolkit nurut aja sama settingan sistem kamu — gak neko-neko!',
+    jv:      'ngalih antarane mode Padhang lan Peteng. Pisanan dibukak, WorshipToolkit manut wae karo setelan sistem-mu, ora neko-neko, nak.',
   },
   'choose how chord and key names are spelled:': {
     la:      'eligere quomodo nomina chordarum et clavium scribantur:',
@@ -1590,8 +1590,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'no song data leaves your device. Clearing your browser\'s site data will remove your saved sets.': {
     la:      'nulla data cantuum instrumentum tuum relinquunt. Expurgatio datae situs navigatri tui collectiones tuas servatas removebit.',
     'zh-TW': '沒有歌曲資料會離開你的裝置。清除瀏覽器的網站資料會移除你的已儲存集合。',
-    id:      'tidak ada data lagu yang meninggalkan perangkat kamu. Menghapus data situs browser akan menghapus set yang tersimpan.',
-    jv:      'ora ana data lagu sing ninggalake perangkat-mu. Ngresiki data situs browser bakal mbusak set kasimpen-mu.',
+    id:      'gak ada data lagu yang kabur dari perangkat kamu. Tapi awas, hapus data situs browser = set kamu ikut lenyap juga!',
+    jv:      'ora ana data lagu sing lunga saka perangkat-mu. Nanging ati-ati, ngresiki data situs browser bakal melu mbusak set kasimpen-mu, nak.',
   },
   'Nothing parsed from my PDF?': {
     la:      'Nihil e PDF meo lectum est?',

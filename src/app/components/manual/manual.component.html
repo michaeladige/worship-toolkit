@@ -186,7 +186,7 @@ Sephiroth!</pre>
 
   <section id="export" class="manual-section">
     <h2>{{ ui.t('8. Exporting & sharing') }}</h2>
-    <p>{{ ui.t('Click the') }} <strong>📤 {{ ui.t('Export') }}</strong> {{ ui.t('button in the app header to open the export panel. Three options are available:') }}</p>
+    <p>{{ ui.t('Click the') }} <strong>⬇️ {{ ui.t('Export') }}</strong> {{ ui.t('button in the app header to open the export panel. Three options are available:') }}</p>
     <ul>
       <li><strong>📄 {{ ui.t('Song PDF') }}</strong> &mdash; {{ ui.t('exports just the song you\'re currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.') }}</li>
       <li><strong>📋 {{ ui.t('Set PDF') }}</strong> &mdash; {{ ui.t('exports every song in the set into a single PDF, in list order, one song per page.') }}</li>
@@ -291,6 +291,15 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.7</h3></summary>
+      <ul>
+        <li><strong>Clearer Export icon</strong> &mdash; changed from 📤 to ⬇️ everywhere it appears, matching the download icon already used for exporting a saved set.</li>
+        <li><strong>Funnier Bahasa Indonesia and Basa Jawa</strong> &mdash; punched up the humor throughout the hero copy, feature cards, toasts, and manual sections in both languages.</li>
+        <li><strong>Deleting a saved set now requires confirmation</strong> &mdash; the delete button arms on the first click (turning into a red "Delete?") and only deletes on a second click within 3 seconds, since unlike song edits it can't be undone.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.6</h3></summary>
       <ul>
         <li><strong>Fixed a build-time warning</strong> &mdash; the section reorder drag placeholder is now correctly imported, preventing a possible break on a future Angular upgrade.</li>

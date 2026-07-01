@@ -81,7 +81,12 @@
               <button class="action-btn load-btn" (click)="loadSession(session)" title="Load this set">{{ ui.t('Load') }}</button>
               <button class="action-btn" (click)="startRename(session)" title="Rename">✎</button>
               <button class="action-btn" (click)="exportSession(session)" title="Export as .wt file">↓</button>
-              <button class="action-btn delete-btn" (click)="deleteSession(session.id)" title="Delete">✕</button>
+              <button
+                class="action-btn delete-btn"
+                [class.delete-btn--confirm]="confirmDeleteId() === session.id"
+                (click)="deleteSession(session.id)"
+                [title]="confirmDeleteId() === session.id ? 'Click again to permanently delete' : 'Delete'"
+              >{{ confirmDeleteId() === session.id ? 'Delete?' : '✕' }}</button>
             </div>
           </li>
         }
