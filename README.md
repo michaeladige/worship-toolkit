@@ -60,6 +60,8 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 ### Appearance & Accessibility
 - **Color themes** — five accent color themes in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, Green; each works with both light and dark mode
 - **Light / Dark mode** — toggle from ⚙️ Settings; follows system preference on first visit
+- **Chord font** — choose Classic (Courier New), Readable (JetBrains Mono), or Comic Sans MS in ⚙️ Settings → Appearance, applying to both the editor and PDF exports. Classic and Readable are true monospace fonts so chord/lyric alignment stays exact; Comic Sans MS is a joke option and chord alignment is not guaranteed
+- **Bold chords** — toggle chord-name bold text on or off, independently of the font choice
 - **Adjustable text size** — scale the app up or down with A− / A+ (13–32 px), remembered between visits
 
 ### Multi-Language UI
@@ -95,6 +97,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 | PDF parsing | pdfjs-dist |
 | PDF export | jsPDF |
 | Drag & drop | Angular CDK |
+| Fonts | Courier New / Comic Sans MS (system), JetBrains Mono & Comic Neue (self-hosted, [OFL-1.1](./public/fonts/JetBrainsMono-OFL.txt)) |
 | Hosting | GitHub Pages via GitHub Actions |
 
 ---

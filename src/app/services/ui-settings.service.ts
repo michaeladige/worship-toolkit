@@ -3,15 +3,10 @@ import { Accidentals } from './chord.service';
 
 export type Language = 'en' | 'la' | 'zh-TW' | 'id' | 'jv';
 export type ColorTheme = 'blue' | 'pink' | 'red' | 'amber' | 'green';
-export type FontFamily = 'courier' | 'consolas' | 'comic';
-
-// Comic Sans isn't monospace, so chord alignment ('ch'-based positioning) is
-// intentionally unreliable for it — it's a joke option, not a real chart font.
-const FONT_STACKS: Record<FontFamily, string> = {
-  courier:  `'Courier New', Consolas, monospace`,
-  consolas: `Consolas, Menlo, 'DejaVu Sans Mono', 'Liberation Mono', 'Courier New', monospace`,
-  comic:    `'Comic Sans MS', 'Comic Sans', 'Chalkboard SE', cursive`,
-};
+// 'comic' (Comic Sans MS) isn't monospace, so chord alignment ('ch'-based
+// positioning, and PDF export) is intentionally unreliable for it — it's a
+// joke option, not a real chart font.
+export type ChordFont = 'classic' | 'readable' | 'comic';
 
 const PREFS_KEY = 'worship_toolkit_prefs';
 
@@ -80,16 +75,24 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Flats':        { la: 'Bemolia',           'zh-TW': '降號 (♭)',    id: 'Mol (♭)',         jv: 'Mol (♭)'       },
   'Auto':         { la: 'Automatice',        'zh-TW': '自動',         id: 'Otomatis',       jv: 'Otomatis'      },
   'Sharps':       { la: 'Diesis',            'zh-TW': '升號 (♯)',    id: 'Kres (♯)',        jv: 'Kres (♯)'      },
+  'Chord font':   { la: 'Character Chordae', 'zh-TW': '和弦字型',     id: 'Font Akor',      jv: 'Font Akor'     },
+  'Classic':      { la: 'Classicum',         'zh-TW': '經典',         id: 'Klasik',         jv: 'Klasik'        },
+  'Readable':     { la: 'Legibile',          'zh-TW': '易讀',         id: 'Gampang Dibaca', jv: 'Gampang Diwaca'},
+  'choose between Classic (Courier New), Readable (JetBrains Mono), and Comic Sans MS. Classic and Readable are both true monospace fonts, so chord and lyric alignment stays exact. Comic Sans MS is a joke option — chords will not line up correctly. Applies to the editor and to PDF exports.': {
+    la:      'elige inter Classicum (Courier New), Legibile (JetBrains Mono), et Comic Sans MS. Classicum et Legibile ambo sunt fontes vere monospatiati, ita compositio chordarum et verborum exacta manet. Comic Sans MS optio iocosa est — chordae recte non alignabunt. Applicatur editori et exportationibus PDF.',
+    'zh-TW': '在經典（Courier New）、易讀（JetBrains Mono）和 Comic Sans MS 之間選擇。經典和易讀都是真正的等寬字型，和弦與歌詞的對齊完全準確。Comic Sans MS 是個玩笑選項——和弦不會正確對齊！同時套用於編輯器與 PDF 匯出。',
+    id:      'pilih antara Classic (Courier New), Readable (JetBrains Mono), dan Comic Sans MS. Classic dan Readable sama-sama monospace asli, jadi posisi akor dan lirik tetap presisi. Comic Sans MS itu opsi becandaan — akornya gak bakal sejajar dengan benar! Berlaku di editor maupun ekspor PDF.',
+    jv:      'pilih antarane Classic (Courier New), Readable (JetBrains Mono), lan Comic Sans MS. Classic lan Readable kabeh monospace asli, dadi posisi akor lan lirik tetep pas. Comic Sans MS iku opsi guyon — akor ora bakal jejer bener! Ditrapake ing editor lan uga ing ekspor PDF, nak.',
+  },
   'Text size':    { la: 'Magnitudo Textus',  'zh-TW': '文字大小',     id: 'Ukuran Teks',    jv: 'Ukuran Teks'   },
-  'Font':         { la: 'Scriptura',         'zh-TW': '字型',         id: 'Font',           jv: 'Font'          },
   'Bold chords':  { la: 'Chordae Crassae',   'zh-TW': '和弦粗體',     id: 'Akor Tebal',     jv: 'Akor Kandel'   },
   'On':           { la: 'Activum',           'zh-TW': '開',           id: 'Aktif',          jv: 'Aktif'         },
   'Off':          { la: 'Inactivum',         'zh-TW': '關',           id: 'Nonaktif',       jv: 'Mati'          },
-  '⚠️ Comic Sans is just for laughs — chords won\'t line up neatly with the lyrics.': {
-    la:      '⚠️ Comic Sans tantum ioci causa — chordae cum verbis recte non alignabunt.',
-    'zh-TW': '⚠️ Comic Sans 純粹好玩用的——和弦不會跟歌詞對齊喔！',
-    id:      '⚠️ Comic Sans cuma buat lucu-lucuan — akornya bakal berantakan, gak sejajar sama liriknya!',
-    jv:      '⚠️ Comic Sans mung kanggo guyon — akor ora bakal jejer rapi karo lirike.',
+  '⚠️ Comic Sans is just for laughs — chords won\'t line up neatly with the lyrics, on screen or in PDF exports.': {
+    la:      '⚠️ Comic Sans tantum ioci causa — chordae cum verbis recte non alignabunt, nec in schemate nec in PDF.',
+    'zh-TW': '⚠️ Comic Sans 純粹好玩用的——不管是螢幕上還是匯出的 PDF，和弦都不會跟歌詞對齊喔！',
+    id:      '⚠️ Comic Sans cuma buat lucu-lucuan — akornya bakal berantakan, gak sejajar sama liriknya, baik di layar maupun di PDF!',
+    jv:      '⚠️ Comic Sans mung kanggo guyon — akor ora bakal jejer rapi karo lirike, ing layar utawa ing PDF pisan.',
   },
   'PDF font size':{ la: 'Magnitudo PDF',     'zh-TW': 'PDF 字型大小', id: 'Ukuran Font PDF',jv: 'Ukuran Font PDF'},
   'Language':     { la: 'Lingua',            'zh-TW': '語言',         id: 'Bahasa',         jv: 'Basa'          },
@@ -1532,12 +1535,6 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'untuk perbesar/perkecil teks seluruh app (13–32px). Berguna untuk presentasi layar besar di ukuran yang lebih besar!',
     jv:      'kanggo mbakake utawa ngecilike teks kabeh app (13–32px). Migunani banget kanggo presentasi layar gede.',
   },
-  'choose the typeface used for chords and lyrics: Courier New (default) and Consolas are both monospace, so chords stay lined up with the lyrics. Comic Sans MS is a joke option — chords will not line up correctly.': {
-    la:      'elige scripturam pro chordis et verbis adhibitam: Courier New (defalta) et Consolas ambae monospatiales sunt, ergo chordae cum verbis alignatae manent. Comic Sans MS optio iocosa est — chordae recte non alignabunt.',
-    'zh-TW': '選擇和弦與歌詞使用的字型：Courier New（預設）和 Consolas 都是等寬字型，和弦會跟歌詞對齊。Comic Sans MS 是個玩笑選項——和弦不會正確對齊！',
-    id:      'pilih jenis huruf untuk akor dan lirik: Courier New (default) dan Consolas sama-sama monospace, jadi akor tetap sejajar sama lirik. Comic Sans MS itu opsi becandaan — akornya gak bakal sejajar dengan benar!',
-    jv:      'pilih jinis aksara kanggo akor lan lirik: Courier New (default) lan Consolas kabeh monospace, dadi akor tetep jejer karo lirik. Comic Sans MS iku opsi guyon — akor ora bakal jejer bener.',
-  },
   'toggle whether chord names are shown in bold text.': {
     la:      'commuta an nomina chordarum crasso textu ostendantur.',
     'zh-TW': '切換和弦名稱是否以粗體顯示。',
@@ -1673,15 +1670,15 @@ export class UiSettingsService {
 
   chordAccidentals: Accidentals = 'auto';
 
-  fontFamily: FontFamily = 'courier';
-  readonly fontFamilies: FontFamily[] = ['courier', 'consolas', 'comic'];
-
   boldChords = true;
 
   language: Language = 'en';
 
   colorTheme: ColorTheme = 'blue';
   readonly colorThemes: ColorTheme[] = ['blue', 'pink', 'red', 'amber', 'green'];
+
+  chordFont: ChordFont = 'classic';
+  readonly chordFonts: ChordFont[] = ['classic', 'readable', 'comic'];
 
   readonly toastMsg = signal('');
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
@@ -1713,6 +1710,18 @@ export class UiSettingsService {
     this.applyColorTheme();
   }
 
+  setChordFont(font: ChordFont) {
+    this.chordFont = font;
+    this.savePrefs();
+    this.applyChordFont();
+  }
+
+  setBoldChords(val: boolean) {
+    this.boldChords = val;
+    this.savePrefs();
+    this.applyBoldChords();
+  }
+
   init() {
     const raw = localStorage.getItem(PREFS_KEY);
     if (raw) {
@@ -1726,8 +1735,6 @@ export class UiSettingsService {
         this.pdfFontSize = this.pdfFontSizes.includes(psz) ? psz : 14;
         const acc = p['chordAccidentals'] as string;
         this.chordAccidentals = (acc === 'sharps' || acc === 'flats') ? acc : 'auto';
-        const ff = p['fontFamily'] as string;
-        this.fontFamily = (this.fontFamilies as string[]).includes(ff) ? ff as FontFamily : 'courier';
         this.boldChords = typeof p['boldChords'] === 'boolean' ? p['boldChords'] as boolean : true;
         // language: prefer new 'language' key, fall back to old 'latinMode' boolean
         const lang = p['language'] as string;
@@ -1738,6 +1745,8 @@ export class UiSettingsService {
         }
         const ct = p['colorTheme'] as string;
         this.colorTheme = (this.colorThemes as string[]).includes(ct) ? ct as ColorTheme : 'blue';
+        const cf = p['chordFont'] as string;
+        this.chordFont = (this.chordFonts as string[]).includes(cf) ? cf as ChordFont : 'classic';
       } catch {
         this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
@@ -1754,7 +1763,7 @@ export class UiSettingsService {
     this.applyTheme();
     this.applyFontSize();
     this.applyColorTheme();
-    this.applyFontFamily();
+    this.applyChordFont();
     this.applyBoldChords();
   }
 
@@ -1766,7 +1775,7 @@ export class UiSettingsService {
       chordAccidentals: this.chordAccidentals,
       language: this.language,
       colorTheme: this.colorTheme,
-      fontFamily: this.fontFamily,
+      chordFont: this.chordFont,
       boldChords: this.boldChords,
     }));
   }
@@ -1790,18 +1799,6 @@ export class UiSettingsService {
     this.savePrefs();
   }
 
-  setFontFamily(val: FontFamily) {
-    this.fontFamily = val;
-    this.savePrefs();
-    this.applyFontFamily();
-  }
-
-  setBoldChords(val: boolean) {
-    this.boldChords = val;
-    this.savePrefs();
-    this.applyBoldChords();
-  }
-
   adjustPdfFontSize(dir: 1 | -1) {
     const idx = this.pdfFontSizes.indexOf(this.pdfFontSize);
     const newIdx = Math.max(0, Math.min(this.pdfFontSizes.length - 1, idx + dir));
@@ -1822,11 +1819,41 @@ export class UiSettingsService {
     else document.documentElement.setAttribute('data-color', this.colorTheme);
   }
 
-  private applyFontFamily() {
-    document.documentElement.style.setProperty('--font-chord', FONT_STACKS[this.fontFamily]);
-  }
-
   private applyBoldChords() {
     document.documentElement.style.setProperty('--chord-weight', this.boldChords ? '700' : '400');
+  }
+
+  private readableFontLoaded = false;
+
+  private applyChordFont() {
+    if (this.chordFont === 'classic') {
+      document.documentElement.removeAttribute('data-font');
+      return;
+    }
+    document.documentElement.setAttribute('data-font', this.chordFont);
+    // Comic Sans MS relies on whatever the OS provides — nothing to fetch.
+    if (this.chordFont === 'readable') this.loadReadableFont();
+  }
+
+  // Registers "JetBrains Mono" with the CSS Font Loading API instead of a
+  // @font-face src: url() in global CSS — see the comment in styles.scss for
+  // why (GitHub Pages subpath deploys break a plain CSS url()). Runs once;
+  // the browser only actually fetches each file once something on the page
+  // renders with that font-family, same laziness a @font-face would have had.
+  private loadReadableFont(): void {
+    if (this.readableFontLoaded) return;
+    this.readableFontLoaded = true;
+    const variants: { style: string; weight: string; path: string }[] = [
+      { style: 'normal', weight: '400', path: 'fonts/JetBrainsMono-Regular.ttf' },
+      { style: 'normal', weight: '700', path: 'fonts/JetBrainsMono-Bold.ttf' },
+      { style: 'italic', weight: '400', path: 'fonts/JetBrainsMono-Italic.ttf' },
+    ];
+    for (const { style, weight, path } of variants) {
+      const url = new URL(path, document.baseURI).href;
+      const face = new FontFace('JetBrains Mono', `url(${url})`, { style, weight });
+      face.load()
+        .then(loaded => document.fonts.add(loaded))
+        .catch(() => { /* offline or blocked — falls back to the Courier stack */ });
+    }
   }
 }

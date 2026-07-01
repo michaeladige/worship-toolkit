@@ -2,6 +2,19 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.7] - 2026-07-02
+
+### Added
+- **Readable and joke chord fonts** — two new chord/lyric font choices alongside the classic Courier New, chosen via ⚙️ Settings → Appearance → Chord font: Readable (JetBrains Mono, a true monospace font so chord/lyric alignment stays exact) and Comic Sans MS (a joke option — chord alignment is not guaranteed). Both apply to the editor and PDF exports; JetBrains Mono is measured and embedded as a true monospace font in generated PDFs.
+- **Bold chords toggle** — turn chord-name bold text on or off independently of the font choice, in ⚙️ Settings → Appearance.
+
+### Changed
+- **Clearer Export icon** — the header, upload page, and manual's Export icon changed from 📤 (which read ambiguously at small sizes) to ⬇️, matching the download icon already used elsewhere in the app (e.g. exporting a saved set).
+- **Funnier Bahasa Indonesia and Basa Jawa** — punched up the humor throughout the hero copy, feature cards, toasts, and manual sections in both languages, keeping each language's established voice (Gen-Z slang for Indonesian, warm unhurried elder energy for Javanese).
+
+### Fixed
+- **Deleting a saved set now requires confirmation** — the delete button in Saved Sets previously deleted on a single click with no way to undo it (unlike song edits, saved-set deletion isn't covered by Ctrl+Z). It now arms on the first click (turning into a red "Delete?") and only deletes on a second click within 3 seconds.
+
 ## [1.2.6] - 2026-07-02
 
 ### Fixed

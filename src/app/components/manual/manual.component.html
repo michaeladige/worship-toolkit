@@ -257,9 +257,9 @@ Sephiroth!</pre>
         </ul>
         {{ ui.t('The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.') }}
       </li>
-      <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.') }}</li>
-      <li><strong>{{ ui.t('Font') }}</strong> &mdash; {{ ui.t('choose the typeface used for chords and lyrics: Courier New (default) and Consolas are both monospace, so chords stay lined up with the lyrics. Comic Sans MS is a joke option — chords will not line up correctly.') }}</li>
+      <li><strong>{{ ui.t('Chord font') }}</strong> &mdash; {{ ui.t('choose between Classic (Courier New), Readable (JetBrains Mono), and Comic Sans MS. Classic and Readable are both true monospace fonts, so chord and lyric alignment stays exact. Comic Sans MS is a joke option — chords will not line up correctly. Applies to the editor and to PDF exports.') }}</li>
       <li><strong>{{ ui.t('Bold chords') }}</strong> &mdash; {{ ui.t('toggle whether chord names are shown in bold text.') }}</li>
+      <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.') }}</li>
     </ul>
     <h3>{{ ui.t('Export') }}</h3>
     <ul>
@@ -293,6 +293,17 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.7</h3></summary>
+      <ul>
+        <li><strong>Readable and joke chord fonts</strong> &mdash; two new chord/lyric font choices alongside Courier New, in ⚙️ Settings → Appearance → Chord font: Readable (JetBrains Mono, stays chord-aligned) and Comic Sans MS (a joke option — chords won't line up). Both apply to the editor and PDF exports.</li>
+        <li><strong>Bold chords toggle</strong> &mdash; turn chord-name bold text on or off independently of the font choice, in ⚙️ Settings → Appearance.</li>
+        <li><strong>Clearer Export icon</strong> &mdash; changed from 📤 to ⬇️ everywhere it appears, matching the download icon already used for exporting a saved set.</li>
+        <li><strong>Funnier Bahasa Indonesia and Basa Jawa</strong> &mdash; punched up the humor throughout the hero copy, feature cards, toasts, and manual sections in both languages.</li>
+        <li><strong>Deleting a saved set now requires confirmation</strong> &mdash; the delete button arms on the first click (turning into a red "Delete?") and only deletes on a second click within 3 seconds, since unlike song edits it can't be undone.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.6</h3></summary>
       <ul>
         <li><strong>Fixed a build-time warning</strong> &mdash; the section reorder drag placeholder is now correctly imported, preventing a possible break on a future Angular upgrade.</li>

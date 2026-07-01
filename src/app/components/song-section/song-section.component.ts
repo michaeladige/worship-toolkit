@@ -281,14 +281,12 @@ export class SongSectionComponent {
     return result;
   }
 
-  // Measures the actual rendered font (respects the user's font-family preference)
-  // so the pixel↔ch drag conversion stays accurate for whichever font is active.
+  // No font-family/font-size set here — the probe inherits both from rowEl
+  // (the real .chord-row), so it always measures whichever chord font and
+  // text-size preference is actually active, not a hardcoded assumption.
   private measureChPx(rowEl: HTMLElement): number {
-    const computed = getComputedStyle(rowEl);
     const probe = document.createElement('span');
-    probe.style.cssText =
-      `position:absolute;visibility:hidden;width:1ch;` +
-      `font-family:${computed.fontFamily};font-size:${computed.fontSize}`;
+    probe.style.cssText = 'position:absolute;visibility:hidden;width:1ch;';
     rowEl.appendChild(probe);
     const w = probe.getBoundingClientRect().width || 8;
     rowEl.removeChild(probe);
