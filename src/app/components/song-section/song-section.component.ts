@@ -60,15 +60,15 @@ export class SongSectionComponent {
   constructor(public chordSvc: ChordService, public ui: UiSettingsService) {}
 
   get effectiveKey(): string {
-    return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones);
+    return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones, this.ui.chordAccidentals);
   }
 
   displayAnnotation(annotation: string): string {
-    return this.chordSvc.transposeAnnotation(annotation, this.song.transposeSemitones, this.effectiveKey);
+    return this.chordSvc.transposeAnnotation(annotation, this.song.transposeSemitones, this.effectiveKey, this.ui.chordAccidentals);
   }
 
   displayChord(raw: string): string {
-    const transposed = this.chordSvc.transposeChord(raw, this.song.transposeSemitones, this.effectiveKey);
+    const transposed = this.chordSvc.transposeChord(raw, this.song.transposeSemitones, this.effectiveKey, this.ui.chordAccidentals);
     const display = this.song.showBassNotesOnly ? this.chordSvc.getBassNote(transposed) : transposed;
     return this.song.showNashville ? this.chordSvc.toNashville(display, this.effectiveKey) : display;
   }

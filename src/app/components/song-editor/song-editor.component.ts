@@ -45,11 +45,11 @@ export class SongEditorComponent {
   }
 
   get effectiveKey(): string {
-    return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones);
+    return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones, this.ui.chordAccidentals);
   }
 
   get allKeys(): string[] {
-    return this.chordSvc.allKeys();
+    return this.chordSvc.allKeys(this.ui.chordAccidentals);
   }
 
   updateSong(updated: ParsedSong) {

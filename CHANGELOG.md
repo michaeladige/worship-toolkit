@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.2] - 2026-07-01
+
+### Added
+- **Accidentals preference** — a new segmented control (♭ Flats / Auto / ♯ Sharps) in ⚙️ Settings → Appearance applies your preferred enharmonic spelling everywhere simultaneously: chord buttons in the editor, key display in the toolbar and sidebar, "Jump to" dropdown list, and PDF/Markdown exports. **Auto** (default) uses conventional key-context spelling. Preference is saved to `localStorage`.
+
 ## [1.2.1] - 2026-07-01
 
 ### Added

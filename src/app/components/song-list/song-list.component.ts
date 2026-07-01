@@ -48,7 +48,7 @@ export class SongListComponent implements OnChanges {
   }
 
   effectiveKey(song: ParsedSong): string {
-    return this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones);
+    return this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, this.ui.chordAccidentals);
   }
 
   onAddBlankSong() {

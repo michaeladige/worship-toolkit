@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 
+export type Accidentals = 'auto' | 'sharps' | 'flats';
+
 const SHARPS = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const FLATS  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
@@ -61,7 +63,9 @@ export class ChordService {
     return idx;
   }
 
-  private preferFlat(key: string): boolean {
+  private preferFlat(key: string, accidentals: Accidentals = 'auto'): boolean {
+    if (accidentals === 'sharps') return false;
+    if (accidentals === 'flats')  return true;
     return FLAT_KEYS.has(key);
   }
 
@@ -72,26 +76,25 @@ export class ChordService {
     return useFlats ? FLATS[newIdx] : SHARPS[newIdx];
   }
 
-  transposeChord(chord: string, semitones: number, targetKey: string): string {
-    if (semitones === 0) return chord;
+  transposeChord(chord: string, semitones: number, targetKey: string, accidentals: Accidentals = 'auto'): string {
     const parsed = this.parseChord(chord);
     if (!parsed) return chord;
-    const flat = this.preferFlat(targetKey);
+    // Preserve original spelling only when no transposition and in auto mode
+    if (semitones === 0 && accidentals === 'auto') return chord;
+    const flat = this.preferFlat(targetKey, accidentals);
     const newRoot = this.transposeNote(parsed.root, semitones, flat);
     const newBass = parsed.bass ? '/' + this.transposeNote(parsed.bass, semitones, flat) : '';
     return newRoot + parsed.suffix + newBass;
   }
 
   /** Transpose full key string e.g. "C" → "D" when +2 semitones */
-  transposeKey(key: string, semitones: number): string {
+  transposeKey(key: string, semitones: number, accidentals: Accidentals = 'auto'): string {
     const idx = this.noteToIndex(key);
     if (idx === -1) return key;
     const newIdx = ((idx + semitones) % 12 + 12) % 12;
-    // Determine if the new key prefers flats
     const newKeySharp = SHARPS[newIdx];
     const newKeyFlat = FLATS[newIdx];
-    // Try sharp first, fall back to flat if not in flat preference list
-    return this.preferFlat(newKeySharp) ? newKeyFlat : newKeySharp;
+    return this.preferFlat(newKeySharp, accidentals) ? newKeyFlat : newKeySharp;
   }
 
   getBassNote(chord: string): string {
@@ -101,18 +104,20 @@ export class ChordService {
     return parsed.bass ?? parsed.root;
   }
 
-  allKeys(): string[] {
-    return ['C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
+  allKeys(accidentals: Accidentals = 'auto'): string[] {
+    if (accidentals === 'sharps') return ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+    if (accidentals === 'flats')  return ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+    return ['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B']; // auto (conventional)
   }
 
   // Transpose chord names embedded in an annotation string (bar notation, direction notes).
   // Splits on whitespace so each token is checked individually — non-chord tokens like
   // "|", ".", "(To", "Tag)" are passed through unchanged.
-  transposeAnnotation(annotation: string, semitones: number, targetKey: string): string {
-    if (semitones === 0) return annotation;
+  transposeAnnotation(annotation: string, semitones: number, targetKey: string, accidentals: Accidentals = 'auto'): string {
+    if (semitones === 0 && accidentals === 'auto') return annotation;
     return annotation
       .split(/(\s+)/)
-      .map(token => this.isChord(token) ? this.transposeChord(token, semitones, targetKey) : token)
+      .map(token => this.isChord(token) ? this.transposeChord(token, semitones, targetKey, accidentals) : token)
       .join('');
   }
 
