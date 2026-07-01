@@ -1,9 +1,9 @@
 <div class="manual">
   <header class="manual-hero">
-    <a class="back-link" routerLink="/">&larr; Back to WorshipToolkit</a>
-    <h1>User Manual</h1>
+    <a class="back-link" routerLink="/">{{ ui.t('← Back to WorshipToolkit') }}</a>
+    <h1>{{ ui.t('User Manual') }}</h1>
     <p class="subtitle">
-      Everything you need to upload, edit, transpose, and share chord charts with your worship team.
+      {{ ui.t('Everything you need to upload, edit, transpose, and share chord charts with your worship team.') }}
     </p>
     <div class="lang-pills lang-pills--manual">
       <button class="lang-pill" [class.lang-pill--active]="ui.language === 'en'"    (click)="ui.setLanguage('en')">🌐 English</button>
@@ -57,234 +57,232 @@ Sephiroth!</pre>
   }
 
   <nav class="toc" aria-label="Table of contents">
-    <span class="toc-label">On this page</span>
+    <span class="toc-label">{{ ui.t('On this page') }}</span>
     <ul>
-      <li><a routerLink="." fragment="getting-started">1. Getting started</a></li>
-      <li><a routerLink="." fragment="your-set">2. Your song set</a></li>
-      <li><a routerLink="." fragment="editing">3. Editing chords &amp; lyrics</a></li>
-      <li><a routerLink="." fragment="sections">4. Working with sections</a></li>
-      <li><a routerLink="." fragment="keys">5. Keys &amp; transposition</a></li>
-      <li><a routerLink="." fragment="notation">6. Bass notes &amp; Nashville numbers</a></li>
-      <li><a routerLink="." fragment="history">7. Undo &amp; redo</a></li>
-      <li><a routerLink="." fragment="export">8. Exporting &amp; sharing</a></li>
-      <li><a routerLink="." fragment="sessions">9. Saved sets &amp; autosave</a></li>
-      <li><a routerLink="." fragment="appearance">10. Appearance &amp; accessibility</a></li>
-      <li><a routerLink="." fragment="tips">11. Tips, autosave &amp; troubleshooting</a></li>
+      <li><a routerLink="." fragment="getting-started">{{ ui.t('1. Getting started') }}</a></li>
+      <li><a routerLink="." fragment="your-set">{{ ui.t('2. Your song set') }}</a></li>
+      <li><a routerLink="." fragment="editing">{{ ui.t('3. Editing chords & lyrics') }}</a></li>
+      <li><a routerLink="." fragment="sections">{{ ui.t('4. Working with sections') }}</a></li>
+      <li><a routerLink="." fragment="keys">{{ ui.t('5. Keys & transposition') }}</a></li>
+      <li><a routerLink="." fragment="notation">{{ ui.t('6. Bass notes & Nashville numbers') }}</a></li>
+      <li><a routerLink="." fragment="history">{{ ui.t('7. Undo & redo') }}</a></li>
+      <li><a routerLink="." fragment="export">{{ ui.t('8. Exporting & sharing') }}</a></li>
+      <li><a routerLink="." fragment="sessions">{{ ui.t('9. Saved sets & autosave') }}</a></li>
+      <li><a routerLink="." fragment="appearance">{{ ui.t('10. Appearance & accessibility') }}</a></li>
+      <li><a routerLink="." fragment="tips">{{ ui.t('11. Tips, autosave & troubleshooting') }}</a></li>
       <li><a routerLink="." fragment="changelog">12. What's new</a></li>
     </ul>
   </nav>
 
   <section id="getting-started" class="manual-section">
-    <h2>1. Getting started</h2>
+    <h2>{{ ui.t('1. Getting started') }}</h2>
     <p>
-      WorshipToolkit turns a SongSelect chord chart PDF into an editable, transposable chart you can
-      reshape and export. Everything happens in your browser &mdash; nothing is uploaded to a server.
+      {{ ui.t('WorshipToolkit turns a SongSelect chord chart PDF into an editable, transposable chart you can reshape and export. Everything happens in your browser — nothing is uploaded to a server.') }}
     </p>
     <ol>
-      <li>Open the app and either <strong>drag &amp; drop</strong> a SongSelect PDF onto the drop zone, click <strong>Choose File</strong> to pick one, click <strong>✏️ Start from scratch</strong> to create a blank song, or click <strong>📂 Load set file</strong> to resume from a previously exported <code>.wt</code> file.</li>
-      <li>The app parses the PDF automatically. Multi-song PDFs are split into individual songs.</li>
-      <li>Two-column layouts and superscript chord extensions (e.g. <code>Fm⁷</code>) are recognized and normalized automatically (e.g. to <code>Fm7</code>).</li>
-      <li>Direction notes such as <em>To Tag</em> or <em>To Interlude</em>, and bar notation like <code>| Am7 | G |</code>, are preserved as italic annotations under the relevant line.</li>
+      <li>{{ ui.t('Open the app and either') }} <strong>{{ ui.t('drag & drop') }}</strong> {{ ui.t('a SongSelect PDF onto the drop zone, click') }} <strong>{{ ui.t('Choose File') }}</strong> {{ ui.t('to pick one, click') }} <strong>{{ ui.t('✏️ Start from scratch') }}</strong> {{ ui.t('to create a blank song, or click') }} <strong>{{ ui.t('📂 Load set file') }}</strong> {{ ui.t('to resume from a previously exported') }} <code>.wt</code> {{ ui.t('file.') }}</li>
+      <li>{{ ui.t('The app parses the PDF automatically. Multi-song PDFs are split into individual songs.') }}</li>
+      <li>{{ ui.t('Two-column layouts and superscript chord extensions (e.g.') }} <code>Fm⁷</code>) {{ ui.t('are recognized and normalized automatically (e.g. to') }} <code>Fm7</code>{{ ui.t(').') }}</li>
+      <li>{{ ui.t('Direction notes such as') }} <em>To Tag</em> {{ ui.t('or') }} <em>To Interlude</em>{{ ui.t(', and bar notation like') }} <code>| Am7 | G |</code>{{ ui.t(', are preserved as italic annotations under the relevant line.') }}</li>
     </ol>
     <div class="callout">
-      <strong>Only PDF files are supported.</strong> If nothing is detected, double-check that the file is a SongSelect-style chord chart PDF, not a scanned image.
+      <strong>{{ ui.t('Only PDF files are supported.') }}</strong> {{ ui.t('If nothing is detected, double-check that the file is a SongSelect-style chord chart PDF, not a scanned image.') }}
     </div>
   </section>
 
   <section id="your-set" class="manual-section">
-    <h2>2. Your song set</h2>
+    <h2>{{ ui.t('2. Your song set') }}</h2>
     <p>
-      Once a PDF is loaded (or you start from scratch), every song appears in the <strong>Songs in Set</strong> list on
-      the left (on mobile, a horizontal scrollable tab bar at the top).
+      {{ ui.t('Once a PDF is loaded (or you start from scratch), every song appears in the') }} <strong>{{ ui.t('Songs in Set') }}</strong> {{ ui.t('list on the left (on mobile, a horizontal scrollable tab bar at the top).') }}
     </p>
     <ul>
-      <li>Click any song in the list to switch the editor to that song.</li>
-      <li>The current key for each song is shown next to its title.</li>
-      <li><strong>Rename a song title</strong> &mdash; click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press <kbd>Enter</kbd> to save or <kbd>Esc</kbd> to cancel. This is especially useful for songs added as blank "New Song" entries.</li>
-      <li><strong>Remove a song</strong> &mdash; hover over a song in the list and click the <strong>✕</strong> button that appears on the right. Removing the last song returns you to the upload screen.</li>
-      <li><strong>Collapse the sidebar</strong> &mdash; on desktop and tablet, click the <strong>◄</strong> button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click <strong>►</strong> to expand it again. On mobile, tap <strong>Songs in Set ▼</strong> to collapse the song bar and free up vertical space; tap again (<strong>Songs in Set ▲</strong>) to expand it.</li>
+      <li>{{ ui.t('Click any song in the list to switch the editor to that song.') }}</li>
+      <li>{{ ui.t('The current key for each song is shown next to its title.') }}</li>
+      <li><strong>{{ ui.t('Rename a song title') }}</strong> &mdash; {{ ui.t('click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press') }} <kbd>Enter</kbd> {{ ui.t('to save or') }} <kbd>Esc</kbd> {{ ui.t('to cancel. This is especially useful for songs added as blank "New Song" entries.') }}</li>
+      <li><strong>{{ ui.t('Remove a song') }}</strong> &mdash; {{ ui.t('hover over a song in the list and click the') }} <strong>✕</strong> {{ ui.t('button that appears on the right. Removing the last song returns you to the upload screen.') }}</li>
+      <li><strong>{{ ui.t('Collapse the sidebar') }}</strong> &mdash; {{ ui.t('on desktop and tablet, click the') }} <strong>◄</strong> {{ ui.t('button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click') }} <strong>►</strong> {{ ui.t('to expand it again. On mobile, tap') }} <strong>{{ ui.t('Songs in Set') }} ▼</strong> {{ ui.t('to collapse the song bar and free up vertical space; tap again (') }}<strong>{{ ui.t('Songs in Set') }} ▲</strong>{{ ui.t(') to expand it.') }}</li>
     </ul>
-    <h3>Adding songs to an existing set</h3>
-    <p>On desktop and tablet, <strong>+ New Song</strong> and <strong>+ Import PDF</strong> appear directly at the end of the song list (below the last song). On mobile, tap the <strong>+</strong> button at the end of the tab strip to reveal them:</p>
+    <h3>{{ ui.t('Adding songs to an existing set') }}</h3>
+    <p>{{ ui.t('On desktop and tablet,') }} <strong>{{ ui.t('+ New Song') }}</strong> {{ ui.t('and') }} <strong>{{ ui.t('+ Import PDF') }}</strong> {{ ui.t('appear directly at the end of the song list (below the last song). On mobile, tap the') }} <strong>+</strong> {{ ui.t('button at the end of the tab strip to reveal them:') }}</p>
     <ul>
-      <li><strong>+ New Song</strong> &mdash; adds a blank song to the bottom of the list. Give it a name, add sections, and build it from scratch.</li>
-      <li><strong>+ Import PDF</strong> &mdash; appends songs from another PDF <em>without</em> replacing what's already in your set. Great for building a multi-song set from separate files.</li>
-      <li>If any imported song title already exists in the set, a warning appears. You can choose to <strong>Add anyway</strong> (add all including duplicates) or <strong>Skip duplicates</strong> (only import songs with new titles).</li>
+      <li><strong>{{ ui.t('+ New Song') }}</strong> &mdash; {{ ui.t('adds a blank song to the bottom of the list. Give it a name, add sections, and build it from scratch.') }}</li>
+      <li><strong>{{ ui.t('+ Import PDF') }}</strong> &mdash; {{ ui.t('appends songs from another PDF') }} <em>{{ ui.t('without') }}</em> {{ ui.t('replacing what\'s already in your set. Great for building a multi-song set from separate files.') }}</li>
+      <li>{{ ui.t('If any imported song title already exists in the set, a warning appears. You can choose to') }} <strong>{{ ui.t('Add anyway') }}</strong> {{ ui.t('(add all including duplicates) or') }} <strong>{{ ui.t('Skip duplicates') }}</strong> {{ ui.t('(only import songs with new titles).') }}</li>
     </ul>
-    <h3>Reordering songs</h3>
+    <h3>{{ ui.t('Reordering songs') }}</h3>
     <ul>
-      <li>Drag the <strong>≡</strong> handle on any song row up or down to reorder the list. This also works on touch screens &mdash; press and hold the handle, then drag.</li>
-      <li>Reordering is undoable with <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd>.</li>
+      <li>{{ ui.t('Drag the') }} <strong>≡</strong> {{ ui.t('handle on any song row up or down to reorder the list. This also works on touch screens — press and hold the handle, then drag.') }}</li>
+      <li>{{ ui.t('Reordering is undoable with') }} <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd>{{ ui.t('.') }}</li>
     </ul>
   </section>
 
   <section id="editing" class="manual-section">
-    <h2>3. Editing chords &amp; lyrics</h2>
-    <p>The editor mirrors the printed layout: chords float above the lyric line they belong to.</p>
-    <h3>Chords</h3>
+    <h2>{{ ui.t('3. Editing chords & lyrics') }}</h2>
+    <p>{{ ui.t('The editor mirrors the printed layout: chords float above the lyric line they belong to.') }}</p>
+    <h3>{{ ui.t('Chords') }}</h3>
     <ul>
-      <li><strong>Rename a chord</strong> &mdash; click it, type the new chord, then press <kbd>Enter</kbd> (or click elsewhere) to save. Press <kbd>Esc</kbd> to cancel.</li>
-      <li><strong>Reposition a chord</strong> &mdash; click and drag it left or right to line it up exactly where it falls in the lyric.</li>
-      <li><strong>Add a chord</strong> &mdash; use the <strong>+</strong> button in the left gutter of a line, or click <strong>+ chord</strong> on an empty line. New chords start as <code>C</code> and open for editing immediately.</li>
-      <li><strong>Remove a chord</strong> &mdash; hover over it and click the small <strong>×</strong> that appears.</li>
+      <li><strong>{{ ui.t('Rename a chord') }}</strong> &mdash; {{ ui.t('click it, type the new chord, then press') }} <kbd>Enter</kbd> {{ ui.t('(or click elsewhere) to save. Press') }} <kbd>Esc</kbd> {{ ui.t('to cancel.') }}</li>
+      <li><strong>{{ ui.t('Reposition a chord') }}</strong> &mdash; {{ ui.t('click and drag it left or right to line it up exactly where it falls in the lyric.') }}</li>
+      <li><strong>{{ ui.t('Add a chord') }}</strong> &mdash; {{ ui.t('use the') }} <strong>+</strong> {{ ui.t('button in the left gutter of a line, or click') }} <strong>{{ ui.t('+ chord') }}</strong> {{ ui.t('on an empty line. New chords start as') }} <code>C</code> {{ ui.t('and open for editing immediately.') }}</li>
+      <li><strong>{{ ui.t('Remove a chord') }}</strong> &mdash; {{ ui.t('hover over it and click the small') }} <strong>×</strong> {{ ui.t('that appears.') }}</li>
     </ul>
-    <h3>Lyrics &amp; lines</h3>
+    <h3>{{ ui.t('Lyrics & lines') }}</h3>
     <ul>
-      <li>Click directly into any lyric line to edit the text in place.</li>
-      <li>Add a new line under a section with the <strong>+ Line</strong> button in that section's header.</li>
-      <li>Remove a line using the <strong>×</strong> button in its left gutter. A section always keeps at least one line.</li>
+      <li>{{ ui.t('Click directly into any lyric line to edit the text in place.') }}</li>
+      <li>{{ ui.t('Add a new line under a section with the') }} <strong>{{ ui.t('+ Line') }}</strong> {{ ui.t('button in that section\'s header.') }}</li>
+      <li>{{ ui.t('Remove a line using the') }} <strong>×</strong> {{ ui.t('button in its left gutter. A section always keeps at least one line.') }}</li>
     </ul>
-    <h3>Tempo &amp; time signature</h3>
+    <h3>{{ ui.t('Tempo & time signature') }}</h3>
     <ul>
-      <li><strong>Edit tempo</strong> &mdash; click the <strong>BPM</strong> chip in the toolbar, type a new number, then press <kbd>Enter</kbd> (or click elsewhere) to save. Clearing it shows a <strong>+ BPM</strong> placeholder you can click to set a new value. Press <kbd>Esc</kbd> to cancel.</li>
-      <li><strong>Edit time signature</strong> &mdash; click the time signature chip (e.g. <code>4/4</code>) next to the BPM chip, type a new signature such as <code>3/4</code> or <code>6/8</code>, then press <kbd>Enter</kbd> to save. An invalid entry reverts to the previous value. Press <kbd>Esc</kbd> to cancel.</li>
+      <li><strong>{{ ui.t('Edit tempo') }}</strong> &mdash; {{ ui.t('click the') }} <strong>BPM</strong> {{ ui.t('chip in the toolbar, type a new number, then press') }} <kbd>Enter</kbd> {{ ui.t('(or click elsewhere) to save. Clearing it shows a') }} <strong>+ BPM</strong> {{ ui.t('placeholder you can click to set a new value. Press') }} <kbd>Esc</kbd> {{ ui.t('to cancel.') }}</li>
+      <li><strong>{{ ui.t('Edit time signature') }}</strong> &mdash; {{ ui.t('click the time signature chip (e.g.') }} <code>4/4</code>) {{ ui.t('next to the BPM chip, type a new signature such as') }} <code>3/4</code> {{ ui.t('or') }} <code>6/8</code>{{ ui.t(', then press') }} <kbd>Enter</kbd> {{ ui.t('to save. An invalid entry reverts to the previous value. Press') }} <kbd>Esc</kbd> {{ ui.t('to cancel.') }}</li>
     </ul>
-    <h3>Annotations</h3>
+    <h3>{{ ui.t('Annotations') }}</h3>
     <ul>
-      <li><strong>Add a note</strong> &mdash; on a lyric line with no annotation, hover it and click <strong>+ note</strong>, type a direction note or bar notation (e.g. <code>(To Tag)</code> or <code>| Am7 | G |</code>), then press <kbd>Enter</kbd> to save.</li>
-      <li><strong>Edit a note</strong> &mdash; click an existing annotation to edit it in place.</li>
-      <li><strong>Remove a note</strong> &mdash; while editing, click the <strong>×</strong> next to the annotation input.</li>
-      <li>Annotations are stored untransposed and transposed only for display, so bar notation like <code>| Am7 | G |</code> stays correct no matter how many times you transpose the song.</li>
+      <li><strong>{{ ui.t('Add a note') }}</strong> &mdash; {{ ui.t('on a lyric line with no annotation, hover it and click') }} <strong>{{ ui.t('+ note') }}</strong>{{ ui.t(', type a direction note or bar notation (e.g.') }} <code>(To Tag)</code> {{ ui.t('or') }} <code>| Am7 | G |</code>{{ ui.t('), then press') }} <kbd>Enter</kbd> {{ ui.t('to save.') }}</li>
+      <li><strong>{{ ui.t('Edit a note') }}</strong> &mdash; {{ ui.t('click an existing annotation to edit it in place.') }}</li>
+      <li><strong>{{ ui.t('Remove a note') }}</strong> &mdash; {{ ui.t('while editing, click the') }} <strong>×</strong> {{ ui.t('next to the annotation input.') }}</li>
+      <li>{{ ui.t('Annotations are stored untransposed and transposed only for display, so bar notation like') }} <code>| Am7 | G |</code> {{ ui.t('stays correct no matter how many times you transpose the song.') }}</li>
     </ul>
   </section>
 
   <section id="sections" class="manual-section">
-    <h2>4. Working with sections</h2>
+    <h2>{{ ui.t('4. Working with sections') }}</h2>
     <ul>
-      <li><strong>Add a section</strong> &mdash; below the song, use the quick-pick buttons (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) or type a custom name and click <strong>Add</strong> / press <kbd>Enter</kbd>.</li>
-      <li><strong>Reorder sections</strong> &mdash; grab the <strong>⠿</strong> drag handle in a section's header and drop it where you want it.</li>
-      <li><strong>Remove a section</strong> &mdash; click the <strong>✕</strong> button in the section header.</li>
+      <li><strong>{{ ui.t('Add a section') }}</strong> &mdash; {{ ui.t('below the song, use the quick-pick buttons (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) or type a custom name and click') }} <strong>{{ ui.t('Add') }}</strong> / {{ ui.t('press') }} <kbd>Enter</kbd>{{ ui.t('.') }}</li>
+      <li><strong>{{ ui.t('Reorder sections') }}</strong> &mdash; {{ ui.t('grab the') }} <strong>⠿</strong> {{ ui.t('drag handle in a section\'s header and drop it where you want it.') }}</li>
+      <li><strong>{{ ui.t('Remove a section') }}</strong> &mdash; {{ ui.t('click the') }} <strong>✕</strong> {{ ui.t('button in the section header.') }}</li>
     </ul>
   </section>
 
   <section id="keys" class="manual-section">
-    <h2>5. Keys &amp; transposition</h2>
+    <h2>{{ ui.t('5. Keys & transposition') }}</h2>
     <ul>
-      <li><strong>Step transpose</strong> &mdash; use the <strong>▲</strong> / <strong>▼</strong> buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.</li>
-      <li><strong>Jump to a key</strong> &mdash; pick any key directly from the <strong>Jump to</strong> dropdown. The list uses your current Accidentals preference (see §10).</li>
-      <li><strong>Reset</strong> &mdash; once you've transposed, a <strong>Reset</strong> button appears showing the original key; click it to snap straight back.</li>
-      <li>Whenever the song is transposed, a banner above the chart confirms the change, e.g. <em>Transposed from G &rarr; A (+2 semitones)</em>.</li>
+      <li><strong>{{ ui.t('Step transpose') }}</strong> &mdash; {{ ui.t('use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.') }}</li>
+      <li><strong>{{ ui.t('Jump to a key') }}</strong> &mdash; {{ ui.t('pick any key directly from the') }} <strong>{{ ui.t('Jump to') }}</strong> {{ ui.t('dropdown. The list uses your current Accidentals preference (see §10).') }}</li>
+      <li><strong>{{ ui.t('Reset') }}</strong> &mdash; {{ ui.t('once you\'ve transposed, a') }} <strong>{{ ui.t('Reset') }}</strong> {{ ui.t('button appears showing the original key; click it to snap straight back.') }}</li>
+      <li>{{ ui.t('Whenever the song is transposed, a banner above the chart confirms the change, e.g.') }} <em>{{ ui.t('Transposed from G → A (+2 semitones)') }}</em>{{ ui.t('.') }}</li>
     </ul>
   </section>
 
   <section id="notation" class="manual-section">
-    <h2>6. Bass notes &amp; Nashville numbers</h2>
+    <h2>{{ ui.t('6. Bass notes & Nashville numbers') }}</h2>
     <ul>
-      <li><strong>🎹 Bass Notes</strong> &mdash; toggles every chord down to just its root/bass note (e.g. <code>D/F♯</code> &rarr; <code>D</code>). Handy for simplified or beginner charts.</li>
-      <li><strong>1 2 3 Nashville</strong> &mdash; converts every chord to a scale-degree number (1&ndash;7, with ♭/♯ prefixes for accidentals), relative to the song's current key. Useful for ear-trained players and key-independent charts.</li>
-      <li>Both toggles can be combined with transposition, and both are respected by every export.</li>
+      <li><strong>{{ ui.t('🎹 Bass Notes') }}</strong> &mdash; {{ ui.t('toggles every chord down to just its root/bass note (e.g.') }} <code>D/F♯</code> &rarr; <code>D</code>{{ ui.t('). Handy for simplified or beginner charts.') }}</li>
+      <li><strong>{{ ui.t('1 2 3 Nashville') }}</strong> &mdash; {{ ui.t('converts every chord to a scale-degree number (1–7, with ♭/♯ prefixes for accidentals), relative to the song\'s current key. Useful for ear-trained players and key-independent charts.') }}</li>
+      <li>{{ ui.t('Both toggles can be combined with transposition, and both are respected by every export.') }}</li>
     </ul>
   </section>
 
   <section id="history" class="manual-section">
-    <h2>7. Undo &amp; redo</h2>
-    <p>Every edit &mdash; chord changes, lyric edits, section moves, additions and removals &mdash; can be undone.</p>
+    <h2>{{ ui.t('7. Undo & redo') }}</h2>
+    <p>{{ ui.t('Every edit — chord changes, lyric edits, section moves, additions and removals — can be undone.') }}</p>
     <ul>
-      <li>Use the <strong>↩ Undo</strong> / <strong>↪ Redo</strong> buttons in the toolbar.</li>
-      <li>Or use the keyboard: <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd> to undo, <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> (or <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Y</kbd>) to redo.</li>
-      <li>History holds up to 50 steps per editing session, and is cleared whenever you load a new PDF.</li>
+      <li>{{ ui.t('Use the') }} <strong>{{ ui.t('↩ Undo') }}</strong> / <strong>{{ ui.t('↪ Redo') }}</strong> {{ ui.t('buttons in the toolbar.') }}</li>
+      <li>{{ ui.t('Or use the keyboard:') }} <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd> {{ ui.t('to undo,') }} <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd> ({{ ui.t('or') }} <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Y</kbd>) {{ ui.t('to redo.') }}</li>
+      <li>{{ ui.t('History holds up to 50 steps per editing session, and is cleared whenever you load a new PDF.') }}</li>
     </ul>
   </section>
 
   <section id="export" class="manual-section">
-    <h2>8. Exporting &amp; sharing</h2>
-    <p>Click the <strong>📤 Export</strong> button in the app header to open the export panel. Three options are available:</p>
+    <h2>{{ ui.t('8. Exporting & sharing') }}</h2>
+    <p>{{ ui.t('Click the') }} <strong>📤 {{ ui.t('Export') }}</strong> {{ ui.t('button in the app header to open the export panel. Three options are available:') }}</p>
     <ul>
-      <li><strong>📄 Song PDF</strong> &mdash; exports just the song you're currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.</li>
-      <li><strong>📋 Set PDF</strong> &mdash; exports every song in the set into a single PDF, in list order, one song per page.</li>
-      <li><strong>📝 Markdown</strong> &mdash; exports the full set as a <code>.md</code> file, with chord rows placed above each lyric line, viewable in any Markdown reader.</li>
+      <li><strong>📄 {{ ui.t('Song PDF') }}</strong> &mdash; {{ ui.t('exports just the song you\'re currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.') }}</li>
+      <li><strong>📋 {{ ui.t('Set PDF') }}</strong> &mdash; {{ ui.t('exports every song in the set into a single PDF, in list order, one song per page.') }}</li>
+      <li><strong>📝 Markdown</strong> &mdash; {{ ui.t('exports the full set as a') }} <code>.md</code> {{ ui.t('file, with chord rows placed above each lyric line, viewable in any Markdown reader.') }}</li>
     </ul>
-    <p>All exports respect your current transposition, the Bass Notes toggle, the Nashville toggle, your Accidentals preference, and include any direction/bar-notation annotations, correctly transposed.</p>
-    <p>To adjust the <strong>PDF font size</strong> (10–20 px, default 14 px), open ⚙️ Settings &rarr; Export. Sizes above 14 px switch the PDF to a single-column layout; a warning is shown in Settings when this threshold is exceeded.</p>
+    <p>{{ ui.t('All exports respect your current transposition, the Bass Notes toggle, the Nashville toggle, your Accidentals preference, and include any direction/bar-notation annotations, correctly transposed.') }}</p>
+    <p>{{ ui.t('To adjust the') }} <strong>{{ ui.t('PDF font size') }}</strong> {{ ui.t('(10–20 px, default 14 px), open ⚙️ Settings → Export. Sizes above 14 px switch the PDF to a single-column layout; a warning is shown in Settings when this threshold is exceeded.') }}</p>
     <div class="callout">
-      <strong>Round-trip friendly:</strong> PDFs exported from WorshipToolkit can be re-uploaded later. The app embeds the exact column layout in the file so your edits, chord positions, and structure come back intact &mdash; no need to keep a separate source file.
+      <strong>{{ ui.t('Round-trip friendly:') }}</strong> {{ ui.t('PDFs exported from WorshipToolkit can be re-uploaded later. The app embeds the exact column layout in the file so your edits, chord positions, and structure come back intact — no need to keep a separate source file.') }}
     </div>
   </section>
 
   <section id="sessions" class="manual-section">
-    <h2>9. Saved sets &amp; autosave</h2>
+    <h2>{{ ui.t('9. Saved sets & autosave') }}</h2>
     <p>
-      A <em>set</em> is your current collection of songs. Saving a set lets you snapshot it and return to it later &mdash; even if you close the browser or start working on a different set in the meantime.
+      {{ ui.t('A') }} <em>{{ ui.t('set') }}</em> {{ ui.t('is your current collection of songs. Saving a set lets you snapshot it and return to it later — even if you close the browser or start working on a different set in the meantime.') }}
     </p>
-    <p>The header shows the active set's name (e.g. <strong>💾 Sunday Service ▾</strong>), or <strong>💾 Untitled set ▾</strong> if nothing is saved yet. Click it to open the <strong>Saved Sets</strong> panel. At the top of the panel, the current set name and last-modified time are shown — or <em>Unsaved set</em> if no set is active yet.</p>
-    <h3>Starting a new set</h3>
+    <p>{{ ui.t('The header shows the active set\'s name (e.g.') }} <strong>💾 {{ ui.t('Sunday Service') }} ▾</strong>{{ ui.t('), or') }} <strong>💾 {{ ui.t('Untitled set') }} ▾</strong> {{ ui.t('if nothing is saved yet. Click it to open the') }} <strong>{{ ui.t('Saved Sets') }}</strong> {{ ui.t('panel. At the top of the panel, the current set name and last-modified time are shown — or') }} <em>{{ ui.t('Unsaved set') }}</em> {{ ui.t('if no set is active yet.') }}</p>
+    <h3>{{ ui.t('Starting a new set') }}</h3>
     <ul>
-      <li>Click <strong>➕ New</strong> in the header (or <strong>+ New</strong> inside the Saved Sets panel) to clear the workspace and start fresh. On mobile the header button shows just the <strong>➕</strong> icon.</li>
-      <li>If you're currently in a named set (it's already autosaved), the workspace clears immediately.</li>
-      <li>If you have unsaved work, a prompt appears: enter a name to save it first, or click <strong>Skip &amp; New</strong> to discard and continue.</li>
+      <li>{{ ui.t('Click') }} <strong>➕ {{ ui.t('New') }}</strong> {{ ui.t('in the header (or') }} <strong>{{ ui.t('+ New') }}</strong> {{ ui.t('inside the Saved Sets panel) to clear the workspace and start fresh. On mobile the header button shows just the') }} <strong>➕</strong> {{ ui.t('icon.') }}</li>
+      <li>{{ ui.t('If you\'re currently in a named set (it\'s already autosaved), the workspace clears immediately.') }}</li>
+      <li>{{ ui.t('If you have unsaved work, a prompt appears: enter a name to save it first, or click') }} <strong>{{ ui.t('Skip & New') }}</strong> {{ ui.t('to discard and continue.') }}</li>
     </ul>
-    <h3>Saving a set</h3>
+    <h3>{{ ui.t('Saving a set') }}</h3>
     <ul>
-      <li>Type a name for your set (e.g. <em>Sunday 29 June</em>) in the input at the top of the panel and click <strong>Save</strong> (or press <kbd>Enter</kbd>).</li>
-      <li>If you save again with the same name, the existing set is updated in place rather than duplicated.</li>
-      <li>Up to 20 sets can be stored. If you exceed this limit, the oldest set is removed.</li>
+      <li>{{ ui.t('Type a name for your set (e.g.') }} <em>{{ ui.t('Sunday 29 June') }}</em>) {{ ui.t('in the input at the top of the panel and click') }} <strong>{{ ui.t('Save') }}</strong> ({{ ui.t('or press') }} <kbd>Enter</kbd>{{ ui.t(').') }}</li>
+      <li>{{ ui.t('If you save again with the same name, the existing set is updated in place rather than duplicated.') }}</li>
+      <li>{{ ui.t('Up to 20 sets can be stored. If you exceed this limit, the oldest set is removed.') }}</li>
     </ul>
-    <h3>Autosave to the active set</h3>
+    <h3>{{ ui.t('Autosave to the active set') }}</h3>
     <ul>
-      <li>Once a set is saved or loaded, it becomes the <em>active set</em>. Every edit you make &mdash; chord changes, transpositions, section moves &mdash; is automatically saved back to that set in real time. No need to keep clicking Save.</li>
-      <li>The active set is highlighted with an <strong>active</strong> badge in the panel, and its name appears in the header button.</li>
-      <li>If you reload the page, the app restores both your songs and the active set so you can continue right where you left off.</li>
+      <li>{{ ui.t('Once a set is saved or loaded, it becomes the') }} <em>{{ ui.t('active set') }}</em>{{ ui.t('. Every edit you make — chord changes, transpositions, section moves — is automatically saved back to that set in real time. No need to keep clicking Save.') }}</li>
+      <li>{{ ui.t('The active set is highlighted with an') }} <strong>{{ ui.t('active') }}</strong> {{ ui.t('badge in the panel, and its name appears in the header button.') }}</li>
+      <li>{{ ui.t('If you reload the page, the app restores both your songs and the active set so you can continue right where you left off.') }}</li>
     </ul>
-    <h3>Loading a set</h3>
+    <h3>{{ ui.t('Loading a set') }}</h3>
     <ul>
-      <li>Each saved set shows its name, save date, and song count. Click <strong>Load</strong> to restore it &mdash; the editor updates immediately and that set becomes the new active set.</li>
+      <li>{{ ui.t('Each saved set shows its name, save date, and song count. Click') }} <strong>{{ ui.t('Load') }}</strong> {{ ui.t('to restore it — the editor updates immediately and that set becomes the new active set.') }}</li>
     </ul>
-    <h3>Managing sets</h3>
+    <h3>{{ ui.t('Managing sets') }}</h3>
     <ul>
-      <li><strong>Rename</strong> &mdash; click the pencil icon (✎) on any set to rename it inline, then press <kbd>Enter</kbd> or click elsewhere.</li>
-      <li><strong>Delete</strong> &mdash; click the ✕ button to permanently remove a set from storage.</li>
-      <li>Sets are stored only in <em>this browser</em> on <em>this device</em>. Use export/import (below) to move them to another device.</li>
+      <li><strong>{{ ui.t('Rename') }}</strong> &mdash; {{ ui.t('click the pencil icon (✎) on any set to rename it inline, then press') }} <kbd>Enter</kbd> {{ ui.t('or click elsewhere.') }}</li>
+      <li><strong>{{ ui.t('Delete') }}</strong> &mdash; {{ ui.t('click the ✕ button to permanently remove a set from storage.') }}</li>
+      <li>{{ ui.t('Sets are stored only in') }} <em>{{ ui.t('this browser') }}</em> {{ ui.t('on') }} <em>{{ ui.t('this device') }}</em>{{ ui.t('. Use export/import (below) to move them to another device.') }}</li>
     </ul>
-    <h3>Exporting and importing set files</h3>
+    <h3>{{ ui.t('Exporting and importing set files') }}</h3>
     <ul>
-      <li><strong>Export (↓)</strong> &mdash; click the download button on any saved set to save it as a <code>.wt</code> file. This file contains the full song data including all edits, transpositions, and chord positions.</li>
-      <li><strong>Import from the Saved Sets panel</strong> &mdash; click <strong>↑ Import .wt file</strong> at the top of the panel, pick a previously exported <code>.wt</code> file, and the set loads into the editor immediately. It's also saved to your set list so you can return to it later.</li>
-      <li><strong>Import from the upload page</strong> &mdash; on the landing/upload page, click <strong>📂 Load set file</strong> to open a <code>.wt</code> file directly without going through the panel.</li>
-      <li><code>.wt</code> files are plain JSON and can be shared via email, cloud drive, AirDrop, or any other file-transfer method.</li>
+      <li><strong>{{ ui.t('Export (↓)') }}</strong> &mdash; {{ ui.t('click the download button on any saved set to save it as a') }} <code>.wt</code> {{ ui.t('file. This file contains the full song data including all edits, transpositions, and chord positions.') }}</li>
+      <li><strong>{{ ui.t('Import from the Saved Sets panel') }}</strong> &mdash; {{ ui.t('click') }} <strong>↑ {{ ui.t('Import .wt file') }}</strong> {{ ui.t('at the top of the panel, pick a previously exported') }} <code>.wt</code> {{ ui.t('file, and the set loads into the editor immediately. It\'s also saved to your set list so you can return to it later.') }}</li>
+      <li><strong>{{ ui.t('Import from the upload page') }}</strong> &mdash; {{ ui.t('on the landing/upload page, click') }} <strong>{{ ui.t('📂 Load set file') }}</strong> {{ ui.t('to open a') }} <code>.wt</code> {{ ui.t('file directly without going through the panel.') }}</li>
+      <li><code>.wt</code> {{ ui.t('files are plain JSON and can be shared via email, cloud drive, AirDrop, or any other file-transfer method.') }}</li>
     </ul>
   </section>
 
   <section id="appearance" class="manual-section">
-    <h2>10. Appearance &amp; accessibility</h2>
-    <p>Click the <strong>⚙️ Settings</strong> button in the app header to open the Settings panel. All display and export preferences live here and are remembered between visits.</p>
-    <h3>Appearance</h3>
+    <h2>{{ ui.t('10. Appearance & accessibility') }}</h2>
+    <p>{{ ui.t('Click the') }} <strong>⚙️ {{ ui.t('Settings') }}</strong> {{ ui.t('button in the app header to open the Settings panel. All display and export preferences live here and are remembered between visits.') }}</p>
+    <h3>{{ ui.t('Appearance') }}</h3>
     <ul>
-      <li><strong>Color</strong> &mdash; choose an accent color theme: Blue (default), Pink, Red, Amber, or Green. The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.</li>
-      <li><strong>Theme</strong> &mdash; toggle between Light and Dark mode. WorshipToolkit follows your system's preference the first time you open it.</li>
-      <li><strong>Accidentals</strong> &mdash; choose how chord and key names are spelled:
+      <li><strong>{{ ui.t('Color') }}</strong> &mdash; {{ ui.t('choose an accent color theme: Blue (default), Pink, Red, Amber, or Green. The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.') }}</li>
+      <li><strong>{{ ui.t('Theme') }}</strong> &mdash; {{ ui.t('toggle between Light and Dark mode. WorshipToolkit follows your system\'s preference the first time you open it.') }}</li>
+      <li><strong>{{ ui.t('Accidentals') }}</strong> &mdash; {{ ui.t('choose how chord and key names are spelled:') }}
         <ul>
-          <li><strong>♭ Flats</strong> &mdash; always use flat notation (Db, Eb, Ab, Bb, Gb) everywhere.</li>
-          <li><strong>Auto</strong> (default) &mdash; uses conventional key-context spelling: flat keys use flats, sharp keys use sharps.</li>
-          <li><strong>♯ Sharps</strong> &mdash; always use sharp notation (C#, D#, G#, A#, F#) everywhere.</li>
+          <li><strong>♭ {{ ui.t('Flats') }}</strong> &mdash; {{ ui.t('always use flat notation (Db, Eb, Ab, Bb, Gb) everywhere.') }}</li>
+          <li><strong>{{ ui.t('Auto') }}</strong> ({{ ui.t('default') }}) &mdash; {{ ui.t('uses conventional key-context spelling: flat keys use flats, sharp keys use sharps.') }}</li>
+          <li><strong>♯ {{ ui.t('Sharps') }}</strong> &mdash; {{ ui.t('always use sharp notation (C#, D#, G#, A#, F#) everywhere.') }}</li>
         </ul>
-        The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.
+        {{ ui.t('The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.') }}
       </li>
-      <li><strong>Text size</strong> &mdash; use <strong>A&minus;</strong> / <strong>A+</strong> to scale the whole app's text up or down (13–32 px). Useful for large-screen presentations at the larger end.</li>
+      <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.') }}</li>
     </ul>
-    <h3>Export</h3>
+    <h3>{{ ui.t('Export') }}</h3>
     <ul>
-      <li><strong>PDF font size</strong> &mdash; sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.</li>
+      <li><strong>{{ ui.t('PDF font size') }}</strong> &mdash; {{ ui.t('sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.') }}</li>
     </ul>
-    <h3>Language</h3>
-    <p>Five UI languages are available. Switch using the pill buttons in <strong>⚙️ Settings → Language</strong> or directly from the row of pills at the top of this manual page.</p>
+    <h3>{{ ui.t('Language') }}</h3>
+    <p>{{ ui.t('Five UI languages are available. Switch using the pill buttons in') }} <strong>⚙️ {{ ui.t('Settings') }} → {{ ui.t('Language') }}</strong> {{ ui.t('or directly from the row of pills at the top of this manual page.') }}</p>
     <ul>
-      <li><strong>🌐 English</strong> (default)</li>
-      <li><strong>🏛️ Latina</strong> &mdash; humorous Latin. Activating it shows a toast notification. Unlocks the <em>Cantus Secretus</em> section on this page.</li>
-      <li><strong>🀄 繁體中文</strong> &mdash; Traditional Chinese</li>
+      <li><strong>🌐 English</strong> ({{ ui.t('default') }})</li>
+      <li><strong>🏛️ Latina</strong> &mdash; {{ ui.t('humorous Latin. Activating it shows a toast notification. Unlocks the') }} <em>Cantus Secretus</em> {{ ui.t('section on this page.') }}</li>
+      <li><strong>🀄 繁體中文</strong> &mdash; {{ ui.t('Traditional Chinese') }}</li>
       <li><strong>🌴 Bahasa Indonesia</strong></li>
-      <li><strong>🌾 Basa Jawa</strong> &mdash; Javanese</li>
+      <li><strong>🌾 Basa Jawa</strong> &mdash; {{ ui.t('Javanese') }}</li>
     </ul>
-    <p>Language preference is saved per set — loading a saved set restores the language it was saved with. The home page app name and tagline also change per language (because why not).</p>
+    <p>{{ ui.t('Language preference is saved per set — loading a saved set restores the language it was saved with. The home page app name and tagline also change per language (because why not).') }}</p>
   </section>
 
   <section id="tips" class="manual-section">
-    <h2>11. Tips, autosave &amp; troubleshooting</h2>
+    <h2>{{ ui.t('11. Tips, autosave & troubleshooting') }}</h2>
     <ul>
-      <li><strong>Autosave</strong> &mdash; your set is continuously saved to this browser's local storage. Refreshing or closing the tab won't lose your work; only starting a new set via <strong>➕ New</strong> in the header clears the workspace.</li>
-      <li><strong>Everything is local</strong> &mdash; no song data leaves your device. Clearing your browser's site data will remove your saved sets.</li>
-      <li><strong>Nothing parsed from my PDF?</strong> Make sure it's an actual SongSelect chord chart export, not a scanned/photographed image &mdash; the parser reads text, not pixels.</li>
-      <li><strong>Chord didn't land where I dragged it?</strong> Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.</li>
-      <li><strong>Want a clean slate for one song only?</strong> You can remove and re-add sections/lines rather than starting a whole new upload.</li>
+      <li><strong>{{ ui.t('Autosave') }}</strong> &mdash; {{ ui.t('your set is continuously saved to this browser\'s local storage. Refreshing or closing the tab won\'t lose your work; only starting a new set via') }} <strong>➕ {{ ui.t('New') }}</strong> {{ ui.t('in the header clears the workspace.') }}</li>
+      <li><strong>{{ ui.t('Everything is local') }}</strong> &mdash; {{ ui.t('no song data leaves your device. Clearing your browser\'s site data will remove your saved sets.') }}</li>
+      <li><strong>{{ ui.t('Nothing parsed from my PDF?') }}</strong> {{ ui.t('Make sure it\'s an actual SongSelect chord chart export, not a scanned/photographed image — the parser reads text, not pixels.') }}</li>
+      <li><strong>{{ ui.t('Chord didn\'t land where I dragged it?') }}</strong> {{ ui.t('Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.') }}</li>
+      <li><strong>{{ ui.t('Want a clean slate for one song only?') }}</strong> {{ ui.t('You can remove and re-add sections/lines rather than starting a whole new upload.') }}</li>
     </ul>
   </section>
 
@@ -293,6 +291,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.4</h3></summary>
+      <ul>
+        <li><strong>Manual page translations</strong> &mdash; all 11 content sections of this manual are now translated into all five app languages (Latin, Traditional Chinese, Bahasa Indonesia, Basa Jawa), each with a distinct humorous tone. The §12 changelog remains in English for easy editing.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.3</h3></summary>
       <ul>
         <li><strong>Color themes</strong> &mdash; five accent color themes now available in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, and Green. Each color has automatic light and dark mode variants. The color swatch picker and brightness toggle are independent controls.</li>
@@ -535,6 +540,6 @@ Sephiroth!</pre>
   </section>
 
   <footer class="manual-footer">
-    <a class="back-link" routerLink="/">&larr; Back to WorshipToolkit</a>
+    <a class="back-link" routerLink="/">{{ ui.t('← Back to WorshipToolkit') }}</a>
   </footer>
 </div>
