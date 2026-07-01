@@ -8,7 +8,7 @@
         <div class="section-label">{{ section.name }}</div>
         @if (showSectionControls) {
           <div class="section-actions">
-            <button class="section-action-btn" (click)="addLine.emit(si)" title="Add line">+ Line</button>
+            <button class="section-action-btn" (click)="addLine.emit(si)" title="Add line">{{ ui.t('+ Line', '+ Linea') }}</button>
             <button class="section-action-btn section-action-btn--danger" (click)="removeSection.emit(si)" title="Remove section">✕</button>
           </div>
         }
@@ -64,7 +64,7 @@
               </div>
             } @else if (!line.isChordsOnly) {
               <div class="chord-row chord-row--empty">
-                <button class="add-chord-btn--inline" (click)="addChord(si, li)" title="Add chord">+ chord</button>
+                <button class="add-chord-btn--inline" (click)="addChord(si, li)" title="Add chord">{{ ui.t('+ chord', '+ chorda') }}</button>
               </div>
             }
 
@@ -96,7 +96,7 @@
                 class="add-annotation-btn"
                 (click)="startEditAnnotation(si, li)"
                 title="Add annotation"
-              >+ note</button>
+              >{{ ui.t('+ note', '+ nota') }}</button>
             }
             @if (!line.isChordsOnly) {
               <div

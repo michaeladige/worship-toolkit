@@ -61,12 +61,33 @@
     }
   }
 
-  .editable-title {
+  .title-edit-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
     cursor: pointer;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.12s;
 
-    &:hover { border-bottom-color: var(--color-primary); }
+    h2 {
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.12s;
+    }
+
+    .edit-pencil {
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      opacity: 0;
+      transition: opacity 0.12s;
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    &:hover h2 { border-bottom-color: var(--color-primary); }
+    &:hover .edit-pencil { opacity: 1; }
+
+    // On touch devices hover never fires — show pencil faintly so the tap target is obvious
+    @media (hover: none) {
+      .edit-pencil { opacity: 0.4; }
+    }
   }
 
   .title-input {
@@ -261,11 +282,27 @@
 
 .export-group {
   display: flex;
-  gap: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 
   @media (max-width: 767px) {
     margin-left: auto;
   }
+}
+
+.export-label {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-left: 2px;
+}
+
+.export-btns {
+  display: flex;
+  gap: 0.4rem;
 }
 
 .export-btn {

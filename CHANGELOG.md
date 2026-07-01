@@ -2,6 +2,27 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.14] - 2026-07-02
+
+### Changed
+- **Export buttons regrouped** — the three export buttons (Song PDF, Set PDF, Markdown) are now visually grouped under a small "Export" label, making it immediately clear what they do. "↓ All PDF" renamed to "↓ Set PDF" to match the "set" terminology used throughout the app.
+- **Beta link on landing page** — a subtle "🧪 Try the beta — new features land here first →" link at the bottom of the upload page lets curious users jump to the beta deployment.
+
+## [1.1.13] - 2026-07-02
+
+### Fixed
+- **Latin mode toast now auto-dismisses** — the "Modus Latinus Activatus" toast previously required a tap or click elsewhere before disappearing. The state is now an Angular signal, so the 3-second timer correctly triggers a re-render without relying on zone.js or `ApplicationRef.tick()`.
+
+### Added
+- **Pencil affordance on song title** — a ✎ icon appears to the right of the song title in the editor toolbar when you hover it, making it clearer that the title is editable. On mobile and tablet the pencil is always faintly visible (since hover never fires on touch) so the tap target is obvious.
+- **Extended Latin coverage** — Latin mode now translates the remaining bare UI strings: `+ Line`, `+ chord`, `+ note` in the chord/lyric editor; `Already in set:` in the duplicate-song warning; and `Text size` in the header.
+
+## [1.1.12] - 2026-07-01
+
+### Added
+- **Latin Easter Egg** — a "🏛️ Switch to Latin" pill button in the user manual flips every UI label in the app to humorous Latin (buttons, headers, card text, modal wording, and more). Activating shows a "Modus Latinus Activatus 🏛️" toast; deactivating shows "Modus Latinus Deactivatus". Latin mode is saved with each set and restored when that set is loaded.
+- **Cantus Secretus** — with Latin mode active, a secret collapsible section appears in the manual page containing the Latin lyrics of *Unus Angelus Alae* (Nobuo Uematsu, 1997).
+
 ## [1.1.11] - 2026-07-01
 
 ### Changed

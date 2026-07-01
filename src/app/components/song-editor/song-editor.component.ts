@@ -6,6 +6,7 @@ import { ChordService } from '../../services/chord.service';
 import { ExportService } from '../../services/export.service';
 import { SongSectionComponent } from '../song-section/song-section.component';
 import { AutofocusDirective } from '../../directives/autofocus.directive';
+import { UiSettingsService } from '../../services/ui-settings.service';
 
 const QUICK_SECTIONS = ['INTRO', 'VERSE', 'CHORUS', 'PRE-CHORUS', 'BRIDGE', 'OUTRO', 'TAG'];
 
@@ -39,6 +40,7 @@ export class SongEditorComponent {
     public chordSvc: ChordService,
     private exportSvc: ExportService,
     private cdr: ChangeDetectorRef,
+    public ui: UiSettingsService,
   ) {}
 
   get song(): ParsedSong {

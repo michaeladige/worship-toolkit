@@ -9,19 +9,20 @@
         routerLink="/manual"
         routerLinkActive="active"
         title="Open the user manual"
-      >📖<span class="ctrl-label"> Manual</span></a>
+      >📖<span class="ctrl-label"> {{ ui.t('Manual', 'Libellus') }}</span></a>
       <button
         class="ui-ctrl-btn new-set-btn"
         (click)="onNewSet()"
         [disabled]="sessionsSvc.currentSongs.length === 0"
         title="Start a new set"
-      >➕<span class="ctrl-label"> New</span></button>
+      >➕<span class="ctrl-label"> {{ ui.t('New', 'Novum') }}</span></button>
       <button
         class="ui-ctrl-btn sessions-btn"
         (click)="sessionsSvc.openModal()"
+        [disabled]="sessionsSvc.currentSongs.length === 0 && !sessionsSvc.activeSessionId"
         title="Saved sets"
-      >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || 'Untitled set' }}</span> ▾</button>
-      <span class="ui-label">Text size</span>
+      >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set', 'Collectio Innominata') }}</span> ▾</button>
+      <span class="ui-label">{{ ui.t('Text size', 'Magnitudo Textus') }}</span>
       <button
         class="ui-ctrl-btn"
         (click)="ui.adjustFontSize(-1)"
@@ -46,5 +47,9 @@
 
   @if (sessionsSvc.showModal) {
     <app-sessions-modal />
+  }
+
+  @if (ui.toastMsg()) {
+    <div class="latin-toast">{{ ui.toastMsg() }}</div>
   }
 </div>

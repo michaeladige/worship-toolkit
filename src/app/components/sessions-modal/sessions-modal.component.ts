@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { SessionsService } from '../../services/sessions.service';
 import { ExportService } from '../../services/export.service';
 import { SavedSession } from '../../models/song.model';
+import { UiSettingsService } from '../../services/ui-settings.service';
 
 @Component({
   selector: 'app-sessions-modal',
@@ -23,6 +24,7 @@ export class SessionsModalComponent implements OnInit {
   constructor(
     public sessionsSvc: SessionsService,
     private exportSvc: ExportService,
+    public ui: UiSettingsService,
   ) {}
 
   ngOnInit() {
