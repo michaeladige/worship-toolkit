@@ -10,6 +10,8 @@ const MAX_SESSIONS = 20;
 @Injectable({ providedIn: 'root' })
 export class SessionsService {
   showModal = false;
+  showExportModal = false;
+  currentSongIndex = 0;
   activeSessionId: string | null = null;
 
   constructor(private ui: UiSettingsService) {}
@@ -123,8 +125,11 @@ export class SessionsService {
     this.loadSubject.next([]);
   }
 
-  openModal(): void { this.showModal = true; }
+  openModal(): void  { this.showModal = true; }
   closeModal(): void { this.showModal = false; }
+
+  openExportModal(): void  { this.showExportModal = true; }
+  closeExportModal(): void { this.showExportModal = false; }
 
   private persist(sessions: SavedSession[]): void {
     try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch { /* quota */ }

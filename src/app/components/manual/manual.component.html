@@ -263,6 +263,17 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.0</h3></summary>
+      <ul>
+        <li><strong>📤 Export modal</strong> &mdash; a header button opens a modal with three clearly-labelled export options (Song PDF, Set PDF, Markdown). The export buttons are removed from the editor toolbar.</li>
+        <li><strong>⚙️ Settings modal</strong> &mdash; a header button collects theme, text size, and Latin mode in one place. The font size and dark mode controls are removed from the header bar.</li>
+        <li><strong>Larger text sizes</strong> &mdash; font size now goes up to 32 px (new steps: 24, 28, 32 px), useful for big-screen presentations.</li>
+        <li><strong>Unified preferences</strong> &mdash; theme, font size, and Latin mode are now stored as one JSON object; existing preferences migrate automatically.</li>
+        <li><strong>Fix: "Jump to" key dropdown</strong> &mdash; the dropdown now correctly shows the song's current key. Previously it always appeared to default to C, and selecting C when already in C had no effect.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.1.14</h3></summary>
       <ul>
         <li><strong>Export buttons regrouped</strong> &mdash; the three export buttons are now grouped under a small "Export" label in the editor toolbar, making their purpose immediately clear. <strong>↓ All PDF</strong> is renamed to <strong>↓ Set PDF</strong> to match the "set" terminology used everywhere else in the app.</li>

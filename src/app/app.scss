@@ -54,19 +54,6 @@
   }
 }
 
-.ui-label {
-  font-size: 0.72rem;
-  color: var(--color-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-right: 0.15rem;
-
-  @media (max-width: 767px) {
-    display: none;
-  }
-}
-
 // The active set name, shown in the Sessions button. Truncate long names on
 // desktop; hide entirely on mobile (the name is still shown inside the panel).
 .set-name {

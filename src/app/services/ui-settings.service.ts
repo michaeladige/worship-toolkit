@@ -1,36 +1,65 @@
 import { Injectable, signal } from '@angular/core';
 
-const THEME_KEY = 'worship_toolkit_theme';
-const FONT_SIZE_KEY = 'worship_toolkit_font_size';
-const LATIN_MODE_KEY = 'worship_toolkit_latin_mode';
+const PREFS_KEY = 'worship_toolkit_prefs';
+
+// Legacy keys — read once on migration, then removed
+const LEGACY_THEME_KEY    = 'worship_toolkit_theme';
+const LEGACY_FONT_KEY     = 'worship_toolkit_font_size';
+const LEGACY_LATIN_KEY    = 'worship_toolkit_latin_mode';
 
 @Injectable({ providedIn: 'root' })
 export class UiSettingsService {
   theme: 'light' | 'dark' = 'light';
   fontSize = 14;
-  readonly fontSizes = [13, 14, 16, 18, 20];
+  readonly fontSizes = [13, 14, 16, 18, 20, 24, 28, 32];
 
   latinMode = false;
   readonly toastMsg = signal('');
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
 
+  showSettingsModal = false;
+  openSettingsModal()  { this.showSettingsModal = true; }
+  closeSettingsModal() { this.showSettingsModal = false; }
+
   init() {
-    const savedTheme = localStorage.getItem(THEME_KEY) as 'light' | 'dark' | null;
-    this.theme = (savedTheme === 'light' || savedTheme === 'dark')
-      ? savedTheme
-      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const raw = localStorage.getItem(PREFS_KEY);
+    if (raw) {
+      try {
+        const p = JSON.parse(raw) as Partial<{ theme: string; fontSize: number; latinMode: boolean }>;
+        this.theme    = (p.theme === 'light' || p.theme === 'dark') ? p.theme
+                      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const sz = p.fontSize ?? 14;
+        this.fontSize = this.fontSizes.includes(sz) ? sz : 14;
+        this.latinMode = p.latinMode === true;
+      } catch {
+        this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+    } else {
+      // Migrate from legacy individual keys
+      const oldTheme = localStorage.getItem(LEGACY_THEME_KEY) as 'light' | 'dark' | null;
+      this.theme = (oldTheme === 'light' || oldTheme === 'dark') ? oldTheme
+                 : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      const oldSize = parseInt(localStorage.getItem(LEGACY_FONT_KEY) ?? '', 10);
+      if (this.fontSizes.includes(oldSize)) this.fontSize = oldSize;
+      this.latinMode = localStorage.getItem(LEGACY_LATIN_KEY) === 'true';
+      this.savePrefs();
+      [LEGACY_THEME_KEY, LEGACY_FONT_KEY, LEGACY_LATIN_KEY].forEach(k => localStorage.removeItem(k));
+    }
     this.applyTheme();
-
-    const savedSize = parseInt(localStorage.getItem(FONT_SIZE_KEY) ?? '', 10);
-    if (this.fontSizes.includes(savedSize)) this.fontSize = savedSize;
     this.applyFontSize();
+  }
 
-    this.latinMode = localStorage.getItem(LATIN_MODE_KEY) === 'true';
+  private savePrefs() {
+    localStorage.setItem(PREFS_KEY, JSON.stringify({
+      theme: this.theme,
+      fontSize: this.fontSize,
+      latinMode: this.latinMode,
+    }));
   }
 
   toggleTheme() {
     this.theme = this.theme === 'light' ? 'dark' : 'light';
-    localStorage.setItem(THEME_KEY, this.theme);
+    this.savePrefs();
     this.applyTheme();
   }
 
@@ -38,7 +67,7 @@ export class UiSettingsService {
     const idx = this.fontSizes.indexOf(this.fontSize);
     const newIdx = Math.max(0, Math.min(this.fontSizes.length - 1, idx + dir));
     this.fontSize = this.fontSizes[newIdx];
-    localStorage.setItem(FONT_SIZE_KEY, String(this.fontSize));
+    this.savePrefs();
     this.applyFontSize();
   }
 
@@ -51,7 +80,7 @@ export class UiSettingsService {
 
   setLatinMode(mode: boolean) {
     this.latinMode = mode;
-    localStorage.setItem(LATIN_MODE_KEY, String(mode));
+    this.savePrefs();
   }
 
   t(en: string, la: string): string {

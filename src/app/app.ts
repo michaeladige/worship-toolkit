@@ -4,12 +4,15 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { UiSettingsService } from './services/ui-settings.service';
 import { SessionsService } from './services/sessions.service';
 import { SessionsModalComponent } from './components/sessions-modal/sessions-modal.component';
+import { ExportModalComponent } from './components/export-modal/export-modal.component';
+import { SettingsModalComponent } from './components/settings-modal/settings-modal.component';
 import { version } from '../../package.json';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet, SessionsModalComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet,
+            SessionsModalComponent, ExportModalComponent, SettingsModalComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

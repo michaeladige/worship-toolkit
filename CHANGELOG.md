@@ -2,6 +2,19 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.0] - 2026-07-02
+
+### Added
+- **`📤 Export` modal** — a new header button opens a clean modal with three export options (Song PDF, Set PDF, Markdown), each with an icon and description. The export buttons are removed from the editor toolbar entirely, decluttering the song editing view.
+- **`⚙️ Settings` modal** — a new header button consolidates appearance and language preferences in one place: theme (light/dark), text size, and Latin mode. The font size and dark mode controls are removed from the header bar.
+- **Larger text sizes** — font size now goes up to 32 px (new steps: 24, 28, 32), useful for large-screen presentations.
+
+### Changed
+- **Unified preferences storage** — theme, font size, and Latin mode are now stored as a single JSON object under `worship_toolkit_prefs` instead of three separate `localStorage` keys. Existing preferences are migrated automatically on first load.
+
+### Fixed
+- **"Jump to" key dropdown** — the dropdown now correctly shows the song's current key on load and after transposition. Previously it always appeared to default to C, and re-selecting C when the song was already in C had no effect.
+
 ## [1.1.14] - 2026-07-02
 
 ### Changed

@@ -1,5 +1,4 @@
 <div class="app-shell">
-  <!-- Slim app header: manual link, font size, dark mode, always in flow (never overlaps toolbar) -->
   <div class="app-header">
     <a class="brand" routerLink="/">WorshipToolkit <span class="version-tag">v{{ version }}</span></a>
 
@@ -22,24 +21,17 @@
         [disabled]="sessionsSvc.currentSongs.length === 0 && !sessionsSvc.activeSessionId"
         title="Saved sets"
       >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set', 'Collectio Innominata') }}</span> ▾</button>
-      <span class="ui-label">{{ ui.t('Text size', 'Magnitudo Textus') }}</span>
       <button
         class="ui-ctrl-btn"
-        (click)="ui.adjustFontSize(-1)"
-        [disabled]="ui.fontSize <= ui.fontSizes[0]"
-        title="Smaller text"
-      >A-</button>
+        (click)="sessionsSvc.openExportModal()"
+        [disabled]="sessionsSvc.currentSongs.length === 0"
+        title="Export songs"
+      >📤<span class="ctrl-label"> {{ ui.t('Export', 'Exportare') }}</span></button>
       <button
         class="ui-ctrl-btn"
-        (click)="ui.adjustFontSize(1)"
-        [disabled]="ui.fontSize >= ui.fontSizes[ui.fontSizes.length - 1]"
-        title="Larger text"
-      >A+</button>
-      <button
-        class="ui-ctrl-btn theme-toggle"
-        (click)="ui.toggleTheme()"
-        [title]="ui.theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
-      >{{ ui.theme === 'dark' ? '☀️' : '🌙' }}</button>
+        (click)="ui.openSettingsModal()"
+        title="Settings"
+      >⚙️<span class="ctrl-label"> {{ ui.t('Settings', 'Optiones') }}</span></button>
     </div>
   </div>
 
@@ -47,6 +39,14 @@
 
   @if (sessionsSvc.showModal) {
     <app-sessions-modal />
+  }
+
+  @if (sessionsSvc.showExportModal) {
+    <app-export-modal />
+  }
+
+  @if (ui.showSettingsModal) {
+    <app-settings-modal />
   }
 
   @if (ui.toastMsg()) {

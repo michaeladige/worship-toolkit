@@ -142,6 +142,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   onSelectSong(i: number) {
     this.selectedIndex = i;
+    this.sessionsSvc.currentSongIndex = i;
   }
 
   onSongsChange(songs: ParsedSong[]) {

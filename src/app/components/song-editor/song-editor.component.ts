@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParsedSong } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
-import { ExportService } from '../../services/export.service';
 import { SongSectionComponent } from '../song-section/song-section.component';
 import { AutofocusDirective } from '../../directives/autofocus.directive';
 import { UiSettingsService } from '../../services/ui-settings.service';
@@ -30,7 +29,6 @@ export class SongEditorComponent {
   @Output() undo = new EventEmitter<void>();
   @Output() redo = new EventEmitter<void>();
 
-  exporting = false;
   newSectionName = '';
   editingTitle: string | null = null;
   editingTempo: string | null = null;
@@ -38,7 +36,6 @@ export class SongEditorComponent {
 
   constructor(
     public chordSvc: ChordService,
-    private exportSvc: ExportService,
     private cdr: ChangeDetectorRef,
     public ui: UiSettingsService,
   ) {}
@@ -169,27 +166,4 @@ export class SongEditorComponent {
     this.updateSong(song);
   }
 
-  async exportPdf() {
-    this.exporting = true;
-    try {
-      await this.exportSvc.toPdf(this.songs, this.fontSize);
-    } finally {
-      this.exporting = false;
-      this.cdr.detectChanges();
-    }
-  }
-
-  exportMarkdown() {
-    this.exportSvc.downloadMarkdown(this.songs);
-  }
-
-  async exportCurrentSongPdf() {
-    this.exporting = true;
-    try {
-      await this.exportSvc.toPdf([this.song], this.fontSize);
-    } finally {
-      this.exporting = false;
-      this.cdr.detectChanges();
-    }
-  }
 }

@@ -87,9 +87,9 @@
 
       <div class="key-jump">
         <label>{{ ui.t('Jump to', 'Salire ad') }}</label>
-        <select [value]="effectiveKey" (change)="setKey($any($event.target).value)">
+        <select (change)="setKey($any($event.target).value)">
           @for (k of allKeys; track k) {
-            <option [value]="k">{{ k }}</option>
+            <option [value]="k" [selected]="k === effectiveKey">{{ k }}</option>
           }
         </select>
       </div>
@@ -120,21 +120,6 @@
         {{ ui.t('1 2 3 Nashville', 'I II III Nashville') }}
       </button>
 
-      <!-- Export -->
-      <div class="export-group">
-        <span class="export-label">{{ ui.t('Export', 'Exportare') }}</span>
-        <div class="export-btns">
-          <button class="export-btn" (click)="exportCurrentSongPdf()" [disabled]="exporting">
-            {{ exporting ? ui.t('Generating…', 'Generando…') : ui.t('↓ Song PDF', '↓ PDF Cantus') }}
-          </button>
-          <button class="export-btn export-btn--all" (click)="exportPdf()" [disabled]="exporting">
-            {{ ui.t('↓ Set PDF', '↓ PDF Collectionis') }}
-          </button>
-          <button class="export-btn export-btn--md" (click)="exportMarkdown()">
-            ↓ Markdown
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 
