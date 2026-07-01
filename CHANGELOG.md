@@ -2,6 +2,12 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.1.11] - 2026-07-01
+
+### Changed
+- **Friendlier set controls** — the header now shows the name of the active set (e.g. `💾 Sunday Service ▾`, or `💾 Untitled set ▾` when nothing is saved) and a dedicated `➕ New` button starts a fresh set in one click, instead of the previous static `💾 Sessions` button that hid "New" two levels deep in the panel. On mobile (<768px) the header controls collapse to compact icons to avoid crowding.
+- **Unified wording** — user-facing text now consistently says "set" instead of "session," matching the "Songs in Set" list. The `.wt` file format is unchanged, so existing saved sets and exported files still work.
+
 ## [1.1.10] - 2026-07-01
 
 ### Fixed

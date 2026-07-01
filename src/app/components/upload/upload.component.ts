@@ -52,7 +52,7 @@ export class UploadComponent {
       const { songs } = await this.exportSvc.parseSessionFile(file);
       this.songsLoaded.emit(songs);
     } catch (err) {
-      this.sessionImportError = err instanceof Error ? err.message : 'Invalid session file.';
+      this.sessionImportError = err instanceof Error ? err.message : 'Invalid set file.';
     }
   }
 
