@@ -35,13 +35,13 @@ export class ExportModalComponent {
   async exportSongPdf() {
     if (!this.song) return;
     this.exporting = true;
-    try { await this.exportSvc.toPdf([this.song], this.ui.fontSize); }
+    try { await this.exportSvc.toPdf([this.song], this.ui.pdfFontSize); }
     finally { this.exporting = false; this.cdr.detectChanges(); }
   }
 
   async exportSetPdf() {
     this.exporting = true;
-    try { await this.exportSvc.toPdf(this.sessionsSvc.currentSongs, this.ui.fontSize); }
+    try { await this.exportSvc.toPdf(this.sessionsSvc.currentSongs, this.ui.pdfFontSize); }
     finally { this.exporting = false; this.cdr.detectChanges(); }
   }
 

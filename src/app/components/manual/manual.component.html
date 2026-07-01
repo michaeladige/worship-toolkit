@@ -263,6 +263,14 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.1</h3></summary>
+      <ul>
+        <li><strong>PDF font size</strong> &mdash; a new control in ⚙️ Settings sets the export font size independently (10–20 px, default 14 px). Sizes above 14 px switch automatically to single-column layout so text never overflows the page.</li>
+        <li><strong>Fix: "Jump to" dropdown going blank</strong> &mdash; transposing to Db, Eb, Ab, or Bb could produce a mismatched enharmonic spelling (e.g. C# vs Db) that didn't match any dropdown option, leaving it blank. Key resolution now always returns the conventional flat spelling that matches the list.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.0</h3></summary>
       <ul>
         <li><strong>📤 Export modal</strong> &mdash; a header button opens a modal with three clearly-labelled export options (Song PDF, Set PDF, Markdown). The export buttons are removed from the editor toolbar.</li>

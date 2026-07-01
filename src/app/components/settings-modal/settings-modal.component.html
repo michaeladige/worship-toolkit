@@ -35,6 +35,32 @@
       </div>
     </div>
 
+    <!-- Export -->
+    <div class="settings-section">
+      <h3 class="settings-heading">{{ ui.t('Export', 'Exportare') }}</h3>
+
+      <div class="setting-row">
+        <span class="setting-label">{{ ui.t('PDF font size', 'Magnitudo PDF') }}</span>
+        <div class="font-size-controls">
+          <button
+            class="font-step-btn"
+            (click)="ui.adjustPdfFontSize(-1)"
+            [disabled]="ui.pdfFontSize <= ui.pdfFontSizes[0]"
+          >A−</button>
+          <span class="font-size-value">{{ ui.pdfFontSize }}px</span>
+          <button
+            class="font-step-btn"
+            (click)="ui.adjustPdfFontSize(1)"
+            [disabled]="ui.pdfFontSize >= ui.pdfFontSizes[ui.pdfFontSizes.length - 1]"
+          >A+</button>
+        </div>
+      </div>
+
+      @if (ui.pdfFontSize > 14) {
+        <p class="pdf-size-warn">{{ ui.t('⚠️ Above 14px PDFs use a single column — lyrics may still wrap.', '⚠️ Supra 14px PDF unam columnam adhibet — verba adhuc frangi possunt.') }}</p>
+      }
+    </div>
+
     <!-- Language -->
     <div class="settings-section settings-section--last">
       <h3 class="settings-heading">{{ ui.t('Language', 'Lingua') }}</h3>

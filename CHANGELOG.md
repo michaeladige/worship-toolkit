@@ -2,6 +2,14 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.1] - 2026-07-01
+
+### Added
+- **PDF font size setting** — a new "PDF font size" control in the ⚙️ Settings modal (10–20 px, default 14 px) sets the export font independently of the on-screen text size. Font sizes above 14 px automatically switch from split-column to single-column layout so lyrics don't overflow or spill across columns.
+
+### Fixed
+- **"Jump to" key dropdown going blank** — transposing to Db, Eb, Ab, or Bb could produce a mismatched enharmonic spelling (e.g. C# instead of Db) that didn't match any option in the dropdown, leaving it visually blank. Key resolution now always returns the conventional flat-preferred spelling that matches the dropdown list.
+
 ## [1.2.0] - 2026-07-02
 
 ### Added

@@ -73,26 +73,29 @@ export class ExportService {
     return transposed;
   }
 
-  async toPdf(songs: ParsedSong[], fontSize = 14): Promise<void> {
+  async toPdf(songs: ParsedSong[], pdfFontSize = 14): Promise<void> {
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
 
-    const margin     = 40;
-    const pageW      = doc.internal.pageSize.getWidth();
-    const pageH      = doc.internal.pageSize.getHeight();
-    const colGap     = 20;
-    const colWidth   = (pageW - margin * 2 - colGap) / 2;
-    const col2X      = Math.round(margin + colWidth + colGap); // right column x start
+    const margin        = 40;
+    const pageW         = doc.internal.pageSize.getWidth();
+    const pageH         = doc.internal.pageSize.getHeight();
+    const colGap        = 20;
+    // Above 14px: single-column layout so text doesn't overflow or wrap unexpectedly
+    const splitColumns  = pdfFontSize <= 14;
+    const colWidth      = splitColumns
+      ? (pageW - margin * 2 - colGap) / 2   // 256pt each
+      : (pageW - margin * 2);                // 532pt full width
+    const col2X         = Math.round(margin + colWidth + colGap);
 
-    // Embed WT marker + column geometry so the parser can round-trip this PDF reliably
-    doc.setProperties({ subject: 'WorshipToolkit', keywords: String(col2X) });
+    // Embed WT marker; only embed column geometry when actually splitting (for round-trip parser)
+    doc.setProperties({ subject: 'WorshipToolkit', keywords: splitColumns ? String(col2X) : '' });
 
-    // Scale all PDF sizes proportionally to the user's font size preference (default 14px base).
-    // Cap scale so the body font never exceeds ~10pt — beyond that chars overflow the column.
-    // Users can still choose larger sizes for on-screen comfort; the PDF self-adjusts.
-    const rawScale  = fontSize / 14;
-    const maxFontPt = 10; // pt — largest body font that reliably fits a 256pt column
-    const scale     = Math.min(rawScale, maxFontPt / 8);
+    // Scale body font relative to 14px base.
+    // In split-column mode cap at 10pt so chars never overflow the 256pt column.
+    // In single-column mode no cap is needed — the 532pt width comfortably fits larger text.
+    const rawScale = pdfFontSize / 14;
+    const scale    = splitColumns ? Math.min(rawScale, 10 / 8) : rawScale;
 
     // Match the editor: Courier New monospace, same sizes as the CSS (0.82rem ≈ 8pt print)
     const MONO         = 'courier';
@@ -149,8 +152,8 @@ export class ExportService {
 
       const colX      = (c: number) => margin + c * (colWidth + colGap);
       const newColumn = () => {
-        if (col === 0) { col = 1; y = margin + headerH; }
-        else           { doc.addPage(); col = 0; y = margin + 20; }
+        if (splitColumns && col === 0) { col = 1; y = margin + headerH; }
+        else { doc.addPage(); col = 0; y = margin + 20; }
       };
       const ensureSpace = (needed: number) => {
         if (y + needed > pageH - margin) newColumn();

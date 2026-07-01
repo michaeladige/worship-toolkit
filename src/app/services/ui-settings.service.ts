@@ -13,6 +13,9 @@ export class UiSettingsService {
   fontSize = 14;
   readonly fontSizes = [13, 14, 16, 18, 20, 24, 28, 32];
 
+  pdfFontSize = 14;
+  readonly pdfFontSizes = [10, 12, 14, 16, 18, 20];
+
   latinMode = false;
   readonly toastMsg = signal('');
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
@@ -30,6 +33,8 @@ export class UiSettingsService {
                       : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         const sz = p.fontSize ?? 14;
         this.fontSize = this.fontSizes.includes(sz) ? sz : 14;
+        const psz = (p as any).pdfFontSize ?? 14;
+        this.pdfFontSize = this.pdfFontSizes.includes(psz) ? psz : 14;
         this.latinMode = p.latinMode === true;
       } catch {
         this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -53,6 +58,7 @@ export class UiSettingsService {
     localStorage.setItem(PREFS_KEY, JSON.stringify({
       theme: this.theme,
       fontSize: this.fontSize,
+      pdfFontSize: this.pdfFontSize,
       latinMode: this.latinMode,
     }));
   }
@@ -69,6 +75,13 @@ export class UiSettingsService {
     this.fontSize = this.fontSizes[newIdx];
     this.savePrefs();
     this.applyFontSize();
+  }
+
+  adjustPdfFontSize(dir: 1 | -1) {
+    const idx = this.pdfFontSizes.indexOf(this.pdfFontSize);
+    const newIdx = Math.max(0, Math.min(this.pdfFontSizes.length - 1, idx + dir));
+    this.pdfFontSize = this.pdfFontSizes[newIdx];
+    this.savePrefs();
   }
 
   toggleLatinMode() {
