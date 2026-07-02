@@ -24,7 +24,7 @@ test.describe('Autoscroll control', () => {
   test('defaults to 0 (off) with the down arrow disabled', async ({ page }) => {
     await createSongWithScrollableContent(page);
 
-    await expect(page.locator('.autoscroll-control .key-display')).toHaveText('0');
+    await expect(page.locator('.autoscroll-control .autoscroll-speed')).toHaveText('0');
     await expect(page.locator('.autoscroll-control .step-btn').first()).toBeDisabled();
     await expect(page.locator('.autoscroll-control')).not.toHaveClass(/active/);
   });
@@ -34,7 +34,7 @@ test.describe('Autoscroll control', () => {
 
     const downBtn = page.locator('.autoscroll-control .step-btn').first();
     const upBtn = page.locator('.autoscroll-control .step-btn').last();
-    const speed = page.locator('.autoscroll-control .key-display');
+    const speed = page.locator('.autoscroll-control .autoscroll-speed');
 
     await clickUntilDisabled(upBtn, 15);
     await expect(speed).toHaveText('10');
@@ -62,7 +62,7 @@ test.describe('Autoscroll control', () => {
     expect(during).toBeGreaterThan(before);
 
     for (let i = 0; i < 5; i++) await downBtn.click();
-    await expect(page.locator('.autoscroll-control .key-display')).toHaveText('0');
+    await expect(page.locator('.autoscroll-control .autoscroll-speed')).toHaveText('0');
 
     const stoppedAt = await content.evaluate((el) => el.scrollTop);
     await page.waitForTimeout(500);
@@ -75,12 +75,12 @@ test.describe('Autoscroll control', () => {
 
     const upBtn = page.locator('.autoscroll-control .step-btn').last();
     for (let i = 0; i < 4; i++) await upBtn.click();
-    await expect(page.locator('.autoscroll-control .key-display')).toHaveText('4');
+    await expect(page.locator('.autoscroll-control .autoscroll-speed')).toHaveText('4');
 
     const storageSnapshot = await page.evaluate(() => JSON.stringify(localStorage));
     expect(storageSnapshot).not.toContain('autoscroll');
 
     await page.reload();
-    await expect(page.locator('.autoscroll-control .key-display')).toHaveText('0');
+    await expect(page.locator('.autoscroll-control .autoscroll-speed')).toHaveText('0');
   });
 });

@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.10] - 2026-07-02
+
+### Changed
+- **Smaller autoscroll control** — the AUTOSCROLL toolbar control now shows a compact 🔃 icon instead of the spelled-out label, so it takes up less header space for future controls. Same ▼/▲ speed buttons, same behavior.
+
 ## [1.2.9] - 2026-07-02
 
 ### Added

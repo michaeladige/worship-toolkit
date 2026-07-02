@@ -101,15 +101,21 @@
       }
 
       <!-- Autoscroll -->
-      <div class="autoscroll-control" [class.active]="autoscrollSpeed > 0">
-        <label>{{ ui.t('Autoscroll') }}</label>
+      <div
+        class="autoscroll-control"
+        [class.active]="autoscrollSpeed > 0"
+        role="group"
+        [attr.aria-label]="ui.t('Autoscroll')"
+        [title]="ui.t('Autoscroll')"
+      >
+        <label aria-hidden="true">🔃</label>
         <button
           class="step-btn"
           (click)="decreaseAutoscrollSpeed()"
           [disabled]="autoscrollSpeed <= 0"
           title="Decrease autoscroll speed"
         >&#9660;</button>
-        <span class="key-display">{{ autoscrollSpeed }}</span>
+        <span class="autoscroll-speed">{{ autoscrollSpeed }}</span>
         <button
           class="step-btn"
           (click)="increaseAutoscrollSpeed()"
