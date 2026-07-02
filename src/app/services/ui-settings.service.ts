@@ -91,6 +91,33 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Close dialogs / cancel edits': { la: 'Dialogos claudere / mutationes revocare', 'zh-TW': '關閉對話框／取消編輯', id: 'Tutup dialog / batalkan edit', jv: 'Nutup dialog / mbatalake owahan' },
   'Close': { la: 'Claudere', 'zh-TW': '關閉', id: 'Tutup', jv: 'Tutup' },
   'Stage': { la: 'Scaena', 'zh-TW': '舞台', id: 'Panggung', jv: 'Panggung' },
+  'A new version is available.': {
+    la: 'Nova versio praesto est.',
+    'zh-TW': '有新版本可用。',
+    id: 'Ada versi baru nih!',
+    jv: 'Ana versi anyar.',
+  },
+  'Reload': { la: 'Recargare', 'zh-TW': '重新載入', id: 'Muat ulang', jv: 'Muat maneh' },
+  'Install it as an app': { la: 'Instala eam ut applicationem', 'zh-TW': '安裝成 App', id: 'Instal jadi aplikasi', jv: 'Instal dadi aplikasi' },
+  'WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload.': {
+    la: 'WorshipToolkit instalari potest ("Adde ad Quadrum Domesticum" in mobili, icon instalandi in vecte inscriptionis in mensa) et sine interreti plene operatur postquam semel oneratum est — utile in scaena cum wifi infido. Cum nova versio emittitur, toast Recargare uno tactu offert.',
+    'zh-TW': 'WorshipToolkit 可以安裝（手機上「加入主畫面」，桌面版點網址列的安裝圖示），載入過一次後即可完全離線使用——在 wifi 不穩的舞台上超實用！新版本上線時，會跳出提示讓你一鍵重新載入。',
+    id: 'WorshipToolkit bisa di-install ("Tambahkan ke Layar Utama" di HP, ikon install di address bar di desktop) dan jalan full offline setelah dimuat sekali — berguna banget di panggung yang wifi-nya suka ngambek. Kalau ada versi baru, muncul toast buat reload sekali tap.',
+    jv: 'WorshipToolkit bisa diinstal ("Tambahake menyang Layar Utama" ing HP, ikon instal ing address bar ing desktop) lan mlaku offline kabeh sawise dimuat sepisan — migunani banget ing panggung sing wifine ora ajeg. Yen ana versi anyar, ana toast kanggo muat maneh sak tutulan.',
+  },
+  'App seems stuck on an old version?': {
+    la: 'Applicatio in versione vetere haerere videtur?',
+    'zh-TW': 'App 好像卡在舊版本？',
+    id: 'App-nya kayak nyangkut di versi lama?',
+    jv: 'App-e kaya kecanthol ing versi lawas?',
+  },
+  'Load it once with': { la: 'Onera eam semel cum', 'zh-TW': '在網址加上', id: 'Muat sekali dengan', jv: 'Muat sepisan nganggo' },
+  'added to the URL to skip the offline cache, then reload normally.': {
+    la: 'ad URL addito ut cella offline praetermittatur, deinde normaliter recarga.',
+    'zh-TW': '載入一次以跳過離線快取，然後正常重新載入即可。',
+    id: 'ditambahkan ke URL buat skip cache offline, lalu reload seperti biasa.',
+    jv: 'ditambahake menyang URL kanggo ngliwati cache offline, banjur muat maneh kaya biasane.',
+  },
   'Exit stage mode': { la: 'Exire e modo scaenae', 'zh-TW': '離開舞台模式', id: 'Keluar mode panggung', jv: 'Metu saka mode panggung' },
   'Stage mode': { la: 'Modus Scaenae', 'zh-TW': '舞台模式', id: 'Mode panggung', jv: 'Mode panggung' },
   'click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button.': {

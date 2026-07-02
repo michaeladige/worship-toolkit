@@ -305,6 +305,8 @@ Sephiroth!</pre>
       <li><strong>{{ ui.t('Nothing parsed from my PDF?') }}</strong> {{ ui.t('Make sure it\'s an actual SongSelect chord chart export, not a scanned/photographed image — the parser reads text, not pixels.') }}</li>
       <li><strong>{{ ui.t('Chord didn\'t land where I dragged it?') }}</strong> {{ ui.t('Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.') }}</li>
       <li><strong>{{ ui.t('Want a clean slate for one song only?') }}</strong> {{ ui.t('You can remove and re-add sections/lines rather than starting a whole new upload.') }}</li>
+      <li><strong>{{ ui.t('Install it as an app') }}</strong> &mdash; {{ ui.t('WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload.') }}</li>
+      <li><strong>{{ ui.t('App seems stuck on an old version?') }}</strong> {{ ui.t('Load it once with') }} <code>?ngsw-bypass=true</code> {{ ui.t('added to the URL to skip the offline cache, then reload normally.') }}</li>
     </ul>
   </section>
 
@@ -313,6 +315,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.4.2</h3></summary>
+      <ul>
+        <li><strong>Installable app with offline support (PWA)</strong> &mdash; install WorshipToolkit from the browser and use it fully offline — all data already lives on your device. A toast offers a one-tap Reload when a new version ships. Production only; the beta site stays uncached so testers always get the latest push.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.4.1</h3></summary>
       <ul>
         <li><strong>Stage mode</strong> &mdash; a new 🎤 Stage button in the toolbar gives a distraction-free full-screen performance view with a floating bar for scroll, metronome, previous/next song, and exit. <kbd>Esc</kbd> leaves stage mode.</li>

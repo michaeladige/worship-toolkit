@@ -1,6 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { SwUpdate } from '@angular/service-worker';
+import { filter } from 'rxjs';
 import { UiSettingsService } from './services/ui-settings.service';
 import { SessionsService } from './services/sessions.service';
 import { SessionsModalComponent } from './components/sessions-modal/sessions-modal.component';
@@ -25,10 +27,24 @@ export class App implements OnInit {
     public ui: UiSettingsService,
     public sessionsSvc: SessionsService,
     private router: Router,
+    private swUpdate: SwUpdate,
   ) {}
 
   ngOnInit() {
     this.ui.init();
+
+    // Offer a reload when the service worker has a new version ready —
+    // otherwise users keep the old cached app until their next full restart.
+    if (this.swUpdate.isEnabled) {
+      this.swUpdate.versionUpdates
+        .pipe(filter(e => e.type === 'VERSION_READY'))
+        .subscribe(() => {
+          this.ui.showToast('A new version is available.', 'info', {
+            durationMs: 0,
+            action: { label: this.ui.t('Reload'), run: () => document.location.reload() },
+          });
+        });
+    }
   }
 
   // If the user leaves system fullscreen (system Esc / swipe), stage mode's

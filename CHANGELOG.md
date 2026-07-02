@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.4.2] - 2026-07-03
+
+### Added
+- **Installable app with full offline support (PWA)** — WorshipToolkit can now be installed from the browser ("Add to Home Screen" / install prompt) and works completely offline once loaded, since all data already lives in the browser. A service worker caches the app shell and assets; when a new version is deployed, a toast offers a one-tap **Reload**. Production only — the beta site intentionally has no service worker so testers always see the latest push. If the app ever seems stuck on an old version, load it once with `?ngsw-bypass=true` appended to the URL.
+
 ## [1.4.1] - 2026-07-03
 
 ### Added
