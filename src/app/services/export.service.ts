@@ -36,11 +36,44 @@ export class ExportService {
     return this.jetbrainsMonoPromise;
   }
 
+  // Defensive cleanup for stray control characters (most commonly U+0000, from
+  // SongSelect PDFs whose embedded font maps a broken ligature glyph to NUL —
+  // see PdfParserService.stripControlChars). New imports are sanitized at parse
+  // time, but this also protects sets saved before that fix, or loaded from an
+  // older .wt export, from the same corrupted bytes silently truncating text —
+  // jsPDF's embedded-font path treats a raw NUL as a string terminator.
+  private stripControlChars(text: string): string {
+    return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+  }
+
+  private sanitizeSong(song: ParsedSong): ParsedSong {
+    const strip = (s: string) => this.stripControlChars(s);
+    return {
+      ...song,
+      title: strip(song.title),
+      authors: song.authors.map(strip),
+      tempo: strip(song.tempo),
+      timeSignature: strip(song.timeSignature),
+      ccliNumber: song.ccliNumber ? strip(song.ccliNumber) : song.ccliNumber,
+      sections: song.sections.map(section => ({
+        ...section,
+        name: strip(section.name),
+        lines: section.lines.map(line => ({
+          ...line,
+          lyric: strip(line.lyric),
+          annotation: line.annotation ? strip(line.annotation) : line.annotation,
+          chords: line.chords.map(ct => ({ ...ct, chord: strip(ct.chord) })),
+        })),
+      })),
+    };
+  }
+
   toMarkdown(songs: ParsedSong[], accidentals: Accidentals = 'auto'): string {
     return songs.map(song => this.songToMarkdown(song, accidentals)).join('\n\n---\n\n');
   }
 
   private songToMarkdown(song: ParsedSong, accidentals: Accidentals = 'auto'): string {
+    song = this.sanitizeSong(song);
     const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
     const lines: string[] = [];
 
@@ -161,7 +194,7 @@ export class ExportService {
     const setMutedColor  = () => doc.setTextColor(107, 114, 128); // #6b7280
 
     for (let si = 0; si < songs.length; si++) {
-      const song = songs[si];
+      const song = this.sanitizeSong(songs[si]);
       if (si > 0) doc.addPage();
 
       const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, accidentals);

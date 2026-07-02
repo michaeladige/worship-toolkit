@@ -301,6 +301,7 @@ Sephiroth!</pre>
         <li><strong>Clearer Export icon</strong> &mdash; changed from 📤 to ⬇️ everywhere it appears, matching the download icon already used for exporting a saved set.</li>
         <li><strong>Funnier Bahasa Indonesia and Basa Jawa</strong> &mdash; punched up the humor throughout the hero copy, feature cards, toasts, and manual sections in both languages.</li>
         <li><strong>Deleting a saved set now requires confirmation</strong> &mdash; the delete button arms on the first click (turning into a red "Delete?") and only deletes on a second click within 3 seconds, since unlike song edits it can't be undone.</li>
+        <li><strong>Fixed lyrics silently cut off in PDF exports using the Readable font</strong> &mdash; some SongSelect PDFs embed broken ligature characters that made the Readable font's PDF export truncate the rest of the line (Classic wasn't affected). PDF imports now strip these automatically, and exports are sanitized defensively so sets saved before this fix export correctly too.</li>
       </ul>
     </details>
 
