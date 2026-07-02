@@ -15,7 +15,8 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 
 ### Fixed
 - **Deleting a saved set now requires confirmation** — the delete button in Saved Sets previously deleted on a single click with no way to undo it (unlike song edits, saved-set deletion isn't covered by Ctrl+Z). It now arms on the first click (turning into a red "Delete?") and only deletes on a second click within 3 seconds.
-- **Lyrics silently cut off in PDF exports using the Readable font** — some SongSelect PDFs embed a font whose ligature glyphs (fi, fl) decode to a stray null character instead of the correct text. That corrupted character was invisible in the editor, but it made jsPDF's embedded-font (Readable) export path truncate the rest of the line — the Classic font wasn't affected. PDF imports now strip these stray characters at parse time, and both the PDF and Markdown exports now sanitize text defensively so sets saved before this fix export correctly too.
+- **Lyrics silently cut off in PDF exports using the Readable font** — some SongSelect PDFs embed a font whose ligature glyphs (fi, fl) decode to a stray null character instead of the correct text. That corrupted character was invisible in the editor, but it made jsPDF's embedded-font (Readable) export path truncate the rest of the line — the Classic font wasn't affected. Both the PDF and Markdown exports now sanitize text defensively so sets saved before this fix export correctly too.
+- **Broken ligatures now auto-corrected on PDF import** — rather than just discarding the stray character above (e.g. "satis[ ]ed"), imports now recover the real word (e.g. "satisfied") by checking candidate spellings against a bundled English word list, fixing the lyric at the source instead of leaving a gap to retype.
 
 ## [1.2.6] - 2026-07-02
 

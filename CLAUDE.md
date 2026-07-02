@@ -69,7 +69,12 @@ every component and service reads or transforms this shape; when adding a featur
   annotations). Loads the pdf.js worker as a same-origin Blob URL rather than
   `importScripts()`-ing the CDN/asset URL directly — Blob workers have a null origin on
   iOS Safari, so a true cross-origin worker fetch silently fails there. Don't "simplify"
-  that fetch-then-Blob pattern without checking iOS Safari behavior.
+  that fetch-then-Blob pattern without checking iOS Safari behavior. Also recovers broken
+  ligature glyphs: some SongSelect PDFs embed lyric text as a Type 3 font whose fi/fl
+  glyphs have no `ToUnicode` entry, so pdf.js reports them as U+0000 — there's no font
+  metadata to recover which ligature it was, so `reconstructLigatures()` tries each
+  candidate against a bundled word list (`public/wordlist/wordlist-en.txt`, lazy-fetched
+  only when a NUL byte actually shows up) and keeps whichever forms a real word.
 - **`ChordService`** — pure chord-string logic: `isChord`/`isChordLine` detection via
   `CHORD_RE`, transposition (`transposeChord`/`transposeKey`), Nashville Number System
   conversion, and sharps-vs-flats spelling (`Accidentals: 'auto' | 'sharps' | 'flats'`).
