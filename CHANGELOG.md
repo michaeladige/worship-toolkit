@@ -2,6 +2,14 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.8] - 2026-07-02
+
+### Fixed
+- **Editing a chord while transposed could silently corrupt it** — clicking any chord to inspect it (even without changing anything) while the song was transposed away from its original key stored the *transposed* value back as if it were the original, so the chord drifted further out of key every time it was touched afterward. Under Nashville Numbers or Bass Notes Only view this was worse: non-chord text (a scale degree or bare bass letter) could get stored as the literal chord. Chords are now always read from and written back to their original key correctly, regardless of the current transpose or display mode.
+- **Undo/Redo could leave "Export" and "Save" working from stale data** — Ctrl+Z / Ctrl+Shift+Z updated what was on screen but not the internal copy that "Export" and "Save" read from, so exporting a PDF or saving a set immediately after an undo/redo could silently use the pre-undo content instead of what was actually displayed.
+- **Re-importing a WorshipToolkit PDF exported at a larger font size could scramble the song** — PDFs exported single-column (PDF font size above 14 px in ⚙️ Settings) embed a "no column split" marker, but re-importing that PDF ignored the marker and mis-detected a two-column layout anyway, corrupting the parsed line order.
+- **Section drag-and-drop across the split-column boundary landed in the wrong place** — in split-column editor view, dragging a section from one visual column toward the other could reorder a completely different, uninvolved section instead of the one being dragged, because the two columns were a single drag-and-drop list arranged visually by CSS rather than two real lists. Each column is now a genuinely separate, connected drop list, so drags land exactly where they're dropped whether staying within a column or crossing between them.
+
 ## [1.2.7] - 2026-07-02
 
 ### Added
