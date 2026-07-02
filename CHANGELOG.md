@@ -2,20 +2,14 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
-## [1.2.8] - 2026-07-02
-
-### Changed
-- **Readable is now the default chord font** — new sets and browsers with no saved preference now start on Readable (JetBrains Mono) instead of Classic (Courier New). Classic remains available in ⚙️ Settings → Appearance → Chord font, and anyone who had already chosen Classic keeps that choice.
-
-### Added
-- **Split-column view for the editor** — a new toggle in ⚙️ Settings → Appearance arranges the song editor into two columns on tablet/desktop screens, the same layout rule used by two-column PDF exports: it only takes effect at 14 px text size or below. Mobile always shows a single column regardless of the setting.
-
 ## [1.2.7] - 2026-07-02
 
 ### Added
 - **Readable chord font** — a second, easier-to-read monospace font (JetBrains Mono) alongside the classic Courier New, chosen via ⚙️ Settings → Appearance → Chord font. Applies to both the editor and PDF exports; chord/lyric alignment is preserved exactly since JetBrains Mono is measured and embedded as a true monospace font in generated PDFs.
+- **Split-column view for the editor** — a new toggle in ⚙️ Settings → Appearance arranges the song editor into two columns on tablet/desktop screens, the same layout rule used by two-column PDF exports: it only takes effect at 14 px text size or below. Mobile always shows a single column regardless of the setting.
 
 ### Changed
+- **Readable is now the default chord font** — new sets and browsers with no saved preference now start on Readable (JetBrains Mono) instead of Classic (Courier New). Classic remains available in ⚙️ Settings → Appearance → Chord font, and anyone who had already chosen Classic keeps that choice.
 - **Clearer Export icon** — the header, upload page, and manual's Export icon changed from 📤 (which read ambiguously at small sizes) to ⬇️, matching the download icon already used elsewhere in the app (e.g. exporting a saved set).
 - **Funnier Bahasa Indonesia and Basa Jawa** — punched up the humor throughout the hero copy, feature cards, toasts, and manual sections in both languages, keeping each language's established voice (Gen-Z slang for Indonesian, warm unhurried elder energy for Javanese).
 
