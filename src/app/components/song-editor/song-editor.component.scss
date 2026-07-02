@@ -219,10 +219,10 @@
   padding: 0.2rem 0.35rem;
 
   label {
-    font-size: 0.62rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
     color: var(--color-muted);
-    font-weight: 600;
-    text-transform: uppercase;
     line-height: 1;
   }
 
@@ -232,6 +232,25 @@
     label {
       color: var(--color-primary);
     }
+  }
+}
+
+// Shared by the Scroll and Metronome toggle controls: a small icon that's
+// always visible, plus a describing text label that hides on phones (same
+// breakpoint .key-jump's label already uses) so the controls stay compact.
+.control-icon {
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.control-label-text {
+  font-size: 0.62rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1;
+
+  @media (max-width: 767px) {
+    display: none;
   }
 }
 
@@ -258,11 +277,13 @@
 }
 
 .metronome-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--color-muted);
-  font-size: 1rem;
   line-height: 1;
   padding: 0 2px;
 

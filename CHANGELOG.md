@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.3.1] - 2026-07-02
+
+### Changed
+- **Scroll and Metronome controls now show icon + label together** — SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.
+
 ## [1.3.0] - 2026-07-02
 
 ### Added
