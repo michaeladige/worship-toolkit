@@ -100,6 +100,30 @@
         </button>
       }
 
+      <!-- Autoscroll -->
+      <div
+        class="autoscroll-control"
+        [class.active]="autoscrollSpeed > 0"
+        role="group"
+        [attr.aria-label]="ui.t('Autoscroll')"
+        [title]="ui.t('Autoscroll')"
+      >
+        <label>{{ ui.t('Scroll') }}</label>
+        <button
+          class="step-btn"
+          (click)="decreaseAutoscrollSpeed()"
+          [disabled]="autoscrollSpeed <= 0"
+          title="Decrease autoscroll speed"
+        >&#9660;</button>
+        <span class="autoscroll-speed">{{ autoscrollSpeed }}</span>
+        <button
+          class="step-btn"
+          (click)="increaseAutoscrollSpeed()"
+          [disabled]="autoscrollSpeed >= maxAutoscrollSpeed"
+          title="Increase autoscroll speed"
+        >&#9650;</button>
+      </div>
+
       <!-- Bass notes toggle -->
       <button
         class="toggle-btn"
@@ -132,7 +156,7 @@
   }
 
   <!-- Song content -->
-  <div class="content">
+  <div class="content" #scrollContainer>
     <app-song-section
       [song]="song"
       [showSectionControls]="true"
