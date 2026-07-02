@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PdfParserService } from '../../services/pdf-parser.service';
@@ -18,10 +18,17 @@ export class UploadComponent {
 
   isDragging = false;
   isLoading = false;
+  progressText = '';
   error = '';
+  fileErrors: { name: string; message: string }[] = [];
   sessionImportError = '';
 
-  constructor(private parser: PdfParserService, private exportSvc: ExportService, public ui: UiSettingsService) {}
+  constructor(
+    private parser: PdfParserService,
+    private exportSvc: ExportService,
+    public ui: UiSettingsService,
+    private cdr: ChangeDetectorRef,
+  ) {}
 
   onDragOver(e: DragEvent) {
     e.preventDefault();
@@ -35,13 +42,14 @@ export class UploadComponent {
   onDrop(e: DragEvent) {
     e.preventDefault();
     this.isDragging = false;
-    const file = e.dataTransfer?.files[0];
-    if (file) this.processFile(file);
+    const files = Array.from(e.dataTransfer?.files ?? []);
+    if (files.length) this.processFiles(files);
   }
 
   onFileChange(e: Event) {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (file) this.processFile(file);
+    const files = Array.from((e.target as HTMLInputElement).files ?? []);
+    (e.target as HTMLInputElement).value = '';
+    if (files.length) this.processFiles(files);
   }
 
   async onSessionFileChange(e: Event) {
@@ -54,6 +62,7 @@ export class UploadComponent {
       this.songsLoaded.emit(songs);
     } catch (err) {
       this.sessionImportError = err instanceof Error ? err.message : 'Invalid set file.';
+      this.cdr.detectChanges();
     }
   }
 
@@ -72,25 +81,49 @@ export class UploadComponent {
     }]);
   }
 
-  async processFile(file: File) {
-    if (!file.name.toLowerCase().endsWith('.pdf')) {
-      this.error = 'Please upload a PDF file.';
-      return;
-    }
+  // Parses every dropped/selected file sequentially (the pdfjs worker is
+  // shared, so no parallel parsing) and reports per-file failures instead of
+  // silently ignoring everything past the first file.
+  async processFiles(files: File[]) {
     this.error = '';
+    this.fileErrors = [];
     this.isLoading = true;
+
+    const allSongs: ParsedSong[] = [];
     try {
-      const songs = await this.parser.parsePdf(file);
-      if (songs.length === 0) {
-        this.error = 'No songs detected in this PDF. Make sure it is a SongSelect chord chart.';
-      } else {
-        this.songsLoaded.emit(songs);
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        this.progressText = files.length > 1 ? `${i + 1} / ${files.length} — ${file.name}` : '';
+        // Zoneless app: state set after an await needs an explicit render.
+        this.cdr.detectChanges();
+        if (!file.name.toLowerCase().endsWith('.pdf')) {
+          this.fileErrors.push({ name: file.name, message: this.ui.t('Please upload a PDF file.') });
+          continue;
+        }
+        try {
+          const songs = await this.parser.parsePdf(file);
+          if (songs.length === 0) {
+            this.fileErrors.push({
+              name: file.name,
+              message: this.ui.t('No songs detected in this PDF. Make sure it is a SongSelect chord chart.'),
+            });
+          } else {
+            allSongs.push(...songs);
+          }
+        } catch (err) {
+          console.error(err);
+          this.fileErrors.push({
+            name: file.name,
+            message: err instanceof Error && err.message ? err.message : this.ui.t('Failed to parse PDF. Please try again.'),
+          });
+        }
       }
-    } catch (err) {
-      console.error(err);
-      this.error = 'Failed to parse PDF. Please try again.';
     } finally {
       this.isLoading = false;
+      this.progressText = '';
+      this.cdr.detectChanges();
     }
+
+    if (allSongs.length > 0) this.songsLoaded.emit(allSongs);
   }
 }

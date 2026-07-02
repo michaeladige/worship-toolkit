@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, HostBinding, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -29,6 +29,7 @@ export class SongListComponent implements OnChanges {
   @HostBinding('class.append-open') get isAppendMenuOpen() { return this.appendMenuOpen; }
 
   appendMenuOpen = false;
+  filterText = '';
 
   isAppending = false;
   appendError = '';
@@ -39,6 +40,7 @@ export class SongListComponent implements OnChanges {
     public chordSvc: ChordService,
     private parser: PdfParserService,
     public ui: UiSettingsService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -49,6 +51,20 @@ export class SongListComponent implements OnChanges {
 
   effectiveKey(song: ParsedSong): string {
     return this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, this.ui.chordAccidentals);
+  }
+
+  // Original indices are preserved so select/remove emits stay correct while
+  // the list is filtered. Reordering is disabled during filtering (dropSong
+  // indices would be against the filtered view, not the real array).
+  get visibleSongs(): { song: ParsedSong; index: number }[] {
+    const q = this.filterText.trim().toLowerCase();
+    return this.songs
+      .map((song, index) => ({ song, index }))
+      .filter(({ song }) => !q || song.title.toLowerCase().includes(q));
+  }
+
+  get isFiltering(): boolean {
+    return this.filterText.trim().length > 0;
   }
 
   onAddBlankSong() {
@@ -65,21 +81,40 @@ export class SongListComponent implements OnChanges {
 
   async onAppendFileChange(e: Event) {
     this.appendMenuOpen = false;
-    const file = (e.target as HTMLInputElement).files?.[0];
+    const files = Array.from((e.target as HTMLInputElement).files ?? []);
     (e.target as HTMLInputElement).value = '';
-    if (!file) return;
-    if (!file.name.toLowerCase().endsWith('.pdf')) {
-      this.appendError = 'Please choose a PDF file.';
-      return;
-    }
+    if (files.length === 0) return;
     this.appendError = '';
     this.isAppending = true;
+
+    const incoming: ParsedSong[] = [];
+    const failures: string[] = [];
     try {
-      const incoming = await this.parser.parsePdf(file);
-      if (incoming.length === 0) {
-        this.appendError = 'No songs detected in this PDF.';
-        return;
+      for (const file of files) {
+        if (!file.name.toLowerCase().endsWith('.pdf')) {
+          failures.push(`${file.name} — ${this.ui.t('Please choose a PDF file.')}`);
+          continue;
+        }
+        try {
+          const songs = await this.parser.parsePdf(file);
+          if (songs.length === 0) {
+            failures.push(`${file.name} — ${this.ui.t('No songs detected in this PDF.')}`);
+          } else {
+            incoming.push(...songs);
+          }
+        } catch (err) {
+          console.error(err);
+          failures.push(
+            `${file.name} — ${err instanceof Error && err.message ? err.message : this.ui.t('Failed to parse PDF. Please try again.')}`,
+          );
+        }
       }
+    } finally {
+      this.isAppending = false;
+    }
+
+    this.appendError = failures.join(' · ');
+    if (incoming.length > 0) {
       const existing = new Set(this.songs.map(s => s.title.toLowerCase()));
       const dupes = incoming.filter(s => existing.has(s.title.toLowerCase()));
       if (dupes.length > 0) {
@@ -88,11 +123,9 @@ export class SongListComponent implements OnChanges {
       } else {
         this.appendSongs.emit(incoming);
       }
-    } catch {
-      this.appendError = 'Failed to parse PDF. Please try again.';
-    } finally {
-      this.isAppending = false;
     }
+    // Zoneless app: state set after an await needs an explicit render.
+    this.cdr.detectChanges();
   }
 
   confirmAppendAll() {

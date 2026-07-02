@@ -14,6 +14,11 @@ export type ColorTheme =
   | 'disco'
   | 'confetti';
 export type ChordFont = 'classic' | 'readable';
+export type ToastKind = 'info' | 'success' | 'error';
+export interface ToastAction {
+  label: string;
+  run: () => void;
+}
 
 const PREFS_KEY = 'worship_toolkit_prefs';
 
@@ -30,6 +35,63 @@ const LANG_TOASTS: Record<Language, string> = {
 };
 
 const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
+  // ── toasts / feedback ──
+  'Set saved':    { la: 'Collectio Servata', 'zh-TW': '集合已儲存', id: 'Set tersimpan, aman!', jv: 'Set wis kasimpen' },
+  'Set imported': { la: 'Collectio Importata', 'zh-TW': '集合已匯入', id: 'Set berhasil diimpor!', jv: 'Set wis mlebu' },
+  'Set exported': { la: 'Collectio Exportata', 'zh-TW': '集合已匯出', id: 'Set berhasil diekspor!', jv: 'Set wis diekspor' },
+  'Set deleted':  { la: 'Collectio Deleta', 'zh-TW': '集合已刪除', id: 'Set dihapus', jv: 'Set wis dibusak' },
+  'PDF exported': { la: 'PDF Exportatum', 'zh-TW': 'PDF 已匯出', id: 'PDF berhasil diekspor!', jv: 'PDF wis diekspor' },
+  'Markdown exported': { la: 'Markdown Exportatum', 'zh-TW': 'Markdown 已匯出', id: 'Markdown berhasil diekspor!', jv: 'Markdown wis diekspor' },
+  'PDF export failed. Please try again.': {
+    la: 'Exportatio PDF defecit. Quaeso iterum conare.',
+    'zh-TW': 'PDF 匯出失敗，請再試一次。',
+    id: 'Ekspor PDF gagal, coba lagi ya!',
+    jv: 'Ekspor PDF gagal, coba maneh ya.',
+  },
+  'Storage is full — recent changes may not be saved. Export your set as a backup.': {
+    la: 'Repositorium plenum est — mutationes recentes fortasse non servatae sunt. Collectionem tuam exporta pro subsidio.',
+    'zh-TW': '儲存空間已滿——最近的變更可能未被儲存。請匯出集合作為備份。',
+    id: 'Penyimpanan penuh — perubahan terakhir mungkin nggak kesimpen. Buruan ekspor set-mu buat cadangan!',
+    jv: 'Panyimpenan kebak — owahan pungkasan bisa uga ora kasimpen. Ekspor set-mu kanggo cadangan ya.',
+  },
+  'Not saved — click to name and save this set': {
+    la: 'Non servata — preme ut nomines et serves hanc collectionem',
+    'zh-TW': '尚未儲存——點擊以命名並儲存此集合',
+    id: 'Belum tersimpan — klik untuk kasih nama dan simpan set ini',
+    jv: 'Durung kasimpen — klik kanggo menehi jeneng lan nyimpen set iki',
+  },
+  'Search songs': { la: 'Quaerere Cantus', 'zh-TW': '搜尋歌曲', id: 'Cari lagu', jv: 'Golek lagu' },
+  'Please upload a PDF file.': {
+    la: 'Quaeso, documentum PDF impone.',
+    'zh-TW': '請上傳 PDF 檔案。',
+    id: 'Upload file PDF ya!',
+    jv: 'Unggah file PDF ya.',
+  },
+  'Please choose a PDF file.': {
+    la: 'Quaeso, documentum PDF elige.',
+    'zh-TW': '請選擇 PDF 檔案。',
+    id: 'Pilih file PDF ya!',
+    jv: 'Pilih file PDF ya.',
+  },
+  'No songs detected in this PDF. Make sure it is a SongSelect chord chart.': {
+    la: 'Nulli cantus in hoc PDF reperti. Cura ut sit tabula chordarum SongSelect.',
+    'zh-TW': '在此 PDF 中未偵測到歌曲。請確認它是 SongSelect 和弦譜。',
+    id: 'Nggak ada lagu yang kedeteksi di PDF ini. Pastikan itu chord chart dari SongSelect ya!',
+    jv: 'Ora ana lagu sing ketemu ing PDF iki. Priksa manawa iku chord chart SongSelect ya.',
+  },
+  'No songs detected in this PDF.': {
+    la: 'Nulli cantus in hoc PDF reperti.',
+    'zh-TW': '在此 PDF 中未偵測到歌曲。',
+    id: 'Nggak ada lagu yang kedeteksi di PDF ini.',
+    jv: 'Ora ana lagu sing ketemu ing PDF iki.',
+  },
+  'Failed to parse PDF. Please try again.': {
+    la: 'PDF legere defecit. Quaeso iterum conare.',
+    'zh-TW': '解析 PDF 失敗，請再試一次。',
+    id: 'Gagal baca PDF-nya, coba lagi ya!',
+    jv: 'Gagal maca PDF, coba maneh ya.',
+  },
+
   // ── app header ──
   'Manual':     { la: 'Libellus',   'zh-TW': '手冊',         id: 'Panduan',        jv: 'Pandhuan'      },
   'New':        { la: 'Novum',      'zh-TW': '新增',         id: 'Baru',           jv: 'Anyar'         },
@@ -376,6 +438,24 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     'zh-TW': 'App 會自動解析 PDF 喔！包含多首歌的 PDF 也會自動拆分成單曲，不用你手動一首首來。',
     id:      'App otomatis parsing PDF-nya. PDF yang isinya banyak lagu langsung dipecah jadi lagu-lagu terpisah — mantap jiwa!',
     jv:      'App iki otomatis ngurai PDF-e, nak. PDF sing isi akeh lagu langsung dipisah dadi lagu siji-siji.',
+  },
+  'You can select or drop several PDF files at once — they are parsed one by one, and any file that fails shows its own error message while the rest still load.': {
+    la:      'Plura documenta PDF simul eligere vel demittere potes — singillatim leguntur, et si quod deficit, suum nuntium erroris ostendit dum cetera nihilominus onerantur.',
+    'zh-TW': '可以一次選取或拖入多個 PDF 檔案——它們會逐一解析，失敗的檔案會顯示各自的錯誤訊息，其餘的照樣載入。',
+    id:      'Kamu bisa pilih atau drop beberapa file PDF sekaligus — diproses satu per satu, dan kalau ada yang gagal, dia nunjukin error-nya sendiri sementara sisanya tetap masuk. Praktis!',
+    jv:      'Sampeyan bisa milih utawa nyelehake pirang-pirang file PDF bebarengan — diproses siji-siji, lan yen ana sing gagal bakal nuduhake pesen kesalahane dhewe, dene liyane tetep mlebu.',
+  },
+  'sets with more than 5 songs show a search box above the list to filter by title. Reordering is paused while a filter is active.': {
+    la:      'collectiones cum plus quam quinque cantibus capsam quaerendi supra indicem ostendunt ad titulos eligendos. Reordinare intermittitur dum filtrum activum est.',
+    'zh-TW': '超過 5 首歌的集合會在清單上方顯示搜尋框，可依歌名篩選。篩選時暫停拖曳排序。',
+    id:      'set dengan lebih dari 5 lagu bakal nampilin kotak pencarian di atas daftar buat filter judul. Selama filter aktif, drag buat urut ulang di-pause dulu.',
+    jv:      'set sing luwih saka 5 lagu bakal nuduhake kothak panggolekan ing ndhuwur dhaptar kanggo nyaring miturut irah-irahan. Nalika saringan aktif, ngurutake maneh dilereni dhisik.',
+  },
+  'An amber dot on the 💾 button means your songs are not yet in a named set — name and save them, or they will be replaced if you load another set.': {
+    la:      'Punctum flavum in papilione 💾 significat cantus tuos nondum in collectione nominata esse — nomina et serva eos, aut substituentur si aliam collectionem oneraveris.',
+    'zh-TW': '💾 按鈕上的琥珀色圓點表示你的歌曲還沒存進命名的集合——快命名並儲存，不然載入其他集合時會被覆蓋喔！',
+    id:      'Titik amber di tombol 💾 artinya lagu-lagumu belum masuk set bernama — buruan kasih nama dan simpan, kalau nggak bakal ketimpa pas kamu buka set lain!',
+    jv:      'Titik kuning ing tombol 💾 tegese lagu-lagumu durung mlebu set sing dijenengi — jenengana lan simpenen, yen ora bakal keganti yen sampeyan mbukak set liyane.',
   },
   'Two-column layouts and superscript chord extensions (e.g.': {
     la:      'Dispositiones bicolumnes et extensiones chordarum superscriptae (e.g.',
@@ -1745,7 +1825,10 @@ export class UiSettingsService {
   editorSplitColumns = false;
 
   readonly toastMsg = signal('');
+  readonly toastKind = signal<ToastKind>('info');
+  readonly toastAction = signal<ToastAction | null>(null);
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
+  private toastStickyUntil = 0;
 
   showSettingsModal = false;
   openSettingsModal()  { this.showSettingsModal = true; }
@@ -1758,13 +1841,63 @@ export class UiSettingsService {
     return TRANSLATIONS[key]?.[this.language] ?? key;
   }
 
+  // General-purpose toast. `msg` is translated via t(). Error and action
+  // toasts take priority: while one is live, an ordinary success/info toast
+  // won't clobber it. durationMs 0 = sticky until dismissed/replaced.
+  showToast(msg: string, kind: ToastKind = 'success', opts?: { durationMs?: number; action?: ToastAction }) {
+    const isPriority = kind === 'error' || !!opts?.action;
+    if (!isPriority && this.toastMsg() && Date.now() < this.toastStickyUntil) return;
+
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.toastMsg.set(this.t(msg));
+    this.toastKind.set(kind);
+    this.toastAction.set(opts?.action ?? null);
+
+    const duration = opts?.durationMs ?? (kind === 'error' ? 6000 : 3000);
+    this.toastStickyUntil = isPriority ? Date.now() + (duration || 3600_000) : 0;
+    if (duration > 0) {
+      this.toastTimer = setTimeout(() => this.dismissToast(), duration);
+    } else {
+      this.toastTimer = null;
+    }
+  }
+
+  dismissToast() {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.toastTimer = null;
+    this.toastStickyUntil = 0;
+    this.toastMsg.set('');
+    this.toastAction.set(null);
+  }
+
   setLanguage(lang: Language, silent = false) {
     this.language = lang;
     this.savePrefs();
     if (!silent) {
+      // LANG_TOASTS values are already in the target language — bypass t().
       if (this.toastTimer) clearTimeout(this.toastTimer);
       this.toastMsg.set(LANG_TOASTS[lang]);
-      this.toastTimer = setTimeout(() => this.toastMsg.set(''), 3000);
+      this.toastKind.set('info');
+      this.toastAction.set(null);
+      this.toastStickyUntil = 0;
+      this.toastTimer = setTimeout(() => this.dismissToast(), 3000);
+    }
+  }
+
+  // localStorage write that surfaces quota failures to the user instead of
+  // silently dropping the save. Throttled so bulk edits don't spam toasts.
+  private lastQuotaToast = 0;
+  safeSetItem(key: string, value: string): boolean {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch {
+      const now = Date.now();
+      if (now - this.lastQuotaToast > 30_000) {
+        this.lastQuotaToast = now;
+        this.showToast('Storage is full — recent changes may not be saved. Export your set as a backup.', 'error');
+      }
+      return false;
     }
   }
 

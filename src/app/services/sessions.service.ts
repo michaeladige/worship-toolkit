@@ -131,6 +131,6 @@ export class SessionsService {
   closeExportModal(): void { this.showExportModal = false; }
 
   private persist(sessions: SavedSession[]): void {
-    try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch { /* quota */ }
+    this.ui.safeSetItem(SESSIONS_KEY, JSON.stringify(sessions));
   }
 }

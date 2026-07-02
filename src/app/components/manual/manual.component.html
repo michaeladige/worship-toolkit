@@ -82,6 +82,7 @@ Sephiroth!</pre>
     <ol>
       <li>{{ ui.t('Open the app and either') }} <strong>{{ ui.t('drag & drop') }}</strong> {{ ui.t('a SongSelect PDF onto the drop zone, click') }} <strong>{{ ui.t('Choose File') }}</strong> {{ ui.t('to pick one, click') }} <strong>{{ ui.t('✏️ Start from scratch') }}</strong> {{ ui.t('to create a blank song, or click') }} <strong>{{ ui.t('📂 Load set file') }}</strong> {{ ui.t('to resume from a previously exported') }} <code>.wt</code> {{ ui.t('file.') }}</li>
       <li>{{ ui.t('The app parses the PDF automatically. Multi-song PDFs are split into individual songs.') }}</li>
+      <li>{{ ui.t('You can select or drop several PDF files at once — they are parsed one by one, and any file that fails shows its own error message while the rest still load.') }}</li>
       <li>{{ ui.t('Two-column layouts and superscript chord extensions (e.g.') }} <code>Fm⁷</code>) {{ ui.t('are recognized and normalized automatically (e.g. to') }} <code>Fm7</code>{{ ui.t(').') }}</li>
       <li>{{ ui.t('Direction notes such as') }} <em>To Tag</em> {{ ui.t('or') }} <em>To Interlude</em>{{ ui.t(', and bar notation like') }} <code>| Am7 | G |</code>{{ ui.t(', are preserved as italic annotations under the relevant line.') }}</li>
     </ol>
@@ -98,6 +99,7 @@ Sephiroth!</pre>
     <ul>
       <li>{{ ui.t('Click any song in the list to switch the editor to that song.') }}</li>
       <li>{{ ui.t('The current key for each song is shown next to its title.') }}</li>
+      <li><strong>{{ ui.t('Search songs') }}</strong> &mdash; {{ ui.t('sets with more than 5 songs show a search box above the list to filter by title. Reordering is paused while a filter is active.') }}</li>
       <li><strong>{{ ui.t('Rename a song title') }}</strong> &mdash; {{ ui.t('click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press') }} <kbd>Enter</kbd> {{ ui.t('to save or') }} <kbd>Esc</kbd> {{ ui.t('to cancel. This is especially useful for songs added as blank "New Song" entries.') }}</li>
       <li><strong>{{ ui.t('Remove a song') }}</strong> &mdash; {{ ui.t('hover over a song in the list and click the') }} <strong>✕</strong> {{ ui.t('button that appears on the right. Removing the last song returns you to the upload screen.') }}</li>
       <li><strong>{{ ui.t('Collapse the sidebar') }}</strong> &mdash; {{ ui.t('on desktop and tablet, click the') }} <strong>◄</strong> {{ ui.t('button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click') }} <strong>►</strong> {{ ui.t('to expand it again. On mobile, tap') }} <strong>{{ ui.t('Songs in Set') }} ▼</strong> {{ ui.t('to collapse the song bar and free up vertical space; tap again (') }}<strong>{{ ui.t('Songs in Set') }} ▲</strong>{{ ui.t(') to expand it.') }}</li>
@@ -213,6 +215,7 @@ Sephiroth!</pre>
       {{ ui.t('A') }} <em>{{ ui.t('set') }}</em> {{ ui.t('is your current collection of songs. Saving a set lets you snapshot it and return to it later — even if you close the browser or start working on a different set in the meantime.') }}
     </p>
     <p>{{ ui.t('The header shows the active set\'s name (e.g.') }} <strong>💾 {{ ui.t('Sunday Service') }} ▾</strong>{{ ui.t('), or') }} <strong>💾 {{ ui.t('Untitled set') }} ▾</strong> {{ ui.t('if nothing is saved yet. Click it to open the') }} <strong>{{ ui.t('Saved Sets') }}</strong> {{ ui.t('panel. At the top of the panel, the current set name and last-modified time are shown — or') }} <em>{{ ui.t('Unsaved set') }}</em> {{ ui.t('if no set is active yet.') }}</p>
+    <p>{{ ui.t('An amber dot on the 💾 button means your songs are not yet in a named set — name and save them, or they will be replaced if you load another set.') }}</p>
     <h3>{{ ui.t('Starting a new set') }}</h3>
     <ul>
       <li>{{ ui.t('Click') }} <strong>➕ {{ ui.t('New') }}</strong> {{ ui.t('in the header (or') }} <strong>{{ ui.t('+ New') }}</strong> {{ ui.t('inside the Saved Sets panel) to clear the workspace and start fresh. On mobile the header button shows just the') }} <strong>➕</strong> {{ ui.t('icon.') }}</li>
@@ -301,6 +304,18 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.4.0</h3></summary>
+      <ul>
+        <li><strong>Action feedback toasts</strong> &mdash; saving, importing, exporting, or deleting a set, and PDF/Markdown exports, now show a brief confirmation toast; failures show a red error toast.</li>
+        <li><strong>Storage-full warning</strong> &mdash; if the browser's storage quota is exceeded, an error toast warns you to export a backup instead of the save silently failing.</li>
+        <li><strong>Unsaved-set indicator</strong> &mdash; songs without a named set show an amber dot on the header 💾 button, nudging you to name and save before the work can be clobbered by loading another set.</li>
+        <li><strong>Multi-file PDF upload</strong> &mdash; drop or pick several PDFs at once, on the upload page or via "+ Import PDF". Per-file errors are reported while the rest still load.</li>
+        <li><strong>Song list search</strong> &mdash; sets with more than 5 songs get a filter box above the sidebar list.</li>
+        <li><strong>Real parse errors shown</strong> &mdash; failed PDF imports now surface the specific reason (e.g. a timeout) instead of a generic message, and no longer get stuck on the parsing spinner.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.3.1</h3></summary>
       <ul>
         <li><strong>5 new color themes</strong> &mdash; Purple, Teal, and Orange join the solid accent lineup, plus two playful subtle-pattern themes, Disco (diagonal stripes) and Confetti (dot grid). All 10 themes now have full light and dark mode variants, picked from the same swatch row in ⚙️ Settings → Appearance.</li>

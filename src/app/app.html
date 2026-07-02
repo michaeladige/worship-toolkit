@@ -17,9 +17,12 @@
       >➕<span class="ctrl-label"> {{ ui.t('New') }}</span></button>
       <button
         class="ui-ctrl-btn sessions-btn"
+        [class.sessions-btn--unsaved]="sessionsSvc.currentSongs.length > 0 && !sessionsSvc.activeSessionId"
         (click)="sessionsSvc.openModal()"
         [disabled]="sessionsSvc.currentSongs.length === 0 && !sessionsSvc.activeSessionId"
-        title="Saved sets"
+        [title]="sessionsSvc.currentSongs.length > 0 && !sessionsSvc.activeSessionId
+          ? ui.t('Not saved — click to name and save this set')
+          : 'Saved sets'"
       >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set') }}</span> ▾</button>
       <button
         class="ui-ctrl-btn"
@@ -50,6 +53,16 @@
   }
 
   @if (ui.toastMsg()) {
-    <div class="latin-toast">{{ ui.toastMsg() }}</div>
+    <div
+      class="latin-toast"
+      [class.toast--error]="ui.toastKind() === 'error'"
+      [class.toast--action]="!!ui.toastAction()"
+      role="status"
+    >
+      <span>{{ ui.toastMsg() }}</span>
+      @if (ui.toastAction(); as action) {
+        <button class="toast-action-btn" (click)="action.run()">{{ action.label }}</button>
+      }
+    </div>
   }
 </div>

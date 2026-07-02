@@ -14,14 +14,14 @@
   >
     @if (isLoading) {
       <div class="spinner"></div>
-      <p>{{ ui.t('Parsing PDF…') }}</p>
+      <p>{{ ui.t('Parsing PDF…') }}@if (progressText) { <span class="progress-text">{{ progressText }}</span> }</p>
     } @else {
       <div class="upload-icon">📄</div>
       <p class="drop-text">{{ ui.t('Drag &amp; drop your SongSelect PDF here') }}</p>
       <p class="or-text">{{ ui.t('or') }}</p>
       <label class="file-btn">
         {{ ui.t('Choose File') }}
-        <input type="file" accept=".pdf" (change)="onFileChange($event)" />
+        <input type="file" accept=".pdf" multiple (change)="onFileChange($event)" />
       </label>
     }
   </div>
@@ -44,6 +44,13 @@
 
   @if (error) {
     <div class="error-msg">{{ error }}</div>
+  }
+  @if (fileErrors.length) {
+    <div class="error-msg">
+      @for (fe of fileErrors; track fe.name) {
+        <div class="file-error"><strong>{{ fe.name }}</strong> — {{ fe.message }}</div>
+      }
+    </div>
   }
 
   <div class="info-cards">

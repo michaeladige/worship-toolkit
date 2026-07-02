@@ -64,7 +64,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       } else {
         this.songs = songs;
         this.sessionsSvc.currentSongs = songs;
-        try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch {}
+        this.ui.safeSetItem(SESSION_KEY, JSON.stringify(songs));
       }
       this.selectedIndex = 0;
       this.cdr.detectChanges();
@@ -95,14 +95,14 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.redoStack = [];
     this.songs = songs;
     this.sessionsSvc.currentSongs = songs;
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch { /* quota */ }
+    this.ui.safeSetItem(SESSION_KEY, JSON.stringify(songs));
     this.sessionsSvc.autosave(songs);
   }
 
   private applyHistory(songs: ParsedSong[]) {
     this.songs = songs;
     this.sessionsSvc.currentSongs = songs;
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch { /* quota */ }
+    this.ui.safeSetItem(SESSION_KEY, JSON.stringify(songs));
     this.sessionsSvc.autosave(songs);
   }
 
@@ -126,7 +126,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     this.redoStack = [];
     this.songs = songs;
     this.sessionsSvc.currentSongs = songs;
-    try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch {}
+    this.ui.safeSetItem(SESSION_KEY, JSON.stringify(songs));
     this.selectedIndex = 0;
     this.cdr.detectChanges();
   }

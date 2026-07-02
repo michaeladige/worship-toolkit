@@ -2,6 +2,19 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.4.0] - 2026-07-03
+
+### Added
+- **Action feedback toasts** — saving, importing, exporting, or deleting a set, and exporting a PDF or Markdown file, now show a brief confirmation toast instead of completing silently. Failures (like a PDF export error) show a red error toast.
+- **Storage-full warning** — if the browser's storage quota is exceeded, the app now warns you with an error toast ("Storage is full — recent changes may not be saved") instead of silently dropping the save. Previously a full storage could make you believe work was saved when it wasn't.
+- **Unsaved-set indicator** — when you have songs but haven't named/saved the set, the 💾 button in the header shows an amber dot and a hint to name and save it, since unnamed work isn't in Saved Sets and is overwritten when loading another set.
+- **Multi-file PDF upload** — the upload drop zone, file picker, and the song list's "+ Import PDF" now accept multiple PDFs at once. Files are parsed one by one with progress shown ("2 / 5 — filename"), and any file that fails reports its own error while the rest still load.
+- **Song list search** — sets with more than 5 songs get a search box above the sidebar list to filter by title. Reordering is paused while filtering so drags always land on the right song.
+
+### Fixed
+- **Real parse errors now shown** — a failed PDF import previously always said "Failed to parse PDF" even when the app knew the real reason (e.g. "PDF loading timed out"). The specific message is now surfaced per file.
+- **Upload errors could get stuck on the spinner** — a failed parse on the upload page could leave the page showing "Parsing PDF…" forever instead of the error message, due to a missing change-detection trigger in this zoneless app. Same fix applied to the song list's import-PDF error path.
+
 ## [1.3.1] - 2026-07-02
 
 ### Added
