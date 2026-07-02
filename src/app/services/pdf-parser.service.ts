@@ -55,6 +55,16 @@ export class PdfParserService {
     return this.workerBlobUrlPromise;
   }
 
+  // Some SongSelect PDFs embed subset fonts whose ToUnicode CMap maps ligature
+  // glyphs (fi, fl, ...) to U+0000 instead of a real character — pdf.js faithfully
+  // returns that NUL byte. Left in place it's invisible in the editor but can
+  // truncate text later (e.g. jsPDF's embedded-font PDF export treats it as a
+  // string terminator), so it's stripped right at extraction rather than carried
+  // through the app's data model.
+  private stripControlChars(text: string): string {
+    return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+  }
+
   // ── Public API ────────────────────────────────────────────────────────────────
   async parsePdf(file: File): Promise<ParsedSong[]> {
     const pdfjsLib = await import('pdfjs-dist');
@@ -94,7 +104,7 @@ export class PdfParserService {
         if (!('str' in item) || !item.str.trim()) continue;
         const tx = item.transform as number[];
         items.push({
-          text: item.str,
+          text: this.stripControlChars(item.str),
           x: +tx[4].toFixed(2),
           y: +(vp.height - tx[5]).toFixed(2),
           width: +(item.width || 0).toFixed(2),
