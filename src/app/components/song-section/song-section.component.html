@@ -1,113 +1,125 @@
-<div class="sections" [class.split-columns]="splitColumns" cdkDropList (cdkDropListDropped)="dropSection($event)">
-  @for (section of song.sections; track trackSection($index, section); let si = $index) {
-    <div class="section" cdkDrag [cdkDragDisabled]="!showSectionControls">
-      <div class="section-header">
-        @if (showSectionControls) {
-          <span class="drag-handle" cdkDragHandle title="Drag to reorder">⠿</span>
-        }
-        <div class="section-label">{{ section.name }}</div>
-        @if (showSectionControls) {
-          <div class="section-actions">
-            <button class="section-action-btn" (click)="addLine.emit(si)" title="Add line">{{ ui.t('+ Line') }}</button>
-            <button class="section-action-btn section-action-btn--danger" (click)="removeSection.emit(si)" title="Remove section">✕</button>
+<div class="sections" [class.split-columns]="splitColumns">
+  @for (col of columns; track $index; let colIdx = $index) {
+    <div
+      class="section-column"
+      cdkDropList
+      [id]="columnId(colIdx)"
+      [cdkDropListData]="col"
+      [cdkDropListConnectedTo]="connectedColumnIds(colIdx)"
+      (cdkDropListDropped)="dropSection($event)"
+    >
+      @for (section of col; track sectionIndex(section)) {
+        @let si = sectionIndex(section);
+        <div class="section" cdkDrag [cdkDragDisabled]="!showSectionControls">
+          <div class="section-header">
+            @if (showSectionControls) {
+              <span class="drag-handle" cdkDragHandle title="Drag to reorder">⠿</span>
+            }
+            <div class="section-label">{{ section.name }}</div>
+            @if (showSectionControls) {
+              <div class="section-actions">
+                <button class="section-action-btn" (click)="addLine.emit(si)" title="Add line">{{ ui.t('+ Line') }}</button>
+                <button class="section-action-btn section-action-btn--danger" (click)="removeSection.emit(si)" title="Remove section">✕</button>
+              </div>
+            }
           </div>
-        }
-      </div>
 
-      <!-- CDK drag placeholder -->
-      <div *cdkDragPlaceholder class="section-drag-placeholder"></div>
+          <!-- CDK drag placeholder -->
+          <div *cdkDragPlaceholder class="section-drag-placeholder"></div>
 
-      @for (line of section.lines; track trackLine($index, line); let li = $index) {
-        <div class="line-group" [class.chords-only]="line.isChordsOnly">
+          @for (line of section.lines; track trackLine($index, line); let li = $index) {
+            <div class="line-group" [class.chords-only]="line.isChordsOnly">
 
-          <!-- Left gutter: add chord + remove line, close to content -->
-          @if (showSectionControls && !line.isChordsOnly) {
-            <div class="line-controls">
-              <button class="line-ctrl-btn" (click)="addChord(si, li)" title="Add chord">+</button>
-              <button class="line-ctrl-btn line-ctrl-btn--danger" (click)="removeLine(si, li)" title="Remove line">✕</button>
-            </div>
-          }
+              <!-- Left gutter: add chord + remove line, close to content -->
+              @if (showSectionControls && !line.isChordsOnly) {
+                <div class="line-controls">
+                  <button class="line-ctrl-btn" (click)="addChord(si, li)" title="Add chord">+</button>
+                  <button class="line-ctrl-btn line-ctrl-btn--danger" (click)="removeLine(si, li)" title="Remove line">✕</button>
+                </div>
+              }
 
-          <div class="line-body">
-            @if (line.chords.length > 0) {
-              <div class="chord-row" #chordRowRef>
-                @for (ct of line.chords; track trackChord($index, ct); let ci = $index) {
-                  <span
-                    class="chord-wrapper"
-                    [class.dragging]="isDraggingChord(si, li, ci)"
-                    [style.left]="chordLeft(line, si, li, ci)"
-                  >
-                    @if (isEditing(si, li, ci)) {
-                      <input
-                        class="chord-input"
-                        [(ngModel)]="editing!.value"
-                        (keydown)="editKeydown($event)"
-                        (blur)="commitEdit()"
-                        appAutofocus
-                        [style.width.ch]="editing!.value.length + 2"
-                      />
-                    } @else {
-                      <button
-                        class="chord-btn"
-                        (click)="startEdit(si, li, ci)"
-                        (pointerdown)="startChordDrag($event, si, li, ci, chordRowRef)"
-                        title="Click to edit · drag to reposition"
-                      >{{ displayChord(ct.chord) }}</button>
-                      <button
-                        class="chord-remove"
-                        (click)="removeChord(si, li, ci)"
-                        title="Remove chord"
-                      >×</button>
+              <div class="line-body">
+                @if (line.chords.length > 0) {
+                  <div class="chord-row" #chordRowRef>
+                    @for (ct of line.chords; track trackChord($index, ct); let ci = $index) {
+                      <span
+                        class="chord-wrapper"
+                        [class.dragging]="isDraggingChord(si, li, ci)"
+                        [style.left]="chordLeft(line, si, li, ci)"
+                      >
+                        @if (isEditing(si, li, ci)) {
+                          <input
+                            class="chord-input"
+                            [(ngModel)]="editing!.value"
+                            (keydown)="editKeydown($event)"
+                            (blur)="commitEdit()"
+                            appAutofocus
+                            [style.width.ch]="editing!.value.length + 2"
+                          />
+                        } @else {
+                          <button
+                            class="chord-btn"
+                            (click)="startEdit(si, li, ci)"
+                            (pointerdown)="startChordDrag($event, si, li, ci, chordRowRef)"
+                            title="Click to edit · drag to reposition"
+                          >{{ displayChord(ct.chord) }}</button>
+                          <button
+                            class="chord-remove"
+                            (click)="removeChord(si, li, ci)"
+                            title="Remove chord"
+                          >×</button>
+                        }
+                      </span>
                     }
-                  </span>
+                  </div>
+                } @else if (!line.isChordsOnly) {
+                  <div class="chord-row chord-row--empty">
+                    <button class="add-chord-btn--inline" (click)="addChord(si, li)" title="Add chord">{{ ui.t('+ chord') }}</button>
+                  </div>
+                }
+
+                @if (isEditingAnnotation(si, li)) {
+                  <div class="annotation-row annotation-row--editing">
+                    <input
+                      class="annotation-input"
+                      type="text"
+                      [(ngModel)]="editingAnnotation!.value"
+                      (keydown)="annotationKeydown($event)"
+                      (blur)="commitAnnotation()"
+                      appAutofocus
+                      title="Editing raw annotation (untransposed)"
+                    />
+                    <button
+                      class="annotation-remove"
+                      (click)="removeAnnotation(si, li)"
+                      title="Remove annotation"
+                    >×</button>
+                  </div>
+                } @else if (line.annotation) {
+                  <div
+                    class="annotation-row annotation-row--btn"
+                    (click)="startEditAnnotation(si, li)"
+                    title="Click to edit annotation"
+                  >{{ displayAnnotation(line.annotation) }}</div>
+                } @else if (showSectionControls && !line.isChordsOnly) {
+                  <button
+                    class="add-annotation-btn"
+                    (click)="startEditAnnotation(si, li)"
+                    title="Add annotation"
+                  >{{ ui.t('+ note') }}</button>
+                }
+                @if (!line.isChordsOnly) {
+                  <div
+                    class="lyric-row"
+                    contenteditable="true"
+                    [textContent]="line.lyric"
+                    (blur)="editLyric(si, li, $any($event.target).textContent)"
+                    spellcheck="false"
+                  ></div>
                 }
               </div>
-            } @else if (!line.isChordsOnly) {
-              <div class="chord-row chord-row--empty">
-                <button class="add-chord-btn--inline" (click)="addChord(si, li)" title="Add chord">{{ ui.t('+ chord') }}</button>
-              </div>
-            }
-
-            @if (isEditingAnnotation(si, li)) {
-              <div class="annotation-row annotation-row--editing">
-                <input
-                  class="annotation-input"
-                  type="text"
-                  [(ngModel)]="editingAnnotation!.value"
-                  (keydown)="annotationKeydown($event)"
-                  (blur)="commitAnnotation()"
-                  appAutofocus
-                  title="Editing raw annotation (untransposed)"
-                />
-                <button
-                  class="annotation-remove"
-                  (click)="removeAnnotation(si, li)"
-                  title="Remove annotation"
-                >×</button>
-              </div>
-            } @else if (line.annotation) {
-              <div
-                class="annotation-row annotation-row--btn"
-                (click)="startEditAnnotation(si, li)"
-                title="Click to edit annotation"
-              >{{ displayAnnotation(line.annotation) }}</div>
-            } @else if (showSectionControls && !line.isChordsOnly) {
-              <button
-                class="add-annotation-btn"
-                (click)="startEditAnnotation(si, li)"
-                title="Add annotation"
-              >{{ ui.t('+ note') }}</button>
-            }
-            @if (!line.isChordsOnly) {
-              <div
-                class="lyric-row"
-                contenteditable="true"
-                [textContent]="line.lyric"
-                (blur)="editLyric(si, li, $any($event.target).textContent)"
-                spellcheck="false"
-              ></div>
-            }
-          </div>
+            </div>
+          }
         </div>
       }
     </div>

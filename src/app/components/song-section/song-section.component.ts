@@ -5,7 +5,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
-  CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, CdkDragPlaceholder, moveItemInArray
+  CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, CdkDragPlaceholder,
+  moveItemInArray, transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { ParsedSong, SongSection, SongLine, ChordToken } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
@@ -201,11 +202,74 @@ export class SongSectionComponent {
   }
 
   // ── Section drag-drop reorder ────────────────────────────────────────────────
+  //
+  // Split-column view used to render every section into ONE cdkDropList and rely
+  // on plain CSS `column-count` to lay them out visually in two newspaper-style
+  // columns. That broke drag-and-drop: cdkDropList's sort algorithm assumes items
+  // are laid out along one axis in DOM order, but CSS multi-column reflows DOM
+  // order into a visually non-adjacent grid (item N sits at the bottom of column
+  // 1, item N+1 jumps to the top of column 2), so dragging across the column
+  // boundary landed the item somewhere unrelated to where the cursor was.
+  //
+  // Fixed by actually splitting song.sections into two real arrays/drop-lists —
+  // one per visual column — connected via cdkDropListConnectedTo, so each column
+  // is its own correctly-ordered vertical list and CDK's sort math applies per
+  // column, with connectedTo handling the cross-column transfer.
+
+  // Memoized on (sections reference, splitColumns) so the exact same column
+  // array instances are bound in the template across repeated reads within a
+  // render — dropSection() below relies on identity to map an event's container
+  // back to a column index. Sections aren't split evenly by rendered height (that
+  // needs a real layout pass); an equal-count split is a simple, deterministic
+  // stand-in that's good enough for reordering purposes.
+  private columnsCache: { sections: SongSection[]; split: boolean; value: SongSection[][] } | null = null;
+
+  get columns(): SongSection[][] {
+    const sections = this.song.sections;
+    if (this.columnsCache && this.columnsCache.sections === sections && this.columnsCache.split === this.splitColumns) {
+      return this.columnsCache.value;
+    }
+    const mid = Math.ceil(sections.length / 2);
+    const value = this.splitColumns
+      ? [sections.slice(0, mid), sections.slice(mid)]
+      : [sections.slice()];
+    this.columnsCache = { sections, split: this.splitColumns, value };
+    return value;
+  }
+
+  columnId(colIdx: number): string {
+    return `section-col-${colIdx}`;
+  }
+
+  connectedColumnIds(colIdx: number): string[] {
+    return this.columns.map((_, i) => this.columnId(i)).filter((_, i) => i !== colIdx);
+  }
+
+  sectionIndex(section: SongSection): number {
+    return this.song.sections.indexOf(section);
+  }
 
   dropSection(event: CdkDragDrop<SongSection[]>) {
-    if (event.previousIndex === event.currentIndex) return;
+    const prevColIdx = this.columns.findIndex(c => c === event.previousContainer.data);
+    const currColIdx = this.columns.findIndex(c => c === event.container.data);
+    if (prevColIdx === currColIdx && event.previousIndex === event.currentIndex) return;
+
+    // Work on arrays derived from a fresh clone, never the live template-bound
+    // `columns` (which alias this.song.sections) — mutating those in place would
+    // corrupt the pre-edit state still referenced by the undo stack.
     const song = this.cloneSong();
-    moveItemInArray(song.sections, event.previousIndex, event.currentIndex);
+    const mid = Math.ceil(song.sections.length / 2);
+    const cols = this.splitColumns
+      ? [song.sections.slice(0, mid), song.sections.slice(mid)]
+      : [song.sections.slice()];
+
+    if (prevColIdx === currColIdx) {
+      moveItemInArray(cols[currColIdx], event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(cols[prevColIdx], cols[currColIdx], event.previousIndex, event.currentIndex);
+    }
+
+    song.sections = cols.flat();
     this.songChange.emit(song);
   }
 
@@ -336,7 +400,6 @@ export class SongSectionComponent {
     );
   }
 
-  trackSection(i: number, _: SongSection) { return i; }
   trackLine(i: number, _: SongLine) { return i; }
   trackChord(i: number, _: ChordToken) { return i; }
 }

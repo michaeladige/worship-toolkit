@@ -10,21 +10,32 @@
   // desktop widths — a phone screen can't fit two legible chord columns —
   // so this always collapses back to one column below the app's mobile
   // breakpoint regardless of the user's preference.
+  //
+  // Each column is a real, separate flex child (and a real, separate
+  // cdkDropList in the template) rather than a CSS `column-count` layout.
+  // column-count only reflows items visually — the underlying DOM order
+  // stays a single flat list — which broke cdkDropList's drag sorting,
+  // since it assumes items are laid out along one axis in DOM order. Two
+  // actual side-by-side lists let dragging between them work correctly.
   &.split-columns {
-    column-count: 2;
-    column-gap: 2.5rem;
+    display: flex;
+    gap: 2.5rem;
 
     @media (max-width: 767px) {
-      column-count: 1;
+      flex-direction: column;
+      gap: 0;
     }
   }
+}
+
+.section-column {
+  flex: 1;
+  min-width: 0;
 }
 
 .section {
   margin-bottom: 1.8rem;
   border-radius: 6px;
-  break-inside: avoid; // keep a section from being split across columns
-  -webkit-column-break-inside: avoid;
 
   &.cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
@@ -48,7 +59,7 @@
   background: color-mix(in srgb, var(--color-primary) 5%, transparent);
 }
 
-.sections.cdk-drop-list-dragging .section:not(.cdk-drag-placeholder) {
+.section-column.cdk-drop-list-dragging .section:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
