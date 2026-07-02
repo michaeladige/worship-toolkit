@@ -47,6 +47,7 @@ interface ChordDrag {
 export class SongSectionComponent {
   @Input() song!: ParsedSong;
   @Input() showSectionControls = false;
+  @Input() splitColumns = false;
   @Output() songChange = new EventEmitter<ParsedSong>();
   @Output() addLine = new EventEmitter<number>();
   @Output() removeSection = new EventEmitter<number>();

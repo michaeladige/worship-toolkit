@@ -4,11 +4,27 @@
   @media (max-width: 767px) {
     padding: 0.75rem 1rem 1.5rem;
   }
+
+  // Same newspaper-style two-column layout as the PDF/Set export, so the
+  // on-screen editor can mirror a printed chart. Only meaningful on tablet/
+  // desktop widths — a phone screen can't fit two legible chord columns —
+  // so this always collapses back to one column below the app's mobile
+  // breakpoint regardless of the user's preference.
+  &.split-columns {
+    column-count: 2;
+    column-gap: 2.5rem;
+
+    @media (max-width: 767px) {
+      column-count: 1;
+    }
+  }
 }
 
 .section {
   margin-bottom: 1.8rem;
   border-radius: 6px;
+  break-inside: avoid; // keep a section from being split across columns
+  -webkit-column-break-inside: avoid;
 
   &.cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
