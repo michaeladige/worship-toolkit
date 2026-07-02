@@ -257,8 +257,9 @@ Sephiroth!</pre>
         </ul>
         {{ ui.t('The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.') }}
       </li>
-      <li><strong>{{ ui.t('Chord font') }}</strong> &mdash; {{ ui.t('choose between Classic (Courier New) and Readable (JetBrains Mono). Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.') }}</li>
+      <li><strong>{{ ui.t('Chord font') }}</strong> &mdash; {{ ui.t('choose between Classic (Courier New) and Readable (JetBrains Mono) — Readable is the default. Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.') }}</li>
       <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.') }}</li>
+      <li><strong>{{ ui.t('Split-column view') }}</strong> &mdash; {{ ui.t('arranges the chart into two columns in the editor, the same layout rule used by two-column PDF exports. Only takes effect at 14 px text size or below, and only on tablet/desktop screens — phones always show a single column.') }}</li>
     </ul>
     <h3>{{ ui.t('Export') }}</h3>
     <ul>
@@ -292,6 +293,14 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.8</h3></summary>
+      <ul>
+        <li><strong>Readable is now the default chord font</strong> &mdash; new sets and browsers with no saved preference now start on Readable (JetBrains Mono) instead of Classic (Courier New); Classic is still available in ⚙️ Settings → Appearance → Chord font.</li>
+        <li><strong>Split-column view for the editor</strong> &mdash; a new toggle in ⚙️ Settings → Appearance arranges the editor into two columns on tablet/desktop, mirroring the same layout rule used by two-column PDF exports (14 px text size or below). Phones always show a single column.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.7</h3></summary>
       <ul>
         <li><strong>Readable chord font</strong> &mdash; a second monospace font (JetBrains Mono) is now available alongside Courier New, in ⚙️ Settings → Appearance → Chord font. Used in both the editor and PDF exports.</li>

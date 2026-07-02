@@ -60,8 +60,9 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 ### Appearance & Accessibility
 - **Color themes** — five accent color themes in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, Green; each works with both light and dark mode
 - **Light / Dark mode** — toggle from ⚙️ Settings; follows system preference on first visit
-- **Chord font** — choose Classic (Courier New) or Readable (JetBrains Mono) in ⚙️ Settings → Appearance; both are true monospace fonts so chord/lyric alignment stays exact, and the choice applies to both the editor and PDF exports
+- **Chord font** — choose Classic (Courier New) or Readable (JetBrains Mono, the default) in ⚙️ Settings → Appearance; both are true monospace fonts so chord/lyric alignment stays exact, and the choice applies to both the editor and PDF exports
 - **Adjustable text size** — scale the app up or down with A− / A+ (13–32 px), remembered between visits
+- **Split-column view** — toggle in ⚙️ Settings → Appearance to arrange the editor into two columns on tablet/desktop, mirroring the same layout rule as two-column PDF exports (14 px text size or below); mobile always shows a single column
 
 ### Multi-Language UI
 - Five UI languages selectable via ⚙️ Settings → Language or from the pill row at the top of the manual page:

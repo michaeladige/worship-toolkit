@@ -136,6 +136,7 @@
     <app-song-section
       [song]="song"
       [showSectionControls]="true"
+      [splitColumns]="ui.editorSplitColumnsActive"
       (songChange)="updateSong($event)"
       (addLine)="addLineToSection($event)"
       (removeSection)="removeSection($event)"

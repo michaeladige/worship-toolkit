@@ -78,6 +78,20 @@
           >A+</button>
         </div>
       </div>
+
+      <div class="setting-row">
+        <span class="setting-label">{{ ui.t('Split-column view') }}</span>
+        <button
+          class="setting-btn"
+          [class.setting-btn--active]="ui.editorSplitColumns"
+          (click)="ui.setEditorSplitColumns(!ui.editorSplitColumns)"
+        >
+          {{ ui.editorSplitColumns ? '▥▥ ' + ui.t('On') : '▥ ' + ui.t('Off') }}
+        </button>
+      </div>
+      @if (ui.editorSplitColumns) {
+        <p class="pdf-size-warn">{{ ui.t('⚠️ Split view only applies at 14px text size or below, and on tablet/desktop screens — mobile always shows one column.') }}</p>
+      }
     </div>
 
     <!-- Export -->

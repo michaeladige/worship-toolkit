@@ -1,4 +1,4 @@
-<div class="sections" cdkDropList (cdkDropListDropped)="dropSection($event)">
+<div class="sections" [class.split-columns]="splitColumns" cdkDropList (cdkDropListDropped)="dropSection($event)">
   @for (section of song.sections; track trackSection($index, section); let si = $index) {
     <div class="section" cdkDrag [cdkDragDisabled]="!showSectionControls">
       <div class="section-header">
