@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.3.0] - 2026-07-02
+
+### Added
+- **Metronome** — a new ♩ toggle beside the SCROLL control turns on an audible click track. Turning it on shows a BPM stepper (30–240) defaulted from the song's BPM info, or 80 if the song has none. The metronome always turns off on page refresh and whenever you switch to a different song, and re-reads the song's BPM each time you turn it back on.
+
 ## [1.2.11] - 2026-07-02
 
 ### Changed

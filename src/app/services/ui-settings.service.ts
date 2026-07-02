@@ -35,6 +35,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Reset':      { la: 'Reponere',   'zh-TW': '重設',         id: 'Reset',          jv: 'Reset'         },
   'Autoscroll': { la: 'Auto-Volutio', 'zh-TW': '自動捲動',    id: 'Gulir Otomatis', jv: 'Gulung Otomatis'},
   'Scroll':     { la: 'Volutio',     'zh-TW': '捲動',         id: 'Gulir',          jv: 'Gulung'        },
+  'Metronome':  { la: 'Metronomum', 'zh-TW': '節拍器',        id: 'Metronom',       jv: 'Metronom'      },
   '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
   '1 2 3 Nashville': { la: 'I II III Nashville', 'zh-TW': '1 2 3 納許維爾', id: '1 2 3 Nashville', jv: '1 2 3 Nashville' },
   'Add section':  { la: 'Addere Sectionem', 'zh-TW': '新增段落', id: 'Tambah Bagian', jv: 'Tambah Bagian' },
@@ -829,6 +830,30 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     'zh-TW': '按鈕來調高或調低捲動速度（0–10）。速度每次都從 0（關閉）開始 — 不會在歌曲或工作階段之間儲存。',
     id:      'tombol untuk menaikkan atau menurunkan kecepatan gulir (0–10). Kecepatan selalu mulai dari 0 (mati) setiap saat — tidak disimpan antar lagu atau sesi.',
     jv:      'tombol kanggo mundhakake utawa nyuda kecepatan gulung (0–10). Kecepatan tansah miwiti saka 0 (mati) saben wektu — ora disimpen antarane lagu utawa sesi.',
+  },
+  'METRONOME control': {
+    la:      'Moderamen Metronomi',
+    'zh-TW': '節拍器控制',
+    id:      'Kontrol Metronom',
+    jv:      'Kontrol Metronom',
+  },
+  'in the toolbar, click the': {
+    la:      'in barra instrumentorum, preme',
+    'zh-TW': '在工具列中，點擊',
+    id:      'di toolbar, klik',
+    jv:      'ing toolbar, klik',
+  },
+  'icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song\'s BPM info (or 80 if the song has none). Use the': {
+    la:      'iconem ad metronomum activandum vel deactivandum. Cum activus, gradus BPM iuxta apparet, ex informatione BPM cantus praedefinitus (vel 80 si cantus eam non habet). Utere',
+    'zh-TW': '圖示來開啟或關閉節拍器。開啟後，旁邊會顯示 BPM 調整器，預設值取自歌曲的 BPM 資訊（若無則為 80）。使用',
+    id:      'ikon untuk menyalakan atau mematikan metronom. Saat menyala, penyetel BPM muncul di sampingnya, dengan nilai awal dari info BPM lagu (atau 80 jika lagu tidak memilikinya). Gunakan',
+    jv:      'ikon kanggo nguripake utawa mateni metronom. Nalika urip, panyetel BPM katon ing sandhinge, kanthi nilai awal saka info BPM lagu (utawa 80 yen lagu ora duwe). Gunakke',
+  },
+  'buttons to adjust it (30–240). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.': {
+    la:      'clavibus ad id moderandum (30–240). Metronomum automatice deactivatur cum cantum mutas vel paginam reficis, et semper BPM cantus iterum legit cum proximo activatur.',
+    'zh-TW': '按鈕來調整（30–240）。當你切換歌曲或重新整理頁面時，節拍器會自動關閉，並在下次開啟時重新讀取歌曲的 BPM。',
+    id:      'tombol untuk menyesuaikannya (30–240). Metronom otomatis mati saat kamu berpindah lagu atau memuat ulang halaman, dan selalu membaca ulang BPM lagu saat kamu menyalakannya lagi.',
+    jv:      'tombol kanggo nyetel (30–240). Metronom otomatis mati nalika kowe pindhah lagu utawa muat ulang kaca, lan tansah maca maneh BPM lagu nalika kowe nguripake maneh.',
   },
   'Annotations': {
     la:      'Annotationes',

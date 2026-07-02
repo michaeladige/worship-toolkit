@@ -124,6 +124,32 @@
         >&#9650;</button>
       </div>
 
+      <!-- Metronome -->
+      <div class="metronome-control" [class.active]="metronomeOn">
+        <button
+          class="metronome-toggle-btn"
+          [class.active]="metronomeOn"
+          (click)="toggleMetronome()"
+          [attr.aria-pressed]="metronomeOn"
+          [title]="ui.t('Metronome')"
+        >&#9833;</button>
+        @if (metronomeOn) {
+          <button
+            class="step-btn"
+            (click)="decreaseBpm()"
+            [disabled]="bpm <= minBpm"
+            title="Decrease BPM"
+          >&#9660;</button>
+          <span class="metronome-bpm">{{ bpm }}</span>
+          <button
+            class="step-btn"
+            (click)="increaseBpm()"
+            [disabled]="bpm >= maxBpm"
+            title="Increase BPM"
+          >&#9650;</button>
+        }
+      </div>
+
       <!-- Bass notes toggle -->
       <button
         class="toggle-btn"
