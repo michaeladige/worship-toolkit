@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParsedSong } from '../../models/song.model';
@@ -16,7 +16,7 @@ const QUICK_SECTIONS = ['INTRO', 'VERSE', 'CHORUS', 'PRE-CHORUS', 'BRIDGE', 'OUT
   templateUrl: './song-editor.component.html',
   styleUrl: './song-editor.component.scss',
 })
-export class SongEditorComponent implements OnDestroy {
+export class SongEditorComponent implements OnDestroy, OnChanges {
   readonly Math = Math;
   readonly quickSections = QUICK_SECTIONS;
 
@@ -43,6 +43,15 @@ export class SongEditorComponent implements OnDestroy {
   private static readonly AUTOSCROLL_PX_PER_SEC_PER_LEVEL = 12;
   private autoscrollFrameId: number | null = null;
   private autoscrollLastTs: number | null = null;
+
+  // Not persisted to localStorage — off on load, and turned off on every song switch (see ngOnChanges).
+  readonly minBpm = 30;
+  readonly maxBpm = 240;
+  metronomeOn = false;
+  bpm = 80;
+
+  private metronomeAudioCtx: AudioContext | null = null;
+  private metronomeIntervalId: number | null = null;
 
   constructor(
     public chordSvc: ChordService,
@@ -215,7 +224,89 @@ export class SongEditorComponent implements OnDestroy {
     this.autoscrollLastTs = null;
   }
 
+  toggleMetronome() {
+    if (this.metronomeOn) {
+      this.stopMetronome();
+    } else {
+      this.startMetronome();
+    }
+  }
+
+  increaseBpm() {
+    this.setBpm(this.bpm + 1);
+  }
+
+  decreaseBpm() {
+    this.setBpm(this.bpm - 1);
+  }
+
+  private setBpm(value: number) {
+    this.bpm = Math.max(this.minBpm, Math.min(this.maxBpm, value));
+    if (this.metronomeOn) this.restartMetronomeInterval();
+  }
+
+  private startMetronome() {
+    // Always re-derive from the song's own tempo rather than remembering a
+    // previously hand-adjusted BPM from an earlier on/off cycle.
+    const parsed = parseInt(this.song.tempo, 10);
+    this.bpm = Number.isFinite(parsed) && parsed > 0
+      ? Math.max(this.minBpm, Math.min(this.maxBpm, parsed))
+      : 80;
+
+    // Created/resumed inside this click handler so Safari/iOS autoplay
+    // policy sees it as a genuine user gesture.
+    if (!this.metronomeAudioCtx) {
+      this.metronomeAudioCtx = new AudioContext();
+    } else if (this.metronomeAudioCtx.state === 'suspended') {
+      this.metronomeAudioCtx.resume();
+    }
+
+    this.metronomeOn = true;
+    this.restartMetronomeInterval();
+  }
+
+  private restartMetronomeInterval() {
+    if (this.metronomeIntervalId !== null) {
+      clearInterval(this.metronomeIntervalId);
+    }
+    this.playMetronomeTick();
+    this.metronomeIntervalId = setInterval(() => this.playMetronomeTick(), 60000 / this.bpm);
+  }
+
+  private stopMetronome() {
+    this.metronomeOn = false;
+    if (this.metronomeIntervalId !== null) {
+      clearInterval(this.metronomeIntervalId);
+      this.metronomeIntervalId = null;
+    }
+  }
+
+  private playMetronomeTick() {
+    const ctx = this.metronomeAudioCtx;
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = 1000;
+    const now = ctx.currentTime;
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(0.4, now + 0.002);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.06);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedIndex'] && !changes['selectedIndex'].firstChange) {
+      this.stopMetronome();
+    }
+  }
+
   ngOnDestroy() {
     this.stopAutoscroll();
+    this.stopMetronome();
+    this.metronomeAudioCtx?.close();
   }
 }

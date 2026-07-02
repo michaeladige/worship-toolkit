@@ -141,6 +141,10 @@ Sephiroth!</pre>
     <ul>
       <li><strong>{{ ui.t('SCROLL control') }}</strong> &mdash; {{ ui.t('in the toolbar, use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons to raise or lower the scroll speed (0–10). Speed starts at 0 (off) every time — it\'s not saved between songs or sessions.') }}</li>
     </ul>
+    <h3>{{ ui.t('Metronome') }}</h3>
+    <ul>
+      <li><strong>{{ ui.t('METRONOME control') }}</strong> &mdash; {{ ui.t('in the toolbar, click the') }} <strong>♩</strong> {{ ui.t('icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song\'s BPM info (or 80 if the song has none). Use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons to adjust it (30–240). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.') }}</li>
+    </ul>
     <h3>{{ ui.t('Annotations') }}</h3>
     <ul>
       <li><strong>{{ ui.t('Add a note') }}</strong> &mdash; {{ ui.t('on a lyric line with no annotation, hover it and click') }} <strong>{{ ui.t('+ note') }}</strong>{{ ui.t(', type a direction note or bar notation (e.g.') }} <code>(To Tag)</code> {{ ui.t('or') }} <code>| Am7 | G |</code>{{ ui.t('), then press') }} <kbd>Enter</kbd> {{ ui.t('to save.') }}</li>
@@ -297,6 +301,41 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.3.1</h3></summary>
+      <ul>
+        <li><strong>Scroll and Metronome controls now show icon + label together</strong> &mdash; SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.3.0</h3></summary>
+      <ul>
+        <li><strong>Metronome</strong> &mdash; a new ♩ toggle beside the SCROLL control turns on an audible click track. Turning it on shows a BPM stepper (30&ndash;240) defaulted from the song's BPM info, or 80 if the song has none. The metronome always turns off on page refresh and whenever you switch to a different song, and re-reads the song's BPM each time you turn it back on.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.2.11</h3></summary>
+      <ul>
+        <li><strong>Autoscroll control swapped icon for a smaller "SCROLL" label</strong> &mdash; the 🔃 icon from 1.2.10 wasn't as clear at a glance, so the control now shows a compact text label instead, sized to match the app's other small toolbar labels.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.2.10</h3></summary>
+      <ul>
+        <li><strong>Smaller autoscroll control</strong> &mdash; the AUTOSCROLL toolbar control now shows a compact 🔃 icon instead of the spelled-out label, so it takes up less header space for future controls. Same ▼/▲ speed buttons, same behavior.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.2.9</h3></summary>
+      <ul>
+        <li><strong>Autoscroll toggle</strong> &mdash; a new AUTOSCROLL control in the song editor's music info header lets you scroll the song hands-free. Use the up/down arrows to increase or decrease the speed (0&ndash;10); at 0 (the default) nothing scrolls. Speed is session-only and isn't saved, so every song opens with autoscroll off.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.8</h3></summary>
       <ul>
         <li><strong>Fixed a chord edit corruption bug</strong> &mdash; clicking any chord to inspect it (even without changing anything) while the song was transposed away from its original key stored the transposed value back as if it were the original, so the chord drifted further out of key every time it was touched afterward. This was worse under Nashville Numbers or Bass Notes Only view. Chords are now always read from and written back to their original key correctly.</li>
