@@ -81,22 +81,41 @@ export class SongSectionComponent {
   // a drag would immediately reopen the inline editor.
   private suppressNextClick = false;
 
-  startEdit(si: number, li: number, ci: number, currentDisplay: string) {
+  startEdit(si: number, li: number, ci: number) {
     if (this.suppressNextClick) { this.suppressNextClick = false; return; }
-    this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: currentDisplay };
+    const raw = this.song.sections[si].lines[li].chords[ci].chord;
+    this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: this.editableValue(raw) };
   }
 
   commitEdit() {
     if (!this.editing) return;
     const { sectionIdx, lineIdx, chordIdx, value } = this.editing;
     const song = this.cloneSong();
-    song.sections[sectionIdx].lines[lineIdx].chords[chordIdx].chord =
-      value.trim() || song.sections[sectionIdx].lines[lineIdx].chords[chordIdx].chord;
+    const chord = song.sections[sectionIdx].lines[lineIdx].chords[chordIdx];
+    chord.chord = this.storableValue(value) || chord.chord;
     this.editing = null;
     this.songChange.emit(song);
   }
 
   cancelEdit() { this.editing = null; }
+
+  // Chords are always stored in their original-key form (song.originalKey);
+  // transposeSemitones is applied only for display. Bass-notes-only and
+  // Nashville views are lossy (they discard the chord quality or rename the
+  // root to a scale degree), so those must be edited via the raw text —
+  // feeding a lossy display string back in as ground truth would corrupt the
+  // stored chord. Plain transposed display, on the other hand, is reversible,
+  // so the edit box shows/accepts the transposed value for a natural UX and
+  // we convert back to original-key form on commit (see storableValue).
+  private editableValue(raw: string): string {
+    return (this.song.showBassNotesOnly || this.song.showNashville) ? raw : this.displayChord(raw);
+  }
+
+  private storableValue(typed: string): string {
+    const trimmed = typed.trim();
+    if (!trimmed || this.song.showBassNotesOnly || this.song.showNashville) return trimmed;
+    return this.chordSvc.transposeChord(trimmed, -this.song.transposeSemitones, this.song.originalKey, this.ui.chordAccidentals);
+  }
 
   editKeydown(e: KeyboardEvent) {
     if (e.key === 'Enter') { e.preventDefault(); this.commitEdit(); }
@@ -115,7 +134,7 @@ export class SongSectionComponent {
     line.chords.push({ chord: 'C', xPercent: 0, charPos: lastCharPos });
     const ci = line.chords.length - 1;
     this.songChange.emit(song);
-    this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: 'C' };
+    this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: this.editableValue('C') };
   }
 
   removeChord(si: number, li: number, ci: number) {

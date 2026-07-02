@@ -101,7 +101,9 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   private applyHistory(songs: ParsedSong[]) {
     this.songs = songs;
+    this.sessionsSvc.currentSongs = songs;
     try { localStorage.setItem(SESSION_KEY, JSON.stringify(songs)); } catch { /* quota */ }
+    this.sessionsSvc.autosave(songs);
   }
 
   undo() {
