@@ -186,11 +186,33 @@
   &:hover:not(.swatch--active) { transform: scale(1.1); }
 }
 
-[data-color-swatch="blue"]  { background: #2563eb; }
-[data-color-swatch="pink"]  { background: #ec4899; }
-[data-color-swatch="red"]   { background: #ef4444; }
-[data-color-swatch="amber"] { background: #d97706; }
-[data-color-swatch="green"] { background: #059669; }
+[data-color-swatch="blue"]   { background: #2563eb; }
+[data-color-swatch="pink"]   { background: #ec4899; }
+[data-color-swatch="red"]    { background: #ef4444; }
+[data-color-swatch="amber"]  { background: #d97706; }
+[data-color-swatch="green"]  { background: #059669; }
+[data-color-swatch="purple"] { background: #7c3aed; }
+[data-color-swatch="teal"]   { background: #0d9488; }
+[data-color-swatch="orange"] { background: #ea580c; }
+
+// Disco/Confetti swatch previews use a bolder version of their in-app pattern
+// (~20-25% opacity vs. the app's subtle 6-8%) so a 22px circle actually reads
+// as "a pattern" rather than a flat color — only the preview needs to be bold.
+[data-color-swatch="disco"] {
+  background: #c026d3;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.35) 0px,
+    rgba(255, 255, 255, 0.35) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+}
+[data-color-swatch="confetti"] {
+  background: #f43f5e;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.5) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
+}
 
 .lang-pills {
   display: flex;

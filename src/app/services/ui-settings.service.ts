@@ -2,7 +2,17 @@ import { Injectable, signal } from '@angular/core';
 import { Accidentals } from './chord.service';
 
 export type Language = 'en' | 'la' | 'zh-TW' | 'id' | 'jv';
-export type ColorTheme = 'blue' | 'pink' | 'red' | 'amber' | 'green';
+export type ColorTheme =
+  | 'blue'
+  | 'pink'
+  | 'red'
+  | 'amber'
+  | 'green'
+  | 'purple'
+  | 'teal'
+  | 'orange'
+  | 'disco'
+  | 'confetti';
 export type ChordFont = 'classic' | 'readable';
 
 const PREFS_KEY = 'worship_toolkit_prefs';
@@ -37,7 +47,9 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Scroll':     { la: 'Volutio',     'zh-TW': '捲動',         id: 'Gulir',          jv: 'Gulung'        },
   'Metronome':  { la: 'Metronomum', 'zh-TW': '節拍器',        id: 'Metronom',       jv: 'Metronom'      },
   '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
+  '🎹 Bass':    { la: '🎹 Bassus',    'zh-TW': '🎹 低音',       id: '🎹 Bass',        jv: '🎹 Bass'       },
   '1 2 3 Nashville': { la: 'I II III Nashville', 'zh-TW': '1 2 3 納許維爾', id: '1 2 3 Nashville', jv: '1 2 3 Nashville' },
+  '1 2 3':      { la: 'I II III',   'zh-TW': '1 2 3',        id: '1 2 3',          jv: '1 2 3'         },
   'Add section':  { la: 'Addere Sectionem', 'zh-TW': '新增段落', id: 'Tambah Bagian', jv: 'Tambah Bagian' },
   'Custom name…': { la: 'Nomen proprium…', 'zh-TW': '自訂名稱…', id: 'Nama khusus…', jv: 'Jeneng dhewe…' },
   'Add':        { la: 'Addere',     'zh-TW': '新增',         id: 'Tambah',         jv: 'Tambah'        },
@@ -1523,11 +1535,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'di header app untuk buka panel Pengaturan. Semua preferensi tampilan dan ekspor ada di sini dan diingat antar kunjungan.',
     jv:      'ing header app kanggo mbukak panel Setelan. Kabeh preferensi tampilan lan ekspor ana ing kene lan dieling-eling antarane kunjungan.',
   },
-  'choose an accent color theme: Blue (default), Pink, Red, Amber, or Green. The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.': {
-    la:      'elige thema coloris accentus: Caeruleum (defalta), Roseum, Rubrum, Succinum, vel Viride. Color electus papilionibus, ostentioni chordarum, et elementis interactivis per totam applicationem applicatur. Cum modo Lucis et Tenebrarum laborat.',
-    'zh-TW': '選擇強調色主題：藍色（預設）、粉色、紅色、琥珀色或綠色。所選顏色應用於整個 App 的按鈕、和弦顯示和互動元素。支援淺色和深色模式！',
-    id:      'pilih tema warna aksen: Biru (default), Pink, Merah, Amber, atau Hijau. Warna yang dipilih berlaku untuk tombol, tampilan akor, dan elemen interaktif di seluruh app. Cocok dengan mode Terang maupun Gelap!',
-    jv:      'pilih tema warna aksen: Biru (default), Pink, Abang, Amber, utawa Ijo. Warna sing dipilih diterapake menyang tombol, tampilan akor, lan elemen interaktif ing sak kabehe app. Cocok karo mode Padhang lan Peteng.',
+  'choose an accent color theme: 8 solid colors (Blue default, Pink, Red, Amber, Green, Purple, Teal, Orange) plus 2 subtle-pattern themes (Disco, Confetti). The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.': {
+    la:      'elige thema coloris accentus: 8 colores solidi (Caeruleum defalta, Roseum, Rubrum, Succinum, Viride, Purpureum, Cyaneum, Aurantiacum) et 2 themata subtiliter picta (Disco, Confetti). Color electus papilionibus, ostentioni chordarum, et elementis interactivis per totam applicationem applicatur. Cum modo Lucis et Tenebrarum laborat.',
+    'zh-TW': '選擇強調色主題：8 種純色（藍色預設、粉色、紅色、琥珀色、綠色、紫色、青色、橘色），另有 2 款低調圖案主題（迪斯可、彩紙）。所選顏色應用於整個 App 的按鈕、和弦顯示和互動元素。支援淺色和深色模式！',
+    id:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Merah, Amber, Hijau, Ungu, Teal, Oranye) plus 2 tema pola halus (Disco, Confetti). Warna yang dipilih berlaku untuk tombol, tampilan akor, dan elemen interaktif di seluruh app. Cocok dengan mode Terang maupun Gelap!',
+    jv:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Abang, Amber, Ijo, Ungu, Teal, Oranye) lan 2 tema pola alus (Disco, Confetti). Warna sing dipilih diterapake menyang tombol, tampilan akor, lan elemen interaktif ing sak kabehe app. Cocok karo mode Padhang lan Peteng.',
   },
   'toggle between Light and Dark mode. WorshipToolkit follows your system\'s preference the first time you open it.': {
     la:      'commuta inter modum Lucis et Tenebrarum. WorshipToolkit praeferentiam systematis tui prima vice qua eam aperis sequitur.',
@@ -1715,7 +1727,18 @@ export class UiSettingsService {
   language: Language = 'en';
 
   colorTheme: ColorTheme = 'blue';
-  readonly colorThemes: ColorTheme[] = ['blue', 'pink', 'red', 'amber', 'green'];
+  readonly colorThemes: ColorTheme[] = [
+    'blue',
+    'pink',
+    'red',
+    'amber',
+    'green',
+    'purple',
+    'teal',
+    'orange',
+    'disco',
+    'confetti',
+  ];
 
   chordFont: ChordFont = 'readable';
 

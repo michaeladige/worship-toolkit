@@ -163,7 +163,8 @@
         (click)="toggleBassNotes()"
         title="Show bass/root notes only"
       >
-        {{ ui.t('🎹 Bass Notes') }}
+        <span class="label-full">{{ ui.t('🎹 Bass Notes') }}</span>
+        <span class="label-short">{{ ui.t('🎹 Bass') }}</span>
       </button>
 
       <!-- Nashville notation toggle -->
@@ -173,7 +174,8 @@
         (click)="toggleNashville()"
         title="Nashville number notation"
       >
-        {{ ui.t('1 2 3 Nashville') }}
+        <span class="label-full">{{ ui.t('1 2 3 Nashville') }}</span>
+        <span class="label-short">{{ ui.t('1 2 3') }}</span>
       </button>
 
     </div>

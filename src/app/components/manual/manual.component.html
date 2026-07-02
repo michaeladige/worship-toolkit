@@ -255,7 +255,7 @@ Sephiroth!</pre>
     <p>{{ ui.t('Click the') }} <strong>⚙️ {{ ui.t('Settings') }}</strong> {{ ui.t('button in the app header to open the Settings panel. All display and export preferences live here and are remembered between visits.') }}</p>
     <h3>{{ ui.t('Appearance') }}</h3>
     <ul>
-      <li><strong>{{ ui.t('Color') }}</strong> &mdash; {{ ui.t('choose an accent color theme: Blue (default), Pink, Red, Amber, or Green. The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.') }}</li>
+      <li><strong>{{ ui.t('Color') }}</strong> &mdash; {{ ui.t('choose an accent color theme: 8 solid colors (Blue default, Pink, Red, Amber, Green, Purple, Teal, Orange) plus 2 subtle-pattern themes (Disco, Confetti). The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.') }}</li>
       <li><strong>{{ ui.t('Theme') }}</strong> &mdash; {{ ui.t('toggle between Light and Dark mode. WorshipToolkit follows your system\'s preference the first time you open it.') }}</li>
       <li><strong>{{ ui.t('Accidentals') }}</strong> &mdash; {{ ui.t('choose how chord and key names are spelled:') }}
         <ul>
@@ -303,7 +303,8 @@ Sephiroth!</pre>
     <details class="changelog-entry" open>
       <summary><h3>1.3.1</h3></summary>
       <ul>
-        <li><strong>Scroll and Metronome controls now show icon + label together</strong> &mdash; SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.</li>
+        <li><strong>5 new color themes</strong> &mdash; Purple, Teal, and Orange join the solid accent lineup, plus two playful subtle-pattern themes, Disco (diagonal stripes) and Confetti (dot grid). All 10 themes now have full light and dark mode variants, picked from the same swatch row in ⚙️ Settings → Appearance.</li>
+        <li><strong>Bass Notes and Nashville toggles are mobile-friendly</strong> &mdash; on phones, "🎹 Bass Notes" and "1 2 3 Nashville" now collapse to short "Bass" and "1 2 3" labels, matching the Scroll/Metronome icon+label responsive pattern.</li>
       </ul>
     </details>
 
@@ -311,6 +312,7 @@ Sephiroth!</pre>
       <summary><h3>1.3.0</h3></summary>
       <ul>
         <li><strong>Metronome</strong> &mdash; a new ♩ toggle beside the SCROLL control turns on an audible click track. Turning it on shows a BPM stepper (30&ndash;240) defaulted from the song's BPM info, or 80 if the song has none. The metronome always turns off on page refresh and whenever you switch to a different song, and re-reads the song's BPM each time you turn it back on.</li>
+        <li><strong>Scroll and Metronome controls now show icon + label together</strong> &mdash; SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.</li>
       </ul>
     </details>
 

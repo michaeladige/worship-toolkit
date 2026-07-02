@@ -4,13 +4,19 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 
 ## [1.3.1] - 2026-07-02
 
+### Added
+- **5 new color themes** — Purple, Teal, and Orange join the solid accent lineup, plus two playful subtle-pattern themes, Disco (diagonal stripes) and Confetti (dot grid). All 10 themes now have full light and dark mode variants, picked from the same swatch row in ⚙️ Settings → Appearance. Patterns are kept low-contrast so they never compete with chord/lyric readability on stage.
+
 ### Changed
-- **Scroll and Metronome controls now show icon + label together** — SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.
+- **Bass Notes and Nashville toggles are mobile-friendly** — on phones, "🎹 Bass Notes" and "1 2 3 Nashville" now collapse to short "Bass" and "1 2 3" labels, matching the Scroll/Metronome icon+label responsive pattern, so the toolbar takes up less room on narrow screens.
 
 ## [1.3.0] - 2026-07-02
 
 ### Added
 - **Metronome** — a new ♩ toggle beside the SCROLL control turns on an audible click track. Turning it on shows a BPM stepper (30–240) defaulted from the song's BPM info, or 80 if the song has none. The metronome always turns off on page refresh and whenever you switch to a different song, and re-reads the song's BPM each time you turn it back on.
+
+### Changed
+- **Scroll and Metronome controls now show icon + label together** — SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.
 
 ## [1.2.11] - 2026-07-02
 
