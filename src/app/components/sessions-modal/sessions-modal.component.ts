@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SessionsService } from '../../services/sessions.service';
@@ -20,6 +20,16 @@ export class SessionsModalComponent implements OnInit {
   importError = '';
   showNewSessionConfirm = false;
   newSessionSaveName = '';
+
+  // Deleting a saved set is permanent (unlike song edits, it isn't covered by
+  // Ctrl+Z), so the delete button arms on the first click and only deletes on
+  // a second click within confirmDeleteTimeoutMs — a stray click can't nuke a set.
+  // A signal (not a plain field) because the auto-reset fires from a setTimeout
+  // outside any Angular event handler, and this app has no zone.js to pick that
+  // mutation up — only a signal write reliably schedules a re-render for it.
+  readonly confirmDeleteId = signal<string | null>(null);
+  private confirmDeleteTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly confirmDeleteTimeoutMs = 3000;
 
   constructor(
     public sessionsSvc: SessionsService,
@@ -46,7 +56,9 @@ export class SessionsModalComponent implements OnInit {
 
   @HostListener('document:keydown.escape')
   onEscape() {
-    if (this.showNewSessionConfirm) {
+    if (this.confirmDeleteId() !== null) {
+      this.confirmDeleteId.set(null);
+    } else if (this.showNewSessionConfirm) {
       this.cancelNewSessionConfirm();
     } else {
       this.sessionsSvc.closeModal();
@@ -82,7 +94,17 @@ export class SessionsModalComponent implements OnInit {
 
   cancelRename() { this.renamingId = null; }
 
-  deleteSession(id: string) { this.sessionsSvc.delete(id); }
+  deleteSession(id: string) {
+    if (this.confirmDeleteId() !== id) {
+      this.confirmDeleteId.set(id);
+      if (this.confirmDeleteTimer) clearTimeout(this.confirmDeleteTimer);
+      this.confirmDeleteTimer = setTimeout(() => this.confirmDeleteId.set(null), this.confirmDeleteTimeoutMs);
+      return;
+    }
+    if (this.confirmDeleteTimer) clearTimeout(this.confirmDeleteTimer);
+    this.confirmDeleteId.set(null);
+    this.sessionsSvc.delete(id);
+  }
 
   exportSession(session: SavedSession) {
     this.exportSvc.downloadSession(session.songs, session.name);

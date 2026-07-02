@@ -45,6 +45,24 @@
       </div>
 
       <div class="setting-row">
+        <span class="setting-label">{{ ui.t('Chord font') }}</span>
+        <div class="seg-group">
+          <button
+            class="seg-btn"
+            style="font-family: 'Courier New', Consolas, monospace;"
+            [class.seg-btn--active]="ui.chordFont === 'classic'"
+            (click)="ui.setChordFont('classic')"
+          >Aa {{ ui.t('Classic') }}</button>
+          <button
+            class="seg-btn"
+            style="font-family: 'JetBrains Mono', 'Courier New', monospace;"
+            [class.seg-btn--active]="ui.chordFont === 'readable'"
+            (click)="ui.setChordFont('readable')"
+          >Aa {{ ui.t('Readable') }}</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
         <span class="setting-label">{{ ui.t('Text size') }}</span>
         <div class="font-size-controls">
           <button

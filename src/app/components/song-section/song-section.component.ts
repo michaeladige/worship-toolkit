@@ -281,11 +281,12 @@ export class SongSectionComponent {
     return result;
   }
 
+  // No font-family/font-size set here — the probe inherits both from rowEl
+  // (the real .chord-row), so it always measures whichever chord font and
+  // text-size preference is actually active, not a hardcoded assumption.
   private measureChPx(rowEl: HTMLElement): number {
     const probe = document.createElement('span');
-    probe.style.cssText =
-      'position:absolute;visibility:hidden;width:1ch;' +
-      'font-family:"Courier New",Consolas,monospace;font-size:0.82rem';
+    probe.style.cssText = 'position:absolute;visibility:hidden;width:1ch;';
     rowEl.appendChild(probe);
     const w = probe.getBoundingClientRect().width || 8;
     rowEl.removeChild(probe);

@@ -2,6 +2,16 @@
   box-sizing: border-box;
 }
 
+// JetBrains Mono — the "Readable" chord/lyric font option — is registered via
+// the CSS Font Loading API in UiSettingsService (loadReadableFont()), not a
+// @font-face src: url() here. This app deploys under a variable subpath
+// (/worship-toolkit/ or /worship-toolkit/beta/ on GitHub Pages), and a CSS
+// url() is resolved relative to the stylesheet's own path, not document.baseURI —
+// a leading "/" would point at the true origin root and 404 under either
+// subpath. Loading it from TypeScript lets us build the URL from
+// document.baseURI instead, the same pattern already used to fetch the PDF
+// parser's worker script.
+
 :root {
   --color-primary: #2563eb;
   --color-primary-dark: #1d4ed8;
@@ -13,6 +23,11 @@
   --color-surface: #ffffff;
   --color-border: #e5e7eb;
   --color-hover: #f3f4f6;
+  --chord-font: 'Courier New', Consolas, monospace;
+}
+
+[data-font="readable"] {
+  --chord-font: 'JetBrains Mono', 'Courier New', Consolas, monospace;
 }
 
 [data-theme="dark"] {
