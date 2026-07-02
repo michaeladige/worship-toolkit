@@ -28,6 +28,8 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   @Output() songsChange = new EventEmitter<ParsedSong[]>();
   @Output() undo = new EventEmitter<void>();
   @Output() redo = new EventEmitter<void>();
+  @Output() prevSong = new EventEmitter<void>();
+  @Output() nextSong = new EventEmitter<void>();
 
   @ViewChild('scrollContainer') private scrollContainer?: ElementRef<HTMLDivElement>;
 
@@ -69,6 +71,11 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
 
   get allKeys(): string[] {
     return this.chordSvc.allKeys(this.ui.chordAccidentals);
+  }
+
+  // The chord-editing hint only makes sense once there are chords to click.
+  get songHasChords(): boolean {
+    return this.song.sections.some(sec => sec.lines.some(l => l.chords.length > 0));
   }
 
   updateSong(updated: ParsedSong) {

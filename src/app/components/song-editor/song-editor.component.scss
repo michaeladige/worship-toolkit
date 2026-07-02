@@ -385,6 +385,39 @@
 }
 
 
+.hint-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 1.5rem;
+  background: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-secondary) 20%, transparent);
+  font-size: 0.82rem;
+  color: var(--color-text);
+
+  @media (max-width: 767px) {
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+  }
+}
+
+.hint-dismiss-btn {
+  border: 1px solid var(--color-secondary);
+  background: none;
+  color: var(--color-secondary);
+  border-radius: 6px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-secondary) 12%, transparent);
+  }
+}
+
 .key-banner {
   padding: 0.5rem 1.5rem;
   background: color-mix(in srgb, var(--color-primary) 10%, transparent);
@@ -401,6 +434,102 @@
 .content {
   flex: 1;
   overflow-y: auto;
+}
+
+// ── Stage mode ────────────────────────────────────────────────────────────────
+// Floating control bar: semi-transparent, bottom-centered, big touch targets
+// (tablets are the primary stage device). The editor toolbar is hidden while
+// stage mode is on; these are the only controls left on screen.
+.stage-bar {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  max-width: 94vw;
+}
+
+.stage-bar-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.5rem 0.55rem;
+  border-radius: 8px;
+
+  &:hover:not(:disabled) {
+    color: var(--color-primary);
+    background: var(--color-hover);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.stage-bar-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  max-width: 22vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.stage-bar-group {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0 0.3rem;
+
+  &.active {
+    border-color: var(--color-primary);
+
+    .stage-bar-icon,
+    .stage-bar-value,
+    > .stage-bar-btn:first-of-type {
+      color: var(--color-primary);
+    }
+  }
+}
+
+.stage-bar-icon {
+  font-size: 0.9rem;
+  padding-left: 0.25rem;
+  color: var(--color-muted);
+}
+
+.stage-bar-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  min-width: 1.3rem;
+  text-align: center;
+}
+
+.stage-exit-btn {
+  border-left: 1px solid var(--color-border);
+  border-radius: 0 999px 999px 0;
+  color: var(--color-muted);
 }
 
 // ── Undo / Redo ───────────────────────────────────────────────────────────────

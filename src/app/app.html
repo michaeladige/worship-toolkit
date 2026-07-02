@@ -1,4 +1,5 @@
-<div class="app-shell">
+<div class="app-shell" [class.stage-mode]="ui.stageMode()">
+  @if (!ui.stageMode()) {
   <div class="app-header">
     <a class="brand" routerLink="/">WorshipToolkit <span class="version-tag">v{{ version }}</span></a>
 
@@ -37,6 +38,7 @@
       >⚙️<span class="ctrl-label"> {{ ui.t('Settings') }}</span></button>
     </div>
   </div>
+  }
 
   <router-outlet />
 
@@ -50,6 +52,10 @@
 
   @if (ui.showSettingsModal) {
     <app-settings-modal />
+  }
+
+  @if (ui.showShortcutsModal) {
+    <app-shortcuts-modal />
   }
 
   @if (ui.toastMsg()) {

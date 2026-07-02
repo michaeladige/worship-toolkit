@@ -61,6 +61,70 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     jv: 'Durung kasimpen — klik kanggo menehi jeneng lan nyimpen set iki',
   },
   'Search songs': { la: 'Quaerere Cantus', 'zh-TW': '搜尋歌曲', id: 'Cari lagu', jv: 'Golek lagu' },
+
+  // ── hints & shortcuts ──
+  'Tip: click a chord to edit it — drag to move it.': {
+    la: 'Consilium: chordam preme ut eam mutes — trahe ut eam moveas.',
+    'zh-TW': '小提示：點擊和弦即可編輯——拖曳即可移動位置。',
+    id: 'Tips: klik chord buat edit — drag buat geser posisinya!',
+    jv: 'Tips: klik akor kanggo ngowahi — seret kanggo mindhah panggonane.',
+  },
+  'Tip: tap a chord to edit it — press and drag to move it.': {
+    la: 'Consilium: chordam tange ut eam mutes — preme et trahe ut eam moveas.',
+    'zh-TW': '小提示：輕點和弦即可編輯——按住拖曳即可移動位置。',
+    id: 'Tips: tap chord buat edit — tekan lalu geser buat mindahin!',
+    jv: 'Tips: tutul akor kanggo ngowahi — pencet banjur seret kanggo mindhah.',
+  },
+  'Got it': { la: 'Intellego', 'zh-TW': '知道了', id: 'Oke, paham!', jv: 'Wis paham' },
+  'Tip: use the tab on the left edge to open your song list.': {
+    la: 'Consilium: utere lingula in margine sinistro ut indicem cantuum aperias.',
+    'zh-TW': '小提示：使用左側邊緣的標籤來開啟歌曲清單。',
+    id: 'Tips: pakai tab di tepi kiri buat buka daftar lagumu!',
+    jv: 'Tips: gunakna tab ing pinggir kiwa kanggo mbukak dhaptar lagumu.',
+  },
+  'Keyboard shortcuts': { la: 'Compendia Clavium', 'zh-TW': '鍵盤快捷鍵', id: 'Pintasan keyboard', jv: 'Trabasan keyboard' },
+  'Transpose up': { la: 'Transponere sursum', 'zh-TW': '升調', id: 'Transpose naik', jv: 'Transpose munggah' },
+  'Transpose down': { la: 'Transponere deorsum', 'zh-TW': '降調', id: 'Transpose turun', jv: 'Transpose mudhun' },
+  'Next song': { la: 'Cantus sequens', 'zh-TW': '下一首', id: 'Lagu berikutnya', jv: 'Lagu sabanjure' },
+  'Previous song': { la: 'Cantus prior', 'zh-TW': '上一首', id: 'Lagu sebelumnya', jv: 'Lagu sadurunge' },
+  'Show this list': { la: 'Hunc indicem ostendere', 'zh-TW': '顯示此清單', id: 'Tampilkan daftar ini', jv: 'Tuduhake dhaptar iki' },
+  'Close dialogs / cancel edits': { la: 'Dialogos claudere / mutationes revocare', 'zh-TW': '關閉對話框／取消編輯', id: 'Tutup dialog / batalkan edit', jv: 'Nutup dialog / mbatalake owahan' },
+  'Close': { la: 'Claudere', 'zh-TW': '關閉', id: 'Tutup', jv: 'Tutup' },
+  'Stage': { la: 'Scaena', 'zh-TW': '舞台', id: 'Panggung', jv: 'Panggung' },
+  'Exit stage mode': { la: 'Exire e modo scaenae', 'zh-TW': '離開舞台模式', id: 'Keluar mode panggung', jv: 'Metu saka mode panggung' },
+  'Stage mode': { la: 'Modus Scaenae', 'zh-TW': '舞台模式', id: 'Mode panggung', jv: 'Mode panggung' },
+  'click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button.': {
+    la: 'preme papilionem Scaenae in instrumentario pro visu perficiendi sine distractione: caput, index cantuum, et instrumentarium evanescunt, relinquentes solum tabulam tuam et parvam trabem natantem cum celeritate volutionis, metronomo, cantu priore/sequente, et papilione exeundi.',
+    'zh-TW': '點擊工具列的舞台按鈕，進入無干擾的演出檢視：頁首、歌曲清單和工具列都會消失，只留下你的譜面，以及一個包含捲動速度、節拍器、上一首／下一首和離開按鈕的小型浮動控制列。',
+    id: 'klik tombol Panggung di toolbar buat tampilan performa bebas gangguan: header, daftar lagu, dan toolbar semua hilang, tinggal chart-mu plus bar melayang kecil berisi kecepatan gulir, metronom, lagu sebelumnya/berikutnya, dan tombol keluar.',
+    jv: 'klik tombol Panggung ing toolbar kanggo tampilan pentas tanpa gangguan: header, dhaptar lagu, lan toolbar padha ilang, mung kari chart-mu plus bar ngambang cilik isine kacepetan gulung, metronom, lagu sadurunge/sabanjure, lan tombol metu.',
+  },
+  'Where the browser supports it, stage mode also goes full-screen. Press': {
+    la: 'Ubi navigatrum id sustinet, modus scaenae etiam plenum quadrum occupat. Preme',
+    'zh-TW': '在瀏覽器支援的情況下，舞台模式也會進入全螢幕。按',
+    id: 'Kalau browser-nya mendukung, mode panggung juga langsung full-screen. Tekan',
+    jv: 'Yen browser ndhukung, mode panggung uga dadi layar kebak. Pencet',
+  },
+  'or tap': { la: 'vel tange', 'zh-TW': '或輕點', id: 'atau tap', jv: 'utawa tutul' },
+  'to exit.': { la: 'ut exeas.', 'zh-TW': '即可離開。', id: 'buat keluar.', jv: 'kanggo metu.' },
+  'transpose the current song up or down;': {
+    la: 'cantum praesentem sursum vel deorsum transpone;',
+    'zh-TW': '將目前歌曲升調或降調；',
+    id: 'transpose lagu saat ini naik atau turun;',
+    jv: 'transpose lagu saiki munggah utawa mudhun;',
+  },
+  'switch to the next or previous song;': {
+    la: 'ad cantum sequentem vel priorem transi;',
+    'zh-TW': '切換到下一首或上一首；',
+    id: 'pindah ke lagu berikutnya atau sebelumnya;',
+    jv: 'pindhah menyang lagu sabanjure utawa sadurunge;',
+  },
+  'shows the full shortcut list.': {
+    la: 'indicem plenum compendiorum ostendit.',
+    'zh-TW': '顯示完整快捷鍵清單。',
+    id: 'menampilkan daftar pintasan lengkap.',
+    jv: 'nuduhake dhaptar trabasan lengkap.',
+  },
   'Please upload a PDF file.': {
     la: 'Quaeso, documentum PDF impone.',
     'zh-TW': '請上傳 PDF 檔案。',
@@ -1824,6 +1888,22 @@ export class UiSettingsService {
 
   editorSplitColumns = false;
 
+  // One-time UI hints already dismissed by the user (persisted in prefs).
+  hintsSeen: string[] = [];
+
+  // Touch-first device (phone/tablet) — used to pick tap-vs-click hint wording.
+  readonly isCoarsePointer = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
+
+  hintSeen(id: string): boolean {
+    return this.hintsSeen.includes(id);
+  }
+
+  dismissHint(id: string) {
+    if (this.hintSeen(id)) return;
+    this.hintsSeen = [...this.hintsSeen, id];
+    this.savePrefs();
+  }
+
   readonly toastMsg = signal('');
   readonly toastKind = signal<ToastKind>('info');
   readonly toastAction = signal<ToastAction | null>(null);
@@ -1833,6 +1913,29 @@ export class UiSettingsService {
   showSettingsModal = false;
   openSettingsModal()  { this.showSettingsModal = true; }
   closeSettingsModal() { this.showSettingsModal = false; }
+
+  showShortcutsModal = false;
+
+  // Stage mode: distraction-free full-screen performance view. Not persisted.
+  // A signal because exit can be triggered from a native fullscreenchange
+  // event (outside Angular's event system in this zoneless app).
+  readonly stageMode = signal(false);
+
+  enterStageMode() {
+    this.stageMode.set(true);
+    // Best-effort: iPhone Safari has no Fullscreen API at all, and iPadOS
+    // only from 16.4 — the CSS layout must fully work without it.
+    try {
+      document.documentElement.requestFullscreen?.()?.catch(() => {});
+    } catch { /* unsupported */ }
+  }
+
+  exitStageMode() {
+    this.stageMode.set(false);
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
 
   get latinMode(): boolean { return this.language === 'la'; }
 
@@ -1956,6 +2059,8 @@ export class UiSettingsService {
         const cf = p['chordFont'] as string;
         this.chordFont = cf === 'classic' ? 'classic' : 'readable';
         this.editorSplitColumns = p['editorSplitColumns'] === true;
+        const hints = p['hintsSeen'];
+        this.hintsSeen = Array.isArray(hints) ? hints.filter((h): h is string => typeof h === 'string') : [];
       } catch {
         this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
@@ -1985,6 +2090,7 @@ export class UiSettingsService {
       colorTheme: this.colorTheme,
       chordFont: this.chordFont,
       editorSplitColumns: this.editorSplitColumns,
+      hintsSeen: this.hintsSeen,
     }));
   }
 

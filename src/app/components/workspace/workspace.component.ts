@@ -69,6 +69,13 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       this.selectedIndex = 0;
       this.cdr.detectChanges();
     });
+
+    // One-time touch-device hint: the collapsed song-list tab strip is easy
+    // to miss on phones once more than one song is loaded.
+    if (this.ui.isCoarsePointer && this.songs.length > 1 && !this.ui.hintSeen('songlist-tab')) {
+      this.ui.showToast('Tip: use the tab on the left edge to open your song list.', 'info', { durationMs: 6000 });
+      this.ui.dismissHint('songlist-tab');
+    }
   }
 
   ngOnDestroy() {
@@ -77,16 +84,55 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(e: KeyboardEvent) {
-    if (!e.ctrlKey && !e.metaKey) return;
-    const tag = (e.target as HTMLElement)?.tagName;
-    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-    if (e.key === 'z' && !e.shiftKey) {
-      e.preventDefault();
-      this.undo();
-    } else if ((e.key === 'z' && e.shiftKey) || e.key === 'y') {
-      e.preventDefault();
-      this.redo();
+    const target = e.target as HTMLElement | null;
+    const tag = target?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) return;
+    if (this.songs.length === 0) return;
+    const modalOpen = this.sessionsSvc.showModal || this.sessionsSvc.showExportModal
+      || this.ui.showSettingsModal || this.ui.showShortcutsModal;
+
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === 'z' && !e.shiftKey) {
+        e.preventDefault();
+        if (!modalOpen) this.undo();
+      } else if ((e.key === 'z' && e.shiftKey) || e.key === 'y') {
+        e.preventDefault();
+        if (!modalOpen) this.redo();
+      } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!modalOpen) this.stepSong(e.key === 'ArrowDown' ? 1 : -1);
+      }
+      return;
     }
+
+    if (modalOpen) return;
+    if (e.key === 'Escape' && this.ui.stageMode()) {
+      e.preventDefault();
+      this.ui.exitStageMode();
+    } else if (e.key === '+' || e.key === '=') {
+      e.preventDefault();
+      this.transposeSelected(1);
+    } else if (e.key === '-') {
+      e.preventDefault();
+      this.transposeSelected(-1);
+    } else if (e.key === '?') {
+      e.preventDefault();
+      this.ui.showShortcutsModal = true;
+    }
+  }
+
+  private stepSong(dir: 1 | -1) {
+    const next = Math.max(0, Math.min(this.songs.length - 1, this.selectedIndex + dir));
+    if (next !== this.selectedIndex) this.onSelectSong(next);
+  }
+
+  // Same transform SongEditorComponent.transpose() applies, routed through
+  // setSongs so it lands on the undo stack like a button-driven transpose.
+  private transposeSelected(delta: number) {
+    const songs = this.songs.map((s, i) =>
+      i === this.selectedIndex ? { ...s, transposeSemitones: s.transposeSemitones + delta } : s,
+    );
+    this.setSongs(songs);
   }
 
   private setSongs(songs: ParsedSong[]) {
@@ -143,8 +189,8 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   }
 
   onSelectSong(i: number) {
-    this.selectedIndex = i;
-    this.sessionsSvc.currentSongIndex = i;
+    this.selectedIndex = Math.max(0, Math.min(this.songs.length - 1, i));
+    this.sessionsSvc.currentSongIndex = this.selectedIndex;
   }
 
   onSongsChange(songs: ParsedSong[]) {

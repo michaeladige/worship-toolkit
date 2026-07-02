@@ -1,5 +1,6 @@
 <div class="editor">
   <!-- Toolbar -->
+  @if (!ui.stageMode()) {
   <div class="toolbar">
     <div class="toolbar-left">
       <div class="song-meta">
@@ -178,8 +179,31 @@
         <span class="label-short">{{ ui.t('1 2 3') }}</span>
       </button>
 
+      <!-- Stage mode -->
+      <button
+        class="toggle-btn stage-btn"
+        (click)="ui.enterStageMode()"
+        [title]="ui.t('Stage')"
+      >
+        🎤 {{ ui.t('Stage') }}
+      </button>
+
     </div>
   </div>
+  }
+
+  <!-- One-time chord-editing hint -->
+  @if (!ui.hintSeen('chord-edit') && songHasChords && !ui.stageMode()) {
+    <div class="hint-banner">
+      <span class="hint-text">
+        💡
+        {{ ui.isCoarsePointer
+          ? ui.t('Tip: tap a chord to edit it — press and drag to move it.')
+          : ui.t('Tip: click a chord to edit it — drag to move it.') }}
+      </span>
+      <button class="hint-dismiss-btn" (click)="ui.dismissHint('chord-edit')">{{ ui.t('Got it') }}</button>
+    </div>
+  }
 
   <!-- Original key indicator -->
   @if (song.transposeSemitones !== 0) {
@@ -224,4 +248,42 @@
       </div>
     </div>
   </div>
+
+  <!-- Stage mode floating control bar -->
+  @if (ui.stageMode()) {
+    <div class="stage-bar">
+      <button
+        class="stage-bar-btn"
+        (click)="prevSong.emit()"
+        [disabled]="selectedIndex === 0"
+        [title]="ui.t('Previous song')"
+      >⏮</button>
+      <button
+        class="stage-bar-btn"
+        (click)="nextSong.emit()"
+        [disabled]="selectedIndex === songs.length - 1"
+        [title]="ui.t('Next song')"
+      >⏭</button>
+
+      <span class="stage-bar-title">{{ song.title }}</span>
+
+      <div class="stage-bar-group" [class.active]="autoscrollSpeed > 0" [title]="ui.t('Autoscroll')">
+        <span class="stage-bar-icon" aria-hidden="true">⏬</span>
+        <button class="stage-bar-btn" (click)="decreaseAutoscrollSpeed()" [disabled]="autoscrollSpeed <= 0">&#9660;</button>
+        <span class="stage-bar-value">{{ autoscrollSpeed }}</span>
+        <button class="stage-bar-btn" (click)="increaseAutoscrollSpeed()" [disabled]="autoscrollSpeed >= maxAutoscrollSpeed">&#9650;</button>
+      </div>
+
+      <div class="stage-bar-group" [class.active]="metronomeOn" [title]="ui.t('Metronome')">
+        <button class="stage-bar-btn" (click)="toggleMetronome()" [attr.aria-pressed]="metronomeOn">&#9833;</button>
+        @if (metronomeOn) {
+          <button class="stage-bar-btn" (click)="decreaseBpm()" [disabled]="bpm <= minBpm">&#9660;</button>
+          <span class="stage-bar-value">{{ bpm }}</span>
+          <button class="stage-bar-btn" (click)="increaseBpm()" [disabled]="bpm >= maxBpm">&#9650;</button>
+        }
+      </div>
+
+      <button class="stage-bar-btn stage-exit-btn" (click)="ui.exitStageMode()" [title]="ui.t('Exit stage mode')">✕</button>
+    </div>
+  }
 </div>

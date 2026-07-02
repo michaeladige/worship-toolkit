@@ -1,0 +1,39 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-dialog" role="dialog" aria-modal="true" [attr.aria-label]="ui.t('Keyboard shortcuts')">
+
+    <div class="modal-header">
+      <h2 class="modal-title">⌨️ {{ ui.t('Keyboard shortcuts') }}</h2>
+      <button class="close-btn" (click)="ui.showShortcutsModal = false" [attr.aria-label]="ui.t('Close')" title="Close">✕</button>
+    </div>
+
+    <table class="shortcuts-table">
+      <tbody>
+        <tr>
+          <td><kbd>Ctrl</kbd> + <kbd>Z</kbd></td>
+          <td>{{ ui.t('↩ Undo') }}</td>
+        </tr>
+        <tr>
+          <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Z</kbd></td>
+          <td>{{ ui.t('↪ Redo') }}</td>
+        </tr>
+        <tr>
+          <td><kbd>+</kbd> / <kbd>−</kbd></td>
+          <td>{{ ui.t('Transpose up') }} / {{ ui.t('Transpose down') }}</td>
+        </tr>
+        <tr>
+          <td><kbd>Ctrl</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd></td>
+          <td>{{ ui.t('Next song') }} / {{ ui.t('Previous song') }}</td>
+        </tr>
+        <tr>
+          <td><kbd>?</kbd></td>
+          <td>{{ ui.t('Show this list') }}</td>
+        </tr>
+        <tr>
+          <td><kbd>Esc</kbd></td>
+          <td>{{ ui.t('Close dialogs / cancel edits') }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

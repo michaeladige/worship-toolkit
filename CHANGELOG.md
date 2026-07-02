@@ -2,6 +2,13 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.4.1] - 2026-07-03
+
+### Added
+- **Stage mode** — a new 🎤 Stage button in the editor toolbar switches to a distraction-free performance view: header, song list, and toolbar disappear, leaving the chart plus a floating bar with scroll speed, metronome, previous/next song, and exit. Goes full-screen where the browser supports it (best-effort — the layout works without it); `Esc` or ✕ exits.
+- **Keyboard shortcuts** — `+`/`−` transpose the current song, `Ctrl+↓`/`Ctrl+↑` switch songs, and `?` opens a new shortcuts cheatsheet modal. Shortcuts never fire while typing in an input or while a dialog is open.
+- **One-time hints** — the first time a song with chords is open, a dismissible banner explains click-to-edit / drag-to-move (worded as tap / press-and-drag on touch devices). Phones also get a one-time toast pointing at the song-list tab. Dismissed hints are remembered.
+
 ## [1.4.0] - 2026-07-03
 
 ### Added
