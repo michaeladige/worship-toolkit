@@ -55,14 +55,83 @@ export class PdfParserService {
     return this.workerBlobUrlPromise;
   }
 
-  // Some SongSelect PDFs embed subset fonts whose ToUnicode CMap maps ligature
-  // glyphs (fi, fl, ...) to U+0000 instead of a real character — pdf.js faithfully
-  // returns that NUL byte. Left in place it's invisible in the editor but can
-  // truncate text later (e.g. jsPDF's embedded-font PDF export treats it as a
-  // string terminator), so it's stripped right at extraction rather than carried
-  // through the app's data model.
+  // Control characters that are always junk — U+0000 is deliberately excluded here
+  // (see reconstructLigatures below); it needs to survive into the joined line text
+  // so its surrounding letters can be inspected before it's resolved or dropped.
   private stripControlChars(text: string): string {
-    return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+    return text.replace(/[\x01-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+  }
+
+  // ── Broken ligature recovery ────────────────────────────────────────────────
+  // Some SongSelect PDFs embed the lyric text as a Type 3 font whose "fi"/"fl"
+  // (and rarer "ff"/"ffi"/"ffl") ligature glyphs have no ToUnicode entry — pdf.js
+  // faithfully reports them as U+0000. There's no font metadata that says which
+  // ligature it was (Type 3 glyphs are just numbered vector drawings, not named
+  // characters), so it's recovered by trying each candidate against a bundled
+  // English word list and keeping whichever one actually spells a real word.
+  // Lazy-loaded only when a NUL byte actually turns up in a PDF (the uncommon
+  // case — most imports never touch this); served as plain text rather than
+  // pre-gzipped so it doesn't depend on how a given static host handles
+  // Content-Encoding for a .gz-named file (transfer compression, if any, is
+  // handled transparently by the browser/server either way).
+  private wordSetPromise: Promise<Set<string> | null> | null = null;
+  private wordSet: Set<string> | null = null;
+
+  private loadWordSet(): Promise<Set<string> | null> {
+    if (!this.wordSetPromise) {
+      this.wordSetPromise = (async () => {
+        try {
+          const url = new URL('wordlist/wordlist-en.txt', document.baseURI).href;
+          const res = await fetch(url);
+          if (!res.ok) return null;
+          const text = await res.text();
+          return new Set(text.split('\n').filter(Boolean));
+        } catch {
+          return null; // offline, blocked, or malformed — fall back to stripping
+        }
+      })();
+    }
+    return this.wordSetPromise;
+  }
+
+  private trailingLetters(s: string): string {
+    return s.match(/[A-Za-z]*$/)?.[0] ?? '';
+  }
+
+  private leadingLetters(s: string, from: number): string {
+    return s.slice(from).match(/^[A-Za-z]*/)?.[0] ?? '';
+  }
+
+  // Picks whichever ligature turns (before + lig + after) into a real dictionary
+  // word, checked longest-common-first. Returns '' (strip, today's fallback) if
+  // none match.
+  private pickLigature(before: string, after: string): string {
+    for (const lig of ['fi', 'fl', 'ff', 'ffi', 'ffl']) {
+      if (this.wordSet!.has((before + lig + after).toLowerCase())) return lig;
+    }
+    return '';
+  }
+
+  // Resolves every U+0000 in a line of text. `before`/`after` are only used to pick
+  // a candidate — they're never consumed, so hyphenated breaks like "flam - ing"
+  // (a single word split across two PDF text items) are left exactly as typeset;
+  // to validate correctly across that break, the lookup bridges past a lone " - "
+  // continuation without altering the output.
+  private reconstructLigatures(text: string): string {
+    if (!text.includes('\x00')) return text;
+    if (!this.wordSet) return text.replace(/\x00/g, '');
+
+    let result = '';
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] !== '\x00') { result += text[i]; continue; }
+      const before = this.trailingLetters(result);
+      const after = this.leadingLetters(text, i + 1);
+      let bridgedAfter = after;
+      const bridge = text.slice(i + 1 + after.length).match(/^\s*-\s*([A-Za-z]+)/);
+      if (bridge) bridgedAfter += bridge[1];
+      result += this.pickLigature(before, bridgedAfter);
+    }
+    return result;
   }
 
   // ── Public API ────────────────────────────────────────────────────────────────
@@ -112,6 +181,10 @@ export class PdfParserService {
       }
       rawPages.push({ items, height: vp.height });
     }
+
+    // Only pay for the word-list fetch when this PDF actually has the broken-ligature bug.
+    const hasBrokenLigatures = rawPages.some(p => p.items.some(i => i.text.includes('\x00')));
+    this.wordSet = hasBrokenLigatures ? await this.loadWordSet() : null;
 
     // 2. Merge superscripts within each page (skip for WT PDFs — chords are already atomic)
     if (!wtCol2X) {
@@ -278,7 +351,7 @@ export class PdfParserService {
       }
       text += sorted[i].text;
     }
-    return { items: sorted, y: sorted[0].y, text: text.trim(), colMinX, colWidth };
+    return { items: sorted, y: sorted[0].y, text: this.reconstructLigatures(text.trim()), colMinX, colWidth };
   }
 
   // ── Song parsing ──────────────────────────────────────────────────────────────

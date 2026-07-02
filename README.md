@@ -18,6 +18,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 - Parses multi-song PDFs into individual songs automatically
 - Handles two-column layouts, superscript chord extensions (e.g. Fm⁷ → Fm7)
 - Preserves direction notes (e.g. *To Tag*) and bar notation (e.g. `| Am7 | G |`) as italic annotations
+- **Broken ligature recovery** — some SongSelect PDFs embed a font that loses the "fi"/"fl" in words like "satisfied" or "flesh"; imports automatically recover the correct word using a bundled word list
 - **Start from scratch** — create a blank song without a PDF
 - **Append songs** — add a blank song or import from another PDF without replacing your current set; duplicate title detection warns before adding
 - **Drag-to-reorder** songs via the ≡ handle (mouse and touch)
