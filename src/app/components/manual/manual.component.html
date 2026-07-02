@@ -293,6 +293,16 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.2.8</h3></summary>
+      <ul>
+        <li><strong>Fixed a chord edit corruption bug</strong> &mdash; clicking any chord to inspect it (even without changing anything) while the song was transposed away from its original key stored the transposed value back as if it were the original, so the chord drifted further out of key every time it was touched afterward. This was worse under Nashville Numbers or Bass Notes Only view. Chords are now always read from and written back to their original key correctly.</li>
+        <li><strong>Fixed Undo/Redo leaving Export and Save working from stale data</strong> &mdash; Ctrl+Z / Ctrl+Shift+Z updated the screen but not the internal copy that Export and Save read from, so exporting or saving right after an undo/redo could silently use the pre-undo content.</li>
+        <li><strong>Fixed re-imported PDFs scrambling at larger font sizes</strong> &mdash; PDFs exported single-column (PDF font size above 14 px) were mistakenly re-split into two columns when re-imported, corrupting the parsed line order.</li>
+        <li><strong>Fixed section drag-and-drop across the split-column boundary</strong> &mdash; dragging a section from one visual column toward the other in split-column view could reorder a completely different, uninvolved section instead. Each column is now a genuinely separate, connected drop list, so drags land exactly where they're dropped.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.2.7</h3></summary>
       <ul>
         <li><strong>Readable chord font</strong> &mdash; a second monospace font (JetBrains Mono) is now available alongside Courier New, in ⚙️ Settings → Appearance → Chord font. Used in both the editor and PDF exports.</li>
