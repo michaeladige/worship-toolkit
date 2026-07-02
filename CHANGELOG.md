@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.11] - 2026-07-02
+
+### Changed
+- **Autoscroll control swapped icon for a smaller "SCROLL" label** — the 🔃 icon from 1.2.10 wasn't as clear at a glance, so the control now shows a compact text label instead, sized to match the app's other small toolbar labels.
+
 ## [1.2.10] - 2026-07-02
 
 ### Changed

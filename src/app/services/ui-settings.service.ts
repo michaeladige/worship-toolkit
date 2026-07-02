@@ -34,6 +34,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Jump to':    { la: 'Salire ad',  'zh-TW': '跳至',         id: 'Lompat ke',      jv: 'Loncat menyang'},
   'Reset':      { la: 'Reponere',   'zh-TW': '重設',         id: 'Reset',          jv: 'Reset'         },
   'Autoscroll': { la: 'Auto-Volutio', 'zh-TW': '自動捲動',    id: 'Gulir Otomatis', jv: 'Gulung Otomatis'},
+  'Scroll':     { la: 'Volutio',     'zh-TW': '捲動',         id: 'Gulir',          jv: 'Gulung'        },
   '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
   '1 2 3 Nashville': { la: 'I II III Nashville', 'zh-TW': '1 2 3 納許維爾', id: '1 2 3 Nashville', jv: '1 2 3 Nashville' },
   'Add section':  { la: 'Addere Sectionem', 'zh-TW': '新增段落', id: 'Tambah Bagian', jv: 'Tambah Bagian' },
