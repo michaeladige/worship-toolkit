@@ -33,6 +33,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Key':        { la: 'Clavis',     'zh-TW': '調性',         id: 'Kunci',          jv: 'Kunci'         },
   'Jump to':    { la: 'Salire ad',  'zh-TW': '跳至',         id: 'Lompat ke',      jv: 'Loncat menyang'},
   'Reset':      { la: 'Reponere',   'zh-TW': '重設',         id: 'Reset',          jv: 'Reset'         },
+  'Autoscroll': { la: 'Auto-Volutio', 'zh-TW': '自動捲動',    id: 'Gulir Otomatis', jv: 'Gulung Otomatis'},
   '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
   '1 2 3 Nashville': { la: 'I II III Nashville', 'zh-TW': '1 2 3 納許維爾', id: '1 2 3 Nashville', jv: '1 2 3 Nashville' },
   'Add section':  { la: 'Addere Sectionem', 'zh-TW': '新增段落', id: 'Tambah Bagian', jv: 'Tambah Bagian' },
@@ -809,6 +810,24 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     'zh-TW': '儲存。無效的輸入會還原為先前的值。按',
     id:      'untuk simpan. Tanda birama yang tidak valid akan kembali ke nilai sebelumnya. Tekan',
     jv:      'kanggo nyimpen. Input sing ora valid bakal bali menyang nilai sadurunge. Pencet',
+  },
+  'AUTOSCROLL control': {
+    la:      'Moderamen Auto-Volutionis',
+    'zh-TW': '自動捲動控制',
+    id:      'Kontrol Gulir Otomatis',
+    jv:      'Kontrol Gulung Otomatis',
+  },
+  'in the toolbar, use the': {
+    la:      'in barra instrumentorum, utere',
+    'zh-TW': '在工具列中，使用',
+    id:      'di toolbar, gunakan',
+    jv:      'ing toolbar, gunakke',
+  },
+  'buttons to raise or lower the scroll speed (0–10). Speed starts at 0 (off) every time — it\'s not saved between songs or sessions.': {
+    la:      'clavibus ad celeritatem volutionis augendam vel minuendam (0–10). Celeritas semper a 0 (deactivata) incipit — inter cantus vel sessiones non servatur.',
+    'zh-TW': '按鈕來調高或調低捲動速度（0–10）。速度每次都從 0（關閉）開始 — 不會在歌曲或工作階段之間儲存。',
+    id:      'tombol untuk menaikkan atau menurunkan kecepatan gulir (0–10). Kecepatan selalu mulai dari 0 (mati) setiap saat — tidak disimpan antar lagu atau sesi.',
+    jv:      'tombol kanggo mundhakake utawa nyuda kecepatan gulung (0–10). Kecepatan tansah miwiti saka 0 (mati) saben wektu — ora disimpen antarane lagu utawa sesi.',
   },
   'Annotations': {
     la:      'Annotationes',

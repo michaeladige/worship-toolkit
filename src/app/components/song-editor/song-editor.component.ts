@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParsedSong } from '../../models/song.model';
@@ -16,7 +16,7 @@ const QUICK_SECTIONS = ['INTRO', 'VERSE', 'CHORUS', 'PRE-CHORUS', 'BRIDGE', 'OUT
   templateUrl: './song-editor.component.html',
   styleUrl: './song-editor.component.scss',
 })
-export class SongEditorComponent {
+export class SongEditorComponent implements OnDestroy {
   readonly Math = Math;
   readonly quickSections = QUICK_SECTIONS;
 
@@ -29,10 +29,20 @@ export class SongEditorComponent {
   @Output() undo = new EventEmitter<void>();
   @Output() redo = new EventEmitter<void>();
 
+  @ViewChild('scrollContainer') private scrollContainer?: ElementRef<HTMLDivElement>;
+
   newSectionName = '';
   editingTitle: string | null = null;
   editingTempo: string | null = null;
   editingTimeSignature: string | null = null;
+
+  // Not persisted to localStorage — resets to 0 (off) every session.
+  readonly maxAutoscrollSpeed = 10;
+  autoscrollSpeed = 0;
+
+  private static readonly AUTOSCROLL_PX_PER_SEC_PER_LEVEL = 12;
+  private autoscrollFrameId: number | null = null;
+  private autoscrollLastTs: number | null = null;
 
   constructor(
     public chordSvc: ChordService,
@@ -166,4 +176,46 @@ export class SongEditorComponent {
     this.updateSong(song);
   }
 
+  increaseAutoscrollSpeed() {
+    this.setAutoscrollSpeed(this.autoscrollSpeed + 1);
+  }
+
+  decreaseAutoscrollSpeed() {
+    this.setAutoscrollSpeed(this.autoscrollSpeed - 1);
+  }
+
+  private setAutoscrollSpeed(value: number) {
+    this.autoscrollSpeed = Math.max(0, Math.min(this.maxAutoscrollSpeed, value));
+    if (this.autoscrollSpeed > 0) {
+      if (this.autoscrollFrameId === null) this.startAutoscroll();
+    } else {
+      this.stopAutoscroll();
+    }
+  }
+
+  private startAutoscroll() {
+    this.autoscrollLastTs = null;
+    const step = (ts: number) => {
+      const el = this.scrollContainer?.nativeElement;
+      if (el && this.autoscrollLastTs !== null) {
+        const dtSeconds = (ts - this.autoscrollLastTs) / 1000;
+        el.scrollTop += this.autoscrollSpeed * SongEditorComponent.AUTOSCROLL_PX_PER_SEC_PER_LEVEL * dtSeconds;
+      }
+      this.autoscrollLastTs = ts;
+      this.autoscrollFrameId = requestAnimationFrame(step);
+    };
+    this.autoscrollFrameId = requestAnimationFrame(step);
+  }
+
+  private stopAutoscroll() {
+    if (this.autoscrollFrameId !== null) {
+      cancelAnimationFrame(this.autoscrollFrameId);
+      this.autoscrollFrameId = null;
+    }
+    this.autoscrollLastTs = null;
+  }
+
+  ngOnDestroy() {
+    this.stopAutoscroll();
+  }
 }

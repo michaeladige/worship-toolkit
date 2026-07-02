@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.2.9] - 2026-07-02
+
+### Added
+- **Autoscroll toggle** — a new AUTOSCROLL control in the song editor's music info header lets you scroll the song hands-free. Use the up/down arrows to increase or decrease the speed (0–10); at 0 (the default) nothing scrolls. Speed is session-only and isn't saved, so every song opens with autoscroll off.
+
 ## [1.2.8] - 2026-07-02
 
 ### Fixed
