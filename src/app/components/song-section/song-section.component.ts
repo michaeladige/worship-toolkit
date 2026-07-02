@@ -281,11 +281,14 @@ export class SongSectionComponent {
     return result;
   }
 
+  // Measures the actual rendered font (respects the user's font-family preference)
+  // so the pixel↔ch drag conversion stays accurate for whichever font is active.
   private measureChPx(rowEl: HTMLElement): number {
+    const computed = getComputedStyle(rowEl);
     const probe = document.createElement('span');
     probe.style.cssText =
-      'position:absolute;visibility:hidden;width:1ch;' +
-      'font-family:"Courier New",Consolas,monospace;font-size:0.82rem';
+      `position:absolute;visibility:hidden;width:1ch;` +
+      `font-family:${computed.fontFamily};font-size:${computed.fontSize}`;
     rowEl.appendChild(probe);
     const w = probe.getBoundingClientRect().width || 8;
     rowEl.removeChild(probe);

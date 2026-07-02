@@ -3,6 +3,15 @@ import { Accidentals } from './chord.service';
 
 export type Language = 'en' | 'la' | 'zh-TW' | 'id' | 'jv';
 export type ColorTheme = 'blue' | 'pink' | 'red' | 'amber' | 'green';
+export type FontFamily = 'courier' | 'consolas' | 'comic';
+
+// Comic Sans isn't monospace, so chord alignment ('ch'-based positioning) is
+// intentionally unreliable for it — it's a joke option, not a real chart font.
+const FONT_STACKS: Record<FontFamily, string> = {
+  courier:  `'Courier New', Consolas, monospace`,
+  consolas: `Consolas, Menlo, 'DejaVu Sans Mono', 'Liberation Mono', 'Courier New', monospace`,
+  comic:    `'Comic Sans MS', 'Comic Sans', 'Chalkboard SE', cursive`,
+};
 
 const PREFS_KEY = 'worship_toolkit_prefs';
 
@@ -72,6 +81,16 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Auto':         { la: 'Automatice',        'zh-TW': '自動',         id: 'Otomatis',       jv: 'Otomatis'      },
   'Sharps':       { la: 'Diesis',            'zh-TW': '升號 (♯)',    id: 'Kres (♯)',        jv: 'Kres (♯)'      },
   'Text size':    { la: 'Magnitudo Textus',  'zh-TW': '文字大小',     id: 'Ukuran Teks',    jv: 'Ukuran Teks'   },
+  'Font':         { la: 'Scriptura',         'zh-TW': '字型',         id: 'Font',           jv: 'Font'          },
+  'Bold chords':  { la: 'Chordae Crassae',   'zh-TW': '和弦粗體',     id: 'Akor Tebal',     jv: 'Akor Kandel'   },
+  'On':           { la: 'Activum',           'zh-TW': '開',           id: 'Aktif',          jv: 'Aktif'         },
+  'Off':          { la: 'Inactivum',         'zh-TW': '關',           id: 'Nonaktif',       jv: 'Mati'          },
+  '⚠️ Comic Sans is just for laughs — chords won\'t line up neatly with the lyrics.': {
+    la:      '⚠️ Comic Sans tantum ioci causa — chordae cum verbis recte non alignabunt.',
+    'zh-TW': '⚠️ Comic Sans 純粹好玩用的——和弦不會跟歌詞對齊喔！',
+    id:      '⚠️ Comic Sans cuma buat lucu-lucuan — akornya bakal berantakan, gak sejajar sama liriknya!',
+    jv:      '⚠️ Comic Sans mung kanggo guyon — akor ora bakal jejer rapi karo lirike.',
+  },
   'PDF font size':{ la: 'Magnitudo PDF',     'zh-TW': 'PDF 字型大小', id: 'Ukuran Font PDF',jv: 'Ukuran Font PDF'},
   'Language':     { la: 'Lingua',            'zh-TW': '語言',         id: 'Bahasa',         jv: 'Basa'          },
   '⚠️ Above 14px PDFs use a single column — lyrics may still wrap.': {
@@ -1513,6 +1532,18 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'untuk perbesar/perkecil teks seluruh app (13–32px). Berguna untuk presentasi layar besar di ukuran yang lebih besar!',
     jv:      'kanggo mbakake utawa ngecilike teks kabeh app (13–32px). Migunani banget kanggo presentasi layar gede.',
   },
+  'choose the typeface used for chords and lyrics: Courier New (default) and Consolas are both monospace, so chords stay lined up with the lyrics. Comic Sans MS is a joke option — chords will not line up correctly.': {
+    la:      'elige scripturam pro chordis et verbis adhibitam: Courier New (defalta) et Consolas ambae monospatiales sunt, ergo chordae cum verbis alignatae manent. Comic Sans MS optio iocosa est — chordae recte non alignabunt.',
+    'zh-TW': '選擇和弦與歌詞使用的字型：Courier New（預設）和 Consolas 都是等寬字型，和弦會跟歌詞對齊。Comic Sans MS 是個玩笑選項——和弦不會正確對齊！',
+    id:      'pilih jenis huruf untuk akor dan lirik: Courier New (default) dan Consolas sama-sama monospace, jadi akor tetap sejajar sama lirik. Comic Sans MS itu opsi becandaan — akornya gak bakal sejajar dengan benar!',
+    jv:      'pilih jinis aksara kanggo akor lan lirik: Courier New (default) lan Consolas kabeh monospace, dadi akor tetep jejer karo lirik. Comic Sans MS iku opsi guyon — akor ora bakal jejer bener.',
+  },
+  'toggle whether chord names are shown in bold text.': {
+    la:      'commuta an nomina chordarum crasso textu ostendantur.',
+    'zh-TW': '切換和弦名稱是否以粗體顯示。',
+    id:      'aktif/nonaktifkan apakah nama akor ditampilkan tebal.',
+    jv:      'ngalih apa jeneng akor ditampilake kandel utawa ora.',
+  },
   'sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.': {
     la:      'ponit magnitudinem textus in PDF exportatis (10–20 px, defalta 14 px), independenter a magnitudine textus in schemate. Magnitudines supra 14 px ad dispositionem unius columnae commutant; monitio ostenditur cum hic limes superatur.',
     'zh-TW': '設定匯出 PDF 中使用的字型大小（10–20px，預設 14px），與螢幕文字大小無關。超過 14px 的尺寸切換為單欄版面；超過此閾值時會顯示警告。',
@@ -1642,6 +1673,11 @@ export class UiSettingsService {
 
   chordAccidentals: Accidentals = 'auto';
 
+  fontFamily: FontFamily = 'courier';
+  readonly fontFamilies: FontFamily[] = ['courier', 'consolas', 'comic'];
+
+  boldChords = true;
+
   language: Language = 'en';
 
   colorTheme: ColorTheme = 'blue';
@@ -1690,6 +1726,9 @@ export class UiSettingsService {
         this.pdfFontSize = this.pdfFontSizes.includes(psz) ? psz : 14;
         const acc = p['chordAccidentals'] as string;
         this.chordAccidentals = (acc === 'sharps' || acc === 'flats') ? acc : 'auto';
+        const ff = p['fontFamily'] as string;
+        this.fontFamily = (this.fontFamilies as string[]).includes(ff) ? ff as FontFamily : 'courier';
+        this.boldChords = typeof p['boldChords'] === 'boolean' ? p['boldChords'] as boolean : true;
         // language: prefer new 'language' key, fall back to old 'latinMode' boolean
         const lang = p['language'] as string;
         if (lang && ['en','la','zh-TW','id','jv'].includes(lang)) {
@@ -1715,6 +1754,8 @@ export class UiSettingsService {
     this.applyTheme();
     this.applyFontSize();
     this.applyColorTheme();
+    this.applyFontFamily();
+    this.applyBoldChords();
   }
 
   private savePrefs() {
@@ -1725,6 +1766,8 @@ export class UiSettingsService {
       chordAccidentals: this.chordAccidentals,
       language: this.language,
       colorTheme: this.colorTheme,
+      fontFamily: this.fontFamily,
+      boldChords: this.boldChords,
     }));
   }
 
@@ -1747,6 +1790,18 @@ export class UiSettingsService {
     this.savePrefs();
   }
 
+  setFontFamily(val: FontFamily) {
+    this.fontFamily = val;
+    this.savePrefs();
+    this.applyFontFamily();
+  }
+
+  setBoldChords(val: boolean) {
+    this.boldChords = val;
+    this.savePrefs();
+    this.applyBoldChords();
+  }
+
   adjustPdfFontSize(dir: 1 | -1) {
     const idx = this.pdfFontSizes.indexOf(this.pdfFontSize);
     const newIdx = Math.max(0, Math.min(this.pdfFontSizes.length - 1, idx + dir));
@@ -1765,5 +1820,13 @@ export class UiSettingsService {
   private applyColorTheme() {
     if (this.colorTheme === 'blue') document.documentElement.removeAttribute('data-color');
     else document.documentElement.setAttribute('data-color', this.colorTheme);
+  }
+
+  private applyFontFamily() {
+    document.documentElement.style.setProperty('--font-chord', FONT_STACKS[this.fontFamily]);
+  }
+
+  private applyBoldChords() {
+    document.documentElement.style.setProperty('--chord-weight', this.boldChords ? '700' : '400');
   }
 }

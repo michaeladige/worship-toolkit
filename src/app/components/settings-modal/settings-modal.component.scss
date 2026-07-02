@@ -155,6 +155,7 @@
   color: var(--color-muted);
   cursor: pointer;
   font-family: inherit;
+  white-space: nowrap;
   transition: background 0.1s, color 0.1s;
 
   &:first-child { border-left: none; }

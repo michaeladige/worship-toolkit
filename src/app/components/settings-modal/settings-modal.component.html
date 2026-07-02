@@ -45,6 +45,30 @@
       </div>
 
       <div class="setting-row">
+        <span class="setting-label">{{ ui.t('Font') }}</span>
+        <div class="seg-group">
+          @for (f of ui.fontFamilies; track f) {
+            <button
+              class="seg-btn"
+              [class.seg-btn--active]="ui.fontFamily === f"
+              [style.font-family]="fontLabel(f)"
+              (click)="ui.setFontFamily(f)"
+            >{{ fontLabel(f) }}</button>
+          }
+        </div>
+      </div>
+      @if (ui.fontFamily === 'comic') {
+        <p class="pdf-size-warn">{{ ui.t('⚠️ Comic Sans is just for laughs — chords won\'t line up neatly with the lyrics.') }}</p>
+      }
+
+      <div class="setting-row">
+        <span class="setting-label">{{ ui.t('Bold chords') }}</span>
+        <button class="setting-btn" (click)="ui.setBoldChords(!ui.boldChords)">
+          {{ ui.boldChords ? ui.t('On') : ui.t('Off') }}
+        </button>
+      </div>
+
+      <div class="setting-row">
         <span class="setting-label">{{ ui.t('Text size') }}</span>
         <div class="font-size-controls">
           <button
