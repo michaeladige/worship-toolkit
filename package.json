@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "e2e": "playwright test",
     "deploy": "ng build --base-href /worship-toolkit/ && npx angular-cli-ghpages --dir=dist/worship-toolkit/browser"
   },
   "private": true,
@@ -28,6 +29,7 @@
     "@angular/build": "^21.2.17",
     "@angular/cli": "^21.2.17",
     "@angular/compiler-cli": "^21.2.0",
+    "@playwright/test": "^1.61.1",
     "angular-cli-ghpages": "^3.1.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2"
