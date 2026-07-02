@@ -812,11 +812,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'untuk simpan. Tanda birama yang tidak valid akan kembali ke nilai sebelumnya. Tekan',
     jv:      'kanggo nyimpen. Input sing ora valid bakal bali menyang nilai sadurunge. Pencet',
   },
-  'AUTOSCROLL control': {
-    la:      'Moderamen Auto-Volutionis',
-    'zh-TW': '自動捲動控制',
-    id:      'Kontrol Gulir Otomatis',
-    jv:      'Kontrol Gulung Otomatis',
+  'SCROLL control': {
+    la:      'Moderamen Volutionis',
+    'zh-TW': '捲動控制',
+    id:      'Kontrol Gulir',
+    jv:      'Kontrol Gulung',
   },
   'in the toolbar, use the': {
     la:      'in barra instrumentorum, utere',
