@@ -12,7 +12,9 @@ export type ColorTheme =
   | 'teal'
   | 'orange'
   | 'disco'
-  | 'confetti';
+  | 'confetti'
+  | 'grid'
+  | 'plaid';
 export type ChordFont = 'classic' | 'readable';
 export type ToastKind = 'info' | 'success' | 'error';
 export interface ToastAction {
@@ -2180,6 +2182,8 @@ export class UiSettingsService {
     'orange',
     'disco',
     'confetti',
+    'grid',
+    'plaid',
   ];
 
   chordFont: ChordFont = 'readable';
