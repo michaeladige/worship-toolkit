@@ -9,6 +9,10 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 - **Small "Install app" button on the home page** — shown whenever the app isn't already installed and there's a way to trigger it (Chromium's captured install prompt, or the iOS Share instructions), right under the tagline.
 - **Rotating home page taglines** — instead of one static subtitle, the home page now cycles through taglines per language every few seconds. English has 20 (7 direct Scripture quotes about worship (KJV), 5 practical/informative, 8 lighthearted including some Gen Z/millennial-flavored jokes); Indonesian and Javanese have 20 each, all original jokes (Indonesian mixes in Gen Z slang and millennial nostalgia humor); Latin and Traditional Chinese have 10 each, also all jokes — matching the app's existing playful tone in those languages.
 
+### Changed
+- **Home page feature cards refreshed** — grew from 6 to 11 cards to cover everything shipped since they were last written: Stage Mode, Autoscroll & Metronome, Saved Sets & Autosave, Install & Work Offline, and Multi-File Upload & Search join the original Transpose Keys, Edit Chords, Bass Notes, Nashville Numbers, and Export cards. The last card now says "Undo, Themes & More" (was "Undo, Dark Mode & More") since there are 9 color themes now, not just a dark/light toggle.
+- **Indonesian/Javanese: "chord" instead of "akor"** — a second pass caught capitalized "Akor" occurrences (card titles, hint text) that an earlier lowercase-only replacement missed.
+
 ## [1.4.4] - 2026-07-03
 
 ### Added

@@ -401,7 +401,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Flats':        { la: 'Bemolia',           'zh-TW': '降號 (♭)',    id: 'Mol (♭)',         jv: 'Mol (♭)'       },
   'Auto':         { la: 'Automatice',        'zh-TW': '自動',         id: 'Otomatis',       jv: 'Otomatis'      },
   'Sharps':       { la: 'Diesis',            'zh-TW': '升號 (♯)',    id: 'Kres (♯)',        jv: 'Kres (♯)'      },
-  'Chord font':   { la: 'Character Chordae', 'zh-TW': '和弦字型',     id: 'Font Akor',      jv: 'Font Akor'     },
+  'Chord font':   { la: 'Character Chordae', 'zh-TW': '和弦字型',     id: 'Font Chord',      jv: 'Font Chord'     },
   'Classic':      { la: 'Classicum',         'zh-TW': '經典',         id: 'Klasik',         jv: 'Klasik'        },
   'Readable':     { la: 'Legibile',          'zh-TW': '易讀',         id: 'Gampang Dibaca', jv: 'Gampang Diwaca'},
   'choose between Classic (Courier New) and Readable (JetBrains Mono) — Readable is the default. Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.': {
@@ -496,7 +496,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'Geser nada lagu naik-turun sesuka hati, atau langsung cus ke nada target — gak pake ribet!',
     jv:      'Geser nada lagu alon-alon utawa langsung mlumpat menyang nada sing dikarepake, ora perlu kesusu, Cah.',
   },
-  'Edit Chords':     { la: 'Chordas Emendare',      'zh-TW': '編輯和弦',       id: 'Edit Akor',            jv: 'Edit Akor'            },
+  'Edit Chords':     { la: 'Chordas Emendare',      'zh-TW': '編輯和弦',       id: 'Edit Chord',            jv: 'Edit Chord'            },
   'Click any chord to rename it inline, or change individual chord placements': {
     la:      'Clicca chordas ut renomines in situ, vel muta positiones chordas singularum',
     'zh-TW': '點擊任意和弦以重新命名，或調整和弦位置',
@@ -523,17 +523,77 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'Ubah semua chord jadi angka skala — bebas kunci, buat kamu yang kupingnya udah jago!',
     jv:      'Ganti saben chord dadi angka skala — bebas kunci, kanggo sing kupinge wis pinter.',
   },
-  'Undo, Dark Mode & More': {
-    la:      'Rescindere, Modus Obscurus & Plus',
-    'zh-TW': '撤銷、深色模式等',
-    id:      'Batalkan, Mode Gelap & Lainnya',
-    jv:      'Bali, Mode Peteng & Liyane',
+  'Stage Mode': {
+    la:      'Modus Scaenae',
+    'zh-TW': '舞台模式',
+    id:      'Mode Panggung',
+    jv:      'Mode Panggung',
   },
-  'Full undo/redo history, a dark theme, and adjustable text size — all remembered between visits': {
-    la:      'Historia plena rescindendi/refaciendi, thema obscurum, et magnitudo textus adaptabilis — omnia inter visitas memoria tenentur',
-    'zh-TW': '完整撤銷/取消撤銷記錄、深色主題、文字大小調整 — 跨訪問記憶',
-    id:      'Riwayat undo/redo lengkap, tema gelap buat begadang, ukuran teks bisa diatur — semua diinget, santuy!',
-    jv:      'Riwayat undo/redo lengkap, tema peteng kanggo sing seneng ngedit bengi, ukuran teks iso disetel — kabeh dieling-eling, tenang wae.',
+  'A distraction-free full-screen view with autoscroll, metronome, and prev/next song controls built in': {
+    la:      'Visus plenus sine distractione cum volutione automatica, metronomo, et moderamine cantus prioris/sequentis inclusis',
+    'zh-TW': '無干擾全螢幕檢視，內建自動捲動、節拍器與上一首/下一首控制',
+    id:      'Tampilan full-screen bebas gangguan, lengkap dengan autoscroll, metronom, dan kontrol lagu sebelumnya/berikutnya',
+    jv:      'Tampilan full-screen tanpa gangguan, lengkap karo autoscroll, metronom, lan kontrol lagu sadurunge/sabanjure',
+  },
+  'Autoscroll & Metronome': {
+    la:      'Auto-Volutio & Metronomum',
+    'zh-TW': '自動捲動與節拍器',
+    id:      'Autoscroll & Metronom',
+    jv:      'Autoscroll & Metronom',
+  },
+  'Hands-free scrolling and a built-in click track, both with adjustable speed and BPM you can type directly': {
+    la:      'Volutio sine manibus et metronomum inclusum, ambo cum celeritate et BPM quae directe scribi possunt',
+    'zh-TW': '免動手捲動與內建節拍器，速度與 BPM 都能直接輸入調整',
+    id:      'Scroll otomatis dan metronom bawaan, keduanya bisa diatur kecepatan/BPM-nya langsung lewat ketikan',
+    jv:      'Scroll otomatis lan metronom bawaan, loro-lorone bisa disetel kacepetan/BPM-e langsung liwat ketikan',
+  },
+  'Saved Sets & Autosave': {
+    la:      'Collectiones Servatae & Auto-Servatio',
+    'zh-TW': '已儲存集合與自動儲存',
+    id:      'Set Tersimpan & Autosave',
+    jv:      'Set Kasimpen & Autosave',
+  },
+  'Keep up to 20 named sets, autosaved continuously, with full undo/redo history for every edit': {
+    la:      'Serva usque ad 20 collectiones nominatas, automatice servatas continue, cum historia plena rescindendi/refaciendi pro omni mutatione',
+    'zh-TW': '最多可保存 20 個命名集合，持續自動儲存，每次編輯都有完整的復原/重做記錄',
+    id:      'Simpan sampai 20 set dengan nama, autosave terus-menerus, lengkap dengan riwayat undo/redo tiap edit',
+    jv:      'Simpen nganti 20 set kanthi jeneng, autosave terus-terusan, lengkap karo riwayat undo/redo saben edit',
+  },
+  'Install & Work Offline': {
+    la:      'Instala & Labora Sine Interreti',
+    'zh-TW': '安裝並離線使用',
+    id:      'Instal & Kerja Offline',
+    jv:      'Instal & Kerja Offline',
+  },
+  'Add WorshipToolkit to your home screen and keep leading worship even with zero signal': {
+    la:      'Adde WorshipToolkit ad tuum monitorem domesticum et perge ducere cultum etiam sine signo',
+    'zh-TW': '將 WorshipToolkit 加到主畫面，即使完全沒有訊號也能繼續敬拜帶領',
+    id:      'Tambahkan WorshipToolkit ke layar utama dan tetap bisa mimpin ibadah walau sinyal nol',
+    jv:      'Tambahna WorshipToolkit menyang layar utama lan tetep bisa mimpin pujian sanajan sinyal nol',
+  },
+  'Multi-File Upload & Search': {
+    la:      'Onus Plurium Fasciculorum & Quaerere',
+    'zh-TW': '多檔上傳與搜尋',
+    id:      'Upload Banyak File & Pencarian',
+    jv:      'Upload Akeh File & Panggolekan',
+  },
+  'Import several PDFs at once, and filter your song list once it grows past a handful of songs': {
+    la:      'Importa plura PDF simul, et filtra indicem cantuum tuorum cum crescit',
+    'zh-TW': '一次匯入多個 PDF，歌曲清單變多後還能快速篩選',
+    id:      'Upload beberapa PDF sekaligus, dan filter daftar lagumu begitu udah mulai banyak',
+    jv:      'Upload pirang-pirang PDF pisan, lan filter dhaptar lagumu yen wis wiwit akeh',
+  },
+  'Undo, Themes & More': {
+    la:      'Rescindere, Themata & Plus',
+    'zh-TW': '撤銷、佈景主題等',
+    id:      'Batalkan, Tema & Lainnya',
+    jv:      'Bali, Tema & Liyane',
+  },
+  'Full undo/redo history, dark mode, 9 color themes, and adjustable text size — all remembered between visits': {
+    la:      'Historia plena rescindendi/refaciendi, modus obscurus, 9 themata colorum, et magnitudo textus adaptabilis — omnia inter visitas memoria tenentur',
+    'zh-TW': '完整復原/重做記錄、深色模式、9 種色彩主題、文字大小可調整——每次造訪都會記住。',
+    id:      'Riwayat undo/redo lengkap, mode gelap, 9 tema warna, ukuran teks bisa diatur — semua diinget, santuy!',
+    jv:      'Riwayat undo/redo lengkap, mode peteng, 9 tema warna, ukuran teks iso disetel — kabeh dieling-eling, tenang wae.',
   },
   '📖 New here? Read the full user manual →': {
     la:      '📖 Novus hic? Lege manuale completum →',
@@ -590,8 +650,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   '3. Editing chords & lyrics': {
     la:      'III. Emendatio Chordarum & Verborum',
     'zh-TW': '3. 編輯和弦與歌詞',
-    id:      '3. Edit Akor & Lirik',
-    jv:      '3. Ngedit Akor & Lirik',
+    id:      '3. Edit Chord & Lirik',
+    jv:      '3. Ngedit Chord & Lirik',
   },
   '4. Working with sections': {
     la:      'IV. De Laborando cum Sectionibus',
@@ -974,14 +1034,14 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Chords': {
     la:      'Chordae',
     'zh-TW': '和弦',
-    id:      'Akor',
-    jv:      'Akor',
+    id:      'Chord',
+    jv:      'Chord',
   },
   'Rename a chord': {
     la:      'Renominare Chordam',
     'zh-TW': '重新命名和弦',
-    id:      'Ganti Nama Akor',
-    jv:      'Ngganti Jeneng Akor',
+    id:      'Ganti Nama Chord',
+    jv:      'Ngganti Jeneng Chord',
   },
   'click it, type the new chord, then press': {
     la:      'premes, inscribe chordam novam, deinde premes',
@@ -1004,8 +1064,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Reposition a chord': {
     la:      'Reponere Chordam',
     'zh-TW': '調整和弦位置',
-    id:      'Pindahkan Posisi Akor',
-    jv:      'Nggeser Posisi Akor',
+    id:      'Pindahkan Posisi Chord',
+    jv:      'Nggeser Posisi Chord',
   },
   'click and drag it left or right to line it up exactly where it falls in the lyric.': {
     la:      'premes et trahe sinistrorsum vel dextrorsum ut eum colloces exacte ubi in verbis cadit.',
@@ -1016,8 +1076,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Add a chord': {
     la:      'Addere Chordam',
     'zh-TW': '新增和弦',
-    id:      'Tambah Akor',
-    jv:      'Nambah Akor',
+    id:      'Tambah Chord',
+    jv:      'Nambah Chord',
   },
   'use the': {
     la:      'adhibere',
@@ -1034,8 +1094,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'on an empty line. New chords start as': {
     la:      'in linea vacua. Chordae novae incipiunt ut',
     'zh-TW': '在空白行上。新和弦預設為',
-    id:      'di baris kosong. Akor baru dimulai sebagai',
-    jv:      'ing baris kosong. Akor anyar diwiwiti minangka',
+    id:      'di baris kosong. Chord baru dimulai sebagai',
+    jv:      'ing baris kosong. Chord anyar diwiwiti minangka',
   },
   'and open for editing immediately.': {
     la:      'et statim ad edendum aperiuntur.',
@@ -1046,8 +1106,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Remove a chord': {
     la:      'Removere Chordam',
     'zh-TW': '移除和弦',
-    id:      'Hapus Akor',
-    jv:      'Mbusak Akor',
+    id:      'Hapus Chord',
+    jv:      'Mbusak Chord',
   },
   'hover over it and click the small': {
     la:      'sustine super eam et premes parvum',
@@ -2022,8 +2082,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Chord didn\'t land where I dragged it?': {
     la:      'Chorda non cecidit ubi eam traxi?',
     'zh-TW': '和弦沒有落在我拖到的地方？',
-    id:      'Akor gak landing di tempat yang aku seret?',
-    jv:      'Akor ora mudhun ing panggonan sing tak seret?',
+    id:      'Chord gak landing di tempat yang aku seret?',
+    jv:      'Chord ora mudhun ing panggonan sing tak seret?',
   },
   'Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.': {
     la:      'Positiones ad characteres integros coniunguntur ne chordae umquam superponantur; depone eam paululum longius in linea si resilivit.',
