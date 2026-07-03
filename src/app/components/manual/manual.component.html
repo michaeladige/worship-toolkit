@@ -315,6 +315,22 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.6.0</h3></summary>
+      <ul>
+        <li><strong>Print options in Export</strong> &mdash; "Print Song" and "Print Set" open the rendered PDF in a new browser tab using the browser's own PDF viewer, which has its own print control.</li>
+        <li><strong>Undo/redo could crash the editor</strong> after adding a blank song or appending imported songs, then pressing Ctrl+Z &mdash; fixed.</li>
+        <li><strong>Chord recognition was case-sensitive</strong> &mdash; chords like "CMaj7" or "CDim" weren't recognized, which could misclassify a whole chord line as lyrics. Added support for altered/extended chords too (b5, #9, 6/9).</li>
+        <li><strong>Chords inside bar-notation annotations</strong> (e.g. "|Am7") now transpose along with the rest of the line when the song's key changes.</li>
+        <li><strong>Two-column PDF imports</strong> &mdash; fixed chord misplacement in the right column, and chords packed into one PDF text item (common in bar notation) no longer render stacked on top of each other.</li>
+        <li><strong>PDF export</strong> no longer occasionally splits a chord row from its lyric across a page/column break; a failed font download during "readable font" export no longer permanently breaks further export attempts.</li>
+        <li><strong>Importing a corrupted or hand-edited .wt file</strong> now shows a clear "invalid file" message instead of an unhandled error, in both the Upload screen and the Saved Sets panel.</li>
+        <li><strong>Preferences</strong> now save more reliably on browsers with limited storage, and a corrupted preferences entry self-heals instead of silently resetting on every load.</li>
+        <li><strong>iPad's "Install app" button</strong> now correctly shows the "tap Share, then Add to Home Screen" tip instead of desktop-oriented instructions.</li>
+        <li>A handful of manual words (like "Delete", "press", "Import .wt file") that were always shown in English regardless of language are now translated.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.5.1</h3></summary>
       <ul>
         <li><strong>Home page "Install app" button is now always shown</strong> &mdash; instead of only appearing once a Chromium install prompt or iOS was detected. It still triggers the real install prompt or iOS Share instructions where available; elsewhere (desktop Firefox/Safari) it now points at the browser's own install icon/menu instead of doing nothing.</li>

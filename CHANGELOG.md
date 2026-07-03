@@ -2,6 +2,22 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.6.0] - 2026-07-03
+
+### Added
+- **Print options in Export** — "Print Song" and "Print Set" open the rendered PDF in a new browser tab (using the browser's own PDF viewer, which has its own print control) instead of only offering a download.
+
+### Fixed
+- **Undo/redo could crash the editor** after adding a blank song or appending imported songs, then pressing Ctrl+Z — the selected song index wasn't kept in bounds when the undo stack restored a shorter song list.
+- **Chord recognition was case-sensitive** — chords like `CMaj7` or `CDim` (as some SongSelect charts render them) weren't recognized as chords, which could misclassify a whole chord line as lyrics. Added support for altered/extended chord suffixes too (`b5`, `#9`, `6/9`).
+- **Chords inside bar-notation annotations** (e.g. `|Am7`) weren't transposed when the song's key changed, even though the same chord elsewhere on the line transposed correctly.
+- **Two-column PDF imports** could misplace chords in the right column when the two columns weren't exactly mirror-symmetric, and multiple chords packed into one PDF text item (common in bar notation) could render stacked on top of each other instead of spread across the line.
+- **PDF export** could occasionally split a chord row from its lyric line across a page/column break when the line's annotation wrapped more than expected. A failed font download during "readable font" export also used to permanently break further export attempts until the page was reloaded — it now retries.
+- **Importing a corrupted or hand-edited `.wt` set file** could throw an unhandled error deep in the app instead of a clear "invalid file" message; the Saved Sets panel's import error message was also silently failing to display.
+- **Preferences (theme, language, font size, etc.) could fail to save** on browsers with no available storage, and a corrupted preferences entry used to silently reset itself on every single page load instead of self-healing once.
+- **The "Install app" button's iPad detection** — iPadOS's browser reports itself the same way desktop Safari does, so iPad users were shown the wrong (desktop-oriented) install instructions instead of the correct "tap Share, then Add to Home Screen" tip. Also fixed a case where clicking the button's feedback message could be silently swallowed by another notification.
+- A handful of words in the in-app manual (like "Delete", "press", "Import .wt file") were missing translations and always showed in English regardless of the selected language.
+
 ## [1.5.1] - 2026-07-03
 
 ### Changed

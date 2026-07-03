@@ -393,6 +393,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Song PDF':              { la: 'PDF Cantus',                  'zh-TW': '歌曲 PDF',       id: 'PDF Lagu',            jv: 'PDF Lagu'           },
   'Current song only':     { la: 'Solum cantus currens',        'zh-TW': '僅目前歌曲',     id: 'Lagu ini saja',       jv: 'Lagu iki wae'       },
   'Set PDF':               { la: 'PDF Collectionis',            'zh-TW': '全集 PDF',       id: 'PDF Set',             jv: 'PDF Set'            },
+  'Print Song':            { la: 'Imprimere Cantum',            'zh-TW': '列印歌曲',       id: 'Cetak Lagu',          jv: 'Print Lagu'         },
+  'Print Set':             { la: 'Imprimere Collectionem',      'zh-TW': '列印全集',       id: 'Cetak Set',           jv: 'Print Set'          },
   'All songs in one file': { la: 'Omnes cantus in uno fasciculo', 'zh-TW': '所有歌曲合一檔', id: 'Semua lagu satu file', jv: 'Kabeh lagu siji file' },
   'Full set as .md file':  { la: 'Collectio ut fasciculus .md', 'zh-TW': '全集 .md 檔',    id: 'Set lengkap .md',     jv: 'Set lengkap .md'    },
   'Generating…':           { la: 'Generando…',                  'zh-TW': '產生中…',        id: 'Membuat…',            jv: 'Digawe…'            },
@@ -1721,6 +1723,48 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      '(atau tekan',
     jv:      '(utawa pencet',
   },
+  'or press': {
+    la:      'vel preme',
+    'zh-TW': '或按下',
+    id:      'atau tekan',
+    jv:      'utawa pencet',
+  },
+  'press': {
+    la:      'preme',
+    'zh-TW': '按下',
+    id:      'tekan',
+    jv:      'pencet',
+  },
+  'Click': {
+    la:      'Preme',
+    'zh-TW': '點擊',
+    id:      'Klik',
+    jv:      'Pencet',
+  },
+  'click': {
+    la:      'preme',
+    'zh-TW': '點擊',
+    id:      'klik',
+    jv:      'pencet',
+  },
+  'Delete': {
+    la:      'Delere',
+    'zh-TW': '刪除',
+    id:      'Hapus',
+    jv:      'Busak',
+  },
+  'drag & drop': {
+    la:      'trahe et pone',
+    'zh-TW': '拖放',
+    id:      'seret & taruh',
+    jv:      'seret & sèlèh',
+  },
+  'Import .wt file': {
+    la:      'Importare fasciculum .wt',
+    'zh-TW': '匯入 .wt 檔案',
+    id:      'Impor file .wt',
+    jv:      'Impor file .wt',
+  },
   'If you save again with the same name, the existing set is updated in place rather than duplicated.': {
     la:      'Si iterum cum eodem nomine servas, collectio existens in situ renovatur potius quam duplicatur.',
     'zh-TW': '如果用相同名稱再次儲存，現有集合會就地更新，而不是重複新增。',
@@ -2197,7 +2241,14 @@ export class UiSettingsService {
   // after use since the captured event can only be prompted once.
   readonly installPromptEvent = signal<BeforeInstallPromptEvent | null>(null);
 
-  readonly isIos = typeof navigator !== 'undefined' && /iphone|ipad|ipod/i.test(navigator.userAgent);
+  // iPadOS 13+ Safari's default UA masquerades as desktop Safari/macOS (no "iPad"
+  // substring), so the UA check alone misses iPad — a real Mac has maxTouchPoints
+  // === 0, while an iPad reporting as "MacIntel" has touch points, so that combo
+  // reliably distinguishes the two without relying on the deprecated UA string.
+  readonly isIos =
+    typeof navigator !== 'undefined' &&
+    (/iphone|ipad|ipod/i.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1));
 
   // Display mode doesn't change without a reload, so this is safe to read once.
   readonly isStandalone =
@@ -2209,7 +2260,11 @@ export class UiSettingsService {
     const event = this.installPromptEvent();
     if (!event) return;
     this.installPromptEvent.set(null);
-    await event.prompt();
+    try {
+      await event.prompt();
+    } catch {
+      // Platform rejected the prompt (e.g. stale event) — nothing actionable to do.
+    }
   }
 
   // Used by an on-demand "Install app" button (as opposed to the automatic
@@ -2224,13 +2279,13 @@ export class UiSettingsService {
       this.showToast(
         'Tip: tap Share, then "Add to Home Screen" to install WorshipToolkit for quick, offline access.',
         'info',
-        { durationMs: 8000 },
+        { durationMs: 8000, priority: true },
       );
     } else {
       this.showToast(
         'Look for an install icon in your browser\'s address bar, or check its menu for "Install App" / "Add to Home Screen".',
         'info',
-        { durationMs: 8000 },
+        { durationMs: 8000, priority: true },
       );
     }
   }
@@ -2257,8 +2312,8 @@ export class UiSettingsService {
   // General-purpose toast. `msg` is translated via t(). Error and action
   // toasts take priority: while one is live, an ordinary success/info toast
   // won't clobber it. durationMs 0 = sticky until dismissed/replaced.
-  showToast(msg: string, kind: ToastKind = 'success', opts?: { durationMs?: number; action?: ToastAction }) {
-    const isPriority = kind === 'error' || !!opts?.action;
+  showToast(msg: string, kind: ToastKind = 'success', opts?: { durationMs?: number; action?: ToastAction; priority?: boolean }) {
+    const isPriority = kind === 'error' || !!opts?.action || !!opts?.priority;
     if (!isPriority && this.toastMsg() && Date.now() < this.toastStickyUntil) return;
 
     if (this.toastTimer) clearTimeout(this.toastTimer);
@@ -2373,6 +2428,9 @@ export class UiSettingsService {
         this.hintsSeen = Array.isArray(hints) ? hints.filter((h): h is string => typeof h === 'string') : [];
       } catch {
         this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        // Persist a clean blob immediately — otherwise the same corrupted JSON
+        // is re-parsed and silently discarded on every subsequent load.
+        this.savePrefs();
       }
     } else {
       const oldTheme = localStorage.getItem(LEGACY_THEME_KEY) as 'light' | 'dark' | null;
@@ -2391,7 +2449,7 @@ export class UiSettingsService {
   }
 
   private savePrefs() {
-    localStorage.setItem(PREFS_KEY, JSON.stringify({
+    this.safeSetItem(PREFS_KEY, JSON.stringify({
       theme: this.theme,
       fontSize: this.fontSize,
       pdfFontSize: this.pdfFontSize,

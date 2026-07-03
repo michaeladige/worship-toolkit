@@ -1,5 +1,5 @@
 // Quick smoke test of the chord regex and superscript merging logic
-const CHORD_RE = /^([A-G][b#]?)(maj|min|dim|aug|m|M)?(\d+)?(\([0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
+const CHORD_RE = /^([A-G][b#]?)(maj|Maj|MAJ|min|Min|MIN|dim|Dim|DIM|aug|Aug|AUG|m|M)?(\d+)?((?:[#b]\d+)|(?:\d+\/\d+))?(\([0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
 const SUPERSCRIPT_RE = /^(\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\(\d+\))$/i;
 
 function isChord(t) { return CHORD_RE.test(t.trim()); }
@@ -19,6 +19,8 @@ const shouldPass = [
   'C/E','G/B','D/F#','A/C#','F/A','Bb/D','Eb/G','Ab/C',
   'A2/C#','D2/F#','Bb/D','Fmaj7/A',
   'Gm7','Bbm','C#m','Fm7','Bb',
+  'CMaj7','CDim','Csus4','Gaug','Adim','GAUG',
+  'C7b9','G7#9','C6/9','Bb13#11','Fadd9',
 ];
 
 // All these should be FALSE (lyrics / non-chord words)

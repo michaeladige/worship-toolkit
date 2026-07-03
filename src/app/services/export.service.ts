@@ -31,7 +31,14 @@ export class ExportService {
         this.fetchFontBase64('fonts/JetBrainsMono-Regular.ttf'),
         this.fetchFontBase64('fonts/JetBrainsMono-Bold.ttf'),
         this.fetchFontBase64('fonts/JetBrainsMono-Italic.ttf'),
-      ]).then(([regular, bold, italic]) => ({ regular, bold, italic }));
+      ])
+        .then(([regular, bold, italic]) => ({ regular, bold, italic }))
+        .catch(err => {
+          // Don't cache a rejected promise — a transient network failure would
+          // otherwise permanently break "readable font" export until reload.
+          this.jetbrainsMonoPromise = null;
+          throw err;
+        });
     }
     return this.jetbrainsMonoPromise;
   }
@@ -135,7 +142,19 @@ export class ExportService {
     return transposed;
   }
 
-  async toPdf(songs: ParsedSong[], pdfFontSize = 14, accidentals: Accidentals = 'auto', fontChoice: ChordFont = 'classic'): Promise<void> {
+  async toPdf(
+    songs: ParsedSong[],
+    pdfFontSize = 14,
+    accidentals: Accidentals = 'auto',
+    fontChoice: ChordFont = 'classic',
+    mode: 'save' | 'print' = 'save',
+  ): Promise<void> {
+    // Must open the window synchronously, before any await — the JetBrains Mono
+    // font fetch below is a real async gap, and popup blockers treat a window.open
+    // called after one as an unrequested popup rather than a user-gesture response.
+    // We point it at the rendered PDF once it's ready.
+    const printWin = mode === 'print' ? window.open('', '_blank') : null;
+
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
 
@@ -264,9 +283,19 @@ export class ExportService {
         for (const line of section.lines) {
           const hasChords = line.chords.length > 0;
           const hasLyric  = !line.isChordsOnly && line.lyric.trim().length > 0;
+          const ann = line.annotation
+            ? this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey, accidentals)
+            : '';
 
           if (hasChords) {
-            ensureSpace(CHORD_H + (line.annotation ? ANNOT_H : 0) + (hasLyric ? LYRIC_H : 0));
+            // Measure the real wrapped-line counts for annotation/lyric up front and
+            // reserve space for the whole chord+annotation+lyric group in one call, so
+            // the group moves to the next column/page as a unit rather than the chord
+            // row landing on one column and its lyric being pushed to the next by a
+            // later, more-accurate ensureSpace() call mid-line.
+            const annLines   = ann ? (doc.splitTextToSize(ann, colWidth) as string[]) : [];
+            const lyricLines = hasLyric ? (doc.splitTextToSize(line.lyric, colWidth) as string[]) : [];
+            ensureSpace(CHORD_H + ANNOT_H * annLines.length + LYRIC_H * lyricLines.length);
 
             // Same anti-stacking as chordLeft() in the display component:
             // sort by charPos, advance cursor so no chord overlaps the previous one.
@@ -290,30 +319,45 @@ export class ExportService {
               cursor = pos + chord.length + 1;
             }
             y += CHORD_H;
-          }
 
-          if (line.annotation) {
-            doc.setFont(MONO, 'italic');
-            doc.setFontSize(FONT_PT - 0.5);
-            setMutedColor();
-            const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey, accidentals);
-            const annLines = doc.splitTextToSize(ann, colWidth) as string[];
-            ensureSpace(ANNOT_H * annLines.length);
-            doc.text(annLines, colX(col), y);
-            y += ANNOT_H * annLines.length;
-          }
+            if (annLines.length) {
+              doc.setFont(MONO, 'italic');
+              doc.setFontSize(FONT_PT - 0.5);
+              setMutedColor();
+              doc.text(annLines, colX(col), y);
+              y += ANNOT_H * annLines.length;
+            }
 
-          if (hasLyric) {
-            doc.setFont(MONO, 'normal');
-            doc.setFontSize(FONT_PT);
-            setTextColor();
-            const lyricLines = doc.splitTextToSize(line.lyric, colWidth) as string[];
-            ensureSpace(LYRIC_H * lyricLines.length);
-            doc.text(lyricLines, colX(col), y);
-            y += LYRIC_H * lyricLines.length;
-          }
+            if (lyricLines.length) {
+              doc.setFont(MONO, 'normal');
+              doc.setFontSize(FONT_PT);
+              setTextColor();
+              doc.text(lyricLines, colX(col), y);
+              y += LYRIC_H * lyricLines.length;
+            }
+          } else {
+            if (ann) {
+              doc.setFont(MONO, 'italic');
+              doc.setFontSize(FONT_PT - 0.5);
+              setMutedColor();
+              const annLines = doc.splitTextToSize(ann, colWidth) as string[];
+              ensureSpace(ANNOT_H * annLines.length);
+              doc.text(annLines, colX(col), y);
+              y += ANNOT_H * annLines.length;
+            }
 
-          if (!hasChords && !line.annotation && !hasLyric) y += LYRIC_H * 0.4;
+            if (hasLyric) {
+              doc.setFont(MONO, 'normal');
+              doc.setFontSize(FONT_PT);
+              setTextColor();
+              const lyricLines = doc.splitTextToSize(line.lyric, colWidth) as string[];
+              ensureSpace(LYRIC_H * lyricLines.length);
+              doc.text(lyricLines, colX(col), y);
+              y += LYRIC_H * lyricLines.length;
+            }
+
+            if (!ann && !hasLyric) y += LYRIC_H * 0.4;
+          }
         }
 
         y += SEC_GAP * 0.4;
@@ -328,7 +372,18 @@ export class ExportService {
       }
     }
 
-    doc.save('worship-set.pdf');
+    if (mode === 'print') {
+      const dataUrl = doc.output('dataurlstring');
+      if (printWin) {
+        printWin.location.href = dataUrl;
+      } else {
+        // The initial window.open() itself got blocked — best-effort fallback,
+        // may also be blocked, but there's nothing else to try at this point.
+        doc.output('dataurlnewwindow');
+      }
+    } else {
+      doc.save('worship-set.pdf');
+    }
   }
 
   downloadSession(songs: ParsedSong[], name: string): void {
@@ -358,9 +413,16 @@ export class ExportService {
     if (!parsed['wtVersion'] || !Array.isArray(parsed['songs']) || parsed['songs'].length === 0) {
       throw new Error('Invalid set file — missing required fields.');
     }
+    const rawSongs = parsed['songs'] as unknown[];
+    for (const s of rawSongs) {
+      const song = s as Record<string, unknown> | null;
+      if (!song || typeof song['title'] !== 'string' || !Array.isArray(song['sections'])) {
+        throw new Error('Invalid set file — one or more songs have an unexpected format.');
+      }
+    }
     return {
       name: (parsed['sessionName'] as string) || file.name.replace(/\.wt$/i, ''),
-      songs: parsed['songs'] as ParsedSong[],
+      songs: rawSongs as ParsedSong[],
     };
   }
 

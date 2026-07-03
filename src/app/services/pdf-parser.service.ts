@@ -277,12 +277,19 @@ export class PdfParserService {
     const left  = items.filter(i => i.x < splitX);
     const right = items.filter(i => i.x >= splitX);
 
-    const leftMinX  = left.length  ? Math.min(...left.map(i => i.x))  : 40;
-    const rightMinX = right.length ? Math.min(...right.map(i => i.x)) : splitX;
-    const colWidth  = splitX - leftMinX - 10; // approximate column content width
+    const leftMinX     = left.length  ? Math.min(...left.map(i => i.x))  : 40;
+    const leftColWidth = splitX - leftMinX - 10; // approximate left column content width
 
-    const leftLines  = this.groupItems(left,  leftMinX,  colWidth);
-    const rightLines = this.groupItems(right, rightMinX, colWidth);
+    // Right column gets its own width from its own item extent (mirroring the
+    // single-column branch above) rather than reusing the left column's width —
+    // the two columns aren't always mirror-symmetric, and reusing the left
+    // width here skewed every right-column chord's xPercent/charPos.
+    const rightMinX     = right.length ? Math.min(...right.map(i => i.x)) : splitX;
+    const rightMaxX     = right.length ? Math.max(...right.map(i => i.x + i.width)) : rightMinX;
+    const rightColWidth = right.length ? (rightMaxX - rightMinX) : leftColWidth;
+
+    const leftLines  = this.groupItems(left,  leftMinX,  leftColWidth);
+    const rightLines = this.groupItems(right, rightMinX, rightColWidth);
 
     // Give right-column lines a virtual y offset so they sort AFTER left-column
     // Use pageHeight + 1000 as base so they're clearly after
@@ -515,13 +522,21 @@ export class PdfParserService {
       const stripped = item.text.trim().replace(/^[|:]+\s*/, '').trim();
       if (!stripped) continue;
 
-      // An item may contain multiple space-separated chords (e.g. after stripping "| C2 D/C")
+      // An item may contain multiple space-separated chords (e.g. after stripping "| C2 D/C").
+      // Offset each chord by its actual index within the stripped text (estimating per-char
+      // width from the item) so multiple chords in one PDF text item spread across their
+      // real positions instead of all stacking at item.x.
+      const charW = stripped.length ? item.width / stripped.length : 0;
+      let searchFrom = 0;
       for (const chord of stripped.split(/\s+/)) {
+        const offset = stripped.indexOf(chord, searchFrom);
+        searchFrom = offset + chord.length;
         if (!this.chordSvc.isChord(chord)) continue;
-        const xPercent = Math.max(0, Math.min(100, ((item.x - colMinX) / range) * 100));
+        const chordX = item.x + Math.max(0, offset) * charW;
+        const xPercent = Math.max(0, Math.min(100, ((chordX - colMinX) / range) * 100));
         const charPos = lyricItems
-          ? this.xToCharPos(item.x, lyricItems)
-          : Math.round(((item.x - colMinX) / range) * 40);
+          ? this.xToCharPos(chordX, lyricItems)
+          : Math.round(((chordX - colMinX) / range) * 40);
         tokens.push({ chord, xPercent, charPos });
       }
     }
