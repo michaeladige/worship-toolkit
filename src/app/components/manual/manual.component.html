@@ -321,6 +321,7 @@ Sephiroth!</pre>
         <li><strong>Two new color themes</strong> &mdash; "Grid" (indigo graph-paper lines) and "Plaid" (cyan diagonal crosshatch), joining Disco and Confetti.</li>
         <li><strong>The Confetti theme's polka-dot pattern wasn't rendering</strong> &mdash; fixed a sizing bug that stretched the dots into one invisible gradient.</li>
         <li><strong>Settings could overflow the screen</strong> &mdash; the Settings modal now scrolls internally, and its color swatches wrap onto multiple lines instead of overflowing on narrow screens.</li>
+        <li><strong>Settings' title and close button now stay put while scrolling</strong> &mdash; on short screens they used to scroll out of view along with the rest of the list.</li>
         <li><strong>Undo/redo could crash the editor</strong> after adding a blank song or appending imported songs, then pressing Ctrl+Z &mdash; fixed.</li>
         <li><strong>Chord recognition was case-sensitive</strong> &mdash; chords like "CMaj7" or "CDim" weren't recognized, which could misclassify a whole chord line as lyrics. Added support for altered/extended chords too (b5, #9, 6/9).</li>
         <li><strong>Chords inside bar-notation annotations</strong> (e.g. "|Am7") now transpose along with the rest of the line when the song's key changes.</li>
