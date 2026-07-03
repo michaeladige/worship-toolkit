@@ -68,10 +68,11 @@
 
     h3 { display: none; }
 
-    // When collapsed on mobile: no right border, fill host width, restore horizontal padding
+    // When collapsed on mobile: no right border, sized to its own content
+    // (not flex: 1) so the song-number strip can share the row beside it.
     :host.collapsed & {
       border-right: none;
-      flex: 1;
+      flex-shrink: 0;
       gap: 0;
       padding: 0.5rem 0.75rem;
     }
@@ -100,8 +101,9 @@
 }
 
 // ── Collapsed sidebar: song number strip ──────────────────────────────────────
-// Desktop/tablet only — mobile's "collapsed" state hides the whole tab strip
-// to reclaim vertical space instead, so it has no equivalent number list.
+// Desktop/tablet: a vertical column filling the collapsed 32px strip.
+// Mobile: a horizontal scrollable row alongside the "Songs in Set ▼" toggle,
+// keeping the collapsed state's one-row, vertical-space-saving layout.
 .collapsed-song-numbers {
   list-style: none;
   margin: 0;
@@ -113,7 +115,15 @@
   align-items: center;
   gap: 0.3rem;
 
-  @media (max-width: 767px) { display: none; }
+  @media (max-width: 767px) {
+    flex-direction: row;
+    align-items: center;
+    padding: 0 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
 
   li {
     display: flex;

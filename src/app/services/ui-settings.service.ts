@@ -336,11 +336,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'menampilkan daftar pintasan lengkap.',
     jv: 'nuduhake dhaptar trabasan lengkap.',
   },
-  'Collapse the sidebar (desktop/tablet) to see each song\'s position number instead — click a number to jump straight to that song, or just press': {
-    la: 'Latus indicis (in tabella/mensa) claude ut numerum positionis quisque cantus videas — numerum preme ut directe ad illum cantum salias, aut tantum preme',
-    'zh-TW': '收合側邊欄（桌面／平板）即可看到每首歌的位置編號——點擊編號可直接跳到該首歌曲，或直接按',
-    id: 'Ciutkan sidebar (desktop/tablet) buat lihat nomor urutan tiap lagu — klik nomornya buat langsung lompat ke lagu itu, atau tinggal tekan',
-    jv: 'Ciutake sidebar (desktop/tablet) kanggo ndeleng nomer urutane saben lagu — klik nomere kanggo langsung loncat menyang lagu kuwi, utawa langsung pencet',
+  'Collapse the sidebar (or the mobile tab bar) to see each song\'s position number instead — tap a number to jump straight to that song, or just press': {
+    la: 'Latus indicis (aut trabem mobilem) claude ut numerum positionis quisque cantus videas — numerum preme ut directe ad illum cantum salias, aut tantum preme',
+    'zh-TW': '收合側邊欄（或手機的分頁列）即可看到每首歌的位置編號——點一下編號可直接跳到該首歌曲，或直接按',
+    id: 'Ciutkan sidebar (atau tab bar di HP) buat lihat nomor urutan tiap lagu — ketuk nomornya buat langsung lompat ke lagu itu, atau tinggal tekan',
+    jv: 'Ciutake sidebar (utawa tab bar ing hp) kanggo ndeleng nomer urutane saben lagu — tekan nomere kanggo langsung loncat menyang lagu kuwi, utawa langsung pencet',
   },
   'on your keyboard from anywhere in the editor.': {
     la: 'in claviatura tua ex quolibet loco in instrumentario redactionis.',
