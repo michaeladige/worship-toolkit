@@ -108,7 +108,10 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
     this.updateSong({ ...this.song, transposeSemitones: 0 });
   }
 
-  startEditTitle() { this.editingTitle = this.song.title; }
+  startEditTitle() {
+    if (this.ui.viewOnly()) return;
+    this.editingTitle = this.song.title;
+  }
   commitTitle() {
     const v = (this.editingTitle ?? '').trim();
     this.editingTitle = null;
@@ -121,6 +124,7 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   }
 
   startEditTempo() {
+    if (this.ui.viewOnly()) return;
     this.editingTempo = this.song.tempo ?? '';
   }
 
@@ -145,6 +149,7 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   }
 
   startEditTimeSignature() {
+    if (this.ui.viewOnly()) return;
     this.editingTimeSignature = this.song.timeSignature;
   }
 

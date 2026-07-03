@@ -432,6 +432,7 @@
 .content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 // ── Stage mode ────────────────────────────────────────────────────────────────
@@ -461,6 +462,20 @@
   overflow-y: hidden;
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
+
+  // On a phone, a fully-loaded bar (title + both autoscroll/metronome groups
+  // expanded + prev/next/View Only/exit) is too much for one row even at
+  // 94vw — relying on the hidden horizontal scrollbar left the exit button
+  // effectively undiscoverable. Wrapping onto a second row keeps every
+  // control visible and tappable without needing to swipe.
+  @media (max-width: 767px) {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.6rem;
+    border-radius: 18px;
+    overflow-x: visible;
+  }
 }
 
 .stage-bar-btn {
@@ -476,6 +491,10 @@
   // rather than squeezing (or clipping) any of them out on a narrow screen.
   flex-shrink: 0;
 
+  @media (max-width: 767px) {
+    padding: 0.4rem 0.4rem;
+  }
+
   &:hover:not(:disabled) {
     color: var(--color-primary);
     background: var(--color-hover);
@@ -484,6 +503,10 @@
   &:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+  }
+
+  &.active {
+    color: var(--color-primary);
   }
 }
 

@@ -99,6 +99,7 @@ Sephiroth!</pre>
     <ul>
       <li>{{ ui.t('Click any song in the list to switch the editor to that song.') }}</li>
       <li>{{ ui.t('The current key for each song is shown next to its title.') }}</li>
+      <li>{{ ui.t('Collapse the sidebar (or the mobile tab bar) to see each song\'s position number instead — tap a number to jump straight to that song, or just press') }} <kbd>1</kbd>–<kbd>9</kbd> {{ ui.t('on your keyboard from anywhere in the editor.') }}</li>
       <li><strong>{{ ui.t('Search songs') }}</strong> &mdash; {{ ui.t('sets with more than 5 songs show a search box above the list to filter by title. Reordering is paused while a filter is active.') }}</li>
       <li><strong>{{ ui.t('Rename a song title') }}</strong> &mdash; {{ ui.t('click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press') }} <kbd>Enter</kbd> {{ ui.t('to save or') }} <kbd>Esc</kbd> {{ ui.t('to cancel. This is especially useful for songs added as blank "New Song" entries.') }}</li>
       <li><strong>{{ ui.t('Remove a song') }}</strong> &mdash; {{ ui.t('hover over a song in the list and click the') }} <strong>✕</strong> {{ ui.t('button that appears on the right. Removing the last song returns you to the upload screen.') }}</li>
@@ -152,9 +153,13 @@ Sephiroth!</pre>
       <li><strong>🎤 {{ ui.t('Stage') }}</strong> &mdash; {{ ui.t('click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button. Both the scroll speed and BPM boxes in the floating bar are editable, just like in the toolbar.') }}</li>
       <li>{{ ui.t('Where the browser supports it, stage mode also goes full-screen. Press') }} <kbd>Esc</kbd> {{ ui.t('or tap') }} <strong>✕</strong> {{ ui.t('to exit.') }}</li>
     </ul>
+    <h3>{{ ui.t('View Only mode') }}</h3>
+    <ul>
+      <li><strong>🔒 {{ ui.t('View Only') }}</strong> &mdash; {{ ui.t('click the View Only button in the toolbar (or the floating bar in Stage mode) to lock the chart against accidental edits — handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when you reload the page.') }}</li>
+    </ul>
     <h3>{{ ui.t('Keyboard shortcuts') }}</h3>
     <ul>
-      <li><kbd>+</kbd> / <kbd>−</kbd> {{ ui.t('transpose the current song up or down;') }} <kbd>Ctrl</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd> {{ ui.t('switch to the next or previous song;') }} <kbd>?</kbd> {{ ui.t('shows the full shortcut list.') }}</li>
+      <li><kbd>+</kbd> / <kbd>−</kbd> {{ ui.t('transpose the current song up or down;') }} <kbd>Ctrl</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd> {{ ui.t('switch to the next or previous song;') }} <kbd>1</kbd>–<kbd>9</kbd> {{ ui.t('jump directly to that song in the set;') }} <kbd>?</kbd> {{ ui.t('shows the full shortcut list.') }}</li>
     </ul>
     <h3>{{ ui.t('Annotations') }}</h3>
     <ul>
@@ -278,7 +283,7 @@ Sephiroth!</pre>
         {{ ui.t('The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.') }}
       </li>
       <li><strong>{{ ui.t('Chord font') }}</strong> &mdash; {{ ui.t('choose between Classic (Courier New) and Readable (JetBrains Mono) — Readable is the default. Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.') }}</li>
-      <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.') }}</li>
+      <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (11–32 px). Useful for large-screen presentations at the larger end, or for fitting more chart on a small phone screen at the smaller end.') }}</li>
       <li><strong>{{ ui.t('Split-column view') }}</strong> &mdash; {{ ui.t('arranges the chart into two columns in the editor, the same layout rule used by two-column PDF exports. Only takes effect at 14 px text size or below, and only on tablet/desktop screens — phones always show a single column.') }}</li>
     </ul>
     <h3>{{ ui.t('Export') }}</h3>
@@ -315,9 +320,31 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.7.2</h3></summary>
+      <ul>
+        <li><strong>Numbered song list</strong> &mdash; collapsing the sidebar (or the mobile tab bar) now shows each song's position number instead, for a quick reference and one-tap jump. Press <kbd>1</kbd>&ndash;<kbd>9</kbd> on your keyboard from anywhere in the editor to jump straight to that song.</li>
+        <li><strong>Fixed chord/lyric lines wider than the screen dragging the entire editor pane sideways on mobile</strong> &mdash; including the toolbar and "Add section" row. Each line now scrolls independently, with a subtle fade on the right edge when there's more to see.</li>
+        <li><strong>Fixed Stage mode's floating bar looking cut off on a phone</strong> once autoscroll or the metronome (or both) expanded their controls &mdash; the bar already scrolled to reveal the rest, but with no visible hint that it was scrollable. It now fades both edges when there's more to see.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.7.1</h3></summary>
+      <ul>
+        <li><strong>Smaller text size option</strong> &mdash; the text size stepper now goes down to 11 px (from 13 px), letting more of the chart fit on a small phone screen.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.7.0</h3></summary>
+      <ul>
+        <li><strong>View Only mode</strong> &mdash; a new 🔒 View Only button in the toolbar (and in Stage mode's floating bar) locks the chart against accidental edits, handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when the page is reloaded.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.6.0</h3></summary>
       <ul>
-        <li><strong>Print options in Export</strong> &mdash; "Print Song" and "Print Set" open the rendered PDF in a new browser tab using the browser's own PDF viewer, which has its own print control.</li>
         <li><strong>Two new color themes</strong> &mdash; "Grid" (indigo graph-paper lines) and "Plaid" (cyan diagonal crosshatch), joining Disco and Confetti.</li>
         <li><strong>The Confetti theme's polka-dot pattern wasn't rendering</strong> &mdash; fixed a sizing bug that stretched the dots into one invisible gradient.</li>
         <li><strong>Settings could overflow the screen</strong> &mdash; the Settings modal now scrolls internally, and its color swatches wrap onto multiple lines instead of overflowing on narrow screens.</li>

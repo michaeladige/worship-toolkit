@@ -48,6 +48,7 @@ interface ChordDrag {
 export class SongSectionComponent {
   @Input() song!: ParsedSong;
   @Input() showSectionControls = false;
+  @Input() viewOnly = false;
   @Input() splitColumns = false;
   @Output() songChange = new EventEmitter<ParsedSong>();
   @Output() addLine = new EventEmitter<number>();
@@ -83,6 +84,7 @@ export class SongSectionComponent {
   private suppressNextClick = false;
 
   startEdit(si: number, li: number, ci: number) {
+    if (this.viewOnly) return;
     if (this.suppressNextClick) { this.suppressNextClick = false; return; }
     const raw = this.song.sections[si].lines[li].chords[ci].chord;
     this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: this.editableValue(raw) };
@@ -139,6 +141,7 @@ export class SongSectionComponent {
   }
 
   removeChord(si: number, li: number, ci: number) {
+    if (this.viewOnly) return;
     const song = this.cloneSong();
     song.sections[si].lines[li].chords.splice(ci, 1);
     this.songChange.emit(song);
@@ -155,6 +158,7 @@ export class SongSectionComponent {
   }
 
   editLyric(si: number, li: number, value: string) {
+    if (this.viewOnly) return;
     const song = this.cloneSong();
     song.sections[si].lines[li].lyric = value;
     this.songChange.emit(song);
@@ -163,6 +167,7 @@ export class SongSectionComponent {
   // ── Annotation CRUD ──────────────────────────────────────────────────────────
 
   startEditAnnotation(si: number, li: number) {
+    if (this.viewOnly) return;
     this.editingAnnotation = {
       sectionIdx: si,
       lineIdx: li,
@@ -189,6 +194,7 @@ export class SongSectionComponent {
   }
 
   removeAnnotation(si: number, li: number) {
+    if (this.viewOnly) return;
     const song = this.cloneSong();
     song.sections[si].lines[li].annotation = undefined;
     if (this.editingAnnotation?.sectionIdx === si && this.editingAnnotation?.lineIdx === li) {
@@ -276,6 +282,7 @@ export class SongSectionComponent {
   // ── Chord horizontal drag (reposition charPos) ──────────────────────────────
 
   startChordDrag(e: PointerEvent, si: number, li: number, ci: number, rowEl: HTMLElement) {
+    if (this.viewOnly) return;
     // Don't start a drag if we're already editing this chord
     if (this.isEditing(si, li, ci)) return;
     e.preventDefault();

@@ -203,6 +203,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Next song': { la: 'Cantus sequens', 'zh-TW': '下一首', id: 'Lagu berikutnya', jv: 'Lagu sabanjure' },
   'Previous song': { la: 'Cantus prior', 'zh-TW': '上一首', id: 'Lagu sebelumnya', jv: 'Lagu sadurunge' },
   'Show this list': { la: 'Hunc indicem ostendere', 'zh-TW': '顯示此清單', id: 'Tampilkan daftar ini', jv: 'Tuduhake dhaptar iki' },
+  'Jump to song 1-9': { la: 'Salire ad cantum 1-9', 'zh-TW': '跳到第 1–9 首歌曲', id: 'Lompat ke lagu 1-9', jv: 'Loncat menyang lagu 1-9' },
   'Close dialogs / cancel edits': { la: 'Dialogos claudere / mutationes revocare', 'zh-TW': '關閉對話框／取消編輯', id: 'Tutup dialog / batalkan edit', jv: 'Nutup dialog / mbatalake owahan' },
   'Close': { la: 'Claudere', 'zh-TW': '關閉', id: 'Tutup', jv: 'Tutup' },
   'Stage': { la: 'Scaena', 'zh-TW': '舞台', id: 'Panggung', jv: 'Panggung' },
@@ -296,6 +297,13 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'klik tombol Panggung di toolbar buat tampilan performa bebas gangguan: header, daftar lagu, dan toolbar semua hilang, tinggal chart-mu plus bar melayang kecil berisi kecepatan gulir, metronom, lagu sebelumnya/berikutnya, dan tombol keluar. Kotak kecepatan gulir dan BPM di bar melayang bisa diketik langsung, sama seperti di toolbar.',
     jv: 'klik tombol Panggung ing toolbar kanggo tampilan pentas tanpa gangguan: header, dhaptar lagu, lan toolbar padha ilang, mung kari chart-mu plus bar ngambang cilik isine kacepetan gulung, metronom, lagu sadurunge/sabanjure, lan tombol metu. Kothak kacepetan gulung lan BPM ing bar ngambang bisa diketik langsung, padha kaya ing toolbar.',
   },
+  'View Only mode': { la: 'Modus Solum Videre', 'zh-TW': '僅檢視模式', id: 'Mode Hanya Lihat', jv: 'Mode Mung Deleng' },
+  'click the View Only button in the toolbar (or the floating bar in Stage mode) to lock the chart against accidental edits — handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when you reload the page.': {
+    la: 'preme papilionem Solum Videre in instrumentario (aut in trabe natante modi Scaenae) ut tabulam contra mutationes casuales claudas — utile cum tabellam alicui in coetu tradis. Mutatio chordarum, additio/ablatio chordarum/linearum/sectionum, mutatio verborum, annotationes, et renominatio tituli, BPM, vel mensurae temporis omnia prohibentur. Transpositio, Salire ad Clavem, Notae Bassi, Nashville, et Accidentalia plene utilia manent. Haec optio se reponit cum paginam iterum oneras.',
+    'zh-TW': '點擊工具列（或舞台模式浮動控制列）中的僅檢視按鈕，即可鎖定譜面避免被誤改——把平板交給團員時特別好用。和弦編輯、新增／刪除和弦／行／段落、歌詞編輯、註記，以及重新命名歌名、BPM 或拍號都會被停用。移調、跳至調性、低音音符、納許維爾記譜法和音名偏好則仍可正常使用。重新整理頁面後此設定會重設。',
+    id: 'klik tombol Hanya Lihat di toolbar (atau di bar melayang Mode Panggung) buat mengunci chart supaya nggak ke-edit nggak sengaja — cocok banget pas nge-share tablet ke anggota band. Edit chord, tambah/hapus chord/baris/bagian, edit lirik, anotasi, dan ganti nama judul/BPM/birama semua dinonaktifkan. Transpose, Lompat ke Kunci, Bass Notes, Nashville, dan Accidentals tetap bisa dipakai normal. Setelan ini reset lagi kalau halaman di-refresh.',
+    jv: 'klik tombol Mung Deleng ing toolbar (utawa ing bar ngambang Mode Panggung) kanggo ngunci chart supaya ora keowahan ora sengaja — migunani banget nalika masrahake tablet menyang anggota band. Ngowahi chord, nambah/mbusak chord/baris/bagean, ngowahi lirik, anotasi, lan ngganti jeneng judhul/BPM/wirama kabeh dipateni. Transpose, Loncat menyang Kunci, Bass Notes, Nashville, lan Accidentals isih iso dipigunakake normal. Setelan iki bakal reset yen kaca di-refresh.',
+  },
   'Where the browser supports it, stage mode also goes full-screen. Press': {
     la: 'Ubi navigatrum id sustinet, modus scaenae etiam plenum quadrum occupat. Preme',
     'zh-TW': '在瀏覽器支援的情況下，舞台模式也會進入全螢幕。按',
@@ -316,11 +324,29 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'pindah ke lagu berikutnya atau sebelumnya;',
     jv: 'pindhah menyang lagu sabanjure utawa sadurunge;',
   },
+  'jump directly to that song in the set;': {
+    la: 'ad illum cantum in collectione directe sali;',
+    'zh-TW': '直接跳到該首歌曲；',
+    id: 'lompat langsung ke lagu itu dalam set;',
+    jv: 'loncat langsung menyang lagu kuwi ing set;',
+  },
   'shows the full shortcut list.': {
     la: 'indicem plenum compendiorum ostendit.',
     'zh-TW': '顯示完整快捷鍵清單。',
     id: 'menampilkan daftar pintasan lengkap.',
     jv: 'nuduhake dhaptar trabasan lengkap.',
+  },
+  'Collapse the sidebar (or the mobile tab bar) to see each song\'s position number instead — tap a number to jump straight to that song, or just press': {
+    la: 'Latus indicis (aut trabem mobilem) claude ut numerum positionis quisque cantus videas — numerum preme ut directe ad illum cantum salias, aut tantum preme',
+    'zh-TW': '收合側邊欄（或手機的分頁列）即可看到每首歌的位置編號——點一下編號可直接跳到該首歌曲，或直接按',
+    id: 'Ciutkan sidebar (atau tab bar di HP) buat lihat nomor urutan tiap lagu — ketuk nomornya buat langsung lompat ke lagu itu, atau tinggal tekan',
+    jv: 'Ciutake sidebar (utawa tab bar ing hp) kanggo ndeleng nomer urutane saben lagu — tekan nomere kanggo langsung loncat menyang lagu kuwi, utawa langsung pencet',
+  },
+  'on your keyboard from anywhere in the editor.': {
+    la: 'in claviatura tua ex quolibet loco in instrumentario redactionis.',
+    'zh-TW': '在編輯器的任何位置皆可使用。',
+    id: 'di keyboard, dari mana saja di editor.',
+    jv: 'ing keyboard, saka ngendi wae ing editor.',
   },
   'Please upload a PDF file.': {
     la: 'Quaeso, documentum PDF impone.',
@@ -368,6 +394,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Reset':      { la: 'Reponere',   'zh-TW': '重設',         id: 'Reset',          jv: 'Reset'         },
   'Autoscroll': { la: 'Auto-Volutio', 'zh-TW': '自動捲動',    id: 'Gulir Otomatis', jv: 'Gulung Otomatis'},
   'Metronome':  { la: 'Metronomum', 'zh-TW': '節拍器',        id: 'Metronom',       jv: 'Metronom'      },
+  'View Only':  { la: 'Solum Videre', 'zh-TW': '僅檢視',      id: 'Hanya Lihat',    jv: 'Mung Deleng'   },
   '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
   '🎹 Bass':    { la: '🎹 Bassus',    'zh-TW': '🎹 低音',       id: '🎹 Bass',        jv: '🎹 Bass'       },
   '1 2 3 Nashville': { la: 'I II III Nashville', 'zh-TW': '1 2 3 納許維爾', id: '1 2 3 Nashville', jv: '1 2 3 Nashville' },
@@ -395,8 +422,6 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Song PDF':              { la: 'PDF Cantus',                  'zh-TW': '歌曲 PDF',       id: 'PDF Lagu',            jv: 'PDF Lagu'           },
   'Current song only':     { la: 'Solum cantus currens',        'zh-TW': '僅目前歌曲',     id: 'Lagu ini saja',       jv: 'Lagu iki wae'       },
   'Set PDF':               { la: 'PDF Collectionis',            'zh-TW': '全集 PDF',       id: 'PDF Set',             jv: 'PDF Set'            },
-  'Print Song':            { la: 'Imprimere Cantum',            'zh-TW': '列印歌曲',       id: 'Cetak Lagu',          jv: 'Print Lagu'         },
-  'Print Set':             { la: 'Imprimere Collectionem',      'zh-TW': '列印全集',       id: 'Cetak Set',           jv: 'Print Set'          },
   'All songs in one file': { la: 'Omnes cantus in uno fasciculo', 'zh-TW': '所有歌曲合一檔', id: 'Semua lagu satu file', jv: 'Kabeh lagu siji file' },
   'Full set as .md file':  { la: 'Collectio ut fasciculus .md', 'zh-TW': '全集 .md 檔',    id: 'Set lengkap .md',     jv: 'Set lengkap .md'    },
   'Generating…':           { la: 'Generando…',                  'zh-TW': '產生中…',        id: 'Membuat…',            jv: 'Digawe…'            },
@@ -2033,11 +2058,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'gunakan',
     jv:      'nggunakake',
   },
-  'to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.': {
-    la:      'ut textum totius applicationis sursum vel deorsum scias (13–32 px). Utile pro praesensationibus in schermate magno ad extremum maius.',
-    'zh-TW': '放大或縮小整個 App 的文字（13–32px）。在較大端對大螢幕展示非常有用！',
-    id:      'untuk perbesar/perkecil teks seluruh app (13–32px). Berguna untuk presentasi layar besar di ukuran yang lebih besar!',
-    jv:      'kanggo mbakake utawa ngecilike teks kabeh app (13–32px). Migunani banget kanggo presentasi layar gede.',
+  'to scale the whole app\'s text up or down (11–32 px). Useful for large-screen presentations at the larger end, or for fitting more chart on a small phone screen at the smaller end.': {
+    la:      'ut textum totius applicationis sursum vel deorsum scias (11–32 px). Utile pro praesensationibus in schermate magno ad extremum maius, aut ad plus tabulae in schermate telephonico parvo ad extremum minus.',
+    'zh-TW': '放大或縮小整個 App 的文字（11–32px）。較大時適合大螢幕展示，較小時則能在手機小螢幕上容納更多譜面內容。',
+    id:      'untuk perbesar/perkecil teks seluruh app (11–32px). Berguna untuk presentasi layar besar di ukuran yang lebih besar, atau muat lebih banyak chart di layar HP kecil pada ukuran yang lebih kecil.',
+    jv:      'kanggo mbakake utawa ngecilike teks kabeh app (11–32px). Migunani banget kanggo presentasi layar gede, utawa kanggo nyawisake chart luwih akeh ing layar hp cilik.',
   },
   'sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.': {
     la:      'ponit magnitudinem textus in PDF exportatis (10–20 px, defalta 14 px), independenter a magnitudine textus in schemate. Magnitudines supra 14 px ad dispositionem unius columnae commutant; monitio ostenditur cum hic limes superatur.',
@@ -2161,7 +2186,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
 export class UiSettingsService {
   theme: 'light' | 'dark' = 'light';
   fontSize = 14;
-  readonly fontSizes = [13, 14, 16, 18, 20, 24, 28, 32];
+  readonly fontSizes = [11, 13, 14, 16, 18, 20, 24, 28, 32];
 
   pdfFontSize = 14;
   readonly pdfFontSizes = [10, 12, 14, 16, 18, 20];
@@ -2237,6 +2262,16 @@ export class UiSettingsService {
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     }
+  }
+
+  // View-only mode: hides structural editing (chord rename/drag/remove, add/remove
+  // chord/line/section, lyric editing, annotation add/edit, title/BPM/time-sig rename)
+  // while leaving transpose/key-jump/Bass Notes/Nashville/Accidentals fully usable.
+  // Session-only, same rationale as stageMode above — not persisted.
+  readonly viewOnly = signal(false);
+
+  toggleViewOnly() {
+    this.viewOnly.set(!this.viewOnly());
   }
 
   // Captured `beforeinstallprompt` event (Chromium only) — lets an "Install"

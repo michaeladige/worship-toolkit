@@ -68,10 +68,11 @@
 
     h3 { display: none; }
 
-    // When collapsed on mobile: no right border, fill host width, restore horizontal padding
+    // When collapsed on mobile: no right border, sized to its own content
+    // (not flex: 1) so the song-number strip can share the row beside it.
     :host.collapsed & {
       border-right: none;
-      flex: 1;
+      flex-shrink: 0;
       gap: 0;
       padding: 0.5rem 0.75rem;
     }
@@ -97,6 +98,55 @@
   }
 
   @media (max-width: 767px) { display: none; }
+}
+
+// ── Collapsed sidebar: song number strip ──────────────────────────────────────
+// Desktop/tablet: a vertical column filling the collapsed 32px strip.
+// Mobile: a horizontal scrollable row alongside the "Songs in Set ▼" toggle,
+// keeping the collapsed state's one-row, vertical-space-saving layout.
+.collapsed-song-numbers {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+
+  @media (max-width: 767px) {
+    flex-direction: row;
+    align-items: center;
+    padding: 0 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-muted);
+    background: var(--color-border);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.12s, color 0.12s;
+
+    &:hover { background: color-mix(in srgb, var(--color-primary) 15%, var(--color-border)); }
+
+    &.active {
+      background: var(--color-primary);
+      color: #fff;
+    }
+  }
 }
 
 // ── Mobile vertical collapse toggle ──────────────────────────────────────────

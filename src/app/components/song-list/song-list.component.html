@@ -20,6 +20,18 @@
     >{{ collapsed ? '►' : '◄' }}</button>
   </div>
 
+  @if (collapsed) {
+    <ul class="collapsed-song-numbers">
+      @for (song of songs; track song.id; let i = $index) {
+        <li
+          [class.active]="i === selectedIndex"
+          (click)="selectSong.emit(i)"
+          [title]="song.title"
+        >{{ i + 1 }}</li>
+      }
+    </ul>
+  }
+
   @if (!collapsed) {
     @if (songs.length > 5) {
       <input

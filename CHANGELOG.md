@@ -2,10 +2,28 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.7.2] - 2026-07-03
+
+### Added
+- **Numbered song list** — collapsing the sidebar (or the mobile tab bar) now shows each song's position number instead, for a quick reference and one-tap jump. Press `1`–`9` on your keyboard from anywhere in the editor to jump straight to that song.
+
+### Fixed
+- **Chord/lyric lines wider than the screen dragged the entire editor pane sideways on mobile** — including the toolbar and "Add section" row. Each line now scrolls independently, with a subtle fade on the right edge when there's more to see.
+- **Stage mode's floating bar could look cut off on a phone** once autoscroll or the metronome (or both) expanded their controls — the bar already scrolled to reveal the rest, but with no visible hint that it was scrollable. It now fades both edges when there's more to see.
+
+## [1.7.1] - 2026-07-03
+
+### Added
+- **Smaller text size option** — the text size stepper now goes down to 11 px (from 13 px), letting more of the chart fit on a small phone screen.
+
+## [1.7.0] - 2026-07-03
+
+### Added
+- **View Only mode** — a new 🔒 View Only button in the toolbar (and in Stage mode's floating bar) locks the chart against accidental edits, handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when the page is reloaded.
+
 ## [1.6.0] - 2026-07-03
 
 ### Added
-- **Print options in Export** — "Print Song" and "Print Set" open the rendered PDF in a new browser tab (using the browser's own PDF viewer, which has its own print control) instead of only offering a download.
 - **Two new color themes** — "Grid" (indigo graph-paper lines) and "Plaid" (cyan diagonal crosshatch), joining the existing pattern themes Disco and Confetti.
 
 ### Fixed

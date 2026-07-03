@@ -59,20 +59,23 @@
                         } @else {
                           <button
                             class="chord-btn"
+                            [disabled]="viewOnly"
                             (click)="startEdit(si, li, ci)"
                             (pointerdown)="startChordDrag($event, si, li, ci, chordRowRef)"
                             title="Click to edit · drag to reposition"
                           >{{ displayChord(ct.chord) }}</button>
-                          <button
-                            class="chord-remove"
-                            (click)="removeChord(si, li, ci)"
-                            title="Remove chord"
-                          >×</button>
+                          @if (!viewOnly) {
+                            <button
+                              class="chord-remove"
+                              (click)="removeChord(si, li, ci)"
+                              title="Remove chord"
+                            >×</button>
+                          }
                         }
                       </span>
                     }
                   </div>
-                } @else if (!line.isChordsOnly) {
+                } @else if (!line.isChordsOnly && !viewOnly) {
                   <div class="chord-row chord-row--empty">
                     <button class="add-chord-btn--inline" (click)="addChord(si, li)" title="Add chord">{{ ui.t('+ chord') }}</button>
                   </div>
@@ -98,6 +101,7 @@
                 } @else if (line.annotation) {
                   <div
                     class="annotation-row annotation-row--btn"
+                    [class.non-interactive]="viewOnly"
                     (click)="startEditAnnotation(si, li)"
                     title="Click to edit annotation"
                   >{{ displayAnnotation(line.annotation) }}</div>
@@ -111,7 +115,7 @@
                 @if (!line.isChordsOnly) {
                   <div
                     class="lyric-row"
-                    contenteditable="true"
+                    [contentEditable]="!viewOnly"
                     [textContent]="line.lyric"
                     (blur)="editLyric(si, li, $any($event.target).textContent)"
                     spellcheck="false"
