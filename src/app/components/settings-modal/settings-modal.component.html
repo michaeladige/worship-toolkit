@@ -120,6 +120,23 @@
       }
     </div>
 
+    <!-- Updates -->
+    <div class="settings-section">
+      <h3 class="settings-heading">{{ ui.t('Updates') }}</h3>
+      <div class="setting-row">
+        <span class="setting-label">{{ ui.t('App version') }} v{{ version }}</span>
+        <button class="setting-btn" (click)="checkForUpdates()" [disabled]="checkingForUpdate">
+          {{ checkingForUpdate ? ui.t('Checking…') : ui.t('Check for updates') }}
+        </button>
+      </div>
+      @if (ui.installPromptEvent()) {
+        <div class="setting-row">
+          <span class="setting-label">{{ ui.t('Install app') }}</span>
+          <button class="setting-btn" (click)="ui.promptInstall()">📲 {{ ui.t('Install') }}</button>
+        </div>
+      }
+    </div>
+
     <!-- Language -->
     <div class="settings-section settings-section--last">
       <h3 class="settings-heading">{{ ui.t('Language') }}</h3>

@@ -1,7 +1,10 @@
 <div class="upload-page">
   <div class="hero">
     <h1>{{ ui.t('WorshipToolkit') }}</h1>
-    <p class="subtitle">{{ ui.t('Upload a SongSelect PDF to edit keys, transpose chords, and export your set') }}</p>
+    <p class="subtitle" [class.subtitle--fading]="!taglineVisible()">{{ tagline() }}</p>
+    @if (!ui.isStandalone && (ui.installPromptEvent() || ui.isIos)) {
+      <button class="install-app-btn" (click)="ui.installOrShowHint()">📲 {{ ui.t('Install app') }}</button>
+    }
   </div>
 
   <div
@@ -70,19 +73,44 @@
       <p>{{ ui.t('Toggle to show just the root/bass note of every chord — great for beginners') }}</p>
     </div>
     <div class="card">
-      <span class="card-icon">⬇️</span>
-      <strong>{{ ui.t('Export') }}</strong>
-      <p>{{ ui.t('Download updated sheet as a formatted PDF or Markdown file to share with your team') }}</p>
-    </div>
-    <div class="card">
       <span class="card-icon">🔢</span>
       <strong>{{ ui.t('Nashville Numbers') }}</strong>
       <p>{{ ui.t('Switch every chord to scale-degree numbers — key-independent charts for ear-trained players') }}</p>
     </div>
     <div class="card">
+      <span class="card-icon">🎤</span>
+      <strong>{{ ui.t('Stage Mode') }}</strong>
+      <p>{{ ui.t('A distraction-free full-screen view with autoscroll, metronome, and prev/next song controls built in') }}</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">⏬</span>
+      <strong>{{ ui.t('Autoscroll & Metronome') }}</strong>
+      <p>{{ ui.t('Hands-free scrolling and a built-in click track, both with adjustable speed and BPM you can type directly') }}</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">💾</span>
+      <strong>{{ ui.t('Saved Sets & Autosave') }}</strong>
+      <p>{{ ui.t('Keep up to 20 named sets, autosaved continuously, with full undo/redo history for every edit') }}</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📲</span>
+      <strong>{{ ui.t('Install & Work Offline') }}</strong>
+      <p>{{ ui.t('Add WorshipToolkit to your home screen and keep leading worship even with zero signal') }}</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">📄</span>
+      <strong>{{ ui.t('Multi-File Upload & Search') }}</strong>
+      <p>{{ ui.t('Import several PDFs at once, and filter your song list once it grows past a handful of songs') }}</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">⬇️</span>
+      <strong>{{ ui.t('Export') }}</strong>
+      <p>{{ ui.t('Download updated sheet as a formatted PDF or Markdown file to share with your team') }}</p>
+    </div>
+    <div class="card">
       <span class="card-icon">↩️</span>
-      <strong>{{ ui.t('Undo, Dark Mode &amp; More') }}</strong>
-      <p>{{ ui.t('Full undo/redo history, a dark theme, and adjustable text size — all remembered between visits') }}</p>
+      <strong>{{ ui.t('Undo, Themes & More') }}</strong>
+      <p>{{ ui.t('Full undo/redo history, dark mode, 9 color themes, and adjustable text size — all remembered between visits') }}</p>
     </div>
   </div>
 

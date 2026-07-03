@@ -2,6 +2,22 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.5.0] - 2026-07-03
+
+### Added
+- **Easier PWA install prompt** — on Chromium browsers (Chrome/Edge/Android), when the browser decides the app is installable, a one-time toast now offers a one-tap **Install** button, and an "Install app" row appears in Settings → Updates for as long as that offer is available (so dismissing the toast doesn't lose it). On iOS, where there's no install API to hook into, a one-time toast instead points at Share → "Add to Home Screen". Neither shows again once the app is already running installed.
+- **Small "Install app" button on the home page** — shown whenever the app isn't already installed and there's a way to trigger it (Chromium's captured install prompt, or the iOS Share instructions), right under the tagline.
+- **Rotating home page taglines** — instead of one static subtitle, the home page now cycles through taglines per language every few seconds. English has 20 (7 direct Scripture quotes about worship (KJV), 5 practical/informative, 8 lighthearted including some Gen Z/millennial-flavored jokes); Indonesian and Javanese have 20 each, all original jokes (Indonesian mixes in Gen Z slang and millennial nostalgia humor); Latin and Traditional Chinese have 10 each, also all jokes — matching the app's existing playful tone in those languages.
+
+### Changed
+- **Home page feature cards refreshed** — grew from 6 to 11 cards to cover everything shipped since they were last written: Stage Mode, Autoscroll & Metronome, Saved Sets & Autosave, Install & Work Offline, and Multi-File Upload & Search join the original Transpose Keys, Edit Chords, Bass Notes, Nashville Numbers, and Export cards. The last card now says "Undo, Themes & More" (was "Undo, Dark Mode & More") since there are 9 color themes now, not just a dark/light toggle.
+- **Indonesian/Javanese: "chord" instead of "akor"** — a second pass caught capitalized "Akor" occurrences (card titles, hint text) that an earlier lowercase-only replacement missed.
+
+## [1.4.4] - 2026-07-03
+
+### Added
+- **"Check for updates" button in Settings** — under a new Updates section, alongside the current app version. It asks the service worker to check for a newer version and, if one is found, the usual reload toast appears shortly after. If there's nothing newer, it treats that as a possible stuck/broken installation and force-refreshes: unregisters the service worker, clears its caches, and reloads — the same recovery as the manual `?ngsw-bypass=true` trick, without needing to know the URL param.
+
 ## [1.4.3] - 2026-07-03
 
 ### Fixed
