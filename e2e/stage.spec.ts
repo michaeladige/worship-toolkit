@@ -71,4 +71,31 @@ test.describe('Stage mode', () => {
     await expect(metronomeGroup).toHaveClass(/active/);
     await expect(metronomeGroup.locator('.stage-bar-value')).toHaveValue('80');
   });
+
+  test('song title stays visible on a phone-width viewport, even under scroll+metronome', async ({ page }) => {
+    await openTwoSongs(page);
+    await page.setViewportSize({ width: 375, height: 700 });
+    await page.locator('.stage-btn').click();
+
+    const title = page.locator('.stage-bar-title');
+    await expect(title).toBeVisible();
+    const initialBox = await title.boundingBox();
+    expect(initialBox!.width).toBeGreaterThan(0);
+
+    // Worst case: both control groups active alongside a long title can
+    // outgrow the bar's width — it should scroll rather than clip a control.
+    await page.locator('.stage-bar-group').first().locator('.stage-bar-btn').first().click();
+    await page.locator('.stage-bar-group').nth(1).locator('.stage-bar-btn').first().click();
+    await expect(title).toBeVisible();
+
+    const bar = page.locator('.stage-bar');
+    const { scrollWidth, clientWidth } = await bar.evaluate((el) => ({
+      scrollWidth: el.scrollWidth,
+      clientWidth: el.clientWidth,
+    }));
+    if (scrollWidth > clientWidth) {
+      await bar.evaluate((el) => { el.scrollLeft = el.scrollWidth; });
+      await expect(page.locator('.stage-exit-btn')).toBeVisible();
+    }
+  });
 });
