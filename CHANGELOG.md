@@ -5,7 +5,6 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 ## [1.6.0] - 2026-07-03
 
 ### Added
-- **Print options in Export** — "Print Song" and "Print Set" open the rendered PDF in a new browser tab (using the browser's own PDF viewer, which has its own print control) instead of only offering a download.
 - **Two new color themes** — "Grid" (indigo graph-paper lines) and "Plaid" (cyan diagonal crosshatch), joining the existing pattern themes Disco and Confetti.
 
 ### Fixed
