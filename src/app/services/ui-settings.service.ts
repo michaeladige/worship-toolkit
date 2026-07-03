@@ -20,6 +20,14 @@ export interface ToastAction {
   run: () => void;
 }
 
+// Not in TS's lib.dom.d.ts — Chromium-only event fired when the browser
+// decides the app is eligible to install, captured so we can trigger the
+// native prompt from our own "Install" button instead of only the browser's.
+export interface BeforeInstallPromptEvent extends Event {
+  readonly userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>;
+  prompt(): Promise<void>;
+}
+
 const PREFS_KEY = 'worship_toolkit_prefs';
 
 const LEGACY_THEME_KEY    = 'worship_toolkit_theme';
@@ -98,12 +106,32 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     jv: 'Ana versi anyar.',
   },
   'Reload': { la: 'Recargare', 'zh-TW': '重新載入', id: 'Muat ulang', jv: 'Muat maneh' },
+  'Install': { la: 'Instala', 'zh-TW': '安裝', id: 'Instal', jv: 'Instal' },
+  'Install app': { la: 'Applicationem instala', 'zh-TW': '安裝 App', id: 'Instal aplikasi', jv: 'Instal aplikasi' },
+  'Install WorshipToolkit for quick, offline access.': {
+    la: 'Instala WorshipToolkit pro accessu celeri, sine interreti.',
+    'zh-TW': '安裝 WorshipToolkit，快速離線使用。',
+    id: 'Instal WorshipToolkit biar bisa dibuka cepat, walau offline.',
+    jv: 'Instal WorshipToolkit supaya bisa dibukak cepet, sanajan offline.',
+  },
+  'Tip: tap Share, then "Add to Home Screen" to install WorshipToolkit for quick, offline access.': {
+    la: 'Consilium: tange Communica, deinde "Adde ad Quadrum Domesticum" ut WorshipToolkit instales pro accessu celeri, sine interreti.',
+    'zh-TW': '小提示：點擊「分享」，再選「加入主畫面」即可安裝 WorshipToolkit，離線也能快速開啟。',
+    id: 'Tips: tap Share (Bagikan), lalu "Add to Home Screen" buat instal WorshipToolkit biar bisa dibuka cepat walau offline.',
+    jv: 'Tips: tap Share, banjur "Add to Home Screen" kanggo instal WorshipToolkit supaya bisa dibukak cepet sanajan offline.',
+  },
   'Install it as an app': { la: 'Instala eam ut applicationem', 'zh-TW': '安裝成 App', id: 'Instal jadi aplikasi', jv: 'Instal dadi aplikasi' },
-  'WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload.': {
-    la: 'WorshipToolkit instalari potest ("Adde ad Quadrum Domesticum" in mobili, icon instalandi in vecte inscriptionis in mensa) et sine interreti plene operatur postquam semel oneratum est — utile in scaena cum wifi infido. Cum nova versio emittitur, toast Recargare uno tactu offert.',
-    'zh-TW': 'WorshipToolkit 可以安裝（手機上「加入主畫面」，桌面版點網址列的安裝圖示），載入過一次後即可完全離線使用——在 wifi 不穩的舞台上超實用！新版本上線時，會跳出提示讓你一鍵重新載入。',
-    id: 'WorshipToolkit bisa di-install ("Tambahkan ke Layar Utama" di HP, ikon install di address bar di desktop) dan jalan full offline setelah dimuat sekali — berguna banget di panggung yang wifi-nya suka ngambek. Kalau ada versi baru, muncul toast buat reload sekali tap.',
-    jv: 'WorshipToolkit bisa diinstal ("Tambahake menyang Layar Utama" ing HP, ikon instal ing address bar ing desktop) lan mlaku offline kabeh sawise dimuat sepisan — migunani banget ing panggung sing wifine ora ajeg. Yen ana versi anyar, ana toast kanggo muat maneh sak tutulan.',
+  'WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload. On Chrome/Edge/Android, the first time the browser is ready to install, a toast offers a one-tap Install too — and stays reachable afterward under': {
+    la: 'WorshipToolkit instalari potest ("Adde ad Quadrum Domesticum" in mobili, icon instalandi in vecte inscriptionis in mensa) et sine interreti plene operatur postquam semel oneratum est — utile in scaena cum wifi infido. Cum nova versio emittitur, toast Recargare uno tactu offert. In Chrome/Edge/Android, prima vice cum instrumentum instalare parata est, toast Instala quoque uno tactu offert — et postea sub',
+    'zh-TW': 'WorshipToolkit 可以安裝（手機上「加入主畫面」，桌面版點網址列的安裝圖示），載入過一次後即可完全離線使用——在 wifi 不穩的舞台上超實用！新版本上線時，會跳出提示讓你一鍵重新載入。在 Chrome/Edge/Android 上，瀏覽器第一次判斷可以安裝時，也會跳出提示讓你一鍵安裝——之後還能在',
+    id: 'WorshipToolkit bisa di-install ("Tambahkan ke Layar Utama" di HP, ikon install di address bar di desktop) dan jalan full offline setelah dimuat sekali — berguna banget di panggung yang wifi-nya suka ngambek. Kalau ada versi baru, muncul toast buat reload sekali tap. Di Chrome/Edge/Android, begitu browser-nya siap buat install, muncul juga toast Install sekali tap — dan masih bisa diakses lagi lewat',
+    jv: 'WorshipToolkit bisa diinstal ("Tambahake menyang Layar Utama" ing HP, ikon instal ing address bar ing desktop) lan mlaku offline kabeh sawise dimuat sepisan — migunani banget ing panggung sing wifine ora ajeg. Yen ana versi anyar, ana toast kanggo muat maneh sak tutulan. Ing Chrome/Edge/Android, pas browser-e wis siyap kanggo instal, ana uga toast Instal sak tutulan — lan isih bisa diakses maneh liwat',
+  },
+  'as long as the browser still allows it. On iPhone/iPad, a one-time tip points at Share → "Add to Home Screen" instead, since iOS has no install button to offer.': {
+    la: 'quamdiu instrumentum id adhuc permittit. In iPhone/iPad, consilium semel oblatum ad Communica → "Adde ad Quadrum Domesticum" indicat, quia iOS nullum papilionem instalandi offert.',
+    'zh-TW': '只要瀏覽器還允許就會一直在。iPhone/iPad 上則會顯示一次性提示，指向「分享」→「加入主畫面」，因為 iOS 沒有安裝按鈕可用。',
+    id: 'selama browser-nya masih ngizinin. Di iPhone/iPad, tips sekali muncul buat arahin ke Share → "Add to Home Screen", soalnya iOS nggak punya tombol install.',
+    jv: 'sak suwene browser-e isih ngidini. Ing iPhone/iPad, tips sepisan muncul kanggo nuduhake Share → "Add to Home Screen", amarga iOS ora duwe tombol instal.',
   },
   'Updates': { la: 'Renovationes', 'zh-TW': '更新', id: 'Pembaruan', jv: 'Nganyari' },
   'App version': { la: 'Versio applicationis', 'zh-TW': '應用程式版本', id: 'Versi aplikasi', jv: 'Versi aplikasi' },
@@ -1990,6 +2018,19 @@ export class UiSettingsService {
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     }
+  }
+
+  // Captured `beforeinstallprompt` event (Chromium only) — lets an "Install"
+  // button trigger the browser's native install prompt on demand instead of
+  // only being reachable via the browser's own address-bar icon. Cleared
+  // after use since the captured event can only be prompted once.
+  readonly installPromptEvent = signal<BeforeInstallPromptEvent | null>(null);
+
+  async promptInstall() {
+    const event = this.installPromptEvent();
+    if (!event) return;
+    this.installPromptEvent.set(null);
+    await event.prompt();
   }
 
   get latinMode(): boolean { return this.language === 'la'; }

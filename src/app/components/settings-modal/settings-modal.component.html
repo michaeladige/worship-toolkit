@@ -129,6 +129,12 @@
           {{ checkingForUpdate ? ui.t('Checking…') : ui.t('Check for updates') }}
         </button>
       </div>
+      @if (ui.installPromptEvent()) {
+        <div class="setting-row">
+          <span class="setting-label">{{ ui.t('Install app') }}</span>
+          <button class="setting-btn" (click)="ui.promptInstall()">📲 {{ ui.t('Install') }}</button>
+        </div>
+      }
     </div>
 
     <!-- Language -->

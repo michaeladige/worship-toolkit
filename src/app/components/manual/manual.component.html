@@ -305,7 +305,7 @@ Sephiroth!</pre>
       <li><strong>{{ ui.t('Nothing parsed from my PDF?') }}</strong> {{ ui.t('Make sure it\'s an actual SongSelect chord chart export, not a scanned/photographed image — the parser reads text, not pixels.') }}</li>
       <li><strong>{{ ui.t('Chord didn\'t land where I dragged it?') }}</strong> {{ ui.t('Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.') }}</li>
       <li><strong>{{ ui.t('Want a clean slate for one song only?') }}</strong> {{ ui.t('You can remove and re-add sections/lines rather than starting a whole new upload.') }}</li>
-      <li><strong>{{ ui.t('Install it as an app') }}</strong> &mdash; {{ ui.t('WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload.') }}</li>
+      <li><strong>{{ ui.t('Install it as an app') }}</strong> &mdash; {{ ui.t('WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload. On Chrome/Edge/Android, the first time the browser is ready to install, a toast offers a one-tap Install too — and stays reachable afterward under') }} <strong>⚙️ {{ ui.t('Settings') }} → {{ ui.t('Updates') }}</strong> {{ ui.t('as long as the browser still allows it. On iPhone/iPad, a one-time tip points at Share → "Add to Home Screen" instead, since iOS has no install button to offer.') }}</li>
       <li><strong>{{ ui.t('App seems stuck on an old version?') }}</strong> {{ ui.t('Open') }} <strong>⚙️ {{ ui.t('Settings') }}</strong> {{ ui.t('and use') }} <strong>{{ ui.t('Check for updates') }}</strong> {{ ui.t('under Updates — it checks for a newer version, and if there isn\'t one, force-refreshes the app and clears its offline cache. If that button itself isn\'t loading, load the page once with') }} <code>?ngsw-bypass=true</code> {{ ui.t('added to the URL to skip the cache, then reload normally.') }}</li>
     </ul>
   </section>
@@ -315,6 +315,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.4.5</h3></summary>
+      <ul>
+        <li><strong>Easier PWA install prompt</strong> &mdash; on Chrome/Edge/Android, the first time the browser is ready to install, a one-time toast now offers a one-tap Install button, and an "Install app" row stays available under Settings → Updates afterward. On iOS, a one-time tip points at Share → "Add to Home Screen" instead, since there's no install button to offer there. Neither shows again once the app is already installed.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.4.4</h3></summary>
       <ul>
         <li><strong>"Check for updates" button in Settings</strong> &mdash; under a new Updates section, next to the current app version. Checks the service worker for a newer version; if there isn't one, it treats that as a possible stuck install and force-refreshes the app (unregisters the service worker, clears its caches, reloads) instead of leaving you on a stale build.</li>
