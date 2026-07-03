@@ -76,6 +76,22 @@ test.describe('Autoscroll control', () => {
     expect(stillStopped).toBe(stoppedAt);
   });
 
+  test('scrolls the content even at the lowest speed level (1)', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 400 });
+    await createSongWithScrollableContent(page);
+
+    const content = page.locator('.content');
+    await page.locator('.autoscroll-toggle-btn').click();
+    const downBtn = page.locator('.autoscroll-control .step-btn').first();
+    for (let i = 0; i < 4; i++) await downBtn.click(); // 5 -> 1
+    await expect(page.locator('.autoscroll-speed')).toHaveValue('1');
+
+    const before = await content.evaluate((el) => el.scrollTop);
+    await page.waitForTimeout(2000);
+    const during = await content.evaluate((el) => el.scrollTop);
+    expect(during).toBeGreaterThan(before);
+  });
+
   test('autoscroll speed is not persisted (not written to localStorage)', async ({ page }) => {
     await createSongWithScrollableContent(page);
 

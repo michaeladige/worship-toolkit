@@ -322,6 +322,7 @@ Sephiroth!</pre>
         <li><strong>Wider, gentler autoscroll range</strong> &mdash; each speed level scrolls slower than before, with a higher top level (0–30 instead of 0–10) for finer control. Metronome's top end raised to 300 BPM.</li>
         <li><strong>Stage mode's floating bar is now editable too</strong> &mdash; scroll speed and BPM can be typed directly there as well, not just stepped.</li>
         <li>Autoscroll/metronome toolbar buttons resized to match the rest of the toolbar.</li>
+        <li><strong>Fixed:</strong> autoscroll could fail to move at all at low speed levels on some devices (notably iPad), since sub-pixel per-frame movement was getting rounded away every frame instead of accumulating.</li>
       </ul>
     </details>
 

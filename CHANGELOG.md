@@ -4,6 +4,9 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 
 ## [1.4.3] - 2026-07-03
 
+### Fixed
+- **Autoscroll not moving at low speed levels on some devices (notably iPad)** — the scroll position was read from and written straight back to `scrollTop` every frame, and some browsers round that property to a whole pixel on write. At low speed levels the per-frame movement is well under a pixel, so it kept getting rounded away and the chart never appeared to move. The component now tracks its own sub-pixel scroll position internally and only writes the rounded result to the DOM, so slow scroll speeds accumulate correctly regardless of how a given browser rounds `scrollTop`. (A manual scroll/drag while autoscroll is on is still respected, not overridden.)
+
 ### Changed
 - **Autoscroll control now matches the metronome's on/off behavior** — the speed stepper (arrows + value) is hidden until you turn autoscroll on via the toggle button, instead of always showing. The label reverts to "Autoscroll" (from the shorter "Scroll").
 - **BPM and autoscroll speed can now be typed directly** — both value boxes accept keyboard input, not just the up/down buttons. Switched from `type="number"` to a plain numeric text field so no browser-native spin arrows render alongside our own — on some browsers those extra native arrows overlapped the custom step buttons and could double-count a single click.

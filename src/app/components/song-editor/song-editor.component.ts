@@ -46,6 +46,7 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   private static readonly AUTOSCROLL_PX_PER_SEC_PER_LEVEL = 6;
   private autoscrollFrameId: number | null = null;
   private autoscrollLastTs: number | null = null;
+  private autoscrollFloatTop = 0;
 
   // Not persisted to localStorage — off on load, and turned off on every song switch (see ngOnChanges).
   readonly minBpm = 30;
@@ -226,11 +227,23 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
 
   private startAutoscroll() {
     this.autoscrollLastTs = null;
+    // Tracked separately from el.scrollTop because some browsers (notably iOS
+    // Safari) round scrollTop to an integer on write — reading it back each
+    // frame would throw away the sub-pixel remainder and low speeds (whose
+    // per-frame delta is well under 1px) would never accumulate to a scroll.
+    this.autoscrollFloatTop = this.scrollContainer?.nativeElement.scrollTop ?? 0;
     const step = (ts: number) => {
       const el = this.scrollContainer?.nativeElement;
       if (el && this.autoscrollLastTs !== null) {
+        // Re-baseline if the actual scrollTop drifted from what we expect —
+        // e.g. the user manually scrolled/dragged — so a manual scroll isn't
+        // undone by snapping back to our tracked float on the next frame.
+        if (Math.abs(el.scrollTop - this.autoscrollFloatTop) > 1) {
+          this.autoscrollFloatTop = el.scrollTop;
+        }
         const dtSeconds = (ts - this.autoscrollLastTs) / 1000;
-        el.scrollTop += this.autoscrollSpeed * SongEditorComponent.AUTOSCROLL_PX_PER_SEC_PER_LEVEL * dtSeconds;
+        this.autoscrollFloatTop += this.autoscrollSpeed * SongEditorComponent.AUTOSCROLL_PX_PER_SEC_PER_LEVEL * dtSeconds;
+        el.scrollTop = this.autoscrollFloatTop;
       }
       this.autoscrollLastTs = ts;
       this.autoscrollFrameId = requestAnimationFrame(step);
