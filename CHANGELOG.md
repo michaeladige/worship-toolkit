@@ -6,8 +6,11 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 
 ### Added
 - **Print options in Export** — "Print Song" and "Print Set" open the rendered PDF in a new browser tab (using the browser's own PDF viewer, which has its own print control) instead of only offering a download.
+- **Two new color themes** — "Grid" (indigo graph-paper lines) and "Plaid" (cyan diagonal crosshatch), joining the existing pattern themes Disco and Confetti.
 
 ### Fixed
+- **The "Confetti" theme's polka-dot pattern wasn't visible** — a CSS sizing bug made the dots stretch into one giant, effectively invisible gradient instead of repeating as small dots.
+- **The Settings modal could overflow the screen with no way to scroll** — it now scrolls internally like the other modals, and the color-swatch row wraps onto multiple lines instead of overflowing on narrow screens.
 - **Undo/redo could crash the editor** after adding a blank song or appending imported songs, then pressing Ctrl+Z — the selected song index wasn't kept in bounds when the undo stack restored a shorter song list.
 - **Chord recognition was case-sensitive** — chords like `CMaj7` or `CDim` (as some SongSelect charts render them) weren't recognized as chords, which could misclassify a whole chord line as lyrics. Added support for altered/extended chord suffixes too (`b5`, `#9`, `6/9`).
 - **Chords inside bar-notation annotations** (e.g. `|Am7`) weren't transposed when the song's key changed, even though the same chord elsewhere on the line transposed correctly.
