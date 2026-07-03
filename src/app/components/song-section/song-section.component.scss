@@ -185,6 +185,13 @@
 .line-body {
   flex: 1;
   min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  // Fades the right edge when a chord/lyric line overflows its container,
+  // so scrolling is discoverable without an opaque "shadow" overlay that
+  // would visibly clash with the patterned color themes (Grid, Plaid, etc).
+  mask-image: linear-gradient(to right, black calc(100% - 20px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 20px), transparent 100%);
 }
 
 // ── Chord row ─────────────────────────────────────────────────────────────────
