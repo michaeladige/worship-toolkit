@@ -35,17 +35,28 @@ export class ExportModalComponent {
   async exportSongPdf() {
     if (!this.song) return;
     this.exporting = true;
-    try { await this.exportSvc.toPdf([this.song], this.ui.pdfFontSize, this.ui.chordAccidentals, this.ui.chordFont); }
-    finally { this.exporting = false; this.cdr.detectChanges(); }
+    try {
+      await this.exportSvc.toPdf([this.song], this.ui.pdfFontSize, this.ui.chordAccidentals, this.ui.chordFont);
+      this.ui.showToast('PDF exported');
+    } catch (err) {
+      console.error(err);
+      this.ui.showToast('PDF export failed. Please try again.', 'error');
+    } finally { this.exporting = false; this.cdr.detectChanges(); }
   }
 
   async exportSetPdf() {
     this.exporting = true;
-    try { await this.exportSvc.toPdf(this.sessionsSvc.currentSongs, this.ui.pdfFontSize, this.ui.chordAccidentals, this.ui.chordFont); }
-    finally { this.exporting = false; this.cdr.detectChanges(); }
+    try {
+      await this.exportSvc.toPdf(this.sessionsSvc.currentSongs, this.ui.pdfFontSize, this.ui.chordAccidentals, this.ui.chordFont);
+      this.ui.showToast('PDF exported');
+    } catch (err) {
+      console.error(err);
+      this.ui.showToast('PDF export failed. Please try again.', 'error');
+    } finally { this.exporting = false; this.cdr.detectChanges(); }
   }
 
   exportMarkdown() {
     this.exportSvc.downloadMarkdown(this.sessionsSvc.currentSongs, this.ui.chordAccidentals);
+    this.ui.showToast('Markdown exported');
   }
 }

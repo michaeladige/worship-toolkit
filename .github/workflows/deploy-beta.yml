@@ -22,8 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (beta base href)
-        run: npx ng build --base-href /worship-toolkit/beta/ --configuration production
+      # The beta configuration disables the service worker: beta needs to stay
+      # always-fresh for testers, and the production SW's scope would otherwise
+      # swallow /beta/ navigations with the wrong base href.
+      - name: Build (beta base href, no service worker)
+        run: npx ng build --base-href /worship-toolkit/beta/ --configuration production,beta
 
       - name: Copy 404 redirect
         run: cp dist/worship-toolkit/browser/index.html dist/worship-toolkit/browser/404.html

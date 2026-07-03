@@ -76,6 +76,7 @@ export class SessionsModalComponent implements OnInit {
     if (!name) return;
     this.sessionsSvc.save(name, this.sessionsSvc.currentSongs);
     this.saveName = '';
+    this.ui.showToast('Set saved');
   }
 
   loadSession(session: SavedSession) {
@@ -104,10 +105,12 @@ export class SessionsModalComponent implements OnInit {
     if (this.confirmDeleteTimer) clearTimeout(this.confirmDeleteTimer);
     this.confirmDeleteId.set(null);
     this.sessionsSvc.delete(id);
+    this.ui.showToast('Set deleted', 'info');
   }
 
   exportSession(session: SavedSession) {
     this.exportSvc.downloadSession(session.songs, session.name);
+    this.ui.showToast('Set exported');
   }
 
   async onImportFile(e: Event) {
@@ -123,6 +126,7 @@ export class SessionsModalComponent implements OnInit {
       } else {
         this.sessionsSvc.triggerLoad({ id: '', name, savedAt: Date.now(), songs });
       }
+      this.ui.showToast('Set imported');
     } catch (err) {
       this.importError = err instanceof Error ? err.message : 'Failed to import file.';
     }
@@ -141,7 +145,10 @@ export class SessionsModalComponent implements OnInit {
 
   confirmNewSessionWithSave() {
     const name = this.newSessionSaveName.trim();
-    if (name) this.sessionsSvc.save(name, this.sessionsSvc.currentSongs);
+    if (name) {
+      this.sessionsSvc.save(name, this.sessionsSvc.currentSongs);
+      this.ui.showToast('Set saved');
+    }
     this.showNewSessionConfirm = false;
     this.newSessionSaveName = '';
     this.sessionsSvc.clearWorkspace();

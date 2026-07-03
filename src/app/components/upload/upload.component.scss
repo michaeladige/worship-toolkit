@@ -124,6 +124,17 @@
   color: #b91c1c;
   border-radius: 8px;
   font-size: 0.9rem;
+
+  .file-error + .file-error {
+    margin-top: 0.35rem;
+  }
+}
+
+.progress-text {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  margin-top: 0.25rem;
 }
 
 .info-cards {

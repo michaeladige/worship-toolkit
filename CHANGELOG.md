@@ -2,15 +2,58 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
-## [1.3.1] - 2026-07-02
+## [1.4.3] - 2026-07-03
+
+### Fixed
+- **Autoscroll not moving at low speed levels on some devices (notably iPad)** — the scroll position was read from and written straight back to `scrollTop` every frame, and some browsers round that property to a whole pixel on write. At low speed levels the per-frame movement is well under a pixel, so it kept getting rounded away and the chart never appeared to move. The component now tracks its own sub-pixel scroll position internally and only writes the rounded result to the DOM, so slow scroll speeds accumulate correctly regardless of how a given browser rounds `scrollTop`. (A manual scroll/drag while autoscroll is on is still respected, not overridden.)
 
 ### Changed
-- **Scroll and Metronome controls now show icon + label together** — SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.
+- **Autoscroll control now matches the metronome's on/off behavior** — the speed stepper (arrows + value) is hidden until you turn autoscroll on via the toggle button, instead of always showing. The label reverts to "Autoscroll" (from the shorter "Scroll").
+- **BPM and autoscroll speed can now be typed directly** — both value boxes accept keyboard input, not just the up/down buttons. Switched from `type="number"` to a plain numeric text field so no browser-native spin arrows render alongside our own — on some browsers those extra native arrows overlapped the custom step buttons and could double-count a single click.
+- **Autoscroll range rebalanced** — each speed level scrolls slower than before (halved), with a higher top-end level (0–30 instead of 0–10) so there's more room to fine-tune a comfortable pace. Metronome's upper limit raised to 300 BPM.
+- **Stage mode's floating bar now has the same editable value boxes** for scroll speed and BPM, instead of a read-only number.
+- Toolbar control sizing for Autoscroll/Metronome tightened to match the rest of the toolbar's buttons.
+
+## [1.4.2] - 2026-07-03
+
+### Added
+- **Installable app with full offline support (PWA)** — WorshipToolkit can now be installed from the browser ("Add to Home Screen" / install prompt) and works completely offline once loaded, since all data already lives in the browser. A service worker caches the app shell and assets; when a new version is deployed, a toast offers a one-tap **Reload**. Production only — the beta site intentionally has no service worker so testers always see the latest push. If the app ever seems stuck on an old version, load it once with `?ngsw-bypass=true` appended to the URL.
+
+## [1.4.1] - 2026-07-03
+
+### Added
+- **Stage mode** — a new 🎤 Stage button in the editor toolbar switches to a distraction-free performance view: header, song list, and toolbar disappear, leaving the chart plus a floating bar with scroll speed, metronome, previous/next song, and exit. Goes full-screen where the browser supports it (best-effort — the layout works without it); `Esc` or ✕ exits.
+- **Keyboard shortcuts** — `+`/`−` transpose the current song, `Ctrl+↓`/`Ctrl+↑` switch songs, and `?` opens a new shortcuts cheatsheet modal. Shortcuts never fire while typing in an input or while a dialog is open.
+- **One-time hints** — the first time a song with chords is open, a dismissible banner explains click-to-edit / drag-to-move (worded as tap / press-and-drag on touch devices). Phones also get a one-time toast pointing at the song-list tab. Dismissed hints are remembered.
+
+## [1.4.0] - 2026-07-03
+
+### Added
+- **Action feedback toasts** — saving, importing, exporting, or deleting a set, and exporting a PDF or Markdown file, now show a brief confirmation toast instead of completing silently. Failures (like a PDF export error) show a red error toast.
+- **Storage-full warning** — if the browser's storage quota is exceeded, the app now warns you with an error toast ("Storage is full — recent changes may not be saved") instead of silently dropping the save. Previously a full storage could make you believe work was saved when it wasn't.
+- **Unsaved-set indicator** — when you have songs but haven't named/saved the set, the 💾 button in the header shows an amber dot and a hint to name and save it, since unnamed work isn't in Saved Sets and is overwritten when loading another set.
+- **Multi-file PDF upload** — the upload drop zone, file picker, and the song list's "+ Import PDF" now accept multiple PDFs at once. Files are parsed one by one with progress shown ("2 / 5 — filename"), and any file that fails reports its own error while the rest still load.
+- **Song list search** — sets with more than 5 songs get a search box above the sidebar list to filter by title. Reordering is paused while filtering so drags always land on the right song.
+
+### Fixed
+- **Real parse errors now shown** — a failed PDF import previously always said "Failed to parse PDF" even when the app knew the real reason (e.g. "PDF loading timed out"). The specific message is now surfaced per file.
+- **Upload errors could get stuck on the spinner** — a failed parse on the upload page could leave the page showing "Parsing PDF…" forever instead of the error message, due to a missing change-detection trigger in this zoneless app. Same fix applied to the song list's import-PDF error path.
+
+## [1.3.1] - 2026-07-02
+
+### Added
+- **5 new color themes** — Purple, Teal, and Orange join the solid accent lineup, plus two playful subtle-pattern themes, Disco (diagonal stripes) and Confetti (dot grid). All 10 themes now have full light and dark mode variants, picked from the same swatch row in ⚙️ Settings → Appearance. Patterns are kept low-contrast so they never compete with chord/lyric readability on stage.
+
+### Changed
+- **Bass Notes and Nashville toggles are mobile-friendly** — on phones, "🎹 Bass Notes" and "1 2 3 Nashville" now collapse to short "Bass" and "1 2 3" labels, matching the Scroll/Metronome icon+label responsive pattern, so the toolbar takes up less room on narrow screens.
 
 ## [1.3.0] - 2026-07-02
 
 ### Added
 - **Metronome** — a new ♩ toggle beside the SCROLL control turns on an audible click track. Turning it on shows a BPM stepper (30–240) defaulted from the song's BPM info, or 80 if the song has none. The metronome always turns off on page refresh and whenever you switch to a different song, and re-reads the song's BPM each time you turn it back on.
+
+### Changed
+- **Scroll and Metronome controls now show icon + label together** — SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.
 
 ## [1.2.11] - 2026-07-02
 

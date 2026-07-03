@@ -21,17 +21,30 @@
   </div>
 
   @if (!collapsed) {
+    @if (songs.length > 5) {
+      <input
+        class="song-filter-input"
+        type="search"
+        [placeholder]="ui.t('Search songs')"
+        [(ngModel)]="filterText"
+        [attr.aria-label]="ui.t('Search songs')"
+      />
+    }
+
     <ul cdkDropList (cdkDropListDropped)="dropSong($event)">
-      @for (song of songs; track song.id; let i = $index) {
+      @for (entry of visibleSongs; track entry.song.id) {
         <li
           cdkDrag
-          [class.active]="i === selectedIndex"
-          (click)="selectSong.emit(i)"
+          [cdkDragDisabled]="isFiltering"
+          [class.active]="entry.index === selectedIndex"
+          (click)="selectSong.emit(entry.index)"
         >
-          <span cdkDragHandle class="drag-handle" title="Drag to reorder">≡</span>
-          <span class="song-title">{{ song.title }}</span>
-          <span class="song-key">{{ effectiveKey(song) }}</span>
-          <button class="remove-song-btn" (click)="$event.stopPropagation(); removeSong.emit(i)" title="Remove song">✕</button>
+          @if (!isFiltering) {
+            <span cdkDragHandle class="drag-handle" title="Drag to reorder">≡</span>
+          }
+          <span class="song-title">{{ entry.song.title }}</span>
+          <span class="song-key">{{ effectiveKey(entry.song) }}</span>
+          <button class="remove-song-btn" (click)="$event.stopPropagation(); removeSong.emit(entry.index)" title="Remove song">✕</button>
         </li>
       }
       <!-- Non-draggable add-songs item: shows buttons directly on PC/tablet, + toggle on mobile -->

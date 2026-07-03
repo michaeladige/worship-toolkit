@@ -2,8 +2,23 @@ import { Injectable, signal } from '@angular/core';
 import { Accidentals } from './chord.service';
 
 export type Language = 'en' | 'la' | 'zh-TW' | 'id' | 'jv';
-export type ColorTheme = 'blue' | 'pink' | 'red' | 'amber' | 'green';
+export type ColorTheme =
+  | 'blue'
+  | 'pink'
+  | 'red'
+  | 'amber'
+  | 'green'
+  | 'purple'
+  | 'teal'
+  | 'orange'
+  | 'disco'
+  | 'confetti';
 export type ChordFont = 'classic' | 'readable';
+export type ToastKind = 'info' | 'success' | 'error';
+export interface ToastAction {
+  label: string;
+  run: () => void;
+}
 
 const PREFS_KEY = 'worship_toolkit_prefs';
 
@@ -20,6 +35,154 @@ const LANG_TOASTS: Record<Language, string> = {
 };
 
 const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
+  // ── toasts / feedback ──
+  'Set saved':    { la: 'Collectio Servata', 'zh-TW': '集合已儲存', id: 'Set tersimpan, aman!', jv: 'Set wis kasimpen' },
+  'Set imported': { la: 'Collectio Importata', 'zh-TW': '集合已匯入', id: 'Set berhasil diimpor!', jv: 'Set wis mlebu' },
+  'Set exported': { la: 'Collectio Exportata', 'zh-TW': '集合已匯出', id: 'Set berhasil diekspor!', jv: 'Set wis diekspor' },
+  'Set deleted':  { la: 'Collectio Deleta', 'zh-TW': '集合已刪除', id: 'Set dihapus', jv: 'Set wis dibusak' },
+  'PDF exported': { la: 'PDF Exportatum', 'zh-TW': 'PDF 已匯出', id: 'PDF berhasil diekspor!', jv: 'PDF wis diekspor' },
+  'Markdown exported': { la: 'Markdown Exportatum', 'zh-TW': 'Markdown 已匯出', id: 'Markdown berhasil diekspor!', jv: 'Markdown wis diekspor' },
+  'PDF export failed. Please try again.': {
+    la: 'Exportatio PDF defecit. Quaeso iterum conare.',
+    'zh-TW': 'PDF 匯出失敗，請再試一次。',
+    id: 'Ekspor PDF gagal, coba lagi ya!',
+    jv: 'Ekspor PDF gagal, coba maneh ya.',
+  },
+  'Storage is full — recent changes may not be saved. Export your set as a backup.': {
+    la: 'Repositorium plenum est — mutationes recentes fortasse non servatae sunt. Collectionem tuam exporta pro subsidio.',
+    'zh-TW': '儲存空間已滿——最近的變更可能未被儲存。請匯出集合作為備份。',
+    id: 'Penyimpanan penuh — perubahan terakhir mungkin nggak kesimpen. Buruan ekspor set-mu buat cadangan!',
+    jv: 'Panyimpenan kebak — owahan pungkasan bisa uga ora kasimpen. Ekspor set-mu kanggo cadangan ya.',
+  },
+  'Not saved — click to name and save this set': {
+    la: 'Non servata — preme ut nomines et serves hanc collectionem',
+    'zh-TW': '尚未儲存——點擊以命名並儲存此集合',
+    id: 'Belum tersimpan — klik untuk kasih nama dan simpan set ini',
+    jv: 'Durung kasimpen — klik kanggo menehi jeneng lan nyimpen set iki',
+  },
+  'Search songs': { la: 'Quaerere Cantus', 'zh-TW': '搜尋歌曲', id: 'Cari lagu', jv: 'Golek lagu' },
+
+  // ── hints & shortcuts ──
+  'Tip: click a chord to edit it — drag to move it.': {
+    la: 'Consilium: chordam preme ut eam mutes — trahe ut eam moveas.',
+    'zh-TW': '小提示：點擊和弦即可編輯——拖曳即可移動位置。',
+    id: 'Tips: klik chord buat edit — drag buat geser posisinya!',
+    jv: 'Tips: klik akor kanggo ngowahi — seret kanggo mindhah panggonane.',
+  },
+  'Tip: tap a chord to edit it — press and drag to move it.': {
+    la: 'Consilium: chordam tange ut eam mutes — preme et trahe ut eam moveas.',
+    'zh-TW': '小提示：輕點和弦即可編輯——按住拖曳即可移動位置。',
+    id: 'Tips: tap chord buat edit — tekan lalu geser buat mindahin!',
+    jv: 'Tips: tutul akor kanggo ngowahi — pencet banjur seret kanggo mindhah.',
+  },
+  'Got it': { la: 'Intellego', 'zh-TW': '知道了', id: 'Oke, paham!', jv: 'Wis paham' },
+  'Tip: use the tab on the left edge to open your song list.': {
+    la: 'Consilium: utere lingula in margine sinistro ut indicem cantuum aperias.',
+    'zh-TW': '小提示：使用左側邊緣的標籤來開啟歌曲清單。',
+    id: 'Tips: pakai tab di tepi kiri buat buka daftar lagumu!',
+    jv: 'Tips: gunakna tab ing pinggir kiwa kanggo mbukak dhaptar lagumu.',
+  },
+  'Keyboard shortcuts': { la: 'Compendia Clavium', 'zh-TW': '鍵盤快捷鍵', id: 'Pintasan keyboard', jv: 'Trabasan keyboard' },
+  'Transpose up': { la: 'Transponere sursum', 'zh-TW': '升調', id: 'Transpose naik', jv: 'Transpose munggah' },
+  'Transpose down': { la: 'Transponere deorsum', 'zh-TW': '降調', id: 'Transpose turun', jv: 'Transpose mudhun' },
+  'Next song': { la: 'Cantus sequens', 'zh-TW': '下一首', id: 'Lagu berikutnya', jv: 'Lagu sabanjure' },
+  'Previous song': { la: 'Cantus prior', 'zh-TW': '上一首', id: 'Lagu sebelumnya', jv: 'Lagu sadurunge' },
+  'Show this list': { la: 'Hunc indicem ostendere', 'zh-TW': '顯示此清單', id: 'Tampilkan daftar ini', jv: 'Tuduhake dhaptar iki' },
+  'Close dialogs / cancel edits': { la: 'Dialogos claudere / mutationes revocare', 'zh-TW': '關閉對話框／取消編輯', id: 'Tutup dialog / batalkan edit', jv: 'Nutup dialog / mbatalake owahan' },
+  'Close': { la: 'Claudere', 'zh-TW': '關閉', id: 'Tutup', jv: 'Tutup' },
+  'Stage': { la: 'Scaena', 'zh-TW': '舞台', id: 'Panggung', jv: 'Panggung' },
+  'A new version is available.': {
+    la: 'Nova versio praesto est.',
+    'zh-TW': '有新版本可用。',
+    id: 'Ada versi baru nih!',
+    jv: 'Ana versi anyar.',
+  },
+  'Reload': { la: 'Recargare', 'zh-TW': '重新載入', id: 'Muat ulang', jv: 'Muat maneh' },
+  'Install it as an app': { la: 'Instala eam ut applicationem', 'zh-TW': '安裝成 App', id: 'Instal jadi aplikasi', jv: 'Instal dadi aplikasi' },
+  'WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload.': {
+    la: 'WorshipToolkit instalari potest ("Adde ad Quadrum Domesticum" in mobili, icon instalandi in vecte inscriptionis in mensa) et sine interreti plene operatur postquam semel oneratum est — utile in scaena cum wifi infido. Cum nova versio emittitur, toast Recargare uno tactu offert.',
+    'zh-TW': 'WorshipToolkit 可以安裝（手機上「加入主畫面」，桌面版點網址列的安裝圖示），載入過一次後即可完全離線使用——在 wifi 不穩的舞台上超實用！新版本上線時，會跳出提示讓你一鍵重新載入。',
+    id: 'WorshipToolkit bisa di-install ("Tambahkan ke Layar Utama" di HP, ikon install di address bar di desktop) dan jalan full offline setelah dimuat sekali — berguna banget di panggung yang wifi-nya suka ngambek. Kalau ada versi baru, muncul toast buat reload sekali tap.',
+    jv: 'WorshipToolkit bisa diinstal ("Tambahake menyang Layar Utama" ing HP, ikon instal ing address bar ing desktop) lan mlaku offline kabeh sawise dimuat sepisan — migunani banget ing panggung sing wifine ora ajeg. Yen ana versi anyar, ana toast kanggo muat maneh sak tutulan.',
+  },
+  'App seems stuck on an old version?': {
+    la: 'Applicatio in versione vetere haerere videtur?',
+    'zh-TW': 'App 好像卡在舊版本？',
+    id: 'App-nya kayak nyangkut di versi lama?',
+    jv: 'App-e kaya kecanthol ing versi lawas?',
+  },
+  'Load it once with': { la: 'Onera eam semel cum', 'zh-TW': '在網址加上', id: 'Muat sekali dengan', jv: 'Muat sepisan nganggo' },
+  'added to the URL to skip the offline cache, then reload normally.': {
+    la: 'ad URL addito ut cella offline praetermittatur, deinde normaliter recarga.',
+    'zh-TW': '載入一次以跳過離線快取，然後正常重新載入即可。',
+    id: 'ditambahkan ke URL buat skip cache offline, lalu reload seperti biasa.',
+    jv: 'ditambahake menyang URL kanggo ngliwati cache offline, banjur muat maneh kaya biasane.',
+  },
+  'Exit stage mode': { la: 'Exire e modo scaenae', 'zh-TW': '離開舞台模式', id: 'Keluar mode panggung', jv: 'Metu saka mode panggung' },
+  'Stage mode': { la: 'Modus Scaenae', 'zh-TW': '舞台模式', id: 'Mode panggung', jv: 'Mode panggung' },
+  'click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button. Both the scroll speed and BPM boxes in the floating bar are editable, just like in the toolbar.': {
+    la: 'preme papilionem Scaenae in instrumentario pro visu perficiendi sine distractione: caput, index cantuum, et instrumentarium evanescunt, relinquentes solum tabulam tuam et parvam trabem natantem cum celeritate volutionis, metronomo, cantu priore/sequente, et papilione exeundi. Arculae celeritatis et BPM in trabe natante scribi possunt, sicut in instrumentario.',
+    'zh-TW': '點擊工具列的舞台按鈕，進入無干擾的演出檢視：頁首、歌曲清單和工具列都會消失，只留下你的譜面，以及一個包含捲動速度、節拍器、上一首／下一首和離開按鈕的小型浮動控制列。浮動控制列中的捲動速度與 BPM 方框都可以直接輸入，和工具列一樣。',
+    id: 'klik tombol Panggung di toolbar buat tampilan performa bebas gangguan: header, daftar lagu, dan toolbar semua hilang, tinggal chart-mu plus bar melayang kecil berisi kecepatan gulir, metronom, lagu sebelumnya/berikutnya, dan tombol keluar. Kotak kecepatan gulir dan BPM di bar melayang bisa diketik langsung, sama seperti di toolbar.',
+    jv: 'klik tombol Panggung ing toolbar kanggo tampilan pentas tanpa gangguan: header, dhaptar lagu, lan toolbar padha ilang, mung kari chart-mu plus bar ngambang cilik isine kacepetan gulung, metronom, lagu sadurunge/sabanjure, lan tombol metu. Kothak kacepetan gulung lan BPM ing bar ngambang bisa diketik langsung, padha kaya ing toolbar.',
+  },
+  'Where the browser supports it, stage mode also goes full-screen. Press': {
+    la: 'Ubi navigatrum id sustinet, modus scaenae etiam plenum quadrum occupat. Preme',
+    'zh-TW': '在瀏覽器支援的情況下，舞台模式也會進入全螢幕。按',
+    id: 'Kalau browser-nya mendukung, mode panggung juga langsung full-screen. Tekan',
+    jv: 'Yen browser ndhukung, mode panggung uga dadi layar kebak. Pencet',
+  },
+  'or tap': { la: 'vel tange', 'zh-TW': '或輕點', id: 'atau tap', jv: 'utawa tutul' },
+  'to exit.': { la: 'ut exeas.', 'zh-TW': '即可離開。', id: 'buat keluar.', jv: 'kanggo metu.' },
+  'transpose the current song up or down;': {
+    la: 'cantum praesentem sursum vel deorsum transpone;',
+    'zh-TW': '將目前歌曲升調或降調；',
+    id: 'transpose lagu saat ini naik atau turun;',
+    jv: 'transpose lagu saiki munggah utawa mudhun;',
+  },
+  'switch to the next or previous song;': {
+    la: 'ad cantum sequentem vel priorem transi;',
+    'zh-TW': '切換到下一首或上一首；',
+    id: 'pindah ke lagu berikutnya atau sebelumnya;',
+    jv: 'pindhah menyang lagu sabanjure utawa sadurunge;',
+  },
+  'shows the full shortcut list.': {
+    la: 'indicem plenum compendiorum ostendit.',
+    'zh-TW': '顯示完整快捷鍵清單。',
+    id: 'menampilkan daftar pintasan lengkap.',
+    jv: 'nuduhake dhaptar trabasan lengkap.',
+  },
+  'Please upload a PDF file.': {
+    la: 'Quaeso, documentum PDF impone.',
+    'zh-TW': '請上傳 PDF 檔案。',
+    id: 'Upload file PDF ya!',
+    jv: 'Unggah file PDF ya.',
+  },
+  'Please choose a PDF file.': {
+    la: 'Quaeso, documentum PDF elige.',
+    'zh-TW': '請選擇 PDF 檔案。',
+    id: 'Pilih file PDF ya!',
+    jv: 'Pilih file PDF ya.',
+  },
+  'No songs detected in this PDF. Make sure it is a SongSelect chord chart.': {
+    la: 'Nulli cantus in hoc PDF reperti. Cura ut sit tabula chordarum SongSelect.',
+    'zh-TW': '在此 PDF 中未偵測到歌曲。請確認它是 SongSelect 和弦譜。',
+    id: 'Nggak ada lagu yang kedeteksi di PDF ini. Pastikan itu chord chart dari SongSelect ya!',
+    jv: 'Ora ana lagu sing ketemu ing PDF iki. Priksa manawa iku chord chart SongSelect ya.',
+  },
+  'No songs detected in this PDF.': {
+    la: 'Nulli cantus in hoc PDF reperti.',
+    'zh-TW': '在此 PDF 中未偵測到歌曲。',
+    id: 'Nggak ada lagu yang kedeteksi di PDF ini.',
+    jv: 'Ora ana lagu sing ketemu ing PDF iki.',
+  },
+  'Failed to parse PDF. Please try again.': {
+    la: 'PDF legere defecit. Quaeso iterum conare.',
+    'zh-TW': '解析 PDF 失敗，請再試一次。',
+    id: 'Gagal baca PDF-nya, coba lagi ya!',
+    jv: 'Gagal maca PDF, coba maneh ya.',
+  },
+
   // ── app header ──
   'Manual':     { la: 'Libellus',   'zh-TW': '手冊',         id: 'Panduan',        jv: 'Pandhuan'      },
   'New':        { la: 'Novum',      'zh-TW': '新增',         id: 'Baru',           jv: 'Anyar'         },
@@ -34,10 +197,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Jump to':    { la: 'Salire ad',  'zh-TW': '跳至',         id: 'Lompat ke',      jv: 'Loncat menyang'},
   'Reset':      { la: 'Reponere',   'zh-TW': '重設',         id: 'Reset',          jv: 'Reset'         },
   'Autoscroll': { la: 'Auto-Volutio', 'zh-TW': '自動捲動',    id: 'Gulir Otomatis', jv: 'Gulung Otomatis'},
-  'Scroll':     { la: 'Volutio',     'zh-TW': '捲動',         id: 'Gulir',          jv: 'Gulung'        },
   'Metronome':  { la: 'Metronomum', 'zh-TW': '節拍器',        id: 'Metronom',       jv: 'Metronom'      },
   '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
+  '🎹 Bass':    { la: '🎹 Bassus',    'zh-TW': '🎹 低音',       id: '🎹 Bass',        jv: '🎹 Bass'       },
   '1 2 3 Nashville': { la: 'I II III Nashville', 'zh-TW': '1 2 3 納許維爾', id: '1 2 3 Nashville', jv: '1 2 3 Nashville' },
+  '1 2 3':      { la: 'I II III',   'zh-TW': '1 2 3',        id: '1 2 3',          jv: '1 2 3'         },
   'Add section':  { la: 'Addere Sectionem', 'zh-TW': '新增段落', id: 'Tambah Bagian', jv: 'Tambah Bagian' },
   'Custom name…': { la: 'Nomen proprium…', 'zh-TW': '自訂名稱…', id: 'Nama khusus…', jv: 'Jeneng dhewe…' },
   'Add':        { la: 'Addere',     'zh-TW': '新增',         id: 'Tambah',         jv: 'Tambah'        },
@@ -364,6 +528,24 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     'zh-TW': 'App 會自動解析 PDF 喔！包含多首歌的 PDF 也會自動拆分成單曲，不用你手動一首首來。',
     id:      'App otomatis parsing PDF-nya. PDF yang isinya banyak lagu langsung dipecah jadi lagu-lagu terpisah — mantap jiwa!',
     jv:      'App iki otomatis ngurai PDF-e, nak. PDF sing isi akeh lagu langsung dipisah dadi lagu siji-siji.',
+  },
+  'You can select or drop several PDF files at once — they are parsed one by one, and any file that fails shows its own error message while the rest still load.': {
+    la:      'Plura documenta PDF simul eligere vel demittere potes — singillatim leguntur, et si quod deficit, suum nuntium erroris ostendit dum cetera nihilominus onerantur.',
+    'zh-TW': '可以一次選取或拖入多個 PDF 檔案——它們會逐一解析，失敗的檔案會顯示各自的錯誤訊息，其餘的照樣載入。',
+    id:      'Kamu bisa pilih atau drop beberapa file PDF sekaligus — diproses satu per satu, dan kalau ada yang gagal, dia nunjukin error-nya sendiri sementara sisanya tetap masuk. Praktis!',
+    jv:      'Sampeyan bisa milih utawa nyelehake pirang-pirang file PDF bebarengan — diproses siji-siji, lan yen ana sing gagal bakal nuduhake pesen kesalahane dhewe, dene liyane tetep mlebu.',
+  },
+  'sets with more than 5 songs show a search box above the list to filter by title. Reordering is paused while a filter is active.': {
+    la:      'collectiones cum plus quam quinque cantibus capsam quaerendi supra indicem ostendunt ad titulos eligendos. Reordinare intermittitur dum filtrum activum est.',
+    'zh-TW': '超過 5 首歌的集合會在清單上方顯示搜尋框，可依歌名篩選。篩選時暫停拖曳排序。',
+    id:      'set dengan lebih dari 5 lagu bakal nampilin kotak pencarian di atas daftar buat filter judul. Selama filter aktif, drag buat urut ulang di-pause dulu.',
+    jv:      'set sing luwih saka 5 lagu bakal nuduhake kothak panggolekan ing ndhuwur dhaptar kanggo nyaring miturut irah-irahan. Nalika saringan aktif, ngurutake maneh dilereni dhisik.',
+  },
+  'An amber dot on the 💾 button means your songs are not yet in a named set — name and save them, or they will be replaced if you load another set.': {
+    la:      'Punctum flavum in papilione 💾 significat cantus tuos nondum in collectione nominata esse — nomina et serva eos, aut substituentur si aliam collectionem oneraveris.',
+    'zh-TW': '💾 按鈕上的琥珀色圓點表示你的歌曲還沒存進命名的集合——快命名並儲存，不然載入其他集合時會被覆蓋喔！',
+    id:      'Titik amber di tombol 💾 artinya lagu-lagumu belum masuk set bernama — buruan kasih nama dan simpan, kalau nggak bakal ketimpa pas kamu buka set lain!',
+    jv:      'Titik kuning ing tombol 💾 tegese lagu-lagumu durung mlebu set sing dijenengi — jenengana lan simpenen, yen ora bakal keganti yen sampeyan mbukak set liyane.',
   },
   'Two-column layouts and superscript chord extensions (e.g.': {
     la:      'Dispositiones bicolumnes et extensiones chordarum superscriptae (e.g.',
@@ -813,23 +995,23 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'untuk simpan. Tanda birama yang tidak valid akan kembali ke nilai sebelumnya. Tekan',
     jv:      'kanggo nyimpen. Input sing ora valid bakal bali menyang nilai sadurunge. Pencet',
   },
-  'SCROLL control': {
-    la:      'Moderamen Volutionis',
-    'zh-TW': '捲動控制',
-    id:      'Kontrol Gulir',
-    jv:      'Kontrol Gulung',
+  'AUTOSCROLL control': {
+    la:      'Moderamen Auto-Volutionis',
+    'zh-TW': '自動捲動控制',
+    id:      'Kontrol Gulir Otomatis',
+    jv:      'Kontrol Gulung Otomatis',
   },
-  'in the toolbar, use the': {
-    la:      'in barra instrumentorum, utere',
-    'zh-TW': '在工具列中，使用',
-    id:      'di toolbar, gunakan',
-    jv:      'ing toolbar, gunakke',
+  'button to turn scrolling on or off. When on, a speed stepper appears: use the': {
+    la:      'ad volutionem activandam vel deactivandam. Cum activa, gradus celeritatis apparet: utere',
+    'zh-TW': '按鈕來開啟或關閉捲動。開啟後會出現速度調整器：使用',
+    id:      'untuk menyalakan atau mematikan gulir. Saat menyala, penyetel kecepatan muncul: gunakan',
+    jv:      'kanggo nguripake utawa mateni gulung. Nalika urip, panyetel kecepatan katon: gunakke',
   },
-  'buttons to raise or lower the scroll speed (0–10). Speed starts at 0 (off) every time — it\'s not saved between songs or sessions.': {
-    la:      'clavibus ad celeritatem volutionis augendam vel minuendam (0–10). Celeritas semper a 0 (deactivata) incipit — inter cantus vel sessiones non servatur.',
-    'zh-TW': '按鈕來調高或調低捲動速度（0–10）。速度每次都從 0（關閉）開始 — 不會在歌曲或工作階段之間儲存。',
-    id:      'tombol untuk menaikkan atau menurunkan kecepatan gulir (0–10). Kecepatan selalu mulai dari 0 (mati) setiap saat — tidak disimpan antar lagu atau sesi.',
-    jv:      'tombol kanggo mundhakake utawa nyuda kecepatan gulung (0–10). Kecepatan tansah miwiti saka 0 (mati) saben wektu — ora disimpen antarane lagu utawa sesi.',
+  'buttons, or type a number directly into the box (0–30). Speed starts off every time — it\'s not saved between songs or sessions.': {
+    la:      'clavibus, vel numerum directe in arcula scribe (0–30). Celeritas semper deactivata incipit — inter cantus vel sessiones non servatur.',
+    'zh-TW': '按鈕，或直接在方框中輸入數字（0–30）。速度每次都從關閉開始 — 不會在歌曲或工作階段之間儲存。',
+    id:      'tombol, atau ketik angka langsung di kotak (0–30). Kecepatan selalu mati setiap saat — tidak disimpan antar lagu atau sesi.',
+    jv:      'tombol, utawa ketik angka langsung ing kothak (0–30). Kecepatan tansah mati saben wektu — ora disimpen antarane lagu utawa sesi.',
   },
   'METRONOME control': {
     la:      'Moderamen Metronomi',
@@ -849,11 +1031,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'ikon untuk menyalakan atau mematikan metronom. Saat menyala, penyetel BPM muncul di sampingnya, dengan nilai awal dari info BPM lagu (atau 80 jika lagu tidak memilikinya). Gunakan',
     jv:      'ikon kanggo nguripake utawa mateni metronom. Nalika urip, panyetel BPM katon ing sandhinge, kanthi nilai awal saka info BPM lagu (utawa 80 yen lagu ora duwe). Gunakke',
   },
-  'buttons to adjust it (30–240). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.': {
-    la:      'clavibus ad id moderandum (30–240). Metronomum automatice deactivatur cum cantum mutas vel paginam reficis, et semper BPM cantus iterum legit cum proximo activatur.',
-    'zh-TW': '按鈕來調整（30–240）。當你切換歌曲或重新整理頁面時，節拍器會自動關閉，並在下次開啟時重新讀取歌曲的 BPM。',
-    id:      'tombol untuk menyesuaikannya (30–240). Metronom otomatis mati saat kamu berpindah lagu atau memuat ulang halaman, dan selalu membaca ulang BPM lagu saat kamu menyalakannya lagi.',
-    jv:      'tombol kanggo nyetel (30–240). Metronom otomatis mati nalika kowe pindhah lagu utawa muat ulang kaca, lan tansah maca maneh BPM lagu nalika kowe nguripake maneh.',
+  'buttons, or type a number directly into the box, to adjust it (30–300). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.': {
+    la:      'clavibus, vel numerum directe in arcula scribe, ad id moderandum (30–300). Metronomum automatice deactivatur cum cantum mutas vel paginam reficis, et semper BPM cantus iterum legit cum proximo activatur.',
+    'zh-TW': '按鈕，或直接在方框中輸入數字來調整（30–300）。當你切換歌曲或重新整理頁面時，節拍器會自動關閉，並在下次開啟時重新讀取歌曲的 BPM。',
+    id:      'tombol, atau ketik angka langsung di kotak, untuk menyesuaikannya (30–300). Metronom otomatis mati saat kamu berpindah lagu atau memuat ulang halaman, dan selalu membaca ulang BPM lagu saat kamu menyalakannya lagi.',
+    jv:      'tombol, utawa ketik angka langsung ing kothak, kanggo nyetel (30–300). Metronom otomatis mati nalika kowe pindhah lagu utawa muat ulang kaca, lan tansah maca maneh BPM lagu nalika kowe nguripake maneh.',
   },
   'Annotations': {
     la:      'Annotationes',
@@ -1523,11 +1705,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'di header app untuk buka panel Pengaturan. Semua preferensi tampilan dan ekspor ada di sini dan diingat antar kunjungan.',
     jv:      'ing header app kanggo mbukak panel Setelan. Kabeh preferensi tampilan lan ekspor ana ing kene lan dieling-eling antarane kunjungan.',
   },
-  'choose an accent color theme: Blue (default), Pink, Red, Amber, or Green. The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.': {
-    la:      'elige thema coloris accentus: Caeruleum (defalta), Roseum, Rubrum, Succinum, vel Viride. Color electus papilionibus, ostentioni chordarum, et elementis interactivis per totam applicationem applicatur. Cum modo Lucis et Tenebrarum laborat.',
-    'zh-TW': '選擇強調色主題：藍色（預設）、粉色、紅色、琥珀色或綠色。所選顏色應用於整個 App 的按鈕、和弦顯示和互動元素。支援淺色和深色模式！',
-    id:      'pilih tema warna aksen: Biru (default), Pink, Merah, Amber, atau Hijau. Warna yang dipilih berlaku untuk tombol, tampilan akor, dan elemen interaktif di seluruh app. Cocok dengan mode Terang maupun Gelap!',
-    jv:      'pilih tema warna aksen: Biru (default), Pink, Abang, Amber, utawa Ijo. Warna sing dipilih diterapake menyang tombol, tampilan akor, lan elemen interaktif ing sak kabehe app. Cocok karo mode Padhang lan Peteng.',
+  'choose an accent color theme: 8 solid colors (Blue default, Pink, Red, Amber, Green, Purple, Teal, Orange) plus 2 subtle-pattern themes (Disco, Confetti). The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.': {
+    la:      'elige thema coloris accentus: 8 colores solidi (Caeruleum defalta, Roseum, Rubrum, Succinum, Viride, Purpureum, Cyaneum, Aurantiacum) et 2 themata subtiliter picta (Disco, Confetti). Color electus papilionibus, ostentioni chordarum, et elementis interactivis per totam applicationem applicatur. Cum modo Lucis et Tenebrarum laborat.',
+    'zh-TW': '選擇強調色主題：8 種純色（藍色預設、粉色、紅色、琥珀色、綠色、紫色、青色、橘色），另有 2 款低調圖案主題（迪斯可、彩紙）。所選顏色應用於整個 App 的按鈕、和弦顯示和互動元素。支援淺色和深色模式！',
+    id:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Merah, Amber, Hijau, Ungu, Teal, Oranye) plus 2 tema pola halus (Disco, Confetti). Warna yang dipilih berlaku untuk tombol, tampilan akor, dan elemen interaktif di seluruh app. Cocok dengan mode Terang maupun Gelap!',
+    jv:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Abang, Amber, Ijo, Ungu, Teal, Oranye) lan 2 tema pola alus (Disco, Confetti). Warna sing dipilih diterapake menyang tombol, tampilan akor, lan elemen interaktif ing sak kabehe app. Cocok karo mode Padhang lan Peteng.',
   },
   'toggle between Light and Dark mode. WorshipToolkit follows your system\'s preference the first time you open it.': {
     la:      'commuta inter modum Lucis et Tenebrarum. WorshipToolkit praeferentiam systematis tui prima vice qua eam aperis sequitur.',
@@ -1715,18 +1897,71 @@ export class UiSettingsService {
   language: Language = 'en';
 
   colorTheme: ColorTheme = 'blue';
-  readonly colorThemes: ColorTheme[] = ['blue', 'pink', 'red', 'amber', 'green'];
+  readonly colorThemes: ColorTheme[] = [
+    'blue',
+    'pink',
+    'red',
+    'amber',
+    'green',
+    'purple',
+    'teal',
+    'orange',
+    'disco',
+    'confetti',
+  ];
 
   chordFont: ChordFont = 'readable';
 
   editorSplitColumns = false;
 
+  // One-time UI hints already dismissed by the user (persisted in prefs).
+  hintsSeen: string[] = [];
+
+  // Touch-first device (phone/tablet) — used to pick tap-vs-click hint wording.
+  readonly isCoarsePointer = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
+
+  hintSeen(id: string): boolean {
+    return this.hintsSeen.includes(id);
+  }
+
+  dismissHint(id: string) {
+    if (this.hintSeen(id)) return;
+    this.hintsSeen = [...this.hintsSeen, id];
+    this.savePrefs();
+  }
+
   readonly toastMsg = signal('');
+  readonly toastKind = signal<ToastKind>('info');
+  readonly toastAction = signal<ToastAction | null>(null);
   private toastTimer: ReturnType<typeof setTimeout> | null = null;
+  private toastStickyUntil = 0;
 
   showSettingsModal = false;
   openSettingsModal()  { this.showSettingsModal = true; }
   closeSettingsModal() { this.showSettingsModal = false; }
+
+  showShortcutsModal = false;
+
+  // Stage mode: distraction-free full-screen performance view. Not persisted.
+  // A signal because exit can be triggered from a native fullscreenchange
+  // event (outside Angular's event system in this zoneless app).
+  readonly stageMode = signal(false);
+
+  enterStageMode() {
+    this.stageMode.set(true);
+    // Best-effort: iPhone Safari has no Fullscreen API at all, and iPadOS
+    // only from 16.4 — the CSS layout must fully work without it.
+    try {
+      document.documentElement.requestFullscreen?.()?.catch(() => {});
+    } catch { /* unsupported */ }
+  }
+
+  exitStageMode() {
+    this.stageMode.set(false);
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
 
   get latinMode(): boolean { return this.language === 'la'; }
 
@@ -1735,13 +1970,63 @@ export class UiSettingsService {
     return TRANSLATIONS[key]?.[this.language] ?? key;
   }
 
+  // General-purpose toast. `msg` is translated via t(). Error and action
+  // toasts take priority: while one is live, an ordinary success/info toast
+  // won't clobber it. durationMs 0 = sticky until dismissed/replaced.
+  showToast(msg: string, kind: ToastKind = 'success', opts?: { durationMs?: number; action?: ToastAction }) {
+    const isPriority = kind === 'error' || !!opts?.action;
+    if (!isPriority && this.toastMsg() && Date.now() < this.toastStickyUntil) return;
+
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.toastMsg.set(this.t(msg));
+    this.toastKind.set(kind);
+    this.toastAction.set(opts?.action ?? null);
+
+    const duration = opts?.durationMs ?? (kind === 'error' ? 6000 : 3000);
+    this.toastStickyUntil = isPriority ? Date.now() + (duration || 3600_000) : 0;
+    if (duration > 0) {
+      this.toastTimer = setTimeout(() => this.dismissToast(), duration);
+    } else {
+      this.toastTimer = null;
+    }
+  }
+
+  dismissToast() {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.toastTimer = null;
+    this.toastStickyUntil = 0;
+    this.toastMsg.set('');
+    this.toastAction.set(null);
+  }
+
   setLanguage(lang: Language, silent = false) {
     this.language = lang;
     this.savePrefs();
     if (!silent) {
+      // LANG_TOASTS values are already in the target language — bypass t().
       if (this.toastTimer) clearTimeout(this.toastTimer);
       this.toastMsg.set(LANG_TOASTS[lang]);
-      this.toastTimer = setTimeout(() => this.toastMsg.set(''), 3000);
+      this.toastKind.set('info');
+      this.toastAction.set(null);
+      this.toastStickyUntil = 0;
+      this.toastTimer = setTimeout(() => this.dismissToast(), 3000);
+    }
+  }
+
+  // localStorage write that surfaces quota failures to the user instead of
+  // silently dropping the save. Throttled so bulk edits don't spam toasts.
+  private lastQuotaToast = 0;
+  safeSetItem(key: string, value: string): boolean {
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch {
+      const now = Date.now();
+      if (now - this.lastQuotaToast > 30_000) {
+        this.lastQuotaToast = now;
+        this.showToast('Storage is full — recent changes may not be saved. Export your set as a backup.', 'error');
+      }
+      return false;
     }
   }
 
@@ -1800,6 +2085,8 @@ export class UiSettingsService {
         const cf = p['chordFont'] as string;
         this.chordFont = cf === 'classic' ? 'classic' : 'readable';
         this.editorSplitColumns = p['editorSplitColumns'] === true;
+        const hints = p['hintsSeen'];
+        this.hintsSeen = Array.isArray(hints) ? hints.filter((h): h is string => typeof h === 'string') : [];
       } catch {
         this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
@@ -1829,6 +2116,7 @@ export class UiSettingsService {
       colorTheme: this.colorTheme,
       chordFont: this.chordFont,
       editorSplitColumns: this.editorSplitColumns,
+      hintsSeen: this.hintsSeen,
     }));
   }
 

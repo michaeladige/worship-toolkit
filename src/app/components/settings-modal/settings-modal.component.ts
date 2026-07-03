@@ -20,7 +20,18 @@ export class SettingsModalComponent {
   }
 
   colorLabel(c: ColorTheme): string {
-    const labels: Record<ColorTheme, string> = { blue: 'Blue', pink: 'Pink', red: 'Red', amber: 'Amber', green: 'Green' };
+    const labels: Record<ColorTheme, string> = {
+      blue: 'Blue',
+      pink: 'Pink',
+      red: 'Red',
+      amber: 'Amber',
+      green: 'Green',
+      purple: 'Purple',
+      teal: 'Teal',
+      orange: 'Orange',
+      disco: 'Disco',
+      confetti: 'Confetti',
+    };
     return labels[c];
   }
 }

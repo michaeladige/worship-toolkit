@@ -80,6 +80,64 @@
   --color-border:       #bbf7d0;
   --color-hover:        #dcfce7;
 }
+[data-color="purple"] {
+  --color-primary:      #7c3aed;
+  --color-primary-dark: #6d28d9;
+  --color-chord:        #6d28d9;
+  --color-bg:           #faf5ff;
+  --color-surface:      #fdfaff;
+  --color-border:       #e9d5ff;
+  --color-hover:        #f3e8ff;
+}
+[data-color="teal"] {
+  --color-primary:      #0d9488;
+  --color-primary-dark: #0f766e;
+  --color-chord:        #0f766e;
+  --color-bg:           #f0fdfa;
+  --color-surface:      #f7fffd;
+  --color-border:       #99f6e4;
+  --color-hover:        #ccfbf1;
+}
+[data-color="orange"] {
+  --color-primary:      #ea580c;
+  --color-primary-dark: #c2410c;
+  --color-chord:        #c2410c;
+  --color-bg:           #fff7ed;
+  --color-surface:      #fffaf5;
+  --color-border:       #fed7aa;
+  --color-hover:        #ffedd5;
+}
+[data-color="disco"] {
+  --color-primary:      #c026d3;
+  --color-primary-dark: #a21caf;
+  --color-chord:        #a21caf;
+  --color-bg:           #fdf4ff;
+  --color-surface:      #fffbff;
+  --color-border:       #f3c6f9;
+  --color-hover:        #fae8ff;
+  --bg-pattern: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--color-primary) 6%, transparent) 0px,
+    color-mix(in srgb, var(--color-primary) 6%, transparent) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+}
+[data-color="confetti"] {
+  --color-primary:      #f43f5e;
+  --color-primary-dark: #e11d48;
+  --color-chord:        #e11d48;
+  --color-bg:           #fff1f2;
+  --color-surface:      #fff8f8;
+  --color-border:       #fecdd3;
+  --color-hover:        #ffe4e6;
+  --bg-pattern: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-primary) 8%, transparent) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 22px 22px;
+}
 
 /* ── Dark mode overrides per accent ── */
 [data-theme="dark"][data-color="pink"] {
@@ -118,13 +176,72 @@
   --color-border:       #16402a;
   --color-hover:        #132e1e;
 }
+[data-theme="dark"][data-color="purple"] {
+  --color-primary:      #a78bfa;
+  --color-primary-dark: #8b5cf6;
+  --color-chord:        #c4b5fd;
+  --color-bg:           #170f24;
+  --color-surface:      #211533;
+  --color-border:       #3f2a5c;
+  --color-hover:        #2f1e47;
+}
+[data-theme="dark"][data-color="teal"] {
+  --color-primary:      #2dd4bf;
+  --color-primary-dark: #14b8a6;
+  --color-chord:        #5eead4;
+  --color-bg:           #0a1a18;
+  --color-surface:      #0f2624;
+  --color-border:       #15453f;
+  --color-hover:        #113531;
+}
+[data-theme="dark"][data-color="orange"] {
+  --color-primary:      #fb923c;
+  --color-primary-dark: #f97316;
+  --color-chord:        #fdba74;
+  --color-bg:           #1c1206;
+  --color-surface:      #271908;
+  --color-border:       #4c2f0d;
+  --color-hover:        #3a250a;
+}
+[data-theme="dark"][data-color="disco"] {
+  --color-primary:      #e879f9;
+  --color-primary-dark: #d946ef;
+  --color-chord:        #f0abfc;
+  --color-bg:           #1a0f1c;
+  --color-surface:      #241428;
+  --color-border:       #472a4d;
+  --color-hover:        #35203a;
+  --bg-pattern: repeating-linear-gradient(
+    45deg,
+    color-mix(in srgb, var(--color-primary) 8%, transparent) 0px,
+    color-mix(in srgb, var(--color-primary) 8%, transparent) 1px,
+    transparent 1px,
+    transparent 12px
+  );
+}
+[data-theme="dark"][data-color="confetti"] {
+  --color-primary:      #fb7185;
+  --color-primary-dark: #f43f5e;
+  --color-chord:        #fda4af;
+  --color-bg:           #1c0f11;
+  --color-surface:      #271317;
+  --color-border:       #4c1c22;
+  --color-hover:        #3a171a;
+  --bg-pattern: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-primary) 10%, transparent) 1.5px,
+    transparent 1.5px
+  );
+  background-size: 22px 22px;
+}
 
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-image: var(--bg-pattern, none);
   color: var(--color-text);
   font-size: 14px;
   -webkit-font-smoothing: antialiased;

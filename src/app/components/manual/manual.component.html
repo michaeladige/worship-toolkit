@@ -82,6 +82,7 @@ Sephiroth!</pre>
     <ol>
       <li>{{ ui.t('Open the app and either') }} <strong>{{ ui.t('drag & drop') }}</strong> {{ ui.t('a SongSelect PDF onto the drop zone, click') }} <strong>{{ ui.t('Choose File') }}</strong> {{ ui.t('to pick one, click') }} <strong>{{ ui.t('✏️ Start from scratch') }}</strong> {{ ui.t('to create a blank song, or click') }} <strong>{{ ui.t('📂 Load set file') }}</strong> {{ ui.t('to resume from a previously exported') }} <code>.wt</code> {{ ui.t('file.') }}</li>
       <li>{{ ui.t('The app parses the PDF automatically. Multi-song PDFs are split into individual songs.') }}</li>
+      <li>{{ ui.t('You can select or drop several PDF files at once — they are parsed one by one, and any file that fails shows its own error message while the rest still load.') }}</li>
       <li>{{ ui.t('Two-column layouts and superscript chord extensions (e.g.') }} <code>Fm⁷</code>) {{ ui.t('are recognized and normalized automatically (e.g. to') }} <code>Fm7</code>{{ ui.t(').') }}</li>
       <li>{{ ui.t('Direction notes such as') }} <em>To Tag</em> {{ ui.t('or') }} <em>To Interlude</em>{{ ui.t(', and bar notation like') }} <code>| Am7 | G |</code>{{ ui.t(', are preserved as italic annotations under the relevant line.') }}</li>
     </ol>
@@ -98,6 +99,7 @@ Sephiroth!</pre>
     <ul>
       <li>{{ ui.t('Click any song in the list to switch the editor to that song.') }}</li>
       <li>{{ ui.t('The current key for each song is shown next to its title.') }}</li>
+      <li><strong>{{ ui.t('Search songs') }}</strong> &mdash; {{ ui.t('sets with more than 5 songs show a search box above the list to filter by title. Reordering is paused while a filter is active.') }}</li>
       <li><strong>{{ ui.t('Rename a song title') }}</strong> &mdash; {{ ui.t('click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press') }} <kbd>Enter</kbd> {{ ui.t('to save or') }} <kbd>Esc</kbd> {{ ui.t('to cancel. This is especially useful for songs added as blank "New Song" entries.') }}</li>
       <li><strong>{{ ui.t('Remove a song') }}</strong> &mdash; {{ ui.t('hover over a song in the list and click the') }} <strong>✕</strong> {{ ui.t('button that appears on the right. Removing the last song returns you to the upload screen.') }}</li>
       <li><strong>{{ ui.t('Collapse the sidebar') }}</strong> &mdash; {{ ui.t('on desktop and tablet, click the') }} <strong>◄</strong> {{ ui.t('button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click') }} <strong>►</strong> {{ ui.t('to expand it again. On mobile, tap') }} <strong>{{ ui.t('Songs in Set') }} ▼</strong> {{ ui.t('to collapse the song bar and free up vertical space; tap again (') }}<strong>{{ ui.t('Songs in Set') }} ▲</strong>{{ ui.t(') to expand it.') }}</li>
@@ -139,11 +141,20 @@ Sephiroth!</pre>
     </ul>
     <h3>{{ ui.t('Autoscroll') }}</h3>
     <ul>
-      <li><strong>{{ ui.t('SCROLL control') }}</strong> &mdash; {{ ui.t('in the toolbar, use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons to raise or lower the scroll speed (0–10). Speed starts at 0 (off) every time — it\'s not saved between songs or sessions.') }}</li>
+      <li><strong>{{ ui.t('AUTOSCROLL control') }}</strong> &mdash; {{ ui.t('in the toolbar, click the') }} <strong>⏬ {{ ui.t('Autoscroll') }}</strong> {{ ui.t('button to turn scrolling on or off. When on, a speed stepper appears: use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons, or type a number directly into the box (0–30). Speed starts off every time — it\'s not saved between songs or sessions.') }}</li>
     </ul>
     <h3>{{ ui.t('Metronome') }}</h3>
     <ul>
-      <li><strong>{{ ui.t('METRONOME control') }}</strong> &mdash; {{ ui.t('in the toolbar, click the') }} <strong>♩</strong> {{ ui.t('icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song\'s BPM info (or 80 if the song has none). Use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons to adjust it (30–240). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.') }}</li>
+      <li><strong>{{ ui.t('METRONOME control') }}</strong> &mdash; {{ ui.t('in the toolbar, click the') }} <strong>♩</strong> {{ ui.t('icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song\'s BPM info (or 80 if the song has none). Use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons, or type a number directly into the box, to adjust it (30–300). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.') }}</li>
+    </ul>
+    <h3>{{ ui.t('Stage mode') }}</h3>
+    <ul>
+      <li><strong>🎤 {{ ui.t('Stage') }}</strong> &mdash; {{ ui.t('click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button. Both the scroll speed and BPM boxes in the floating bar are editable, just like in the toolbar.') }}</li>
+      <li>{{ ui.t('Where the browser supports it, stage mode also goes full-screen. Press') }} <kbd>Esc</kbd> {{ ui.t('or tap') }} <strong>✕</strong> {{ ui.t('to exit.') }}</li>
+    </ul>
+    <h3>{{ ui.t('Keyboard shortcuts') }}</h3>
+    <ul>
+      <li><kbd>+</kbd> / <kbd>−</kbd> {{ ui.t('transpose the current song up or down;') }} <kbd>Ctrl</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd> {{ ui.t('switch to the next or previous song;') }} <kbd>?</kbd> {{ ui.t('shows the full shortcut list.') }}</li>
     </ul>
     <h3>{{ ui.t('Annotations') }}</h3>
     <ul>
@@ -213,6 +224,7 @@ Sephiroth!</pre>
       {{ ui.t('A') }} <em>{{ ui.t('set') }}</em> {{ ui.t('is your current collection of songs. Saving a set lets you snapshot it and return to it later — even if you close the browser or start working on a different set in the meantime.') }}
     </p>
     <p>{{ ui.t('The header shows the active set\'s name (e.g.') }} <strong>💾 {{ ui.t('Sunday Service') }} ▾</strong>{{ ui.t('), or') }} <strong>💾 {{ ui.t('Untitled set') }} ▾</strong> {{ ui.t('if nothing is saved yet. Click it to open the') }} <strong>{{ ui.t('Saved Sets') }}</strong> {{ ui.t('panel. At the top of the panel, the current set name and last-modified time are shown — or') }} <em>{{ ui.t('Unsaved set') }}</em> {{ ui.t('if no set is active yet.') }}</p>
+    <p>{{ ui.t('An amber dot on the 💾 button means your songs are not yet in a named set — name and save them, or they will be replaced if you load another set.') }}</p>
     <h3>{{ ui.t('Starting a new set') }}</h3>
     <ul>
       <li>{{ ui.t('Click') }} <strong>➕ {{ ui.t('New') }}</strong> {{ ui.t('in the header (or') }} <strong>{{ ui.t('+ New') }}</strong> {{ ui.t('inside the Saved Sets panel) to clear the workspace and start fresh. On mobile the header button shows just the') }} <strong>➕</strong> {{ ui.t('icon.') }}</li>
@@ -255,7 +267,7 @@ Sephiroth!</pre>
     <p>{{ ui.t('Click the') }} <strong>⚙️ {{ ui.t('Settings') }}</strong> {{ ui.t('button in the app header to open the Settings panel. All display and export preferences live here and are remembered between visits.') }}</p>
     <h3>{{ ui.t('Appearance') }}</h3>
     <ul>
-      <li><strong>{{ ui.t('Color') }}</strong> &mdash; {{ ui.t('choose an accent color theme: Blue (default), Pink, Red, Amber, or Green. The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.') }}</li>
+      <li><strong>{{ ui.t('Color') }}</strong> &mdash; {{ ui.t('choose an accent color theme: 8 solid colors (Blue default, Pink, Red, Amber, Green, Purple, Teal, Orange) plus 2 subtle-pattern themes (Disco, Confetti). The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.') }}</li>
       <li><strong>{{ ui.t('Theme') }}</strong> &mdash; {{ ui.t('toggle between Light and Dark mode. WorshipToolkit follows your system\'s preference the first time you open it.') }}</li>
       <li><strong>{{ ui.t('Accidentals') }}</strong> &mdash; {{ ui.t('choose how chord and key names are spelled:') }}
         <ul>
@@ -293,6 +305,8 @@ Sephiroth!</pre>
       <li><strong>{{ ui.t('Nothing parsed from my PDF?') }}</strong> {{ ui.t('Make sure it\'s an actual SongSelect chord chart export, not a scanned/photographed image — the parser reads text, not pixels.') }}</li>
       <li><strong>{{ ui.t('Chord didn\'t land where I dragged it?') }}</strong> {{ ui.t('Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.') }}</li>
       <li><strong>{{ ui.t('Want a clean slate for one song only?') }}</strong> {{ ui.t('You can remove and re-add sections/lines rather than starting a whole new upload.') }}</li>
+      <li><strong>{{ ui.t('Install it as an app') }}</strong> &mdash; {{ ui.t('WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload.') }}</li>
+      <li><strong>{{ ui.t('App seems stuck on an old version?') }}</strong> {{ ui.t('Load it once with') }} <code>?ngsw-bypass=true</code> {{ ui.t('added to the URL to skip the offline cache, then reload normally.') }}</li>
     </ul>
   </section>
 
@@ -301,9 +315,50 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.4.3</h3></summary>
+      <ul>
+        <li><strong>Autoscroll now behaves like the metronome</strong> &mdash; the speed stepper only shows once you turn autoscroll on with its toggle button, instead of always being visible. The label is back to "Autoscroll".</li>
+        <li><strong>Type a BPM or scroll speed directly</strong> &mdash; both value boxes now accept typed input as well as the up/down buttons, and no longer show a conflicting native spin control alongside the app's own arrows.</li>
+        <li><strong>Wider, gentler autoscroll range</strong> &mdash; each speed level scrolls slower than before, with a higher top level (0–30 instead of 0–10) for finer control. Metronome's top end raised to 300 BPM.</li>
+        <li><strong>Stage mode's floating bar is now editable too</strong> &mdash; scroll speed and BPM can be typed directly there as well, not just stepped.</li>
+        <li>Autoscroll/metronome toolbar buttons resized to match the rest of the toolbar.</li>
+        <li><strong>Fixed:</strong> autoscroll could fail to move at all at low speed levels on some devices (notably iPad), since sub-pixel per-frame movement was getting rounded away every frame instead of accumulating.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.4.2</h3></summary>
+      <ul>
+        <li><strong>Installable app with offline support (PWA)</strong> &mdash; install WorshipToolkit from the browser and use it fully offline — all data already lives on your device. A toast offers a one-tap Reload when a new version ships. Production only; the beta site stays uncached so testers always get the latest push.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.4.1</h3></summary>
+      <ul>
+        <li><strong>Stage mode</strong> &mdash; a new 🎤 Stage button in the toolbar gives a distraction-free full-screen performance view with a floating bar for scroll, metronome, previous/next song, and exit. <kbd>Esc</kbd> leaves stage mode.</li>
+        <li><strong>Keyboard shortcuts</strong> &mdash; <kbd>+</kbd>/<kbd>−</kbd> transpose, <kbd>Ctrl</kbd>+<kbd>↓</kbd>/<kbd>↑</kbd> switch songs, and <kbd>?</kbd> opens a shortcuts cheatsheet.</li>
+        <li><strong>One-time hints</strong> &mdash; a dismissible tip explains chord editing the first time a song with chords is open (worded for tap on touch devices), and phones get a one-time pointer to the song-list tab.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>1.4.0</h3></summary>
+      <ul>
+        <li><strong>Action feedback toasts</strong> &mdash; saving, importing, exporting, or deleting a set, and PDF/Markdown exports, now show a brief confirmation toast; failures show a red error toast.</li>
+        <li><strong>Storage-full warning</strong> &mdash; if the browser's storage quota is exceeded, an error toast warns you to export a backup instead of the save silently failing.</li>
+        <li><strong>Unsaved-set indicator</strong> &mdash; songs without a named set show an amber dot on the header 💾 button, nudging you to name and save before the work can be clobbered by loading another set.</li>
+        <li><strong>Multi-file PDF upload</strong> &mdash; drop or pick several PDFs at once, on the upload page or via "+ Import PDF". Per-file errors are reported while the rest still load.</li>
+        <li><strong>Song list search</strong> &mdash; sets with more than 5 songs get a filter box above the sidebar list.</li>
+        <li><strong>Real parse errors shown</strong> &mdash; failed PDF imports now surface the specific reason (e.g. a timeout) instead of a generic message, and no longer get stuck on the parsing spinner.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.3.1</h3></summary>
       <ul>
-        <li><strong>Scroll and Metronome controls now show icon + label together</strong> &mdash; SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.</li>
+        <li><strong>5 new color themes</strong> &mdash; Purple, Teal, and Orange join the solid accent lineup, plus two playful subtle-pattern themes, Disco (diagonal stripes) and Confetti (dot grid). All 10 themes now have full light and dark mode variants, picked from the same swatch row in ⚙️ Settings → Appearance.</li>
+        <li><strong>Bass Notes and Nashville toggles are mobile-friendly</strong> &mdash; on phones, "🎹 Bass Notes" and "1 2 3 Nashville" now collapse to short "Bass" and "1 2 3" labels, matching the Scroll/Metronome icon+label responsive pattern.</li>
       </ul>
     </details>
 
@@ -311,6 +366,7 @@ Sephiroth!</pre>
       <summary><h3>1.3.0</h3></summary>
       <ul>
         <li><strong>Metronome</strong> &mdash; a new ♩ toggle beside the SCROLL control turns on an audible click track. Turning it on shows a BPM stepper (30&ndash;240) defaulted from the song's BPM info, or 80 if the song has none. The metronome always turns off on page refresh and whenever you switch to a different song, and re-reads the song's BPM each time you turn it back on.</li>
+        <li><strong>Scroll and Metronome controls now show icon + label together</strong> &mdash; SCROLL gets a clearer ⏬ icon back (replacing the text-only label), and METRONOME gains a visible label next to its ♩ icon instead of being icon-only. On phones the text collapses back to icon-only to keep the toolbar compact, matching the existing responsive pattern used elsewhere in the header.</li>
       </ul>
     </details>
 
