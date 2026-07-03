@@ -6,6 +6,7 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 
 ### Added
 - **Numbered song list** — collapsing the sidebar (or the mobile tab bar) now shows each song's position number instead, for a quick reference and one-tap jump. Press `1`–`9` on your keyboard from anywhere in the editor to jump straight to that song.
+- **Stage mode now turns on View Only mode automatically** — the chart locks against accidental edits the moment you enter Stage mode, and unlocks again automatically on exit. It can still be toggled off manually from the floating bar while performing if you need to edit.
 
 ### Fixed
 - **Chord/lyric lines wider than the screen dragged the entire editor pane sideways on mobile** — including the toolbar and "Add section" row. Each line now scrolls independently, with a subtle fade on the right edge when there's more to see.

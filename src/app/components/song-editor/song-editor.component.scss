@@ -495,7 +495,12 @@
     padding: 0.4rem 0.4rem;
   }
 
-  &:hover:not(:disabled) {
+  // :not(.active) keeps the hover highlight from ever out-specificity-ing
+  // .active's background below — without it, .active looked like it "stopped
+  // working" after the mouse had hovered the button once (which it always
+  // has, right after a click), since :hover:not(:disabled)'s three-selector
+  // specificity otherwise beats .active's two-selector specificity.
+  &:hover:not(:disabled):not(.active) {
     color: var(--color-primary);
     background: var(--color-hover);
   }
@@ -505,8 +510,13 @@
     cursor: not-allowed;
   }
 
+  // Standalone buttons (currently only View Only) need a stronger cue than
+  // text color alone — unlike autoscroll/metronome, which are wrapped in a
+  // .stage-bar-group that gains a colored border when active, a lone button
+  // with just a color shift was too subtle to register as "on".
   &.active {
-    color: var(--color-primary);
+    color: #fff;
+    background: var(--color-primary);
   }
 }
 

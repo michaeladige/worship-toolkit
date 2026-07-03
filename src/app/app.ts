@@ -89,7 +89,7 @@ export class App implements OnInit {
   @HostListener('document:fullscreenchange')
   onFullscreenChange() {
     if (!document.fullscreenElement && this.ui.stageMode()) {
-      this.ui.stageMode.set(false);
+      this.ui.exitStageMode();
     }
   }
 
