@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.4.4] - 2026-07-03
+
+### Added
+- **"Check for updates" button in Settings** — under a new Updates section, alongside the current app version. It asks the service worker to check for a newer version and, if one is found, the usual reload toast appears shortly after. If there's nothing newer, it treats that as a possible stuck/broken installation and force-refreshes: unregisters the service worker, clears its caches, and reloads — the same recovery as the manual `?ngsw-bypass=true` trick, without needing to know the URL param.
+
 ## [1.4.3] - 2026-07-03
 
 ### Fixed

@@ -33,3 +33,32 @@ test.describe('PWA installability', () => {
     await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('href', 'icons/icon-192x192.png');
   });
 });
+
+test.describe('Check for updates (Settings)', () => {
+  // The service worker is disabled in dev mode, so clicking the button takes
+  // the "no update mechanism available" fallback path: unregister/clear caches
+  // and hard-reload. That reload is what we can observe here; the actual
+  // checkForUpdate()/VERSION_READY branches only run against a built SW.
+  test('forces a reload when no service worker is registered', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: 'Start from scratch' }).click();
+    await page.getByRole('button', { name: 'Settings' }).click();
+
+    // A marker that only a real page reload (not an in-SPA navigation) clears.
+    await page.evaluate(() => { (window as unknown as { __marker: boolean }).__marker = true; });
+
+    const button = page.getByRole('button', { name: 'Check for updates' });
+    await expect(button).toBeVisible();
+    await button.click();
+
+    // The click handler awaits unregistering/clearing caches before calling
+    // reload(), so the navigation doesn't start the instant click() resolves —
+    // poll for it rather than racing a single waitForLoadState() call.
+    await expect
+      .poll(
+        () => page.evaluate(() => (window as unknown as { __marker?: boolean }).__marker === true),
+        { timeout: 5000 },
+      )
+      .toBe(false);
+  });
+});
