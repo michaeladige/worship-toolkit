@@ -49,19 +49,29 @@ const LANG_TOASTS: Record<Language, string> = {
 // renderings of the English set).
 const TAGLINES: Record<Language, string[]> = {
   en: [
-    // 4 Scripture quotes about worship (KJV — public domain)
+    // 7 Scripture quotes about worship (KJV — public domain)
     '"O come, let us sing unto the LORD." — Psalm 95:1',
     '"Serve the LORD with gladness: come before his presence with singing." — Psalm 100:2',
     '"God is a Spirit: and they that worship him must worship him in spirit and in truth." — John 4:24',
     '"Let every thing that hath breath praise the LORD." — Psalm 150:6',
-    // 2 helpful
+    '"O sing unto the LORD a new song: sing unto the LORD, all the earth." — Psalm 96:1',
+    '"O clap your hands, all ye people; shout unto God with the voice of triumph." — Psalm 47:1',
+    '"O magnify the LORD with me, and let us exalt his name together." — Psalm 34:3',
+    // 5 helpful
     'Upload a SongSelect PDF to edit keys, transpose chords, and export your set',
     'Transpose on the fly, print clean charts, and keep your whole set in sync — no login required',
-    // 4 funny
+    'Drag chords into place, tweak the lyrics, and export a clean PDF in minutes',
+    'Works offline once installed — perfect for green rooms with zero signal',
+    'Nashville numbers, capo suggestions, and a bass-only view, all built in',
+    // 8 funny (classic, Gen Z, and millennial twists)
     'Turning 17-page PDFs into chord charts your guitarist can actually read',
     'No cloud, no login, no drama — just your chords and a Wi-Fi-free Sunday',
     'Because "Capo 4, but which key is that again?" shouldn\'t be your biggest worship problem',
     'Chord charts so clean, even the drummer will pretend to read them',
+    'POV: your capo\'s on fret 4 and nobody, including you, knows why',
+    'No cap — this might be the cleanest chord chart your band\'s ever seen',
+    'Remember fixing chord charts with Wite-Out? Yeah, we don\'t miss that either',
+    'Faster than dial-up, more reliable than the church Wi-Fi password',
   ],
   la: [
     'Capo IV? In hac appli, capo est fabula tantum.',
@@ -98,6 +108,16 @@ const TAGLINES: Record<Language, string[]> = {
     'Dulu transpose chord manual pakai pensil dan tip-ex — anak 90-an pasti baper nostalgia.',
     'Nggak perlu nunggu loading kayak internet dial-up jaman old — buka langsung gas, walau offline.',
     'Gratis, offline, anti error — lebih setia dari sinyal HP jaman kuliah dulu.',
+    'POV: capo di fret 4, dan nggak ada yang tau kenapa — termasuk yang masang.',
+    'Chord chart serapi ini bikin gitaris auto pede tampil, no cap.',
+    'Dulu benerin not chord pakai tip-ex, sekarang tinggal klik — hidup emang harus healing.',
+    'Lebih ngebut dari internet warnet jaman SMP, lebih setia dari sinyal pas telpon-telponan.',
+    'Worship leader paling panik bukan pas mati lampu, tapi pas lupa lagu ini nadanya apa.',
+    'Nggak usah drama nyari kabel data buat mindahin chart — semua langsung di HP-mu, gaskeun.',
+    'Gitaris: "Eh ini kok makin gampang." Kita: memang niatnya gitu, bestie.',
+    'Jaman kaset dulu muter lagu rohani sambil di-rewind manual — sekarang tinggal transpose sekali klik.',
+    'Kalau chord ini pegawai, dia paling rajin: dateng pas jamnya, pulang pas jamnya, nggak pernah kabur.',
+    'Anti ribet, anti loading lama — beda banget sama nungguin buffering YouTube jaman modem jadul.',
   ],
   jv: [
     'Chord numpuk kaya utang tonggo? Tenang, kabeh tak-rapikke, cepet rampung.',
@@ -110,6 +130,16 @@ const TAGLINES: Record<Language, string[]> = {
     'Wenehna PDF-mu, kita wenehi bali nada sing pas, ora nganggo ribet.',
     'Pendeta ngomong "Amin", pemain musik isih mikir iki Es minor apa Es mayor — wis, kita sing ngurus.',
     'Gratis, offline, ora tau error — luwih setya tinimbang kothak pisungsung sing kadang bolong.',
+    'POV: capo nang fret 4, ora ana sing ngerti kenapa — kalebu sing masang dhewe.',
+    'Chord chart resik kaya ngene, gitaris langsung pede, tenanan.',
+    'Mbiyen mbenerke not chord nganggo tip-ex, saiki cukup diklik — uripe dadi luwih ayem.',
+    'Luwih cepet tinimbang internet warnet jaman SMP, luwih setya tinimbang sinyal HP jaman kuliah.',
+    'Sing gawe pemimpin pujian panik dudu mati lampu, nanging lali lagu iki nadane apa.',
+    'Ora usah golek kabel data kanggo mindhah chart — kabeh wis ana ing HP-mu, gampang.',
+    'Gitaris: "Lho kok saiki gampang tenan." Kita: pancen niate ngono, Cah.',
+    'Jaman kaset mbiyen muter lagu rohani karo di-rewind manual — saiki tinggal transpose sepisan klik.',
+    'Yen chord iki pegawe, paling rajin: teka pas jame, mulih pas jame, ora tau mlayu.',
+    'Anti ribet, anti nunggu suwe — beda karo nunggu buffering jaman modem jadul.',
   ],
 };
 
