@@ -207,7 +207,7 @@
         [attr.aria-pressed]="ui.viewOnly()"
         [title]="ui.t('View Only')"
       >
-        🔒 {{ ui.t('View Only') }}
+        {{ ui.viewOnly() ? '🔒' : '🔓' }} {{ ui.t('View Only') }}
       </button>
 
       <!-- Stage mode -->
@@ -341,7 +341,7 @@
         (click)="ui.toggleViewOnly()"
         [attr.aria-pressed]="ui.viewOnly()"
         [title]="ui.t('View Only')"
-      >🔒</button>
+      >{{ ui.viewOnly() ? '🔒' : '🔓' }}</button>
 
       <button class="stage-bar-btn stage-exit-btn" (click)="ui.exitStageMode()" [title]="ui.t('Exit stage mode')">✕</button>
     </div>

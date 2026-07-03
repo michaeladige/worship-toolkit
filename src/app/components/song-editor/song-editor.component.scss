@@ -505,8 +505,13 @@
     cursor: not-allowed;
   }
 
+  // Standalone buttons (currently only View Only) need a stronger cue than
+  // text color alone — unlike autoscroll/metronome, which are wrapped in a
+  // .stage-bar-group that gains a colored border when active, a lone button
+  // with just a color shift was too subtle to register as "on".
   &.active {
-    color: var(--color-primary);
+    color: #fff;
+    background: var(--color-primary);
   }
 }
 
