@@ -88,12 +88,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 0.35rem;
   padding: 0.55rem 1.25rem;
 }
 
 .setting-label {
   font-size: 0.875rem;
   color: var(--color-text);
+  // Never let the label itself wrap mid-word (seen with longer translations,
+  // e.g. Traditional Chinese "顏色" or Latin "Character Chordae") — if the
+  // label + control together don't fit on one line, .setting-row wraps the
+  // control onto its own line instead (see margin-left: auto below).
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .setting-btn {
@@ -107,6 +115,7 @@
   cursor: pointer;
   font-family: inherit;
   white-space: nowrap;
+  margin-left: auto;
   transition: border-color 0.12s, color 0.12s;
 
   &:hover { border-color: var(--color-primary); color: var(--color-primary); }
@@ -124,6 +133,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  margin-left: auto;
 }
 
 .font-step-btn {
@@ -154,6 +164,7 @@
   border: 1px solid var(--color-border);
   border-radius: 6px;
   overflow: hidden;
+  margin-left: auto;
 }
 
 .seg-btn {
@@ -182,6 +193,7 @@
   flex-wrap: wrap;
   gap: 0.4rem;
   align-items: center;
+  margin-left: auto;
 }
 
 .swatch {
@@ -243,6 +255,7 @@
   display: flex;
   gap: 0.25rem;
   flex-wrap: wrap;
+  margin-left: auto;
 }
 
 .lang-pill {
