@@ -225,6 +225,12 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Tips: tap Share (Bagikan), lalu "Add to Home Screen" buat instal WorshipToolkit biar bisa dibuka cepat walau offline.',
     jv: 'Tips: tap Share, banjur "Add to Home Screen" kanggo instal WorshipToolkit supaya bisa dibukak cepet sanajan offline.',
   },
+  'Look for an install icon in your browser\'s address bar, or check its menu for "Install App" / "Add to Home Screen".': {
+    la: 'Quaere iconem instalandi in vecte inscriptionis navigatri tui, vel inspice menu eius pro "Instala Applicationem" / "Adde ad Quadrum Domesticum".',
+    'zh-TW': '請找瀏覽器網址列上的安裝圖示，或查看瀏覽器選單中的「安裝應用程式」／「加入主畫面」。',
+    id: 'Cari ikon install di address bar browser-mu, atau cek menu browser buat "Install App" / "Add to Home Screen".',
+    jv: 'Golek ikon instal ing address bar browser-mu, utawa priksa menu browser kanggo "Install App" / "Add to Home Screen".',
+  },
   'Install it as an app': { la: 'Instala eam ut applicationem', 'zh-TW': '安裝成 App', id: 'Instal jadi aplikasi', jv: 'Instal dadi aplikasi' },
   'WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload. On Chrome/Edge/Android, the first time the browser is ready to install, a toast offers a one-tap Install too — and stays reachable afterward under': {
     la: 'WorshipToolkit instalari potest ("Adde ad Quadrum Domesticum" in mobili, icon instalandi in vecte inscriptionis in mensa) et sine interreti plene operatur postquam semel oneratum est — utile in scaena cum wifi infido. Cum nova versio emittitur, toast Recargare uno tactu offert. In Chrome/Edge/Android, prima vice cum instrumentum instalare parata est, toast Instala quoque uno tactu offert — et postea sub',
@@ -2208,13 +2214,21 @@ export class UiSettingsService {
 
   // Used by an on-demand "Install app" button (as opposed to the automatic
   // one-time toasts): trigger the native prompt where one was captured,
-  // otherwise fall back to the manual iOS instructions.
+  // fall back to the manual iOS instructions, or — since the button is now
+  // shown unconditionally rather than only when we know how to install —
+  // a generic pointer for browsers with neither (desktop Firefox/Safari).
   installOrShowHint() {
     if (this.installPromptEvent()) {
       this.promptInstall();
     } else if (this.isIos) {
       this.showToast(
         'Tip: tap Share, then "Add to Home Screen" to install WorshipToolkit for quick, offline access.',
+        'info',
+        { durationMs: 8000 },
+      );
+    } else {
+      this.showToast(
+        'Look for an install icon in your browser\'s address bar, or check its menu for "Install App" / "Add to Home Screen".',
         'info',
         { durationMs: 8000 },
       );

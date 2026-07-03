@@ -315,6 +315,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.5.1</h3></summary>
+      <ul>
+        <li><strong>Home page "Install app" button is now always shown</strong> &mdash; instead of only appearing once a Chromium install prompt or iOS was detected. It still triggers the real install prompt or iOS Share instructions where available; elsewhere (desktop Firefox/Safari) it now points at the browser's own install icon/menu instead of doing nothing.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.5.0</h3></summary>
       <ul>
         <li><strong>Easier PWA install prompt</strong> &mdash; on Chrome/Edge/Android, the first time the browser is ready to install, a one-time toast now offers a one-tap Install button, and an "Install app" row stays available under Settings → Updates afterward. On iOS, a one-time tip points at Share → "Add to Home Screen" instead, since there's no install button to offer there. Neither shows again once the app is already installed.</li>
