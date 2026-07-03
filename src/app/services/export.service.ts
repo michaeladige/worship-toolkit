@@ -142,7 +142,19 @@ export class ExportService {
     return transposed;
   }
 
-  async toPdf(songs: ParsedSong[], pdfFontSize = 14, accidentals: Accidentals = 'auto', fontChoice: ChordFont = 'classic'): Promise<void> {
+  async toPdf(
+    songs: ParsedSong[],
+    pdfFontSize = 14,
+    accidentals: Accidentals = 'auto',
+    fontChoice: ChordFont = 'classic',
+    mode: 'save' | 'print' = 'save',
+  ): Promise<void> {
+    // Must open the window synchronously, before any await — the JetBrains Mono
+    // font fetch below is a real async gap, and popup blockers treat a window.open
+    // called after one as an unrequested popup rather than a user-gesture response.
+    // We point it at the rendered PDF once it's ready.
+    const printWin = mode === 'print' ? window.open('', '_blank') : null;
+
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
 
@@ -360,7 +372,18 @@ export class ExportService {
       }
     }
 
-    doc.save('worship-set.pdf');
+    if (mode === 'print') {
+      const dataUrl = doc.output('dataurlstring');
+      if (printWin) {
+        printWin.location.href = dataUrl;
+      } else {
+        // The initial window.open() itself got blocked — best-effort fallback,
+        // may also be blocked, but there's nothing else to try at this point.
+        doc.output('dataurlnewwindow');
+      }
+    } else {
+      doc.save('worship-set.pdf');
+    }
   }
 
   downloadSession(songs: ParsedSong[], name: string): void {

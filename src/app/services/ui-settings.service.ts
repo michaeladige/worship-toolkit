@@ -393,6 +393,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Song PDF':              { la: 'PDF Cantus',                  'zh-TW': '歌曲 PDF',       id: 'PDF Lagu',            jv: 'PDF Lagu'           },
   'Current song only':     { la: 'Solum cantus currens',        'zh-TW': '僅目前歌曲',     id: 'Lagu ini saja',       jv: 'Lagu iki wae'       },
   'Set PDF':               { la: 'PDF Collectionis',            'zh-TW': '全集 PDF',       id: 'PDF Set',             jv: 'PDF Set'            },
+  'Print Song':            { la: 'Imprimere Cantum',            'zh-TW': '列印歌曲',       id: 'Cetak Lagu',          jv: 'Print Lagu'         },
+  'Print Set':             { la: 'Imprimere Collectionem',      'zh-TW': '列印全集',       id: 'Cetak Set',           jv: 'Print Set'          },
   'All songs in one file': { la: 'Omnes cantus in uno fasciculo', 'zh-TW': '所有歌曲合一檔', id: 'Semua lagu satu file', jv: 'Kabeh lagu siji file' },
   'Full set as .md file':  { la: 'Collectio ut fasciculus .md', 'zh-TW': '全集 .md 檔',    id: 'Set lengkap .md',     jv: 'Set lengkap .md'    },
   'Generating…':           { la: 'Generando…',                  'zh-TW': '產生中…',        id: 'Membuat…',            jv: 'Digawe…'            },

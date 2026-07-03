@@ -26,6 +26,24 @@
         @if (exporting) { <span class="opt-spinner"></span> }
       </button>
 
+      <button class="export-option" (click)="printSongPdf()" [disabled]="exporting">
+        <span class="opt-icon">🖨️</span>
+        <span class="opt-body">
+          <strong>{{ ui.t('Print Song') }}</strong>
+          <span class="opt-desc">{{ ui.t('Current song only') }}</span>
+        </span>
+        @if (exporting) { <span class="opt-spinner"></span> }
+      </button>
+
+      <button class="export-option" (click)="printSetPdf()" [disabled]="exporting">
+        <span class="opt-icon">🖨️</span>
+        <span class="opt-body">
+          <strong>{{ ui.t('Print Set') }}</strong>
+          <span class="opt-desc">{{ ui.t('All songs in one file') }}</span>
+        </span>
+        @if (exporting) { <span class="opt-spinner"></span> }
+      </button>
+
       <button class="export-option" (click)="exportMarkdown()" [disabled]="exporting">
         <span class="opt-icon">📝</span>
         <span class="opt-body">
