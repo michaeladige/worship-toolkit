@@ -120,4 +120,33 @@ test.describe('Install prompt', () => {
     // …but the toast should not reappear a second time.
     await expect(page.locator('.toast-action-btn', { hasText: 'Install' })).toHaveCount(0);
   });
+
+  test('home page shows an install button once the browser is install-eligible', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('.install-app-btn')).toHaveCount(0);
+
+    await fireBeforeInstallPrompt(page);
+    const homeInstallBtn = page.locator('.install-app-btn');
+    await expect(homeInstallBtn).toBeVisible();
+
+    await homeInstallBtn.click();
+    const promptCalled = await page.evaluate(
+      () => (window as unknown as { __lastInstallEvent: { promptCalled?: boolean } }).__lastInstallEvent.promptCalled === true,
+    );
+    expect(promptCalled).toBe(true);
+    await expect(homeInstallBtn).toHaveCount(0);
+  });
+});
+
+test.describe('Home page tagline', () => {
+  test('shows a non-empty tagline that cycles to a different one over time', async ({ page }) => {
+    await page.goto('/');
+    const subtitle = page.locator('.subtitle');
+    const first = await subtitle.textContent();
+    expect(first).toBeTruthy();
+
+    // The English pool has 10 entries and the cycle logic explicitly avoids
+    // repeating the one on screen, so a change is guaranteed within one cycle.
+    await expect.poll(async () => await subtitle.textContent(), { timeout: 7000 }).not.toBe(first);
+  });
 });

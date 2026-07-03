@@ -1,7 +1,10 @@
 <div class="upload-page">
   <div class="hero">
     <h1>{{ ui.t('WorshipToolkit') }}</h1>
-    <p class="subtitle">{{ ui.t('Upload a SongSelect PDF to edit keys, transpose chords, and export your set') }}</p>
+    <p class="subtitle" [class.subtitle--fading]="!taglineVisible()">{{ tagline() }}</p>
+    @if (!ui.isStandalone && (ui.installPromptEvent() || ui.isIos)) {
+      <button class="install-app-btn" (click)="ui.installOrShowHint()">📲 {{ ui.t('Install app') }}</button>
+    }
   </div>
 
   <div

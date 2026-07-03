@@ -46,19 +46,16 @@ export class App implements OnInit {
         });
     }
 
-    if (!this.isStandaloneDisplay()) {
-      // iOS Safari (and other iOS browsers) never fire beforeinstallprompt and
-      // have no programmatic install API — the only path is manual
-      // Share -> Add to Home Screen, so point at it once instead of staying silent.
-      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-      if (isIos && !this.ui.hintSeen('pwa-install')) {
-        this.ui.showToast(
-          'Tip: tap Share, then "Add to Home Screen" to install WorshipToolkit for quick, offline access.',
-          'info',
-          { durationMs: 8000 },
-        );
-        this.ui.dismissHint('pwa-install');
-      }
+    // iOS Safari (and other iOS browsers) never fire beforeinstallprompt and
+    // have no programmatic install API — the only path is manual
+    // Share -> Add to Home Screen, so point at it once instead of staying silent.
+    if (!this.ui.isStandalone && this.ui.isIos && !this.ui.hintSeen('pwa-install')) {
+      this.ui.showToast(
+        'Tip: tap Share, then "Add to Home Screen" to install WorshipToolkit for quick, offline access.',
+        'info',
+        { durationMs: 8000 },
+      );
+      this.ui.dismissHint('pwa-install');
     }
   }
 
@@ -85,13 +82,6 @@ export class App implements OnInit {
   @HostListener('window:appinstalled')
   onAppInstalled() {
     this.ui.installPromptEvent.set(null);
-  }
-
-  private isStandaloneDisplay(): boolean {
-    return (
-      matchMedia('(display-mode: standalone)').matches ||
-      (navigator as Navigator & { standalone?: boolean }).standalone === true
-    );
   }
 
   // If the user leaves system fullscreen (system Esc / swipe), stage mode's

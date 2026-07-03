@@ -1,10 +1,13 @@
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { PdfParserService } from '../../services/pdf-parser.service';
 import { ExportService } from '../../services/export.service';
 import { ParsedSong } from '../../models/song.model';
 import { UiSettingsService } from '../../services/ui-settings.service';
+
+const TAGLINE_CYCLE_MS = 5000;
+const TAGLINE_FADE_MS = 250;
 
 @Component({
   selector: 'app-upload',
@@ -13,7 +16,7 @@ import { UiSettingsService } from '../../services/ui-settings.service';
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
 })
-export class UploadComponent {
+export class UploadComponent implements OnInit, OnDestroy {
   @Output() songsLoaded = new EventEmitter<ParsedSong[]>();
 
   isDragging = false;
@@ -23,12 +26,33 @@ export class UploadComponent {
   fileErrors: { name: string; message: string }[] = [];
   sessionImportError = '';
 
+  readonly tagline = signal('');
+  readonly taglineVisible = signal(true);
+  private taglineTimer: ReturnType<typeof setInterval> | null = null;
+
   constructor(
     private parser: PdfParserService,
     private exportSvc: ExportService,
     public ui: UiSettingsService,
     private cdr: ChangeDetectorRef,
   ) {}
+
+  ngOnInit() {
+    this.tagline.set(this.ui.randomTagline());
+    this.taglineTimer = setInterval(() => this.cycleTagline(), TAGLINE_CYCLE_MS);
+  }
+
+  ngOnDestroy() {
+    if (this.taglineTimer) clearInterval(this.taglineTimer);
+  }
+
+  private cycleTagline() {
+    this.taglineVisible.set(false);
+    setTimeout(() => {
+      this.tagline.set(this.ui.randomTagline(this.tagline()));
+      this.taglineVisible.set(true);
+    }, TAGLINE_FADE_MS);
+  }
 
   onDragOver(e: DragEvent) {
     e.preventDefault();

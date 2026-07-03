@@ -42,6 +42,77 @@ const LANG_TOASTS: Record<Language, string> = {
   jv:      'Basa Jawa sampun mlebu, Cah! Ayo garap lagune karo tentrem 🌾😌',
 };
 
+// Home page subtitle pool, picked/cycled at random by UploadComponent rather
+// than looked up via t() — unlike TRANSLATIONS these aren't 1:1 translations
+// of each other (English mixes in direct Scripture quotes; the other
+// languages are all jokes/dad-jokes, per product decision, not literal
+// renderings of the English set).
+const TAGLINES: Record<Language, string[]> = {
+  en: [
+    // 4 Scripture quotes about worship (KJV — public domain)
+    '"O come, let us sing unto the LORD." — Psalm 95:1',
+    '"Serve the LORD with gladness: come before his presence with singing." — Psalm 100:2',
+    '"God is a Spirit: and they that worship him must worship him in spirit and in truth." — John 4:24',
+    '"Let every thing that hath breath praise the LORD." — Psalm 150:6',
+    // 2 helpful
+    'Upload a SongSelect PDF to edit keys, transpose chords, and export your set',
+    'Transpose on the fly, print clean charts, and keep your whole set in sync — no login required',
+    // 4 funny
+    'Turning 17-page PDFs into chord charts your guitarist can actually read',
+    'No cloud, no login, no drama — just your chords and a Wi-Fi-free Sunday',
+    'Because "Capo 4, but which key is that again?" shouldn\'t be your biggest worship problem',
+    'Chord charts so clean, even the drummer will pretend to read them',
+  ],
+  la: [
+    'In principio erat PDF, et PDF erat apud te, sine chordis.',
+    'Noli timere capo — nos illum vertimus pro te.',
+    'Cantate Domino... sed prius, in tono recto.',
+    'Chorda vaga? Nos eam domabimus.',
+    'Organistae omnes gaudent — nulla amplius pagina perdita.',
+    'Non est Wi-Fi in deserto, sed est WorshipToolkit sine interreti.',
+    'Baterista fingit se legere — sicut semper.',
+    'Sacerdos dixit "Amen", musicus dixit "F minor".',
+    'Quaerite primum regnum Dei — deinde tonum iustum.',
+    'Ecce, nova chorda: gratis, sine errore.',
+  ],
+  'zh-TW': [
+    '詩班永遠的難題：這首歌到底是哪個調？我們幫你搞定！',
+    '沒有雲端，沒有登入，只有你、詩歌，和沒有 Wi-Fi 的主日。',
+    '鼓手看起來很專業地看譜——其實只是裝的，我們懂。',
+    'Capo 夾幾格？別擔心，我們幫你轉調不用夾。',
+    '17 頁的 PDF，變成一頁吉他手看得懂的譜——奇蹟每天發生。',
+    '敬拜主席最怕的不是忘詞，是忘了現在彈哪個調。',
+    '讓每一個和弦乖乖排隊，不再亂跑。',
+    '獻上你的 PDF，我們獻上準確的調性。',
+    '牧師說「阿們」，樂手說「降E小調」。',
+    '免費、離線、不出錯——比奉獻箱還可靠。',
+  ],
+  id: [
+    'Masalah abadi worship leader: lagu ini nadanya apa sih? Udah, kita bereskan!',
+    'Nggak ada cloud, nggak ada login, cuma kamu, lagu, dan Minggu tanpa Wi-Fi.',
+    'Drummer pura-pura baca not — santai, kita nggak bakal bocorin rahasianya.',
+    'Capo di fret berapa? Tenang, kita transpose tanpa capo.',
+    'PDF 17 halaman jadi satu chart yang gitaris beneran ngerti — mukjizat harian.',
+    'Yang ditakuti pemimpin pujian bukan lupa lirik, tapi lupa lagi main di nada apa.',
+    'Semua akor dibariskan rapi, nggak ada yang kabur lagi.',
+    'Kasih kami PDF-mu, kami kasih baliknya nada yang pas.',
+    'Pendeta bilang "Amin", pemain musik bilang "Es minor".',
+    'Gratis, offline, anti error — lebih setia dari kotak persembahan.',
+  ],
+  jv: [
+    'Masalah langgeng pemimpin pujian: lagu iki nadane apa ya? Wis, tak-rampungke!',
+    'Ora ana cloud, ora ana login, mung kowe, lagu, lan Minggu tanpa Wi-Fi.',
+    'Drummer pura-pura moco not — santai wae, ora bakal dibongkar rahasiane.',
+    'Capo fret pira? Tenang, kita transpose tanpa capo.',
+    'PDF 17 kaca dadi siji chart sing gitaris tenan ngerti — mukjizat saben dina.',
+    'Sing ditakuti pemimpin pujian dudu lali lirik, nanging lali lagi main nada apa.',
+    'Kabeh akor dibarisake rapi, ora ana sing mlayu maneh.',
+    'Wenehna PDF-mu, kita wenehi bali nada sing pas.',
+    'Pendeta ngomong "Amin", pemain musik ngomong "Es minor".',
+    'Gratis, offline, ora tau error — luwih setya tinimbang kothak pisungsung.',
+  ],
+};
+
 const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   // ── toasts / feedback ──
   'Set saved':    { la: 'Collectio Servata', 'zh-TW': '集合已儲存', id: 'Set tersimpan, aman!', jv: 'Set wis kasimpen' },
@@ -2026,6 +2097,14 @@ export class UiSettingsService {
   // after use since the captured event can only be prompted once.
   readonly installPromptEvent = signal<BeforeInstallPromptEvent | null>(null);
 
+  readonly isIos = typeof navigator !== 'undefined' && /iphone|ipad|ipod/i.test(navigator.userAgent);
+
+  // Display mode doesn't change without a reload, so this is safe to read once.
+  readonly isStandalone =
+    typeof matchMedia !== 'undefined' &&
+    (matchMedia('(display-mode: standalone)').matches ||
+      (navigator as Navigator & { standalone?: boolean }).standalone === true);
+
   async promptInstall() {
     const event = this.installPromptEvent();
     if (!event) return;
@@ -2033,11 +2112,38 @@ export class UiSettingsService {
     await event.prompt();
   }
 
+  // Used by an on-demand "Install app" button (as opposed to the automatic
+  // one-time toasts): trigger the native prompt where one was captured,
+  // otherwise fall back to the manual iOS instructions.
+  installOrShowHint() {
+    if (this.installPromptEvent()) {
+      this.promptInstall();
+    } else if (this.isIos) {
+      this.showToast(
+        'Tip: tap Share, then "Add to Home Screen" to install WorshipToolkit for quick, offline access.',
+        'info',
+        { durationMs: 8000 },
+      );
+    }
+  }
+
   get latinMode(): boolean { return this.language === 'la'; }
 
   t(key: string): string {
     if (this.language === 'en') return key;
     return TRANSLATIONS[key]?.[this.language] ?? key;
+  }
+
+  // Picks a random home-page tagline for the current language, avoiding an
+  // immediate repeat of `exclude` (the one currently on screen, if any).
+  randomTagline(exclude?: string): string {
+    const pool = TAGLINES[this.language] ?? TAGLINES.en;
+    if (pool.length <= 1) return pool[0] ?? '';
+    let pick: string;
+    do {
+      pick = pool[Math.floor(Math.random() * pool.length)];
+    } while (pick === exclude);
+    return pick;
   }
 
   // General-purpose toast. `msg` is translated via t(). Error and action
