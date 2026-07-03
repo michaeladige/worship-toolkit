@@ -147,6 +147,10 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   private applyHistory(songs: ParsedSong[]) {
     this.songs = songs;
+    // A snapshot restored by undo/redo can be shorter than the array selectedIndex
+    // was pointing into (e.g. undoing an add/append) — clamp so it stays valid.
+    this.selectedIndex = Math.max(0, Math.min(this.selectedIndex, songs.length - 1));
+    this.sessionsSvc.currentSongIndex = this.selectedIndex;
     this.sessionsSvc.currentSongs = songs;
     this.ui.safeSetItem(SESSION_KEY, JSON.stringify(songs));
     this.sessionsSvc.autosave(songs);

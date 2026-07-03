@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SessionsService } from '../../services/sessions.service';
@@ -35,6 +35,7 @@ export class SessionsModalComponent implements OnInit {
     public sessionsSvc: SessionsService,
     private exportSvc: ExportService,
     public ui: UiSettingsService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -129,6 +130,7 @@ export class SessionsModalComponent implements OnInit {
       this.ui.showToast('Set imported');
     } catch (err) {
       this.importError = err instanceof Error ? err.message : 'Failed to import file.';
+      this.cdr.detectChanges();
     }
     (e.target as HTMLInputElement).value = '';
   }
