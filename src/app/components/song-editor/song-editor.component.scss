@@ -485,6 +485,10 @@
     opacity: 0.3;
     cursor: not-allowed;
   }
+
+  &.active {
+    color: var(--color-primary);
+  }
 }
 
 .stage-bar-title {

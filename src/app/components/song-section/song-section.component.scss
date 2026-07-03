@@ -309,6 +309,11 @@
   transition: background 0.12s;
 
   &:hover { background: var(--color-hover); }
+
+  &.non-interactive {
+    cursor: default;
+    &:hover { background: none; }
+  }
 }
 
 .annotation-row--editing {

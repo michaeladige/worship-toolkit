@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.7.0] - 2026-07-03
+
+### Added
+- **View Only mode** — a new 🔒 View Only button in the toolbar (and in Stage mode's floating bar) locks the chart against accidental edits, handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when the page is reloaded.
+
 ## [1.6.0] - 2026-07-03
 
 ### Added

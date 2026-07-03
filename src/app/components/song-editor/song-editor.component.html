@@ -199,6 +199,17 @@
         <span class="label-short">{{ ui.t('1 2 3') }}</span>
       </button>
 
+      <!-- View Only mode -->
+      <button
+        class="toggle-btn"
+        [class.active]="ui.viewOnly()"
+        (click)="ui.toggleViewOnly()"
+        [attr.aria-pressed]="ui.viewOnly()"
+        [title]="ui.t('View Only')"
+      >
+        🔒 {{ ui.t('View Only') }}
+      </button>
+
       <!-- Stage mode -->
       <button
         class="toggle-btn stage-btn"
@@ -237,7 +248,8 @@
   <div class="content" #scrollContainer>
     <app-song-section
       [song]="song"
-      [showSectionControls]="true"
+      [showSectionControls]="!ui.viewOnly()"
+      [viewOnly]="ui.viewOnly()"
       [splitColumns]="ui.editorSplitColumnsActive"
       (songChange)="updateSong($event)"
       (addLine)="addLineToSection($event)"
@@ -322,6 +334,14 @@
           <button class="stage-bar-btn" (click)="increaseBpm()" [disabled]="bpm >= maxBpm">&#9650;</button>
         }
       </div>
+
+      <button
+        class="stage-bar-btn"
+        [class.active]="ui.viewOnly()"
+        (click)="ui.toggleViewOnly()"
+        [attr.aria-pressed]="ui.viewOnly()"
+        [title]="ui.t('View Only')"
+      >🔒</button>
 
       <button class="stage-bar-btn stage-exit-btn" (click)="ui.exitStageMode()" [title]="ui.t('Exit stage mode')">✕</button>
     </div>

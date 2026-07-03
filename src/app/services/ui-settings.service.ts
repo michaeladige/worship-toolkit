@@ -296,6 +296,13 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'klik tombol Panggung di toolbar buat tampilan performa bebas gangguan: header, daftar lagu, dan toolbar semua hilang, tinggal chart-mu plus bar melayang kecil berisi kecepatan gulir, metronom, lagu sebelumnya/berikutnya, dan tombol keluar. Kotak kecepatan gulir dan BPM di bar melayang bisa diketik langsung, sama seperti di toolbar.',
     jv: 'klik tombol Panggung ing toolbar kanggo tampilan pentas tanpa gangguan: header, dhaptar lagu, lan toolbar padha ilang, mung kari chart-mu plus bar ngambang cilik isine kacepetan gulung, metronom, lagu sadurunge/sabanjure, lan tombol metu. Kothak kacepetan gulung lan BPM ing bar ngambang bisa diketik langsung, padha kaya ing toolbar.',
   },
+  'View Only mode': { la: 'Modus Solum Videre', 'zh-TW': '僅檢視模式', id: 'Mode Hanya Lihat', jv: 'Mode Mung Deleng' },
+  'click the View Only button in the toolbar (or the floating bar in Stage mode) to lock the chart against accidental edits — handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when you reload the page.': {
+    la: 'preme papilionem Solum Videre in instrumentario (aut in trabe natante modi Scaenae) ut tabulam contra mutationes casuales claudas — utile cum tabellam alicui in coetu tradis. Mutatio chordarum, additio/ablatio chordarum/linearum/sectionum, mutatio verborum, annotationes, et renominatio tituli, BPM, vel mensurae temporis omnia prohibentur. Transpositio, Salire ad Clavem, Notae Bassi, Nashville, et Accidentalia plene utilia manent. Haec optio se reponit cum paginam iterum oneras.',
+    'zh-TW': '點擊工具列（或舞台模式浮動控制列）中的僅檢視按鈕，即可鎖定譜面避免被誤改——把平板交給團員時特別好用。和弦編輯、新增／刪除和弦／行／段落、歌詞編輯、註記，以及重新命名歌名、BPM 或拍號都會被停用。移調、跳至調性、低音音符、納許維爾記譜法和音名偏好則仍可正常使用。重新整理頁面後此設定會重設。',
+    id: 'klik tombol Hanya Lihat di toolbar (atau di bar melayang Mode Panggung) buat mengunci chart supaya nggak ke-edit nggak sengaja — cocok banget pas nge-share tablet ke anggota band. Edit chord, tambah/hapus chord/baris/bagian, edit lirik, anotasi, dan ganti nama judul/BPM/birama semua dinonaktifkan. Transpose, Lompat ke Kunci, Bass Notes, Nashville, dan Accidentals tetap bisa dipakai normal. Setelan ini reset lagi kalau halaman di-refresh.',
+    jv: 'klik tombol Mung Deleng ing toolbar (utawa ing bar ngambang Mode Panggung) kanggo ngunci chart supaya ora keowahan ora sengaja — migunani banget nalika masrahake tablet menyang anggota band. Ngowahi chord, nambah/mbusak chord/baris/bagean, ngowahi lirik, anotasi, lan ngganti jeneng judhul/BPM/wirama kabeh dipateni. Transpose, Loncat menyang Kunci, Bass Notes, Nashville, lan Accidentals isih iso dipigunakake normal. Setelan iki bakal reset yen kaca di-refresh.',
+  },
   'Where the browser supports it, stage mode also goes full-screen. Press': {
     la: 'Ubi navigatrum id sustinet, modus scaenae etiam plenum quadrum occupat. Preme',
     'zh-TW': '在瀏覽器支援的情況下，舞台模式也會進入全螢幕。按',
@@ -368,6 +375,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Reset':      { la: 'Reponere',   'zh-TW': '重設',         id: 'Reset',          jv: 'Reset'         },
   'Autoscroll': { la: 'Auto-Volutio', 'zh-TW': '自動捲動',    id: 'Gulir Otomatis', jv: 'Gulung Otomatis'},
   'Metronome':  { la: 'Metronomum', 'zh-TW': '節拍器',        id: 'Metronom',       jv: 'Metronom'      },
+  'View Only':  { la: 'Solum Videre', 'zh-TW': '僅檢視',      id: 'Hanya Lihat',    jv: 'Mung Deleng'   },
   '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
   '🎹 Bass':    { la: '🎹 Bassus',    'zh-TW': '🎹 低音',       id: '🎹 Bass',        jv: '🎹 Bass'       },
   '1 2 3 Nashville': { la: 'I II III Nashville', 'zh-TW': '1 2 3 納許維爾', id: '1 2 3 Nashville', jv: '1 2 3 Nashville' },
@@ -2235,6 +2243,16 @@ export class UiSettingsService {
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     }
+  }
+
+  // View-only mode: hides structural editing (chord rename/drag/remove, add/remove
+  // chord/line/section, lyric editing, annotation add/edit, title/BPM/time-sig rename)
+  // while leaving transpose/key-jump/Bass Notes/Nashville/Accidentals fully usable.
+  // Session-only, same rationale as stageMode above — not persisted.
+  readonly viewOnly = signal(false);
+
+  toggleViewOnly() {
+    this.viewOnly.set(!this.viewOnly());
   }
 
   // Captured `beforeinstallprompt` event (Chromium only) — lets an "Install"
