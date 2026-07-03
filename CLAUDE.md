@@ -12,15 +12,33 @@ annotate it, and export clean PDFs or Markdown. All state lives in the browser
 ## Commands
 
 ```bash
-npm install              # install deps
-ng serve                 # dev server at http://localhost:4200
-ng build                 # production build (output: dist/worship-toolkit/browser)
-ng test                  # runs vitest — NOTE: no *.spec.ts files exist in src/ yet
-npm run deploy           # manual gh-pages deploy (normally CI does this instead)
+npm install     # install deps
+ng serve        # dev server at http://localhost:4200
+ng build        # production build (output: dist/worship-toolkit/browser)
+ng test         # runs vitest — NOTE: no *.spec.ts files exist in src/ yet
+npm run e2e     # runs the Playwright suite in e2e/ (see "End-to-end tests" below)
+npm run deploy  # manual gh-pages deploy (normally CI does this instead)
 ```
 
 There is no lint script configured (`prettier` is a dev dependency but not wired into
 an npm script — run `npx prettier --write .` directly if needed).
+
+### End-to-end tests
+
+`e2e/*.spec.ts` are Playwright tests (`playwright.config.ts`) covering keyboard shortcuts,
+autoscroll, the metronome, stage mode, PWA install behavior, theming, toasts, and upload —
+this is the only real test coverage in the repo (unit specs under `src/` don't exist).
+Playwright's `webServer` config runs `ng serve` on port 4200 automatically, so
+`npm run e2e` / `npx playwright test` works standalone without a dev server already
+running. Fixtures (sample PDFs) live in `e2e/fixtures/`. To run a single file or test:
+
+```bash
+npx playwright test e2e/stage.spec.ts
+npx playwright test -g "opens the shortcuts cheatsheet"
+```
+
+CI runs this suite on every push via `.github/workflows/e2e.yml` (separate from the two
+deploy workflows below), uploading the HTML report as an artifact on failure.
 
 Two standalone Node scripts at the repo root are debugging aids, not part of the
 build or test pipeline:
@@ -88,20 +106,25 @@ every component and service reads or transforms this shape; when adding a featur
   autosave-to-active-set, import/export of `.wt` (JSON) files, and exposes
   `sessionLoad$` (an RxJS `Subject`) that `WorkspaceComponent` subscribes to for
   swapping the whole workspace when a set is loaded.
-- **`UiSettingsService`** — large (~1800 lines) because it also holds the full
+- **`UiSettingsService`** — large (~2500 lines) because it also holds the full
   translation table (see i18n below) plus theme/font/text-size/accidentals preferences,
   all persisted under a single `worship_toolkit_prefs` `localStorage` key with
-  legacy-key migration for pre-consolidation storage formats.
+  legacy-key migration for pre-consolidation storage formats. It also owns transient,
+  non-persisted UI state as signals — notably `stageMode` (the distraction-free
+  performance view toggled from the toolbar, which hides the header/song-list/toolbar
+  and exposes only the chart plus a floating bar with scroll speed, metronome, and
+  prev/next controls). Autoscroll and metronome themselves are implemented inside
+  `song-editor`/`workspace`, driven off this service's state.
 
 ### Components (`src/app/components/`)
 
 Standalone Angular components (no NgModules anywhere in the app), one directory each:
 `workspace` (root/orchestrator), `upload`, `song-list`, `song-editor`, `song-section`
 (chord/lyric line editing — drag-to-reposition chords, add/remove lines), `export-modal`,
-`sessions-modal`, `settings-modal`, `manual` (in-app user manual). Routing
-(`app.routes.ts`) only has two real routes: `/` (workspace) and `/manual`; everything
-else about "screens" (upload vs. editor vs. modals) is conditional rendering inside
-`WorkspaceComponent`, not separate routes.
+`sessions-modal`, `settings-modal`, `shortcuts-modal` (`?` cheatsheet), `manual` (in-app
+user manual). Routing (`app.routes.ts`) only has two real routes: `/` (workspace) and
+`/manual`; everything else about "screens" (upload vs. editor vs. modals vs. stage mode)
+is conditional rendering inside `WorkspaceComponent`, not separate routes.
 
 ### Internationalization
 
@@ -121,5 +144,5 @@ and restored on load, separate from the global UI preference.
   `noFallthroughCasesInSwitch`, `strictTemplates`, `strictInjectionParameters`) —
   respect it rather than widening types to work around errors.
 - Angular schematics are configured to skip generating spec files by default
-  (`skipTests: true` in `angular.json`) and no component/service currently has tests,
-  even though `vitest` is wired up as the test runner.
+  (`skipTests: true` in `angular.json`); no component/service has a `vitest` unit spec,
+  and behavior coverage instead comes entirely from the Playwright e2e suite.
