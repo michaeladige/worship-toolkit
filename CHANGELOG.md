@@ -6,8 +6,9 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 
 ### Changed
 - **Autoscroll control now matches the metronome's on/off behavior** — the speed stepper (arrows + value) is hidden until you turn autoscroll on via the toggle button, instead of always showing. The label reverts to "Autoscroll" (from the shorter "Scroll").
-- **BPM and autoscroll speed can now be typed directly** — both value boxes accept keyboard input, not just the up/down buttons.
+- **BPM and autoscroll speed can now be typed directly** — both value boxes accept keyboard input, not just the up/down buttons. Switched from `type="number"` to a plain numeric text field so no browser-native spin arrows render alongside our own — on some browsers those extra native arrows overlapped the custom step buttons and could double-count a single click.
 - **Autoscroll range rebalanced** — each speed level scrolls slower than before (halved), with a higher top-end level (0–30 instead of 0–10) so there's more room to fine-tune a comfortable pace. Metronome's upper limit raised to 300 BPM.
+- **Stage mode's floating bar now has the same editable value boxes** for scroll speed and BPM, instead of a read-only number.
 - Toolbar control sizing for Autoscroll/Metronome tightened to match the rest of the toolbar's buttons.
 
 ## [1.4.2] - 2026-07-03

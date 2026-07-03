@@ -120,11 +120,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   },
   'Exit stage mode': { la: 'Exire e modo scaenae', 'zh-TW': '離開舞台模式', id: 'Keluar mode panggung', jv: 'Metu saka mode panggung' },
   'Stage mode': { la: 'Modus Scaenae', 'zh-TW': '舞台模式', id: 'Mode panggung', jv: 'Mode panggung' },
-  'click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button.': {
-    la: 'preme papilionem Scaenae in instrumentario pro visu perficiendi sine distractione: caput, index cantuum, et instrumentarium evanescunt, relinquentes solum tabulam tuam et parvam trabem natantem cum celeritate volutionis, metronomo, cantu priore/sequente, et papilione exeundi.',
-    'zh-TW': '點擊工具列的舞台按鈕，進入無干擾的演出檢視：頁首、歌曲清單和工具列都會消失，只留下你的譜面，以及一個包含捲動速度、節拍器、上一首／下一首和離開按鈕的小型浮動控制列。',
-    id: 'klik tombol Panggung di toolbar buat tampilan performa bebas gangguan: header, daftar lagu, dan toolbar semua hilang, tinggal chart-mu plus bar melayang kecil berisi kecepatan gulir, metronom, lagu sebelumnya/berikutnya, dan tombol keluar.',
-    jv: 'klik tombol Panggung ing toolbar kanggo tampilan pentas tanpa gangguan: header, dhaptar lagu, lan toolbar padha ilang, mung kari chart-mu plus bar ngambang cilik isine kacepetan gulung, metronom, lagu sadurunge/sabanjure, lan tombol metu.',
+  'click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button. Both the scroll speed and BPM boxes in the floating bar are editable, just like in the toolbar.': {
+    la: 'preme papilionem Scaenae in instrumentario pro visu perficiendi sine distractione: caput, index cantuum, et instrumentarium evanescunt, relinquentes solum tabulam tuam et parvam trabem natantem cum celeritate volutionis, metronomo, cantu priore/sequente, et papilione exeundi. Arculae celeritatis et BPM in trabe natante scribi possunt, sicut in instrumentario.',
+    'zh-TW': '點擊工具列的舞台按鈕，進入無干擾的演出檢視：頁首、歌曲清單和工具列都會消失，只留下你的譜面，以及一個包含捲動速度、節拍器、上一首／下一首和離開按鈕的小型浮動控制列。浮動控制列中的捲動速度與 BPM 方框都可以直接輸入，和工具列一樣。',
+    id: 'klik tombol Panggung di toolbar buat tampilan performa bebas gangguan: header, daftar lagu, dan toolbar semua hilang, tinggal chart-mu plus bar melayang kecil berisi kecepatan gulir, metronom, lagu sebelumnya/berikutnya, dan tombol keluar. Kotak kecepatan gulir dan BPM di bar melayang bisa diketik langsung, sama seperti di toolbar.',
+    jv: 'klik tombol Panggung ing toolbar kanggo tampilan pentas tanpa gangguan: header, dhaptar lagu, lan toolbar padha ilang, mung kari chart-mu plus bar ngambang cilik isine kacepetan gulung, metronom, lagu sadurunge/sabanjure, lan tombol metu. Kothak kacepetan gulung lan BPM ing bar ngambang bisa diketik langsung, padha kaya ing toolbar.',
   },
   'Where the browser supports it, stage mode also goes full-screen. Press': {
     la: 'Ubi navigatrum id sustinet, modus scaenae etiam plenum quadrum occupat. Preme',

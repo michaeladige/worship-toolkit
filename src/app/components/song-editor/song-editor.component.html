@@ -122,12 +122,12 @@
           >&#9660;</button>
           <input
             class="autoscroll-speed"
-            type="number"
+            type="text"
             inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="2"
             [ngModel]="autoscrollSpeed"
             (change)="onAutoscrollSpeedInput($any($event.target).value)"
-            [min]="1"
-            [max]="maxAutoscrollSpeed"
             [title]="ui.t('Autoscroll')"
           />
           <button
@@ -160,12 +160,12 @@
           >&#9660;</button>
           <input
             class="metronome-bpm"
-            type="number"
+            type="text"
             inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="3"
             [ngModel]="bpm"
             (change)="onBpmInput($any($event.target).value)"
-            [min]="minBpm"
-            [max]="maxBpm"
             [title]="ui.t('Metronome')"
           />
           <button
@@ -291,7 +291,16 @@
         <button class="stage-bar-btn" (click)="toggleAutoscroll()" [attr.aria-pressed]="autoscrollSpeed > 0">⏬</button>
         @if (autoscrollSpeed > 0) {
           <button class="stage-bar-btn" (click)="decreaseAutoscrollSpeed()" [disabled]="autoscrollSpeed <= 0">&#9660;</button>
-          <span class="stage-bar-value">{{ autoscrollSpeed }}</span>
+          <input
+            class="stage-bar-value"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="2"
+            [ngModel]="autoscrollSpeed"
+            (change)="onAutoscrollSpeedInput($any($event.target).value)"
+            [title]="ui.t('Autoscroll')"
+          />
           <button class="stage-bar-btn" (click)="increaseAutoscrollSpeed()" [disabled]="autoscrollSpeed >= maxAutoscrollSpeed">&#9650;</button>
         }
       </div>
@@ -300,7 +309,16 @@
         <button class="stage-bar-btn" (click)="toggleMetronome()" [attr.aria-pressed]="metronomeOn">&#9833;</button>
         @if (metronomeOn) {
           <button class="stage-bar-btn" (click)="decreaseBpm()" [disabled]="bpm <= minBpm">&#9660;</button>
-          <span class="stage-bar-value">{{ bpm }}</span>
+          <input
+            class="stage-bar-value"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            maxlength="3"
+            [ngModel]="bpm"
+            (change)="onBpmInput($any($event.target).value)"
+            [title]="ui.t('Metronome')"
+          />
           <button class="stage-bar-btn" (click)="increaseBpm()" [disabled]="bpm >= maxBpm">&#9650;</button>
         }
       </div>
