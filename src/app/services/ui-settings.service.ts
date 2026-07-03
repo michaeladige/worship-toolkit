@@ -197,7 +197,6 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Jump to':    { la: 'Salire ad',  'zh-TW': '跳至',         id: 'Lompat ke',      jv: 'Loncat menyang'},
   'Reset':      { la: 'Reponere',   'zh-TW': '重設',         id: 'Reset',          jv: 'Reset'         },
   'Autoscroll': { la: 'Auto-Volutio', 'zh-TW': '自動捲動',    id: 'Gulir Otomatis', jv: 'Gulung Otomatis'},
-  'Scroll':     { la: 'Volutio',     'zh-TW': '捲動',         id: 'Gulir',          jv: 'Gulung'        },
   'Metronome':  { la: 'Metronomum', 'zh-TW': '節拍器',        id: 'Metronom',       jv: 'Metronom'      },
   '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
   '🎹 Bass':    { la: '🎹 Bassus',    'zh-TW': '🎹 低音',       id: '🎹 Bass',        jv: '🎹 Bass'       },
@@ -996,23 +995,23 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'untuk simpan. Tanda birama yang tidak valid akan kembali ke nilai sebelumnya. Tekan',
     jv:      'kanggo nyimpen. Input sing ora valid bakal bali menyang nilai sadurunge. Pencet',
   },
-  'SCROLL control': {
-    la:      'Moderamen Volutionis',
-    'zh-TW': '捲動控制',
-    id:      'Kontrol Gulir',
-    jv:      'Kontrol Gulung',
+  'AUTOSCROLL control': {
+    la:      'Moderamen Auto-Volutionis',
+    'zh-TW': '自動捲動控制',
+    id:      'Kontrol Gulir Otomatis',
+    jv:      'Kontrol Gulung Otomatis',
   },
-  'in the toolbar, use the': {
-    la:      'in barra instrumentorum, utere',
-    'zh-TW': '在工具列中，使用',
-    id:      'di toolbar, gunakan',
-    jv:      'ing toolbar, gunakke',
+  'button to turn scrolling on or off. When on, a speed stepper appears: use the': {
+    la:      'ad volutionem activandam vel deactivandam. Cum activa, gradus celeritatis apparet: utere',
+    'zh-TW': '按鈕來開啟或關閉捲動。開啟後會出現速度調整器：使用',
+    id:      'untuk menyalakan atau mematikan gulir. Saat menyala, penyetel kecepatan muncul: gunakan',
+    jv:      'kanggo nguripake utawa mateni gulung. Nalika urip, panyetel kecepatan katon: gunakke',
   },
-  'buttons to raise or lower the scroll speed (0–10). Speed starts at 0 (off) every time — it\'s not saved between songs or sessions.': {
-    la:      'clavibus ad celeritatem volutionis augendam vel minuendam (0–10). Celeritas semper a 0 (deactivata) incipit — inter cantus vel sessiones non servatur.',
-    'zh-TW': '按鈕來調高或調低捲動速度（0–10）。速度每次都從 0（關閉）開始 — 不會在歌曲或工作階段之間儲存。',
-    id:      'tombol untuk menaikkan atau menurunkan kecepatan gulir (0–10). Kecepatan selalu mulai dari 0 (mati) setiap saat — tidak disimpan antar lagu atau sesi.',
-    jv:      'tombol kanggo mundhakake utawa nyuda kecepatan gulung (0–10). Kecepatan tansah miwiti saka 0 (mati) saben wektu — ora disimpen antarane lagu utawa sesi.',
+  'buttons, or type a number directly into the box (0–30). Speed starts off every time — it\'s not saved between songs or sessions.': {
+    la:      'clavibus, vel numerum directe in arcula scribe (0–30). Celeritas semper deactivata incipit — inter cantus vel sessiones non servatur.',
+    'zh-TW': '按鈕，或直接在方框中輸入數字（0–30）。速度每次都從關閉開始 — 不會在歌曲或工作階段之間儲存。',
+    id:      'tombol, atau ketik angka langsung di kotak (0–30). Kecepatan selalu mati setiap saat — tidak disimpan antar lagu atau sesi.',
+    jv:      'tombol, utawa ketik angka langsung ing kothak (0–30). Kecepatan tansah mati saben wektu — ora disimpen antarane lagu utawa sesi.',
   },
   'METRONOME control': {
     la:      'Moderamen Metronomi',
@@ -1032,11 +1031,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'ikon untuk menyalakan atau mematikan metronom. Saat menyala, penyetel BPM muncul di sampingnya, dengan nilai awal dari info BPM lagu (atau 80 jika lagu tidak memilikinya). Gunakan',
     jv:      'ikon kanggo nguripake utawa mateni metronom. Nalika urip, panyetel BPM katon ing sandhinge, kanthi nilai awal saka info BPM lagu (utawa 80 yen lagu ora duwe). Gunakke',
   },
-  'buttons to adjust it (30–240). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.': {
-    la:      'clavibus ad id moderandum (30–240). Metronomum automatice deactivatur cum cantum mutas vel paginam reficis, et semper BPM cantus iterum legit cum proximo activatur.',
-    'zh-TW': '按鈕來調整（30–240）。當你切換歌曲或重新整理頁面時，節拍器會自動關閉，並在下次開啟時重新讀取歌曲的 BPM。',
-    id:      'tombol untuk menyesuaikannya (30–240). Metronom otomatis mati saat kamu berpindah lagu atau memuat ulang halaman, dan selalu membaca ulang BPM lagu saat kamu menyalakannya lagi.',
-    jv:      'tombol kanggo nyetel (30–240). Metronom otomatis mati nalika kowe pindhah lagu utawa muat ulang kaca, lan tansah maca maneh BPM lagu nalika kowe nguripake maneh.',
+  'buttons, or type a number directly into the box, to adjust it (30–300). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.': {
+    la:      'clavibus, vel numerum directe in arcula scribe, ad id moderandum (30–300). Metronomum automatice deactivatur cum cantum mutas vel paginam reficis, et semper BPM cantus iterum legit cum proximo activatur.',
+    'zh-TW': '按鈕，或直接在方框中輸入數字來調整（30–300）。當你切換歌曲或重新整理頁面時，節拍器會自動關閉，並在下次開啟時重新讀取歌曲的 BPM。',
+    id:      'tombol, atau ketik angka langsung di kotak, untuk menyesuaikannya (30–300). Metronom otomatis mati saat kamu berpindah lagu atau memuat ulang halaman, dan selalu membaca ulang BPM lagu saat kamu menyalakannya lagi.',
+    jv:      'tombol, utawa ketik angka langsung ing kothak, kanggo nyetel (30–300). Metronom otomatis mati nalika kowe pindhah lagu utawa muat ulang kaca, lan tansah maca maneh BPM lagu nalika kowe nguripake maneh.',
   },
   'Annotations': {
     la:      'Annotationes',

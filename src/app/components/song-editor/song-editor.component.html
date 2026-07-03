@@ -102,30 +102,41 @@
       }
 
       <!-- Autoscroll -->
-      <div
-        class="autoscroll-control"
-        [class.active]="autoscrollSpeed > 0"
-        role="group"
-        [attr.aria-label]="ui.t('Autoscroll')"
-        [title]="ui.t('Autoscroll')"
-      >
-        <label>
+      <div class="autoscroll-control" [class.active]="autoscrollSpeed > 0">
+        <button
+          class="autoscroll-toggle-btn"
+          [class.active]="autoscrollSpeed > 0"
+          (click)="toggleAutoscroll()"
+          [attr.aria-pressed]="autoscrollSpeed > 0"
+          [title]="ui.t('Autoscroll')"
+        >
           <span class="control-icon" aria-hidden="true">⏬</span>
-          <span class="control-label-text">{{ ui.t('Scroll') }}</span>
-        </label>
-        <button
-          class="step-btn"
-          (click)="decreaseAutoscrollSpeed()"
-          [disabled]="autoscrollSpeed <= 0"
-          title="Decrease autoscroll speed"
-        >&#9660;</button>
-        <span class="autoscroll-speed">{{ autoscrollSpeed }}</span>
-        <button
-          class="step-btn"
-          (click)="increaseAutoscrollSpeed()"
-          [disabled]="autoscrollSpeed >= maxAutoscrollSpeed"
-          title="Increase autoscroll speed"
-        >&#9650;</button>
+          <span class="control-label-text">{{ ui.t('Autoscroll') }}</span>
+        </button>
+        @if (autoscrollSpeed > 0) {
+          <button
+            class="step-btn"
+            (click)="decreaseAutoscrollSpeed()"
+            [disabled]="autoscrollSpeed <= 0"
+            title="Decrease autoscroll speed"
+          >&#9660;</button>
+          <input
+            class="autoscroll-speed"
+            type="number"
+            inputmode="numeric"
+            [ngModel]="autoscrollSpeed"
+            (change)="onAutoscrollSpeedInput($any($event.target).value)"
+            [min]="1"
+            [max]="maxAutoscrollSpeed"
+            [title]="ui.t('Autoscroll')"
+          />
+          <button
+            class="step-btn"
+            (click)="increaseAutoscrollSpeed()"
+            [disabled]="autoscrollSpeed >= maxAutoscrollSpeed"
+            title="Increase autoscroll speed"
+          >&#9650;</button>
+        }
       </div>
 
       <!-- Metronome -->
@@ -147,7 +158,16 @@
             [disabled]="bpm <= minBpm"
             title="Decrease BPM"
           >&#9660;</button>
-          <span class="metronome-bpm">{{ bpm }}</span>
+          <input
+            class="metronome-bpm"
+            type="number"
+            inputmode="numeric"
+            [ngModel]="bpm"
+            (change)="onBpmInput($any($event.target).value)"
+            [min]="minBpm"
+            [max]="maxBpm"
+            [title]="ui.t('Metronome')"
+          />
           <button
             class="step-btn"
             (click)="increaseBpm()"
@@ -268,10 +288,12 @@
       <span class="stage-bar-title">{{ song.title }}</span>
 
       <div class="stage-bar-group" [class.active]="autoscrollSpeed > 0" [title]="ui.t('Autoscroll')">
-        <span class="stage-bar-icon" aria-hidden="true">⏬</span>
-        <button class="stage-bar-btn" (click)="decreaseAutoscrollSpeed()" [disabled]="autoscrollSpeed <= 0">&#9660;</button>
-        <span class="stage-bar-value">{{ autoscrollSpeed }}</span>
-        <button class="stage-bar-btn" (click)="increaseAutoscrollSpeed()" [disabled]="autoscrollSpeed >= maxAutoscrollSpeed">&#9650;</button>
+        <button class="stage-bar-btn" (click)="toggleAutoscroll()" [attr.aria-pressed]="autoscrollSpeed > 0">⏬</button>
+        @if (autoscrollSpeed > 0) {
+          <button class="stage-bar-btn" (click)="decreaseAutoscrollSpeed()" [disabled]="autoscrollSpeed <= 0">&#9660;</button>
+          <span class="stage-bar-value">{{ autoscrollSpeed }}</span>
+          <button class="stage-bar-btn" (click)="increaseAutoscrollSpeed()" [disabled]="autoscrollSpeed >= maxAutoscrollSpeed">&#9650;</button>
+        }
       </div>
 
       <div class="stage-bar-group" [class.active]="metronomeOn" [title]="ui.t('Metronome')">

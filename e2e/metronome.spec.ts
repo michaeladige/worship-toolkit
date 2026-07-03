@@ -28,10 +28,10 @@ test.describe('Metronome control', () => {
 
     await page.locator('.metronome-toggle-btn').click();
     await expect(page.locator('.metronome-control')).toHaveClass(/active/);
-    await expect(page.locator('.metronome-bpm')).toHaveText('80');
+    await expect(page.locator('.metronome-bpm')).toHaveValue('80');
   });
 
-  test('BPM stepper adjusts and clamps at [30, 240]', async ({ page }) => {
+  test('BPM stepper adjusts and clamps at [30, 300]', async ({ page }) => {
     await openBlankSong(page);
     await page.locator('.metronome-toggle-btn').click();
 
@@ -40,11 +40,11 @@ test.describe('Metronome control', () => {
     const bpm = page.locator('.metronome-bpm');
 
     await clickUntilDisabled(downBtn, 60);
-    await expect(bpm).toHaveText('30');
+    await expect(bpm).toHaveValue('30');
     await expect(downBtn).toBeDisabled();
 
-    await clickUntilDisabled(upBtn, 220);
-    await expect(bpm).toHaveText('240');
+    await clickUntilDisabled(upBtn, 280);
+    await expect(bpm).toHaveValue('300');
     await expect(upBtn).toBeDisabled();
   });
 
@@ -53,14 +53,14 @@ test.describe('Metronome control', () => {
 
     await page.locator('.metronome-toggle-btn').click();
     await page.locator('.metronome-control .step-btn').last().click();
-    await expect(page.locator('.metronome-bpm')).toHaveText('81');
+    await expect(page.locator('.metronome-bpm')).toHaveValue('81');
 
     await page.locator('.metronome-toggle-btn').click();
     await expect(page.locator('.metronome-control')).not.toHaveClass(/active/);
     await expect(page.locator('.metronome-bpm')).not.toBeVisible();
 
     await page.locator('.metronome-toggle-btn').click();
-    await expect(page.locator('.metronome-bpm')).toHaveText('80');
+    await expect(page.locator('.metronome-bpm')).toHaveValue('80');
   });
 
   test('turning the metronome on for a song with a set tempo defaults BPM to that tempo', async ({ page }) => {
@@ -71,7 +71,7 @@ test.describe('Metronome control', () => {
     await page.keyboard.press('Enter');
 
     await page.locator('.metronome-toggle-btn').click();
-    await expect(page.locator('.metronome-bpm')).toHaveText('132');
+    await expect(page.locator('.metronome-bpm')).toHaveValue('132');
   });
 
   test('metronome is not persisted (turns off on reload)', async ({ page }) => {

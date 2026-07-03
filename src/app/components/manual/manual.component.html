@@ -141,11 +141,11 @@ Sephiroth!</pre>
     </ul>
     <h3>{{ ui.t('Autoscroll') }}</h3>
     <ul>
-      <li><strong>{{ ui.t('SCROLL control') }}</strong> &mdash; {{ ui.t('in the toolbar, use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons to raise or lower the scroll speed (0–10). Speed starts at 0 (off) every time — it\'s not saved between songs or sessions.') }}</li>
+      <li><strong>{{ ui.t('AUTOSCROLL control') }}</strong> &mdash; {{ ui.t('in the toolbar, click the') }} <strong>⏬ {{ ui.t('Autoscroll') }}</strong> {{ ui.t('button to turn scrolling on or off. When on, a speed stepper appears: use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons, or type a number directly into the box (0–30). Speed starts off every time — it\'s not saved between songs or sessions.') }}</li>
     </ul>
     <h3>{{ ui.t('Metronome') }}</h3>
     <ul>
-      <li><strong>{{ ui.t('METRONOME control') }}</strong> &mdash; {{ ui.t('in the toolbar, click the') }} <strong>♩</strong> {{ ui.t('icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song\'s BPM info (or 80 if the song has none). Use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons to adjust it (30–240). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.') }}</li>
+      <li><strong>{{ ui.t('METRONOME control') }}</strong> &mdash; {{ ui.t('in the toolbar, click the') }} <strong>♩</strong> {{ ui.t('icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song\'s BPM info (or 80 if the song has none). Use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons, or type a number directly into the box, to adjust it (30–300). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.') }}</li>
     </ul>
     <h3>{{ ui.t('Stage mode') }}</h3>
     <ul>
@@ -315,6 +315,16 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.4.3</h3></summary>
+      <ul>
+        <li><strong>Autoscroll now behaves like the metronome</strong> &mdash; the speed stepper only shows once you turn autoscroll on with its toggle button, instead of always being visible. The label is back to "Autoscroll".</li>
+        <li><strong>Type a BPM or scroll speed directly</strong> &mdash; both value boxes now accept typed input as well as the up/down buttons.</li>
+        <li><strong>Wider, gentler autoscroll range</strong> &mdash; each speed level scrolls slower than before, with a higher top level (0–30 instead of 0–10) for finer control. Metronome's top end raised to 300 BPM.</li>
+        <li>Autoscroll/metronome toolbar buttons resized to match the rest of the toolbar.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.4.2</h3></summary>
       <ul>
         <li><strong>Installable app with offline support (PWA)</strong> &mdash; install WorshipToolkit from the browser and use it fully offline — all data already lives on your device. A toast offers a one-tap Reload when a new version ships. Production only; the beta site stays uncached so testers always get the latest push.</li>

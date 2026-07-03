@@ -61,9 +61,10 @@ test.describe('Stage mode', () => {
     await page.locator('.stage-btn').click();
 
     const scrollGroup = page.locator('.stage-bar-group').first();
-    await scrollGroup.locator('.stage-bar-btn').nth(1).click(); // ▲ up
-    await expect(scrollGroup.locator('.stage-bar-value')).toHaveText('1');
+    await scrollGroup.locator('.stage-bar-btn').first().click(); // toggle on
     await expect(scrollGroup).toHaveClass(/active/);
+    await scrollGroup.locator('.stage-bar-btn').nth(2).click(); // ▲ up
+    await expect(scrollGroup.locator('.stage-bar-value')).toHaveText('6');
 
     const metronomeGroup = page.locator('.stage-bar-group').nth(1);
     await metronomeGroup.locator('.stage-bar-btn').first().click();

@@ -39,16 +39,17 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   editingTimeSignature: string | null = null;
 
   // Not persisted to localStorage — resets to 0 (off) every session.
-  readonly maxAutoscrollSpeed = 10;
+  readonly maxAutoscrollSpeed = 30;
   autoscrollSpeed = 0;
+  private lastAutoscrollSpeed = 5;
 
-  private static readonly AUTOSCROLL_PX_PER_SEC_PER_LEVEL = 12;
+  private static readonly AUTOSCROLL_PX_PER_SEC_PER_LEVEL = 6;
   private autoscrollFrameId: number | null = null;
   private autoscrollLastTs: number | null = null;
 
   // Not persisted to localStorage — off on load, and turned off on every song switch (see ngOnChanges).
   readonly minBpm = 30;
-  readonly maxBpm = 240;
+  readonly maxBpm = 300;
   metronomeOn = false;
   bpm = 80;
 
@@ -200,6 +201,20 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
     this.setAutoscrollSpeed(this.autoscrollSpeed - 1);
   }
 
+  toggleAutoscroll() {
+    if (this.autoscrollSpeed > 0) {
+      this.lastAutoscrollSpeed = this.autoscrollSpeed;
+      this.setAutoscrollSpeed(0);
+    } else {
+      this.setAutoscrollSpeed(this.lastAutoscrollSpeed || 5);
+    }
+  }
+
+  onAutoscrollSpeedInput(value: string) {
+    const parsed = parseInt(value, 10);
+    if (Number.isFinite(parsed)) this.setAutoscrollSpeed(parsed);
+  }
+
   private setAutoscrollSpeed(value: number) {
     this.autoscrollSpeed = Math.max(0, Math.min(this.maxAutoscrollSpeed, value));
     if (this.autoscrollSpeed > 0) {
@@ -245,6 +260,11 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
 
   decreaseBpm() {
     this.setBpm(this.bpm - 1);
+  }
+
+  onBpmInput(value: string) {
+    const parsed = parseInt(value, 10);
+    if (Number.isFinite(parsed)) this.setBpm(parsed);
   }
 
   private setBpm(value: number) {
