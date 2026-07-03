@@ -151,6 +151,7 @@ Sephiroth!</pre>
     <h3>{{ ui.t('Stage mode') }}</h3>
     <ul>
       <li><strong>🎤 {{ ui.t('Stage') }}</strong> &mdash; {{ ui.t('click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button. Both the scroll speed and BPM boxes in the floating bar are editable, just like in the toolbar.') }}</li>
+      <li>{{ ui.t('Stage mode turns on View Only mode automatically, so the chart can\'t be bumped out of place while performing — turn it back off from the floating bar\'s') }} <strong>🔒</strong> {{ ui.t('button if you still need to edit. It turns off again automatically when you exit Stage mode.') }}</li>
       <li>{{ ui.t('Where the browser supports it, stage mode also goes full-screen. Press') }} <kbd>Esc</kbd> {{ ui.t('or tap') }} <strong>✕</strong> {{ ui.t('to exit.') }}</li>
     </ul>
     <h3>{{ ui.t('View Only mode') }}</h3>
@@ -323,6 +324,7 @@ Sephiroth!</pre>
       <summary><h3>1.7.2</h3></summary>
       <ul>
         <li><strong>Numbered song list</strong> &mdash; collapsing the sidebar (or the mobile tab bar) now shows each song's position number instead, for a quick reference and one-tap jump. Press <kbd>1</kbd>&ndash;<kbd>9</kbd> on your keyboard from anywhere in the editor to jump straight to that song.</li>
+        <li><strong>Stage mode now turns on View Only mode automatically</strong> &mdash; the chart locks against accidental edits the moment you enter Stage mode, and unlocks again automatically on exit. It can still be toggled off manually from the floating bar while performing if you need to edit.</li>
         <li><strong>Fixed chord/lyric lines wider than the screen dragging the entire editor pane sideways on mobile</strong> &mdash; including the toolbar and "Add section" row. Each line now scrolls independently, with a subtle fade on the right edge when there's more to see.</li>
         <li><strong>Fixed Stage mode's floating bar looking cut off on a phone</strong> once autoscroll or the metronome (or both) expanded their controls &mdash; the bar already scrolled to reveal the rest, but with no visible hint that it was scrollable. It now fades both edges when there's more to see.</li>
       </ul>

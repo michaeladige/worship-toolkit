@@ -304,6 +304,18 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'klik tombol Hanya Lihat di toolbar (atau di bar melayang Mode Panggung) buat mengunci chart supaya nggak ke-edit nggak sengaja — cocok banget pas nge-share tablet ke anggota band. Edit chord, tambah/hapus chord/baris/bagian, edit lirik, anotasi, dan ganti nama judul/BPM/birama semua dinonaktifkan. Transpose, Lompat ke Kunci, Bass Notes, Nashville, dan Accidentals tetap bisa dipakai normal. Setelan ini reset lagi kalau halaman di-refresh.',
     jv: 'klik tombol Mung Deleng ing toolbar (utawa ing bar ngambang Mode Panggung) kanggo ngunci chart supaya ora keowahan ora sengaja — migunani banget nalika masrahake tablet menyang anggota band. Ngowahi chord, nambah/mbusak chord/baris/bagean, ngowahi lirik, anotasi, lan ngganti jeneng judhul/BPM/wirama kabeh dipateni. Transpose, Loncat menyang Kunci, Bass Notes, Nashville, lan Accidentals isih iso dipigunakake normal. Setelan iki bakal reset yen kaca di-refresh.',
   },
+  'Stage mode turns on View Only mode automatically, so the chart can\'t be bumped out of place while performing — turn it back off from the floating bar\'s': {
+    la: 'Modus Scaenae modum Solum Videre per se activat, ne tabula in usu perficiendi casu moveatur — id iterum claude ex trabe natante per papilionem',
+    'zh-TW': '舞台模式會自動開啟僅檢視模式，避免演出時不小心動到譜面——如需再次編輯，可在浮動控制列的',
+    id: 'Mode Panggung otomatis mengaktifkan Mode Hanya Lihat, biar chart nggak kegeser pas lagi tampil — matiin lagi lewat',
+    jv: 'Mode Panggung otomatis nguripake Mode Mung Deleng, supaya chart ora kegeser nalika lagi tampil — pateni maneh liwat',
+  },
+  'button if you still need to edit. It turns off again automatically when you exit Stage mode.': {
+    la: 'preme, si adhuc mutare debes. Cum modo Scaenae exis, per se iterum se claudit.',
+    'zh-TW': '按鈕上關閉，如果仍需要編輯的話。離開舞台模式時會自動再次關閉。',
+    id: 'tombol di bar melayang kalau masih perlu edit. Otomatis mati lagi begitu keluar dari Mode Panggung.',
+    jv: 'tombol ing bar ngambang yen isih kudu ngowahi. Bakal mati maneh otomatis nalika metu saka Mode Panggung.',
+  },
   'Where the browser supports it, stage mode also goes full-screen. Press': {
     la: 'Ubi navigatrum id sustinet, modus scaenae etiam plenum quadrum occupat. Preme',
     'zh-TW': '在瀏覽器支援的情況下，舞台模式也會進入全螢幕。按',
@@ -2250,6 +2262,9 @@ export class UiSettingsService {
 
   enterStageMode() {
     this.stageMode.set(true);
+    // Locking the chart by default matches how the mode is actually used —
+    // handed to/viewed by someone performing, not editing.
+    this.viewOnly.set(true);
     // Best-effort: iPhone Safari has no Fullscreen API at all, and iPadOS
     // only from 16.4 — the CSS layout must fully work without it.
     try {
@@ -2259,6 +2274,7 @@ export class UiSettingsService {
 
   exitStageMode() {
     this.stageMode.set(false);
+    this.viewOnly.set(false);
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     }
