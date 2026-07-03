@@ -5,10 +5,11 @@ All notable changes to WorshipToolkit are documented here. Versions follow `MAJO
 ## [1.7.2] - 2026-07-03
 
 ### Added
-- **Numbered song list** — each song in the "Songs in Set" sidebar now shows its position number as a quick reference. Press `1`–`9` on your keyboard to jump straight to that song.
+- **Numbered song list** — collapsing the sidebar (desktop/tablet) now shows each song's position number instead, for a quick reference and one-click jump. Press `1`–`9` on your keyboard from anywhere in the editor to jump straight to that song.
 
 ### Fixed
 - **Chord/lyric lines wider than the screen dragged the entire editor pane sideways on mobile** — including the toolbar and "Add section" row. Each line now scrolls independently, with a subtle fade on the right edge when there's more to see.
+- **Stage mode's floating bar could look cut off on a phone** once autoscroll or the metronome (or both) expanded their controls — the bar already scrolled to reveal the rest, but with no visible hint that it was scrollable. It now fades both edges when there's more to see.
 
 ## [1.7.1] - 2026-07-03
 

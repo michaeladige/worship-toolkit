@@ -20,6 +20,18 @@
     >{{ collapsed ? '►' : '◄' }}</button>
   </div>
 
+  @if (collapsed) {
+    <ul class="collapsed-song-numbers">
+      @for (song of songs; track song.id; let i = $index) {
+        <li
+          [class.active]="i === selectedIndex"
+          (click)="selectSong.emit(i)"
+          [title]="song.title"
+        >{{ i + 1 }}</li>
+      }
+    </ul>
+  }
+
   @if (!collapsed) {
     @if (songs.length > 5) {
       <input
@@ -42,7 +54,6 @@
           @if (!isFiltering) {
             <span cdkDragHandle class="drag-handle" title="Drag to reorder">≡</span>
           }
-          <span class="song-number">{{ entry.index + 1 }}</span>
           <span class="song-title">{{ entry.song.title }}</span>
           <span class="song-key">{{ effectiveKey(entry.song) }}</span>
           <button class="remove-song-btn" (click)="$event.stopPropagation(); removeSong.emit(entry.index)" title="Remove song">✕</button>

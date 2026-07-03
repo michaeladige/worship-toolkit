@@ -336,17 +336,17 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'menampilkan daftar pintasan lengkap.',
     jv: 'nuduhake dhaptar trabasan lengkap.',
   },
-  'Each song also shows its position number in the set as a quick reference — press': {
-    la: 'Quisque cantus etiam numerum positionis suae in collectione ostendit ut referentia rapida — preme',
-    'zh-TW': '每首歌也會顯示在此設定中的位置編號，方便快速參考——按',
-    id: 'Setiap lagu juga menampilkan nomor urutannya di dalam set sebagai referensi cepat — tekan',
-    jv: 'Saben lagu uga nuduhake nomer urutane ing set kanggo referensi cepet — pencet',
+  'Collapse the sidebar (desktop/tablet) to see each song\'s position number instead — click a number to jump straight to that song, or just press': {
+    la: 'Latus indicis (in tabella/mensa) claude ut numerum positionis quisque cantus videas — numerum preme ut directe ad illum cantum salias, aut tantum preme',
+    'zh-TW': '收合側邊欄（桌面／平板）即可看到每首歌的位置編號——點擊編號可直接跳到該首歌曲，或直接按',
+    id: 'Ciutkan sidebar (desktop/tablet) buat lihat nomor urutan tiap lagu — klik nomornya buat langsung lompat ke lagu itu, atau tinggal tekan',
+    jv: 'Ciutake sidebar (desktop/tablet) kanggo ndeleng nomer urutane saben lagu — klik nomere kanggo langsung loncat menyang lagu kuwi, utawa langsung pencet',
   },
-  'on your keyboard to jump straight to that song.': {
-    la: 'in claviatura tua ut directe ad illum cantum salias.',
-    'zh-TW': '即可直接跳到該首歌曲。',
-    id: 'di keyboard buat langsung lompat ke lagu itu.',
-    jv: 'ing keyboard kanggo langsung loncat menyang lagu kuwi.',
+  'on your keyboard from anywhere in the editor.': {
+    la: 'in claviatura tua ex quolibet loco in instrumentario redactionis.',
+    'zh-TW': '在編輯器的任何位置皆可使用。',
+    id: 'di keyboard, dari mana saja di editor.',
+    jv: 'ing keyboard, saka ngendi wae ing editor.',
   },
   'Please upload a PDF file.': {
     la: 'Quaeso, documentum PDF impone.',

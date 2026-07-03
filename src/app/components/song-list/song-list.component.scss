@@ -99,6 +99,46 @@
   @media (max-width: 767px) { display: none; }
 }
 
+// ── Collapsed sidebar: song number strip ──────────────────────────────────────
+// Desktop/tablet only — mobile's "collapsed" state hides the whole tab strip
+// to reclaim vertical space instead, so it has no equivalent number list.
+.collapsed-song-numbers {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+
+  @media (max-width: 767px) { display: none; }
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-muted);
+    background: var(--color-border);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.12s, color 0.12s;
+
+    &:hover { background: color-mix(in srgb, var(--color-primary) 15%, var(--color-border)); }
+
+    &.active {
+      background: var(--color-primary);
+      color: #fff;
+    }
+  }
+}
+
 // ── Mobile vertical collapse toggle ──────────────────────────────────────────
 .mobile-collapse-btn {
   display: none;
@@ -459,17 +499,4 @@ li {
     font-size: 0.7rem;
     padding: 0.05rem 0.3rem;
   }
-}
-
-// ── Song number badge ────────────────────────────────────────────────────────
-.song-number {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--color-muted);
-  background: var(--color-border);
-  border-radius: 4px;
-  min-width: 1.3rem;
-  padding: 0.1rem 0.3rem;
-  text-align: center;
-  flex-shrink: 0;
 }
