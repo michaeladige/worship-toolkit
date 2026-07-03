@@ -2,7 +2,7 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
-## [1.4.5] - 2026-07-03
+## [1.5.0] - 2026-07-03
 
 ### Added
 - **Easier PWA install prompt** — on Chromium browsers (Chrome/Edge/Android), when the browser decides the app is installable, a one-time toast now offers a one-tap **Install** button, and an "Install app" row appears in Settings → Updates for as long as that offer is available (so dismissing the toast doesn't lose it). On iOS, where there's no install API to hook into, a one-time toast instead points at Share → "Add to Home Screen". Neither shows again once the app is already running installed.
