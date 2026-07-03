@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.7.1] - 2026-07-03
+
+### Added
+- **Smaller text size option** — the text size stepper now goes down to 11 px (from 13 px), letting more of the chart fit on a small phone screen.
+
 ## [1.7.0] - 2026-07-03
 
 ### Added

@@ -282,7 +282,7 @@ Sephiroth!</pre>
         {{ ui.t('The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.') }}
       </li>
       <li><strong>{{ ui.t('Chord font') }}</strong> &mdash; {{ ui.t('choose between Classic (Courier New) and Readable (JetBrains Mono) — Readable is the default. Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.') }}</li>
-      <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.') }}</li>
+      <li><strong>{{ ui.t('Text size') }}</strong> &mdash; {{ ui.t('use') }} <strong>A&minus;</strong> / <strong>A+</strong> {{ ui.t('to scale the whole app\'s text up or down (11–32 px). Useful for large-screen presentations at the larger end, or for fitting more chart on a small phone screen at the smaller end.') }}</li>
       <li><strong>{{ ui.t('Split-column view') }}</strong> &mdash; {{ ui.t('arranges the chart into two columns in the editor, the same layout rule used by two-column PDF exports. Only takes effect at 14 px text size or below, and only on tablet/desktop screens — phones always show a single column.') }}</li>
     </ul>
     <h3>{{ ui.t('Export') }}</h3>
@@ -319,6 +319,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.7.1</h3></summary>
+      <ul>
+        <li><strong>Smaller text size option</strong> &mdash; the text size stepper now goes down to 11 px (from 13 px), letting more of the chart fit on a small phone screen.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.7.0</h3></summary>
       <ul>
         <li><strong>View Only mode</strong> &mdash; a new 🔒 View Only button in the toolbar (and in Stage mode's floating bar) locks the chart against accidental edits, handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when the page is reloaded.</li>

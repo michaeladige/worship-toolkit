@@ -2039,11 +2039,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'gunakan',
     jv:      'nggunakake',
   },
-  'to scale the whole app\'s text up or down (13–32 px). Useful for large-screen presentations at the larger end.': {
-    la:      'ut textum totius applicationis sursum vel deorsum scias (13–32 px). Utile pro praesensationibus in schermate magno ad extremum maius.',
-    'zh-TW': '放大或縮小整個 App 的文字（13–32px）。在較大端對大螢幕展示非常有用！',
-    id:      'untuk perbesar/perkecil teks seluruh app (13–32px). Berguna untuk presentasi layar besar di ukuran yang lebih besar!',
-    jv:      'kanggo mbakake utawa ngecilike teks kabeh app (13–32px). Migunani banget kanggo presentasi layar gede.',
+  'to scale the whole app\'s text up or down (11–32 px). Useful for large-screen presentations at the larger end, or for fitting more chart on a small phone screen at the smaller end.': {
+    la:      'ut textum totius applicationis sursum vel deorsum scias (11–32 px). Utile pro praesensationibus in schermate magno ad extremum maius, aut ad plus tabulae in schermate telephonico parvo ad extremum minus.',
+    'zh-TW': '放大或縮小整個 App 的文字（11–32px）。較大時適合大螢幕展示，較小時則能在手機小螢幕上容納更多譜面內容。',
+    id:      'untuk perbesar/perkecil teks seluruh app (11–32px). Berguna untuk presentasi layar besar di ukuran yang lebih besar, atau muat lebih banyak chart di layar HP kecil pada ukuran yang lebih kecil.',
+    jv:      'kanggo mbakake utawa ngecilike teks kabeh app (11–32px). Migunani banget kanggo presentasi layar gede, utawa kanggo nyawisake chart luwih akeh ing layar hp cilik.',
   },
   'sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.': {
     la:      'ponit magnitudinem textus in PDF exportatis (10–20 px, defalta 14 px), independenter a magnitudine textus in schemate. Magnitudines supra 14 px ad dispositionem unius columnae commutant; monitio ostenditur cum hic limes superatur.',
@@ -2167,7 +2167,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
 export class UiSettingsService {
   theme: 'light' | 'dark' = 'light';
   fontSize = 14;
-  readonly fontSizes = [13, 14, 16, 18, 20, 24, 28, 32];
+  readonly fontSizes = [11, 13, 14, 16, 18, 20, 24, 28, 32];
 
   pdfFontSize = 14;
   readonly pdfFontSizes = [10, 12, 14, 16, 18, 20];
