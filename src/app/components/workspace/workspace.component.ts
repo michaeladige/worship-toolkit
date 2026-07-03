@@ -118,6 +118,12 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     } else if (e.key === '?') {
       e.preventDefault();
       this.ui.showShortcutsModal = true;
+    } else if (/^[1-9]$/.test(e.key)) {
+      const idx = Number(e.key) - 1;
+      if (idx < this.songs.length) {
+        e.preventDefault();
+        this.onSelectSong(idx);
+      }
     }
   }
 

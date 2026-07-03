@@ -203,6 +203,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Next song': { la: 'Cantus sequens', 'zh-TW': '下一首', id: 'Lagu berikutnya', jv: 'Lagu sabanjure' },
   'Previous song': { la: 'Cantus prior', 'zh-TW': '上一首', id: 'Lagu sebelumnya', jv: 'Lagu sadurunge' },
   'Show this list': { la: 'Hunc indicem ostendere', 'zh-TW': '顯示此清單', id: 'Tampilkan daftar ini', jv: 'Tuduhake dhaptar iki' },
+  'Jump to song 1-9': { la: 'Salire ad cantum 1-9', 'zh-TW': '跳到第 1–9 首歌曲', id: 'Lompat ke lagu 1-9', jv: 'Loncat menyang lagu 1-9' },
   'Close dialogs / cancel edits': { la: 'Dialogos claudere / mutationes revocare', 'zh-TW': '關閉對話框／取消編輯', id: 'Tutup dialog / batalkan edit', jv: 'Nutup dialog / mbatalake owahan' },
   'Close': { la: 'Claudere', 'zh-TW': '關閉', id: 'Tutup', jv: 'Tutup' },
   'Stage': { la: 'Scaena', 'zh-TW': '舞台', id: 'Panggung', jv: 'Panggung' },
@@ -323,11 +324,29 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'pindah ke lagu berikutnya atau sebelumnya;',
     jv: 'pindhah menyang lagu sabanjure utawa sadurunge;',
   },
+  'jump directly to that song in the set;': {
+    la: 'ad illum cantum in collectione directe sali;',
+    'zh-TW': '直接跳到該首歌曲；',
+    id: 'lompat langsung ke lagu itu dalam set;',
+    jv: 'loncat langsung menyang lagu kuwi ing set;',
+  },
   'shows the full shortcut list.': {
     la: 'indicem plenum compendiorum ostendit.',
     'zh-TW': '顯示完整快捷鍵清單。',
     id: 'menampilkan daftar pintasan lengkap.',
     jv: 'nuduhake dhaptar trabasan lengkap.',
+  },
+  'Each song also shows its position number in the set as a quick reference — press': {
+    la: 'Quisque cantus etiam numerum positionis suae in collectione ostendit ut referentia rapida — preme',
+    'zh-TW': '每首歌也會顯示在此設定中的位置編號，方便快速參考——按',
+    id: 'Setiap lagu juga menampilkan nomor urutannya di dalam set sebagai referensi cepat — tekan',
+    jv: 'Saben lagu uga nuduhake nomer urutane ing set kanggo referensi cepet — pencet',
+  },
+  'on your keyboard to jump straight to that song.': {
+    la: 'in claviatura tua ut directe ad illum cantum salias.',
+    'zh-TW': '即可直接跳到該首歌曲。',
+    id: 'di keyboard buat langsung lompat ke lagu itu.',
+    jv: 'ing keyboard kanggo langsung loncat menyang lagu kuwi.',
   },
   'Please upload a PDF file.': {
     la: 'Quaeso, documentum PDF impone.',

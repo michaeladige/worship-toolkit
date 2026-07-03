@@ -460,3 +460,16 @@ li {
     padding: 0.05rem 0.3rem;
   }
 }
+
+// ── Song number badge ────────────────────────────────────────────────────────
+.song-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  background: var(--color-border);
+  border-radius: 4px;
+  min-width: 1.3rem;
+  padding: 0.1rem 0.3rem;
+  text-align: center;
+  flex-shrink: 0;
+}

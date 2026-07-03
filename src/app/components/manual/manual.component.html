@@ -99,6 +99,7 @@ Sephiroth!</pre>
     <ul>
       <li>{{ ui.t('Click any song in the list to switch the editor to that song.') }}</li>
       <li>{{ ui.t('The current key for each song is shown next to its title.') }}</li>
+      <li>{{ ui.t('Each song also shows its position number in the set as a quick reference — press') }} <kbd>1</kbd>–<kbd>9</kbd> {{ ui.t('on your keyboard to jump straight to that song.') }}</li>
       <li><strong>{{ ui.t('Search songs') }}</strong> &mdash; {{ ui.t('sets with more than 5 songs show a search box above the list to filter by title. Reordering is paused while a filter is active.') }}</li>
       <li><strong>{{ ui.t('Rename a song title') }}</strong> &mdash; {{ ui.t('click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press') }} <kbd>Enter</kbd> {{ ui.t('to save or') }} <kbd>Esc</kbd> {{ ui.t('to cancel. This is especially useful for songs added as blank "New Song" entries.') }}</li>
       <li><strong>{{ ui.t('Remove a song') }}</strong> &mdash; {{ ui.t('hover over a song in the list and click the') }} <strong>✕</strong> {{ ui.t('button that appears on the right. Removing the last song returns you to the upload screen.') }}</li>
@@ -158,7 +159,7 @@ Sephiroth!</pre>
     </ul>
     <h3>{{ ui.t('Keyboard shortcuts') }}</h3>
     <ul>
-      <li><kbd>+</kbd> / <kbd>−</kbd> {{ ui.t('transpose the current song up or down;') }} <kbd>Ctrl</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd> {{ ui.t('switch to the next or previous song;') }} <kbd>?</kbd> {{ ui.t('shows the full shortcut list.') }}</li>
+      <li><kbd>+</kbd> / <kbd>−</kbd> {{ ui.t('transpose the current song up or down;') }} <kbd>Ctrl</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd> {{ ui.t('switch to the next or previous song;') }} <kbd>1</kbd>–<kbd>9</kbd> {{ ui.t('jump directly to that song in the set;') }} <kbd>?</kbd> {{ ui.t('shows the full shortcut list.') }}</li>
     </ul>
     <h3>{{ ui.t('Annotations') }}</h3>
     <ul>
@@ -319,6 +320,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>1.8.0</h3></summary>
+      <ul>
+        <li><strong>Numbered song list</strong> &mdash; each song in the "Songs in Set" sidebar now shows its position number as a quick reference. Press <kbd>1</kbd>&ndash;<kbd>9</kbd> on your keyboard to jump straight to that song.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.7.2</h3></summary>
       <ul>
         <li><strong>Fixed chord/lyric lines wider than the screen dragging the entire editor pane sideways on mobile</strong> &mdash; including the toolbar and "Add section" row. Each line now scrolls independently, with a subtle fade on the right edge when there's more to see.</li>

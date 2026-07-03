@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.8.0] - 2026-07-03
+
+### Added
+- **Numbered song list** — each song in the "Songs in Set" sidebar now shows its position number as a quick reference. Press `1`–`9` on your keyboard to jump straight to that song.
+
 ## [1.7.2] - 2026-07-03
 
 ### Fixed
