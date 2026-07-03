@@ -64,52 +64,52 @@ const TAGLINES: Record<Language, string[]> = {
     'Chord charts so clean, even the drummer will pretend to read them',
   ],
   la: [
-    'In principio erat PDF, et PDF erat apud te, sine chordis.',
-    'Noli timere capo — nos illum vertimus pro te.',
-    'Cantate Domino... sed prius, in tono recto.',
-    'Chorda vaga? Nos eam domabimus.',
-    'Organistae omnes gaudent — nulla amplius pagina perdita.',
-    'Non est Wi-Fi in deserto, sed est WorshipToolkit sine interreti.',
-    'Baterista fingit se legere — sicut semper.',
-    'Sacerdos dixit "Amen", musicus dixit "F minor".',
-    'Quaerite primum regnum Dei — deinde tonum iustum.',
-    'Ecce, nova chorda: gratis, sine errore.',
+    'Capo IV? In hac appli, capo est fabula tantum.',
+    'Chorda perdita est — sed nos eam invenimus, sine usura.',
+    'Non oramus "Domine, dona nobis Wi-Fi" — iam habemus offline.',
+    'Baterista musicam legit? Fabula urbana, numquam probata.',
+    'F-diesis minor: terror organistarum, deliciae WorshipToolkit.',
+    '17 paginae PDF intrant, 1 pagina exit — miraculum cotidianum.',
+    'Cantate Domino canticum novum — sed prius, tono recto, quaeso.',
+    'Populus clamat "Quis tonum mutavit?!" — Nos respondemus "Ego, uno clic."',
+    'Nulla nubes, nullus login, tantum tu et chordae tuae.',
+    'Sacerdos dicit "Amen"; chitarrista dicit "capo secundo", semper.',
   ],
   'zh-TW': [
-    '詩班永遠的難題：這首歌到底是哪個調？我們幫你搞定！',
-    '沒有雲端，沒有登入，只有你、詩歌，和沒有 Wi-Fi 的主日。',
-    '鼓手看起來很專業地看譜——其實只是裝的，我們懂。',
-    'Capo 夾幾格？別擔心，我們幫你轉調不用夾。',
-    '17 頁的 PDF，變成一頁吉他手看得懂的譜——奇蹟每天發生。',
-    '敬拜主席最怕的不是忘詞，是忘了現在彈哪個調。',
-    '讓每一個和弦乖乖排隊，不再亂跑。',
-    '獻上你的 PDF，我們獻上準確的調性。',
-    '牧師說「阿們」，樂手說「降E小調」。',
-    '免費、離線、不出錯——比奉獻箱還可靠。',
+    '詩班問：這首歌是C還是D？其實兩個都不是，是你記錯了。',
+    '鼓手：我在看譜。天知道，地知道，他自己也不知道。',
+    'Capo 夾錯格，全場走音——這種悲劇，我們負責終結。',
+    '17 頁 PDF，1 個奇蹟，0 個 Capo 焦慮。',
+    '敬拜主席的惡夢排行榜：第一名忘記現在彈哪個調，第二名 Wi-Fi 斷線。我們解決了兩個。',
+    '免登入、免雲端、免尷尬——只剩你和你的和弦。',
+    '牧師說「阿們」，吉他手說「等等，這首是什麼調」。',
+    '轉調這件事，我們比你的手指還快。',
+    '奉獻箱有時候會漏，我們的 App 不會。',
+    '和弦亂跑，是吉他手的自由；乖乖排好，是我們的工作。',
   ],
   id: [
-    'Masalah abadi worship leader: lagu ini nadanya apa sih? Udah, kita bereskan!',
-    'Nggak ada cloud, nggak ada login, cuma kamu, lagu, dan Minggu tanpa Wi-Fi.',
-    'Drummer pura-pura baca not — santai, kita nggak bakal bocorin rahasianya.',
-    'Capo di fret berapa? Tenang, kita transpose tanpa capo.',
-    'PDF 17 halaman jadi satu chart yang gitaris beneran ngerti — mukjizat harian.',
-    'Yang ditakuti pemimpin pujian bukan lupa lirik, tapi lupa lagi main di nada apa.',
-    'Semua akor dibariskan rapi, nggak ada yang kabur lagi.',
-    'Kasih kami PDF-mu, kami kasih baliknya nada yang pas.',
-    'Pendeta bilang "Amin", pemain musik bilang "Es minor".',
-    'Gratis, offline, anti error — lebih setia dari kotak persembahan.',
+    'Chord numpuk kayak circle lagi drama? Auto beres, sat-set no drama.',
+    'PDF 17 halaman? Gercep kita rapiin jadi 1 chart yang gitaris paham — literally miracle.',
+    'Drummer pura-pura baca not — anjay padahal cuma ngikutin vibes doang.',
+    'Capo di fret berapa? Udah, gausah mikir, auto kita transpose-in, gaskeun!',
+    'Yang bikin worship leader baper bukan lupa lirik, tapi lupa lagi di nada apa. Real.',
+    'Nggak ada cloud, nggak ada login, cuma kamu, chord, dan Minggu tanpa Wi-Fi. Healing sejati.',
+    'Semua chord kita barisin rapi — zero circle drama, zero yang kabur.',
+    'Kasih PDF-mu ke kita, kita kasih balik nada yang pas. No cap.',
+    'Pendeta bilang "Amin", pemain musik masih mikir ini Es minor apa Es mayor — gabut, udah kita yang urus.',
+    'Gratis, offline, anti error — worth it banget dibanding kotak persembahan yang suka bolong.',
   ],
   jv: [
-    'Masalah langgeng pemimpin pujian: lagu iki nadane apa ya? Wis, tak-rampungke!',
-    'Ora ana cloud, ora ana login, mung kowe, lagu, lan Minggu tanpa Wi-Fi.',
-    'Drummer pura-pura moco not — santai wae, ora bakal dibongkar rahasiane.',
-    'Capo fret pira? Tenang, kita transpose tanpa capo.',
-    'PDF 17 kaca dadi siji chart sing gitaris tenan ngerti — mukjizat saben dina.',
-    'Sing ditakuti pemimpin pujian dudu lali lirik, nanging lali lagi main nada apa.',
-    'Kabeh akor dibarisake rapi, ora ana sing mlayu maneh.',
-    'Wenehna PDF-mu, kita wenehi bali nada sing pas.',
-    'Pendeta ngomong "Amin", pemain musik ngomong "Es minor".',
-    'Gratis, offline, ora tau error — luwih setya tinimbang kothak pisungsung.',
+    'Chord numpuk kaya utang tonggo? Tenang, kabeh tak-rapikke, cepet rampung.',
+    'PDF 17 kaca dadi siji chart sing gitaris tenan ngerti — mukjizat, Cah, tenanan.',
+    'Drummer pura-pura moco not — jane mung ngetutke feeling wae, ora ana sing ngerti.',
+    'Capo fret pira? Wis ra usah mikir, tak-transpose-ke dhewe, gampang.',
+    'Sing gawe pemimpin pujian mumet dudu lali lirik, nanging lali lagi nada apa. Nyata, Cah.',
+    'Ora ana cloud, ora ana login, mung kowe, chord, lan Minggu tanpa Wi-Fi. Ayem tenan.',
+    'Kabeh chord dibarisake rapi — ora ana sing mlayu-mlayu meneh kaya bocah cilik.',
+    'Wenehna PDF-mu, kita wenehi bali nada sing pas, ora nganggo ribet.',
+    'Pendeta ngomong "Amin", pemain musik isih mikir iki Es minor apa Es mayor — wis, kita sing ngurus.',
+    'Gratis, offline, ora tau error — luwih setya tinimbang kothak pisungsung sing kadang bolong.',
   ],
 };
 
@@ -146,13 +146,13 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     la: 'Consilium: chordam preme ut eam mutes — trahe ut eam moveas.',
     'zh-TW': '小提示：點擊和弦即可編輯——拖曳即可移動位置。',
     id: 'Tips: klik chord buat edit — drag buat geser posisinya!',
-    jv: 'Tips: klik akor kanggo ngowahi — seret kanggo mindhah panggonane.',
+    jv: 'Tips: klik chord kanggo ngowahi — seret kanggo mindhah panggonane.',
   },
   'Tip: tap a chord to edit it — press and drag to move it.': {
     la: 'Consilium: chordam tange ut eam mutes — preme et trahe ut eam moveas.',
     'zh-TW': '小提示：輕點和弦即可編輯——按住拖曳即可移動位置。',
     id: 'Tips: tap chord buat edit — tekan lalu geser buat mindahin!',
-    jv: 'Tips: tutul akor kanggo ngowahi — pencet banjur seret kanggo mindhah.',
+    jv: 'Tips: tutul chord kanggo ngowahi — pencet banjur seret kanggo mindhah.',
   },
   'Got it': { la: 'Intellego', 'zh-TW': '知道了', id: 'Oke, paham!', jv: 'Wis paham' },
   'Tip: use the tab on the left edge to open your song list.': {
@@ -336,7 +336,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
 
   // ── song section ──
   '+ Line':     { la: '+ Linea',    'zh-TW': '+ 行',         id: '+ Baris',        jv: '+ Baris'       },
-  '+ chord':    { la: '+ chorda',   'zh-TW': '+ 和弦',       id: '+ akor',         jv: '+ akor'        },
+  '+ chord':    { la: '+ chorda',   'zh-TW': '+ 和弦',       id: '+ chord',         jv: '+ chord'        },
   '+ note':     { la: '+ nota',     'zh-TW': '+ 備註',       id: '+ catatan',      jv: '+ cathetan'    },
 
   // ── song list ──
@@ -373,8 +373,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'choose between Classic (Courier New) and Readable (JetBrains Mono) — Readable is the default. Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.': {
     la:      'elige inter Classicum (Courier New) et Legibile (JetBrains Mono) — Legibile praedefinitum est. Ambo sunt fontes vere monospatiati, ita compositio chordarum et verborum exacta manet utroque modo. Applicatur editori et exportationibus PDF.',
     'zh-TW': '在經典（Courier New）和易讀（JetBrains Mono）之間選擇——預設為易讀。兩者都是真正的等寬字型，所以無論選哪個，和弦與歌詞的對齊都完全準確。同時套用於編輯器與 PDF 匯出。',
-    id:      'pilih antara Classic (Courier New) dan Readable (JetBrains Mono) — Readable itu defaultnya. Keduanya monospace asli, jadi posisi akor dan lirik tetap presisi apa pun pilihannya. Berlaku di editor maupun ekspor PDF.',
-    jv:      'pilih antarane Classic (Courier New) lan Readable (JetBrains Mono) — Readable kuwi defaulte. Loro-lorone monospace asli, dadi posisi akor lan lirik tetep pas senajan milih sing endi wae. Ditrapake ing editor lan uga ing ekspor PDF, nak.',
+    id:      'pilih antara Classic (Courier New) dan Readable (JetBrains Mono) — Readable itu defaultnya. Keduanya monospace asli, jadi posisi chord dan lirik tetap presisi apa pun pilihannya. Berlaku di editor maupun ekspor PDF.',
+    jv:      'pilih antarane Classic (Courier New) lan Readable (JetBrains Mono) — Readable kuwi defaulte. Loro-lorone monospace asli, dadi posisi chord lan lirik tetep pas senajan milih sing endi wae. Ditrapake ing editor lan uga ing ekspor PDF, nak.',
   },
   'Split-column view': { la: 'Visio Bicolumnis', 'zh-TW': '雙欄檢視', id: 'Tampilan Dua Kolom', jv: 'Tampilan Rong Kolom' },
   'arranges the chart into two columns in the editor, the same layout rule used by two-column PDF exports. Only takes effect at 14 px text size or below, and only on tablet/desktop screens — phones always show a single column.': {
@@ -466,15 +466,15 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Click any chord to rename it inline, or change individual chord placements': {
     la:      'Clicca chordas ut renomines in situ, vel muta positiones chordas singularum',
     'zh-TW': '點擊任意和弦以重新命名，或調整和弦位置',
-    id:      'Klik akor mana aja buat ganti nama, atau geser posisinya sesuka hati — anti ribet!',
-    jv:      'Klik akor sing dikarepake kanggo ngganti jeneng, utawa geser panggonane, alon-alon ora perlu kesusu.',
+    id:      'Klik chord mana aja buat ganti nama, atau geser posisinya sesuka hati — anti ribet!',
+    jv:      'Klik chord sing dikarepake kanggo ngganti jeneng, utawa geser panggonane, alon-alon ora perlu kesusu.',
   },
   'Bass Notes':      { la: 'Notae Bassi',            'zh-TW': '低音音符',       id: 'Not Bass',             jv: 'Not Bass'             },
   'Toggle to show just the root/bass note of every chord — great for beginners': {
     la:      'Commuta ut solum notam radicem/bassi cuiusque chordae videas — optimum pro initiis',
     'zh-TW': '切換顯示每個和弦的根音/低音，適合初學者',
-    id:      'Tampilin cuma not bass tiap akor — cocok banget buat pemula yang masih newbie!',
-    jv:      'Tampilake mung not bass saben akor — pas kanggo sing lagi sinau, ora usah kesusu.',
+    id:      'Tampilin cuma not bass tiap chord — cocok banget buat pemula yang masih newbie!',
+    jv:      'Tampilake mung not bass saben chord — pas kanggo sing lagi sinau, ora usah kesusu.',
   },
   'Download updated sheet as a formatted PDF or Markdown file to share with your team': {
     la:      'Descarga schedam renovatam ut PDF formatum vel Markdown ad socios tuos',
@@ -486,8 +486,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Switch every chord to scale-degree numbers — key-independent charts for ear-trained players': {
     la:      'Muta omnes chordas ad numeros graduum — chartae independentes pro musicis auribus exercitatis',
     'zh-TW': '將每個和弦轉換為音階度數數字，與調性無關',
-    id:      'Ubah semua akor jadi angka skala — bebas kunci, buat kamu yang kupingnya udah jago!',
-    jv:      'Ganti saben akor dadi angka skala — bebas kunci, kanggo sing kupinge wis pinter.',
+    id:      'Ubah semua chord jadi angka skala — bebas kunci, buat kamu yang kupingnya udah jago!',
+    jv:      'Ganti saben chord dadi angka skala — bebas kunci, kanggo sing kupinge wis pinter.',
   },
   'Undo, Dark Mode & More': {
     la:      'Rescindere, Modus Obscurus & Plus',
@@ -934,8 +934,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'The editor mirrors the printed layout: chords float above the lyric line they belong to.': {
     la:      'Editor dispositionem impressam speculi instar ostendit: chordae supra lineam verborum ad quam pertinent volant.',
     'zh-TW': '編輯器模仿印刷排版：和弦浮在對應的歌詞行上方。',
-    id:      'Editor mencerminkan tata letak cetak: akor mengambang di atas baris lirik yang sesuai.',
-    jv:      'Editor niru tata letak cetak: akor ngambang ing ndhuwur baris lirik sing cocog.',
+    id:      'Editor mencerminkan tata letak cetak: chord mengambang di atas baris lirik yang sesuai.',
+    jv:      'Editor niru tata letak cetak: chord ngambang ing ndhuwur baris lirik sing cocog.',
   },
   'Chords': {
     la:      'Chordae',
@@ -952,8 +952,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'click it, type the new chord, then press': {
     la:      'premes, inscribe chordam novam, deinde premes',
     'zh-TW': '點擊它，輸入新和弦，然後按',
-    id:      'klik, ketik akor baru, lalu tekan',
-    jv:      'klik, ketik akor anyar, banjur pencet',
+    id:      'klik, ketik chord baru, lalu tekan',
+    jv:      'klik, ketik chord anyar, banjur pencet',
   },
   '(or click elsewhere) to save. Press': {
     la:      '(vel alibi premes) ut serves. Premes',
@@ -1310,8 +1310,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.': {
     la:      'papiliones iuxta ostentationem clavis ut totum cantum sursum vel deorsum per semitonum moveant. Omnis chorda in pagina statim renovatur. Mirabile!',
     'zh-TW': '調性顯示旁的按鈕，每次上移或下移整首歌一個半音。頁面上所有和弦即時更新！',
-    id:      'tombol di samping tampilan kunci untuk naik/turun satu semitone sekaligus. Semua akor di halaman auto-update, secepat kilat!',
-    jv:      'tombol ing jejere tampilan kunci kanggo munggah utawa mudhun siji semitone. Kabeh akor ing kaca langsung dianyari, cepet kaya kilat, nak.',
+    id:      'tombol di samping tampilan kunci untuk naik/turun satu semitone sekaligus. Semua chord di halaman auto-update, secepat kilat!',
+    jv:      'tombol ing jejere tampilan kunci kanggo munggah utawa mudhun siji semitone. Kabeh chord ing kaca langsung dianyari, cepet kaya kilat, nak.',
   },
   'Jump to a key': {
     la:      'Saltire ad Clavem',
@@ -1360,8 +1360,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'toggles every chord down to just its root/bass note (e.g.': {
     la:      'omnes chordas ad solam notam radicem/bassi commutat (e.g.',
     'zh-TW': '將每個和弦切換為僅顯示根音/低音（例如',
-    id:      'toggle setiap akor ke not bass/root-nya saja (mis.',
-    jv:      'ngowahi saben akor dadi mung not bass/root-ne wae (tuladha',
+    id:      'toggle setiap chord ke not bass/root-nya saja (mis.',
+    jv:      'ngowahi saben chord dadi mung not bass/root-ne wae (tuladha',
   },
   '). Handy for simplified or beginner charts.': {
     la:      '). Utile pro tabulis simplicioribus vel pro initiis. Optima!',
@@ -1372,8 +1372,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'converts every chord to a scale-degree number (1–7, with ♭/♯ prefixes for accidentals), relative to the song\'s current key. Useful for ear-trained players and key-independent charts.': {
     la:      'omnes chordas ad numerum gradus scalae (1–7, cum praefixis ♭/♯ pro accidentalibus), relative ad clavem cantus currentem, convertit. Utile pro musicis auribus exercitatis et tabulis a clave independentibus.',
     'zh-TW': '將每個和弦轉換為音階度數數字（1–7，升降記號加前綴），相對於歌曲目前調性。對受過音感訓練的演奏者和不依賴調性的樂譜非常有用！',
-    id:      'mengubah setiap akor ke nomor skala (1–7, dengan awalan ♭/♯), relatif ke kunci lagu saat ini. Berguna untuk pemain yang terlatih telinga dan chart yang bebas kunci!',
-    jv:      'ngowahi saben akor dadi nomor skala (1–7, kanthi awalan ♭/♯), relatif marang kunci lagu saiki. Migunani kanggo pemain sing wis terlatih kuping lan chart sing bebas kunci.',
+    id:      'mengubah setiap chord ke nomor skala (1–7, dengan awalan ♭/♯), relatif ke kunci lagu saat ini. Berguna untuk pemain yang terlatih telinga dan chart yang bebas kunci!',
+    jv:      'ngowahi saben chord dadi nomor skala (1–7, kanthi awalan ♭/♯), relatif marang kunci lagu saiki. Migunani kanggo pemain sing wis terlatih kuping lan chart sing bebas kunci.',
   },
   'Both toggles can be combined with transposition, and both are respected by every export.': {
     la:      'Ambo commutamina cum transpositione combinari possunt, et ambo in omni exportatione respiciuntur.',
@@ -1386,8 +1386,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Every edit — chord changes, lyric edits, section moves, additions and removals — can be undone.': {
     la:      'Omnis emendatio — mutationes chordarum, emendationes verborum, motus sectionum, additiones et remota — rescindi potest. Noli timere errare!',
     'zh-TW': '每個編輯——和弦更改、歌詞編輯、段落移動、新增和刪除——都可以撤銷。大膽做，後悔了就按撤銷！',
-    id:      'Setiap edit — perubahan akor, edit lirik, pindah bagian, tambah dan hapus — bisa dibatalkan. Gak perlu takut salah!',
-    jv:      'Saben edit — owahane akor, ngedit lirik, mindah bagian, nambah lan mbusak — iso dibatalake. Ora usah wedi salah, nak!',
+    id:      'Setiap edit — perubahan chord, edit lirik, pindah bagian, tambah dan hapus — bisa dibatalkan. Gak perlu takut salah!',
+    jv:      'Saben edit — owahane chord, ngedit lirik, mindah bagian, nambah lan mbusak — iso dibatalake. Ora usah wedi salah, nak!',
   },
   'Use the': {
     la:      'Adhibere',
@@ -1490,8 +1490,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'PDFs exported from WorshipToolkit can be re-uploaded later. The app embeds the exact column layout in the file so your edits, chord positions, and structure come back intact — no need to keep a separate source file.': {
     la:      'PDF exportata ex WorshipToolkit postea onerari possunt. Applicatio dispositionem exactam columnarum in fasciculum inserit, ita emendationes tuae, positiones chordarum, et structura integrae redeunt — non opus est fasciculum fontis separatum servare.',
     'zh-TW': 'WorshipToolkit 匯出的 PDF 之後可以重新上傳。App 會在檔案中嵌入精確的欄位版面，所以你的編輯、和弦位置和結構都會完整保留——不需要保存單獨的來源檔案！',
-    id:      'PDF yang diekspor dari WorshipToolkit bisa di-upload lagi nanti. App menyematkan layout kolom persis di filenya, jadi editan, posisi akor, dan struktur kamu balik utuh — gak perlu simpan file sumber terpisah!',
-    jv:      'PDF sing diekspor saka WorshipToolkit iso diunggah maneh mengko. App nyematake layout kolom sing persis ing file-e, dadi editanmu, posisi akor, lan struktur bali utuh — ora perlu nyimpen file sumber terpisah, nak.',
+    id:      'PDF yang diekspor dari WorshipToolkit bisa di-upload lagi nanti. App menyematkan layout kolom persis di filenya, jadi editan, posisi chord, dan struktur kamu balik utuh — gak perlu simpan file sumber terpisah!',
+    jv:      'PDF sing diekspor saka WorshipToolkit iso diunggah maneh mengko. App nyematake layout kolom sing persis ing file-e, dadi editanmu, posisi chord, lan struktur bali utuh — ora perlu nyimpen file sumber terpisah, nak.',
   },
 
   // ── §9 Saved sets & autosave ──
@@ -1654,8 +1654,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   '. Every edit you make — chord changes, transpositions, section moves — is automatically saved back to that set in real time. No need to keep clicking Save.': {
     la:      '. Omnis emendatio quam facis — mutationes chordarum, transpositiones, motus sectionum — automatice ad illam collectionem in tempore reali servantur. Non opus est Servare iterum et iterum premere!',
     'zh-TW': '。你所做的每個編輯——和弦更改、移調、段落移動——都會即時自動儲存回該集合。不需要一直點儲存！',
-    id:      '. Setiap edit yang kamu buat — perubahan akor, transposisi, pindah bagian — otomatis disimpan ke set itu secara real time. Gak perlu terus-terusan klik Simpan!',
-    jv:      '. Saben edit sing kowe gawe — owahane akor, transposisi, mindah bagian — otomatis disimpen bali menyang set kasebut kanthi real time. Ora perlu terus-terusan klik Simpen, nak.',
+    id:      '. Setiap edit yang kamu buat — perubahan chord, transposisi, pindah bagian — otomatis disimpan ke set itu secara real time. Gak perlu terus-terusan klik Simpan!',
+    jv:      '. Saben edit sing kowe gawe — owahane chord, transposisi, mindah bagian — otomatis disimpen bali menyang set kasebut kanthi real time. Ora perlu terus-terusan klik Simpen, nak.',
   },
   'The active set is highlighted with an': {
     la:      'Collectio activa insignita est cum',
@@ -1774,8 +1774,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'file. This file contains the full song data including all edits, transpositions, and chord positions.': {
     la:      'fasciculum serves. Hic fasciculus continet data plena cantuum cum omnibus emendationibus, transpositionibus, et positionibus chordarum.',
     'zh-TW': '檔案。此檔案包含完整歌曲資料，包括所有編輯、移調和和弦位置。',
-    id:      '.wt. File ini berisi data lagu lengkap termasuk semua editan, transposisi, dan posisi akor.',
-    jv:      '.wt. File iki ngemot data lagu lengkap kalebu kabeh editan, transposisi, lan posisi akor.',
+    id:      '.wt. File ini berisi data lagu lengkap termasuk semua editan, transposisi, dan posisi chord.',
+    jv:      '.wt. File iki ngemot data lagu lengkap kalebu kabeh editan, transposisi, lan posisi chord.',
   },
   'Import from the Saved Sets panel': {
     la:      'Importare e Tabula Collectionum Servatarum',
@@ -1836,8 +1836,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'choose an accent color theme: 8 solid colors (Blue default, Pink, Red, Amber, Green, Purple, Teal, Orange) plus 2 subtle-pattern themes (Disco, Confetti). The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.': {
     la:      'elige thema coloris accentus: 8 colores solidi (Caeruleum defalta, Roseum, Rubrum, Succinum, Viride, Purpureum, Cyaneum, Aurantiacum) et 2 themata subtiliter picta (Disco, Confetti). Color electus papilionibus, ostentioni chordarum, et elementis interactivis per totam applicationem applicatur. Cum modo Lucis et Tenebrarum laborat.',
     'zh-TW': '選擇強調色主題：8 種純色（藍色預設、粉色、紅色、琥珀色、綠色、紫色、青色、橘色），另有 2 款低調圖案主題（迪斯可、彩紙）。所選顏色應用於整個 App 的按鈕、和弦顯示和互動元素。支援淺色和深色模式！',
-    id:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Merah, Amber, Hijau, Ungu, Teal, Oranye) plus 2 tema pola halus (Disco, Confetti). Warna yang dipilih berlaku untuk tombol, tampilan akor, dan elemen interaktif di seluruh app. Cocok dengan mode Terang maupun Gelap!',
-    jv:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Abang, Amber, Ijo, Ungu, Teal, Oranye) lan 2 tema pola alus (Disco, Confetti). Warna sing dipilih diterapake menyang tombol, tampilan akor, lan elemen interaktif ing sak kabehe app. Cocok karo mode Padhang lan Peteng.',
+    id:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Merah, Amber, Hijau, Ungu, Teal, Oranye) plus 2 tema pola halus (Disco, Confetti). Warna yang dipilih berlaku untuk tombol, tampilan chord, dan elemen interaktif di seluruh app. Cocok dengan mode Terang maupun Gelap!',
+    jv:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Abang, Amber, Ijo, Ungu, Teal, Oranye) lan 2 tema pola alus (Disco, Confetti). Warna sing dipilih diterapake menyang tombol, tampilan chord, lan elemen interaktif ing sak kabehe app. Cocok karo mode Padhang lan Peteng.',
   },
   'toggle between Light and Dark mode. WorshipToolkit follows your system\'s preference the first time you open it.': {
     la:      'commuta inter modum Lucis et Tenebrarum. WorshipToolkit praeferentiam systematis tui prima vice qua eam aperis sequitur.',
@@ -1848,8 +1848,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'choose how chord and key names are spelled:': {
     la:      'eligere quomodo nomina chordarum et clavium scribantur:',
     'zh-TW': '選擇和弦和調性名稱的拼寫方式：',
-    id:      'pilih cara penulisan nama akor dan kunci:',
-    jv:      'pilih carane nulis jeneng akor lan kunci:',
+    id:      'pilih cara penulisan nama chord dan kunci:',
+    jv:      'pilih carane nulis jeneng chord lan kunci:',
   },
   'always use flat notation (Db, Eb, Ab, Bb, Gb) everywhere.': {
     la:      'semper adhibere notationem bemolium (Db, Eb, Ab, Bb, Gb) ubique.',
@@ -1878,8 +1878,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.': {
     la:      'Electio simul applicatur papilionibus chordarum in editore, ostentioni clavis in barra instrumentorum et laterali, listae cadenti "Salire ad", et omnibus exportationibus PDF et Markdown.',
     'zh-TW': '這個選擇同時應用於編輯器中的和弦按鈕、工具列和側邊欄的調性顯示、「跳至」下拉列表，以及所有 PDF 和 Markdown 匯出。',
-    id:      'Pilihan berlaku serentak untuk tombol akor di editor, tampilan kunci di toolbar dan sidebar, daftar dropdown "Lompat ke", dan semua ekspor PDF dan Markdown.',
-    jv:      'Pilihan iki diterapake bebarengan menyang tombol akor ing editor, tampilan kunci ing toolbar lan sidebar, dhaftar dropdown "Loncat menyang", lan kabeh ekspor PDF lan Markdown.',
+    id:      'Pilihan berlaku serentak untuk tombol chord di editor, tampilan kunci di toolbar dan sidebar, daftar dropdown "Lompat ke", dan semua ekspor PDF dan Markdown.',
+    jv:      'Pilihan iki diterapake bebarengan menyang tombol chord ing editor, tampilan kunci ing toolbar lan sidebar, dhaftar dropdown "Loncat menyang", lan kabeh ekspor PDF lan Markdown.',
   },
   'use': {
     la:      'adhibere',
@@ -1994,8 +1994,8 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.': {
     la:      'Positiones ad characteres integros coniunguntur ne chordae umquam superponantur; depone eam paululum longius in linea si resilivit.',
     'zh-TW': '位置會對齊到完整字符，這樣和弦就永遠不會重疊；如果它彈回去了，就沿著行再往前一點放。',
-    id:      'Posisi snap ke karakter utuh supaya akor gak pernah tumpang tindih; taruh sedikit lebih jauh di baris kalau balik lagi.',
-    jv:      'Posisi snap menyang karakter lengkap supaya akor ora pernah tumpang tindih; seleh sethithik luwih adoh ing baris yen bali maneh.',
+    id:      'Posisi snap ke karakter utuh supaya chord gak pernah tumpang tindih; taruh sedikit lebih jauh di baris kalau balik lagi.',
+    jv:      'Posisi snap menyang karakter lengkap supaya chord ora pernah tumpang tindih; seleh sethithik luwih adoh ing baris yen bali maneh.',
   },
   'Want a clean slate for one song only?': {
     la:      'Vis tabulam puram pro uno cantu solum?',
