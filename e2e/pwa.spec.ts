@@ -121,20 +121,25 @@ test.describe('Install prompt', () => {
     await expect(page.locator('.toast-action-btn', { hasText: 'Install' })).toHaveCount(0);
   });
 
-  test('home page shows an install button once the browser is install-eligible', async ({ page }) => {
+  test('home page shows an install button always, and it upgrades to a real prompt once available', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('.install-app-btn')).toHaveCount(0);
-
-    await fireBeforeInstallPrompt(page);
     const homeInstallBtn = page.locator('.install-app-btn');
     await expect(homeInstallBtn).toBeVisible();
 
+    // Before any install event has fired (and not iOS), clicking falls back
+    // to a generic pointer at the browser's own install UI.
+    await homeInstallBtn.click();
+    await expect(page.locator('.latin-toast')).toContainText('install icon');
+
+    await fireBeforeInstallPrompt(page);
     await homeInstallBtn.click();
     const promptCalled = await page.evaluate(
       () => (window as unknown as { __lastInstallEvent: { promptCalled?: boolean } }).__lastInstallEvent.promptCalled === true,
     );
     expect(promptCalled).toBe(true);
-    await expect(homeInstallBtn).toHaveCount(0);
+    // Still shown afterward — it's unconditional now, not tied to the
+    // one-shot captured event.
+    await expect(homeInstallBtn).toBeVisible();
   });
 });
 

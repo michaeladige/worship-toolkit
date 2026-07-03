@@ -2,6 +2,12 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [1.5.1] - 2026-07-03
+
+### Changed
+- **Home page "Install app" button is now always shown** (as long as the app isn't already installed), instead of only appearing once a Chromium install prompt or iOS was detected. Clicking it still triggers the real install prompt or iOS Share instructions where available; on other browsers (desktop Firefox/Safari) it now shows a generic pointer at the browser's own install icon/menu instead of doing nothing.
+- **Stage mode's floating bar now shows the song title on phones too** (it was hidden below the 768px breakpoint before). It's capped to a small width and truncates with an ellipsis on long titles — an intentional tradeoff to leave room for the scroll/metronome/exit controls. If a long title plus both control groups active would still outgrow the bar, it scrolls horizontally instead of clipping a control off-screen.
+
 ## [1.5.0] - 2026-07-03
 
 ### Added
