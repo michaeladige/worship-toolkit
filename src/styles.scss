@@ -136,7 +136,44 @@
     color-mix(in srgb, var(--color-primary) 8%, transparent) 1.5px,
     transparent 1.5px
   );
-  background-size: 22px 22px;
+  --bg-size: 22px 22px;
+}
+[data-color="grid"] {
+  --color-primary:      #4f46e5;
+  --color-primary-dark: #4338ca;
+  --color-chord:        #4338ca;
+  --color-bg:           #eef2ff;
+  --color-surface:      #f5f7ff;
+  --color-border:       #c7d2fe;
+  --color-hover:        #e0e7ff;
+  --bg-pattern:
+    linear-gradient(to right, color-mix(in srgb, var(--color-primary) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-primary) 8%, transparent) 1px, transparent 1px);
+  --bg-size: 24px 24px;
+}
+[data-color="plaid"] {
+  --color-primary:      #0891b2;
+  --color-primary-dark: #0e7490;
+  --color-chord:        #0e7490;
+  --color-bg:           #ecfeff;
+  --color-surface:      #f5feff;
+  --color-border:       #a5f3fc;
+  --color-hover:        #cffafe;
+  --bg-pattern:
+    repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--color-primary) 6%, transparent) 0px,
+      color-mix(in srgb, var(--color-primary) 6%, transparent) 1px,
+      transparent 1px,
+      transparent 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-primary) 6%, transparent) 0px,
+      color-mix(in srgb, var(--color-primary) 6%, transparent) 1px,
+      transparent 1px,
+      transparent 14px
+    );
 }
 
 /* ── Dark mode overrides per accent ── */
@@ -232,7 +269,44 @@
     color-mix(in srgb, var(--color-primary) 10%, transparent) 1.5px,
     transparent 1.5px
   );
-  background-size: 22px 22px;
+  --bg-size: 22px 22px;
+}
+[data-theme="dark"][data-color="grid"] {
+  --color-primary:      #818cf8;
+  --color-primary-dark: #6366f1;
+  --color-chord:        #a5b4fc;
+  --color-bg:           #10102a;
+  --color-surface:      #171735;
+  --color-border:       #2e2e5c;
+  --color-hover:        #23234a;
+  --bg-pattern:
+    linear-gradient(to right, color-mix(in srgb, var(--color-primary) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-primary) 10%, transparent) 1px, transparent 1px);
+  --bg-size: 24px 24px;
+}
+[data-theme="dark"][data-color="plaid"] {
+  --color-primary:      #22d3ee;
+  --color-primary-dark: #06b6d4;
+  --color-chord:        #67e8f9;
+  --color-bg:           #06171a;
+  --color-surface:      #0a2227;
+  --color-border:       #124049;
+  --color-hover:        #0e3138;
+  --bg-pattern:
+    repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--color-primary) 8%, transparent) 0px,
+      color-mix(in srgb, var(--color-primary) 8%, transparent) 1px,
+      transparent 1px,
+      transparent 14px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      color-mix(in srgb, var(--color-primary) 8%, transparent) 0px,
+      color-mix(in srgb, var(--color-primary) 8%, transparent) 1px,
+      transparent 1px,
+      transparent 14px
+    );
 }
 
 html, body {
@@ -242,6 +316,13 @@ html, body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--color-bg);
   background-image: var(--bg-pattern, none);
+  // --bg-size (not a plain background-size on the [data-color] selector) so
+  // it inherits from <html> (where the attribute actually lives) down to
+  // <body> the same way --bg-pattern does — a plain background-size only
+  // applies to the element the attribute selector matches, so <body>'s
+  // radial-gradient dot patterns had no size and rendered as one giant,
+  // effectively invisible gradient instead of repeating dots.
+  background-size: var(--bg-size, auto);
   color: var(--color-text);
   font-size: 14px;
   -webkit-font-smoothing: antialiased;

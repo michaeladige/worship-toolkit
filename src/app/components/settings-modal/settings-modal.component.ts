@@ -81,6 +81,8 @@ export class SettingsModalComponent {
       orange: 'Orange',
       disco: 'Disco',
       confetti: 'Confetti',
+      grid: 'Grid',
+      plaid: 'Plaid',
     };
     return labels[c];
   }
