@@ -8,9 +8,12 @@ const FLATS  = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
 // Keys that prefer flats (includes enharmonic sharps so transposeKey() always matches allKeys())
 const FLAT_KEYS = new Set(['F','Bb','Eb','Ab','Db','Gb','C#','D#','G#','A#','Dm','Gm','Cm','Fm','Bbm','Ebm']);
 
-// Quality alternatives ordered longest-first so "maj" beats "m", etc.
+// Quality alternatives ordered longest-first so "maj" beats "m", etc. Case
+// variants are spelled out explicitly for maj/min/dim/aug (SongSelect charts
+// sometimes render "CMaj7"/"CDim") — deliberately NOT a blanket `i` flag,
+// since that would blur the single-letter m/M minor-vs-major distinction.
 const CHORD_RE =
-  /^([A-G][b#]?)(maj|min|dim|aug|m|M)?(\d+)?(\([0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
+  /^([A-G][b#]?)(maj|Maj|MAJ|min|Min|MIN|dim|Dim|DIM|aug|Aug|AUG|m|M)?(\d+)?((?:[#b]\d+)|(?:\d+\/\d+))?(\([0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
 
 @Injectable({ providedIn: 'root' })
 export class ChordService {
@@ -51,9 +54,9 @@ export class ChordService {
     const m = chord.match(CHORD_RE);
     if (!m) return null;
     const root = m[1];
-    // groups: [2]=quality, [3]=digits, [4]=parens, [5]=sus/add, [6]=bass
-    const suffix = ((m[2] ?? '') + (m[3] ?? '') + (m[4] ?? '') + (m[5] ?? '')).trim();
-    const bass = m[6] ? m[6].slice(1) : null; // strip leading "/"
+    // groups: [2]=quality, [3]=digits, [4]=altered/compound ext (b5/#9/6\/9), [5]=parens, [6]=sus/add, [7]=bass
+    const suffix = ((m[2] ?? '') + (m[3] ?? '') + (m[4] ?? '') + (m[5] ?? '') + (m[6] ?? '')).trim();
+    const bass = m[7] ? m[7].slice(1) : null; // strip leading "/"
     return { root, suffix, bass };
   }
 
@@ -117,7 +120,15 @@ export class ChordService {
     if (semitones === 0 && accidentals === 'auto') return annotation;
     return annotation
       .split(/(\s+)/)
-      .map(token => this.isChord(token) ? this.transposeChord(token, semitones, targetKey, accidentals) : token)
+      .map(token => {
+        // Strip a glued bar/repeat prefix (e.g. "|Am7") before checking/transposing,
+        // matching how extractChords() strips the same prefix during PDF parsing —
+        // otherwise a chord glued to "|" never matches isChord() and stays untransposed.
+        const m = token.match(/^([|:]+\s*)(.*)$/);
+        const prefix = m ? m[1] : '';
+        const rest = m ? m[2] : token;
+        return this.isChord(rest) ? prefix + this.transposeChord(rest, semitones, targetKey, accidentals) : token;
+      })
       .join('');
   }
 
