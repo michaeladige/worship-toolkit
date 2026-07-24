@@ -11,10 +11,10 @@ interface RawItem {
 
 interface RawLine {
   items: RawItem[];
-  y: number;          // virtual y (ordering, not physical)
+  y: number; // virtual y (ordering, not physical)
   text: string;
-  colMinX: number;    // left edge of the column this line belongs to
-  colWidth: number;   // usable width of the column
+  colMinX: number; // left edge of the column this line belongs to
+  colWidth: number; // usable width of the column
 }
 
 const SECTION_RE =
@@ -40,14 +40,12 @@ export class PdfParserService {
     if (!this.workerBlobUrlPromise) {
       const src = new URL('assets/pdf.worker.mjs', document.baseURI).href;
       this.workerBlobUrlPromise = fetch(src)
-        .then(r => {
+        .then((r) => {
           if (!r.ok) throw new Error(`Worker fetch: HTTP ${r.status}`);
           return r.text();
         })
-        .then(code => URL.createObjectURL(
-          new Blob([code], { type: 'application/javascript' }),
-        ))
-        .catch(err => {
+        .then((code) => URL.createObjectURL(new Blob([code], { type: 'application/javascript' })))
+        .catch((err) => {
           this.workerBlobUrlPromise = null; // allow retry on failure
           throw err;
         });
@@ -123,7 +121,10 @@ export class PdfParserService {
 
     let result = '';
     for (let i = 0; i < text.length; i++) {
-      if (text[i] !== '\x00') { result += text[i]; continue; }
+      if (text[i] !== '\x00') {
+        result += text[i];
+        continue;
+      }
       const before = this.trailingLetters(result);
       const after = this.leadingLetters(text, i + 1);
       let bridgedAfter = after;
@@ -146,7 +147,11 @@ export class PdfParserService {
       loadTask.promise,
       new Promise<never>((_, reject) =>
         setTimeout(() => {
-          try { loadTask.destroy(); } catch { /* ignore */ }
+          try {
+            loadTask.destroy();
+          } catch {
+            /* ignore */
+          }
           reject(new Error('PDF loading timed out — please try again.'));
         }, 20000),
       ),
@@ -171,7 +176,9 @@ export class PdfParserService {
           wtCol2X = Number.isFinite(parsed) ? parsed : null;
         }
       }
-    } catch { /* non-critical — fall back to heuristic detection */ }
+    } catch {
+      /* non-critical — fall back to heuristic detection */
+    }
 
     // 1. Extract items per page
     const rawPages: { items: RawItem[]; height: number }[] = [];
@@ -194,7 +201,7 @@ export class PdfParserService {
     }
 
     // Only pay for the word-list fetch when this PDF actually has the broken-ligature bug.
-    const hasBrokenLigatures = rawPages.some(p => p.items.some(i => i.text.includes('\x00')));
+    const hasBrokenLigatures = rawPages.some((p) => p.items.some((i) => i.text.includes('\x00')));
     this.wordSet = hasBrokenLigatures ? await this.loadWordSet() : null;
 
     // 2. Merge superscripts within each page (skip for WT PDFs — chords are already atomic)
@@ -203,15 +210,15 @@ export class PdfParserService {
     }
 
     // 3. Convert each page into an ordered list of RawLines, handling two-column
-    const pageLinesList: RawLine[][] = rawPages.map(p =>
-      this.pageToLines(p.items, p.height, wtCol2X)
+    const pageLinesList: RawLine[][] = rawPages.map((p) =>
+      this.pageToLines(p.items, p.height, wtCol2X),
     );
 
     // 4. Split into song groups: a page that contains a META_RE line starts new song
     const songGroups: RawLine[][][] = [];
     let currentGroup: RawLine[][] = [];
     for (const lines of pageLinesList) {
-      const hasMeta = lines.some(l => META_RE.test(l.text));
+      const hasMeta = lines.some((l) => META_RE.test(l.text));
       if (hasMeta && currentGroup.length > 0) {
         songGroups.push(currentGroup);
         currentGroup = [];
@@ -222,7 +229,7 @@ export class PdfParserService {
 
     // 5. Parse each song group
     return songGroups
-      .map(group => this.parseSongGroup(group))
+      .map((group) => this.parseSongGroup(group))
       .filter((s): s is ParsedSong => s !== null);
   }
 
@@ -241,7 +248,10 @@ export class PdfParserService {
         if (dy < 1 || dy > 9) continue;
         const dx = Math.abs(sup.x - (root.x + root.width));
         if (dx > 6) continue;
-        if (dx < bestDist) { bestDist = dx; best = root; }
+        if (dx < bestDist) {
+          bestDist = dx;
+          best = root;
+        }
       }
       if (best) {
         best.text += sup.text;
@@ -256,39 +266,43 @@ export class PdfParserService {
 
   // ── Column detection & line ordering ─────────────────────────────────────────
   // Returns an ordered list of RawLines for the page, left column first then right.
-  private pageToLines(items: RawItem[], pageHeight: number, wtCol2X: number | null = null): RawLine[] {
+  private pageToLines(
+    items: RawItem[],
+    pageHeight: number,
+    wtCol2X: number | null = null,
+  ): RawLine[] {
     // For WT-generated PDFs use the embedded column start x directly, bypassing heuristics.
     // Only split if the page actually has content in the right column.
     let splitX: number | null;
     if (wtCol2X !== null) {
-      splitX = items.some(i => i.x >= wtCol2X - 10) ? wtCol2X : null;
+      splitX = items.some((i) => i.x >= wtCol2X - 10) ? wtCol2X : null;
     } else {
       splitX = this.detectColumnSplit(items);
     }
 
     if (splitX === null) {
       // Single-column: straightforward grouping
-      const minX = items.length ? Math.min(...items.map(i => i.x)) : 40;
-      const maxX = items.length ? Math.max(...items.map(i => i.x + i.width)) : 560;
+      const minX = items.length ? Math.min(...items.map((i) => i.x)) : 40;
+      const maxX = items.length ? Math.max(...items.map((i) => i.x + i.width)) : 560;
       return this.groupItems(items, minX, maxX - minX);
     }
 
     // Two-column: process each column independently, right after left
-    const left  = items.filter(i => i.x < splitX);
-    const right = items.filter(i => i.x >= splitX);
+    const left = items.filter((i) => i.x < splitX);
+    const right = items.filter((i) => i.x >= splitX);
 
-    const leftMinX     = left.length  ? Math.min(...left.map(i => i.x))  : 40;
+    const leftMinX = left.length ? Math.min(...left.map((i) => i.x)) : 40;
     const leftColWidth = splitX - leftMinX - 10; // approximate left column content width
 
     // Right column gets its own width from its own item extent (mirroring the
     // single-column branch above) rather than reusing the left column's width —
     // the two columns aren't always mirror-symmetric, and reusing the left
     // width here skewed every right-column chord's xPercent/charPos.
-    const rightMinX     = right.length ? Math.min(...right.map(i => i.x)) : splitX;
-    const rightMaxX     = right.length ? Math.max(...right.map(i => i.x + i.width)) : rightMinX;
-    const rightColWidth = right.length ? (rightMaxX - rightMinX) : leftColWidth;
+    const rightMinX = right.length ? Math.min(...right.map((i) => i.x)) : splitX;
+    const rightMaxX = right.length ? Math.max(...right.map((i) => i.x + i.width)) : rightMinX;
+    const rightColWidth = right.length ? rightMaxX - rightMinX : leftColWidth;
 
-    const leftLines  = this.groupItems(left,  leftMinX,  leftColWidth);
+    const leftLines = this.groupItems(left, leftMinX, leftColWidth);
     const rightLines = this.groupItems(right, rightMinX, rightColWidth);
 
     // Give right-column lines a virtual y offset so they sort AFTER left-column
@@ -306,9 +320,7 @@ export class PdfParserService {
   // Step 2: find the actual empty gap between the two content clusters (not just the
   //         midpoint of header x-positions, which cuts through the left column).
   private detectColumnSplit(items: RawItem[]): number | null {
-    const headerXs = items
-      .filter(i => SECTION_RE.test(i.text.trim()))
-      .map(i => i.x);
+    const headerXs = items.filter((i) => SECTION_RE.test(i.text.trim())).map((i) => i.x);
 
     if (headerXs.length < 2) return null;
 
@@ -319,7 +331,7 @@ export class PdfParserService {
     // Find the actual gap between the two content clusters.
     // Search within (minHX, maxHX) — the full span between the two column starts.
     // The inter-column whitespace will be the largest x-gap in this range.
-    const allXs = [...new Set(items.map(i => i.x))].sort((a, b) => a - b);
+    const allXs = [...new Set(items.map((i) => i.x))].sort((a, b) => a - b);
 
     let bestGapCenter = (minHX + maxHX) / 2; // fallback
     let bestGapSize = 0;
@@ -340,7 +352,7 @@ export class PdfParserService {
   // Group sorted items into lines (tolerance 4 px), annotated with column info
   private groupItems(items: RawItem[], colMinX: number, colWidth: number): RawLine[] {
     if (items.length === 0) return [];
-    const sorted = [...items].sort((a, b) => a.y !== b.y ? a.y - b.y : a.x - b.x);
+    const sorted = [...items].sort((a, b) => (a.y !== b.y ? a.y - b.y : a.x - b.x));
     const lines: RawLine[] = [];
     let group: RawItem[] = [sorted[0]];
     let groupY = sorted[0].y;
@@ -369,7 +381,13 @@ export class PdfParserService {
       }
       text += sorted[i].text;
     }
-    return { items: sorted, y: sorted[0].y, text: this.reconstructLigatures(text.trim()), colMinX, colWidth };
+    return {
+      items: sorted,
+      y: sorted[0].y,
+      text: this.reconstructLigatures(text.trim()),
+      colMinX,
+      colWidth,
+    };
   }
 
   // ── Song parsing ──────────────────────────────────────────────────────────────
@@ -390,8 +408,12 @@ export class PdfParserService {
     // Parse header
     let title = '';
     let authors: string[] = [];
-    let key = 'C', tempo = '', timeSignature = '4/4';
-    let ccliNumber = '', copyright = '';
+    let key = 'C',
+      tempo = '',
+      timeSignature = '4/4';
+    let keyFound = false;
+    let ccliNumber = '',
+      copyright = '';
     let contentStart = 0;
 
     for (let i = 0; i < Math.min(10, allLines.length); i++) {
@@ -399,6 +421,7 @@ export class PdfParserService {
       const metaMatch = text.match(META_RE);
       if (metaMatch) {
         key = metaMatch[1];
+        keyFound = true;
         tempo = metaMatch[2] ?? '';
         timeSignature = metaMatch[3] ?? '4/4';
         contentStart = i + 1;
@@ -410,7 +433,10 @@ export class PdfParserService {
 
     for (let i = allLines.length - 1; i >= Math.max(0, allLines.length - 8); i--) {
       const m = allLines[i].text.match(/CCLI Song\s*#\s*(\d+)/i);
-      if (m) { ccliNumber = m[1]; break; }
+      if (m) {
+        ccliNumber = m[1];
+        break;
+      }
     }
 
     if (!title) return null;
@@ -428,13 +454,15 @@ export class PdfParserService {
       if (/CCLI Song|For use solely|©|www\.ccli|License #/i.test(text)) continue;
       if (/^Key\s*[-–]\s*[A-G][b#]?$/i.test(text)) {
         this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
-        pendingChordLine = null; pendingAnnotation = '';
+        pendingChordLine = null;
+        pendingAnnotation = '';
         continue;
       }
 
       if (SECTION_RE.test(text)) {
         this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
-        pendingChordLine = null; pendingAnnotation = '';
+        pendingChordLine = null;
+        pendingAnnotation = '';
         currentSection = { name: text.toUpperCase().trim(), lines: [] };
         sections.push(currentSection);
         continue;
@@ -453,17 +481,25 @@ export class PdfParserService {
         pendingAnnotation = this.extractAnnotation(text);
       } else {
         // Lyric line — pass lyric items so chords get accurate charPos
-        const chords = pendingChordLine
-          ? this.extractChords(pendingChordLine, line.items)
-          : [];
+        const chords = pendingChordLine ? this.extractChords(pendingChordLine, line.items) : [];
         currentSection.lines.push({
-          chords, lyric: text, isChordsOnly: false,
+          chords,
+          lyric: text,
+          isChordsOnly: false,
           annotation: pendingAnnotation || undefined,
         });
-        pendingChordLine = null; pendingAnnotation = '';
+        pendingChordLine = null;
+        pendingAnnotation = '';
       }
     }
     this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
+
+    // No "Key -" metadata on this PDF — guess the base key from its chords rather
+    // than leaving the misleading 'C' default (keeps Nashville/transpose honest).
+    if (!keyFound) {
+      const chords = sections.flatMap((s) => s.lines.flatMap((l) => l.chords.map((c) => c.chord)));
+      key = this.chordSvc.detectKey(chords);
+    }
 
     return {
       id: crypto.randomUUID(),
@@ -473,7 +509,7 @@ export class PdfParserService {
       originalKey: key,
       tempo,
       timeSignature,
-      sections: sections.filter(s => s.lines.length > 0),
+      sections: sections.filter((s) => s.lines.length > 0),
       ccliNumber,
       copyright,
       transposeSemitones: 0,
@@ -485,7 +521,8 @@ export class PdfParserService {
     if (line && section) {
       section.lines.push({
         chords: this.extractChords(line, null),
-        lyric: '', isChordsOnly: true,
+        lyric: '',
+        isChordsOnly: true,
         annotation: annotation || undefined,
       });
     }
@@ -519,7 +556,10 @@ export class PdfParserService {
     for (const item of line.items) {
       // Strip leading bar/repeat markers so "| Am7", "||: C2", "| Fmaj7" etc.
       // yield just the chord text. Purely structural items like ":||" become empty.
-      const stripped = item.text.trim().replace(/^[|:]+\s*/, '').trim();
+      const stripped = item.text
+        .trim()
+        .replace(/^[|:]+\s*/, '')
+        .trim();
       if (!stripped) continue;
 
       // An item may contain multiple space-separated chords (e.g. after stripping "| C2 D/C").

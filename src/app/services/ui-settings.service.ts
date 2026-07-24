@@ -32,16 +32,16 @@ export interface BeforeInstallPromptEvent extends Event {
 
 const PREFS_KEY = 'worship_toolkit_prefs';
 
-const LEGACY_THEME_KEY    = 'worship_toolkit_theme';
-const LEGACY_FONT_KEY     = 'worship_toolkit_font_size';
-const LEGACY_LATIN_KEY    = 'worship_toolkit_latin_mode';
+const LEGACY_THEME_KEY = 'worship_toolkit_theme';
+const LEGACY_FONT_KEY = 'worship_toolkit_font_size';
+const LEGACY_LATIN_KEY = 'worship_toolkit_latin_mode';
 
 const LANG_TOASTS: Record<Language, string> = {
-  en:      'Switched to English 🌐',
-  la:      'Modus Latinus Activatus 🏛️',
+  en: 'Switched to English 🌐',
+  la: 'Modus Latinus Activatus 🏛️',
   'zh-TW': '已切換至繁體中文 🀄',
-  id:      'Mode Bahasa Indonesia: ON! Gaskeun, lur 🌴🔥',
-  jv:      'Basa Jawa sampun mlebu, Cah! Ayo garap lagune karo tentrem 🌾😌',
+  id: 'Mode Bahasa Indonesia: ON! Gaskeun, lur 🌴🔥',
+  jv: 'Basa Jawa sampun mlebu, Cah! Ayo garap lagune karo tentrem 🌾😌',
 };
 
 // Home page subtitle pool, picked/cycled at random by UploadComponent rather
@@ -70,9 +70,9 @@ const TAGLINES: Record<Language, string[]> = {
     'No cloud, no login, no drama — just your chords and a Wi-Fi-free Sunday',
     'Because "Capo 4, but which key is that again?" shouldn\'t be your biggest worship problem',
     'Chord charts so clean, even the drummer will pretend to read them',
-    'POV: your capo\'s on fret 4 and nobody, including you, knows why',
-    'No cap — this might be the cleanest chord chart your band\'s ever seen',
-    'Remember fixing chord charts with Wite-Out? Yeah, we don\'t miss that either',
+    "POV: your capo's on fret 4 and nobody, including you, knows why",
+    "No cap — this might be the cleanest chord chart your band's ever seen",
+    "Remember fixing chord charts with Wite-Out? Yeah, we don't miss that either",
     'Faster than dial-up, more reliable than the church Wi-Fi password',
   ],
   la: [
@@ -151,12 +151,42 @@ const TAGLINES: Record<Language, string[]> = {
 
 const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   // ── toasts / feedback ──
-  'Set saved':    { la: 'Collectio Servata', 'zh-TW': '集合已儲存', id: 'Set tersimpan, aman!', jv: 'Set wis kasimpen' },
-  'Set imported': { la: 'Collectio Importata', 'zh-TW': '集合已匯入', id: 'Set berhasil diimpor!', jv: 'Set wis mlebu' },
-  'Set exported': { la: 'Collectio Exportata', 'zh-TW': '集合已匯出', id: 'Set berhasil diekspor!', jv: 'Set wis diekspor' },
-  'Set deleted':  { la: 'Collectio Deleta', 'zh-TW': '集合已刪除', id: 'Set dihapus', jv: 'Set wis dibusak' },
-  'PDF exported': { la: 'PDF Exportatum', 'zh-TW': 'PDF 已匯出', id: 'PDF berhasil diekspor!', jv: 'PDF wis diekspor' },
-  'Markdown exported': { la: 'Markdown Exportatum', 'zh-TW': 'Markdown 已匯出', id: 'Markdown berhasil diekspor!', jv: 'Markdown wis diekspor' },
+  'Set saved': {
+    la: 'Collectio Servata',
+    'zh-TW': '集合已儲存',
+    id: 'Set tersimpan, aman!',
+    jv: 'Set wis kasimpen',
+  },
+  'Set imported': {
+    la: 'Collectio Importata',
+    'zh-TW': '集合已匯入',
+    id: 'Set berhasil diimpor!',
+    jv: 'Set wis mlebu',
+  },
+  'Set exported': {
+    la: 'Collectio Exportata',
+    'zh-TW': '集合已匯出',
+    id: 'Set berhasil diekspor!',
+    jv: 'Set wis diekspor',
+  },
+  'Set deleted': {
+    la: 'Collectio Deleta',
+    'zh-TW': '集合已刪除',
+    id: 'Set dihapus',
+    jv: 'Set wis dibusak',
+  },
+  'PDF exported': {
+    la: 'PDF Exportatum',
+    'zh-TW': 'PDF 已匯出',
+    id: 'PDF berhasil diekspor!',
+    jv: 'PDF wis diekspor',
+  },
+  'Markdown exported': {
+    la: 'Markdown Exportatum',
+    'zh-TW': 'Markdown 已匯出',
+    id: 'Markdown berhasil diekspor!',
+    jv: 'Markdown wis diekspor',
+  },
   'PDF export failed. Please try again.': {
     la: 'Exportatio PDF defecit. Quaeso iterum conare.',
     'zh-TW': 'PDF 匯出失敗，請再試一次。',
@@ -190,7 +220,7 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: '🔗 Impor dari Ultimate Guitar',
     jv: '🔗 Impor saka Ultimate Guitar',
   },
-  'Import': { la: 'Importare', 'zh-TW': '匯入', id: 'Impor', jv: 'Impor' },
+  Import: { la: 'Importare', 'zh-TW': '匯入', id: 'Impor', jv: 'Impor' },
   'Paste an ultimate-guitar.com URL': {
     la: 'Insere nexum ultimate-guitar.com',
     'zh-TW': '貼上 ultimate-guitar.com 網址',
@@ -209,7 +239,12 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Lagu berhasil diimpor!',
     jv: 'Lagu wis mlebu',
   },
-  'Import failed.': { la: 'Importatio defecit.', 'zh-TW': '匯入失敗。', id: 'Impor gagal.', jv: 'Impor gagal.' },
+  'Import failed.': {
+    la: 'Importatio defecit.',
+    'zh-TW': '匯入失敗。',
+    id: 'Impor gagal.',
+    jv: 'Impor gagal.',
+  },
   "Couldn't reach Ultimate Guitar. The page may be blocked — try again.": {
     la: 'Ultimate Guitar attingi non potuit. Pagina fortasse impedita est — iterum conare.',
     'zh-TW': '無法連上 Ultimate Guitar，頁面可能被封鎖——請再試一次。',
@@ -246,7 +281,12 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Tempel teks atau tautan Ultimate Guitar — kami yang ambil URL-nya',
     jv: 'Tempel teks utawa tautan Ultimate Guitar — awak dhewe sing njupuk URL-e',
   },
-  'link(s) found': { la: 'nexus inventi', 'zh-TW': '個連結', id: 'tautan ditemukan', jv: 'tautan ketemu' },
+  'link(s) found': {
+    la: 'nexus inventi',
+    'zh-TW': '個連結',
+    id: 'tautan ditemukan',
+    jv: 'tautan ketemu',
+  },
   'Open chords pages on ultimate-guitar.com and paste their links, one per line or as text.': {
     la: 'Aperi paginas chordarum in ultimate-guitar.com et nexus earum insere, singulos per lineam vel ut textum.',
     'zh-TW': '在 ultimate-guitar.com 開啟和弦頁面，然後貼上連結，一行一個或直接貼文字。',
@@ -274,59 +314,127 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Tips: pakai tab di tepi kiri buat buka daftar lagumu!',
     jv: 'Tips: gunakna tab ing pinggir kiwa kanggo mbukak dhaptar lagumu.',
   },
-  'Keyboard shortcuts': { la: 'Compendia Clavium', 'zh-TW': '鍵盤快捷鍵', id: 'Pintasan keyboard', jv: 'Trabasan keyboard' },
-  'Transpose up': { la: 'Transponere sursum', 'zh-TW': '升調', id: 'Transpose naik', jv: 'Transpose munggah' },
-  'Transpose down': { la: 'Transponere deorsum', 'zh-TW': '降調', id: 'Transpose turun', jv: 'Transpose mudhun' },
-  'Next song': { la: 'Cantus sequens', 'zh-TW': '下一首', id: 'Lagu berikutnya', jv: 'Lagu sabanjure' },
-  'Previous song': { la: 'Cantus prior', 'zh-TW': '上一首', id: 'Lagu sebelumnya', jv: 'Lagu sadurunge' },
-  'Show this list': { la: 'Hunc indicem ostendere', 'zh-TW': '顯示此清單', id: 'Tampilkan daftar ini', jv: 'Tuduhake dhaptar iki' },
-  'Jump to song 1-9': { la: 'Salire ad cantum 1-9', 'zh-TW': '跳到第 1–9 首歌曲', id: 'Lompat ke lagu 1-9', jv: 'Loncat menyang lagu 1-9' },
-  'Close dialogs / cancel edits': { la: 'Dialogos claudere / mutationes revocare', 'zh-TW': '關閉對話框／取消編輯', id: 'Tutup dialog / batalkan edit', jv: 'Nutup dialog / mbatalake owahan' },
-  'Close': { la: 'Claudere', 'zh-TW': '關閉', id: 'Tutup', jv: 'Tutup' },
-  'Stage': { la: 'Scaena', 'zh-TW': '舞台', id: 'Panggung', jv: 'Panggung' },
+  'Keyboard shortcuts': {
+    la: 'Compendia Clavium',
+    'zh-TW': '鍵盤快捷鍵',
+    id: 'Pintasan keyboard',
+    jv: 'Trabasan keyboard',
+  },
+  'Transpose up': {
+    la: 'Transponere sursum',
+    'zh-TW': '升調',
+    id: 'Transpose naik',
+    jv: 'Transpose munggah',
+  },
+  'Transpose down': {
+    la: 'Transponere deorsum',
+    'zh-TW': '降調',
+    id: 'Transpose turun',
+    jv: 'Transpose mudhun',
+  },
+  'Next song': {
+    la: 'Cantus sequens',
+    'zh-TW': '下一首',
+    id: 'Lagu berikutnya',
+    jv: 'Lagu sabanjure',
+  },
+  'Previous song': {
+    la: 'Cantus prior',
+    'zh-TW': '上一首',
+    id: 'Lagu sebelumnya',
+    jv: 'Lagu sadurunge',
+  },
+  'Show this list': {
+    la: 'Hunc indicem ostendere',
+    'zh-TW': '顯示此清單',
+    id: 'Tampilkan daftar ini',
+    jv: 'Tuduhake dhaptar iki',
+  },
+  'Jump to song 1-9': {
+    la: 'Salire ad cantum 1-9',
+    'zh-TW': '跳到第 1–9 首歌曲',
+    id: 'Lompat ke lagu 1-9',
+    jv: 'Loncat menyang lagu 1-9',
+  },
+  'Close dialogs / cancel edits': {
+    la: 'Dialogos claudere / mutationes revocare',
+    'zh-TW': '關閉對話框／取消編輯',
+    id: 'Tutup dialog / batalkan edit',
+    jv: 'Nutup dialog / mbatalake owahan',
+  },
+  Close: { la: 'Claudere', 'zh-TW': '關閉', id: 'Tutup', jv: 'Tutup' },
+  Stage: { la: 'Scaena', 'zh-TW': '舞台', id: 'Panggung', jv: 'Panggung' },
   'A new version is available.': {
     la: 'Nova versio praesto est.',
     'zh-TW': '有新版本可用。',
     id: 'Ada versi baru nih!',
     jv: 'Ana versi anyar.',
   },
-  'Reload': { la: 'Recargare', 'zh-TW': '重新載入', id: 'Muat ulang', jv: 'Muat maneh' },
-  'Install': { la: 'Instala', 'zh-TW': '安裝', id: 'Instal', jv: 'Instal' },
-  'Install app': { la: 'Applicationem instala', 'zh-TW': '安裝 App', id: 'Instal aplikasi', jv: 'Instal aplikasi' },
+  Reload: { la: 'Recargare', 'zh-TW': '重新載入', id: 'Muat ulang', jv: 'Muat maneh' },
+  Install: { la: 'Instala', 'zh-TW': '安裝', id: 'Instal', jv: 'Instal' },
+  'Install app': {
+    la: 'Applicationem instala',
+    'zh-TW': '安裝 App',
+    id: 'Instal aplikasi',
+    jv: 'Instal aplikasi',
+  },
   'Install WorshipToolkit for quick, offline access.': {
     la: 'Instala WorshipToolkit pro accessu celeri, sine interreti.',
     'zh-TW': '安裝 WorshipToolkit，快速離線使用。',
     id: 'Instal WorshipToolkit biar bisa dibuka cepat, walau offline.',
     jv: 'Instal WorshipToolkit supaya bisa dibukak cepet, sanajan offline.',
   },
-  'Tip: tap Share, then "Add to Home Screen" to install WorshipToolkit for quick, offline access.': {
-    la: 'Consilium: tange Communica, deinde "Adde ad Quadrum Domesticum" ut WorshipToolkit instales pro accessu celeri, sine interreti.',
-    'zh-TW': '小提示：點擊「分享」，再選「加入主畫面」即可安裝 WorshipToolkit，離線也能快速開啟。',
-    id: 'Tips: tap Share (Bagikan), lalu "Add to Home Screen" buat instal WorshipToolkit biar bisa dibuka cepat walau offline.',
-    jv: 'Tips: tap Share, banjur "Add to Home Screen" kanggo instal WorshipToolkit supaya bisa dibukak cepet sanajan offline.',
+  'Tip: tap Share, then "Add to Home Screen" to install WorshipToolkit for quick, offline access.':
+    {
+      la: 'Consilium: tange Communica, deinde "Adde ad Quadrum Domesticum" ut WorshipToolkit instales pro accessu celeri, sine interreti.',
+      'zh-TW':
+        '小提示：點擊「分享」，再選「加入主畫面」即可安裝 WorshipToolkit，離線也能快速開啟。',
+      id: 'Tips: tap Share (Bagikan), lalu "Add to Home Screen" buat instal WorshipToolkit biar bisa dibuka cepat walau offline.',
+      jv: 'Tips: tap Share, banjur "Add to Home Screen" kanggo instal WorshipToolkit supaya bisa dibukak cepet sanajan offline.',
+    },
+  'Look for an install icon in your browser\'s address bar, or check its menu for "Install App" / "Add to Home Screen".':
+    {
+      la: 'Quaere iconem instalandi in vecte inscriptionis navigatri tui, vel inspice menu eius pro "Instala Applicationem" / "Adde ad Quadrum Domesticum".',
+      'zh-TW':
+        '請找瀏覽器網址列上的安裝圖示，或查看瀏覽器選單中的「安裝應用程式」／「加入主畫面」。',
+      id: 'Cari ikon install di address bar browser-mu, atau cek menu browser buat "Install App" / "Add to Home Screen".',
+      jv: 'Golek ikon instal ing address bar browser-mu, utawa priksa menu browser kanggo "Install App" / "Add to Home Screen".',
+    },
+  'Install it as an app': {
+    la: 'Instala eam ut applicationem',
+    'zh-TW': '安裝成 App',
+    id: 'Instal jadi aplikasi',
+    jv: 'Instal dadi aplikasi',
   },
-  'Look for an install icon in your browser\'s address bar, or check its menu for "Install App" / "Add to Home Screen".': {
-    la: 'Quaere iconem instalandi in vecte inscriptionis navigatri tui, vel inspice menu eius pro "Instala Applicationem" / "Adde ad Quadrum Domesticum".',
-    'zh-TW': '請找瀏覽器網址列上的安裝圖示，或查看瀏覽器選單中的「安裝應用程式」／「加入主畫面」。',
-    id: 'Cari ikon install di address bar browser-mu, atau cek menu browser buat "Install App" / "Add to Home Screen".',
-    jv: 'Golek ikon instal ing address bar browser-mu, utawa priksa menu browser kanggo "Install App" / "Add to Home Screen".',
+  'WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload. On Chrome/Edge/Android, the first time the browser is ready to install, a toast offers a one-tap Install too — and stays reachable afterward under':
+    {
+      la: 'WorshipToolkit instalari potest ("Adde ad Quadrum Domesticum" in mobili, icon instalandi in vecte inscriptionis in mensa) et sine interreti plene operatur postquam semel oneratum est — utile in scaena cum wifi infido. Cum nova versio emittitur, toast Recargare uno tactu offert. In Chrome/Edge/Android, prima vice cum instrumentum instalare parata est, toast Instala quoque uno tactu offert — et postea sub',
+      'zh-TW':
+        'WorshipToolkit 可以安裝（手機上「加入主畫面」，桌面版點網址列的安裝圖示），載入過一次後即可完全離線使用——在 wifi 不穩的舞台上超實用！新版本上線時，會跳出提示讓你一鍵重新載入。在 Chrome/Edge/Android 上，瀏覽器第一次判斷可以安裝時，也會跳出提示讓你一鍵安裝——之後還能在',
+      id: 'WorshipToolkit bisa di-install ("Tambahkan ke Layar Utama" di HP, ikon install di address bar di desktop) dan jalan full offline setelah dimuat sekali — berguna banget di panggung yang wifi-nya suka ngambek. Kalau ada versi baru, muncul toast buat reload sekali tap. Di Chrome/Edge/Android, begitu browser-nya siap buat install, muncul juga toast Install sekali tap — dan masih bisa diakses lagi lewat',
+      jv: 'WorshipToolkit bisa diinstal ("Tambahake menyang Layar Utama" ing HP, ikon instal ing address bar ing desktop) lan mlaku offline kabeh sawise dimuat sepisan — migunani banget ing panggung sing wifine ora ajeg. Yen ana versi anyar, ana toast kanggo muat maneh sak tutulan. Ing Chrome/Edge/Android, pas browser-e wis siyap kanggo instal, ana uga toast Instal sak tutulan — lan isih bisa diakses maneh liwat',
+    },
+  'as long as the browser still allows it. On iPhone/iPad, a one-time tip points at Share → "Add to Home Screen" instead, since iOS has no install button to offer.':
+    {
+      la: 'quamdiu instrumentum id adhuc permittit. In iPhone/iPad, consilium semel oblatum ad Communica → "Adde ad Quadrum Domesticum" indicat, quia iOS nullum papilionem instalandi offert.',
+      'zh-TW':
+        '只要瀏覽器還允許就會一直在。iPhone/iPad 上則會顯示一次性提示，指向「分享」→「加入主畫面」，因為 iOS 沒有安裝按鈕可用。',
+      id: 'selama browser-nya masih ngizinin. Di iPhone/iPad, tips sekali muncul buat arahin ke Share → "Add to Home Screen", soalnya iOS nggak punya tombol install.',
+      jv: 'sak suwene browser-e isih ngidini. Ing iPhone/iPad, tips sepisan muncul kanggo nuduhake Share → "Add to Home Screen", amarga iOS ora duwe tombol instal.',
+    },
+  Updates: { la: 'Renovationes', 'zh-TW': '更新', id: 'Pembaruan', jv: 'Nganyari' },
+  'App version': {
+    la: 'Versio applicationis',
+    'zh-TW': '應用程式版本',
+    id: 'Versi aplikasi',
+    jv: 'Versi aplikasi',
   },
-  'Install it as an app': { la: 'Instala eam ut applicationem', 'zh-TW': '安裝成 App', id: 'Instal jadi aplikasi', jv: 'Instal dadi aplikasi' },
-  'WorshipToolkit is installable ("Add to Home Screen" on mobile, the install icon in the address bar on desktop) and works fully offline once loaded — handy on stage with unreliable wifi. When a new version ships, a toast offers a one-tap Reload. On Chrome/Edge/Android, the first time the browser is ready to install, a toast offers a one-tap Install too — and stays reachable afterward under': {
-    la: 'WorshipToolkit instalari potest ("Adde ad Quadrum Domesticum" in mobili, icon instalandi in vecte inscriptionis in mensa) et sine interreti plene operatur postquam semel oneratum est — utile in scaena cum wifi infido. Cum nova versio emittitur, toast Recargare uno tactu offert. In Chrome/Edge/Android, prima vice cum instrumentum instalare parata est, toast Instala quoque uno tactu offert — et postea sub',
-    'zh-TW': 'WorshipToolkit 可以安裝（手機上「加入主畫面」，桌面版點網址列的安裝圖示），載入過一次後即可完全離線使用——在 wifi 不穩的舞台上超實用！新版本上線時，會跳出提示讓你一鍵重新載入。在 Chrome/Edge/Android 上，瀏覽器第一次判斷可以安裝時，也會跳出提示讓你一鍵安裝——之後還能在',
-    id: 'WorshipToolkit bisa di-install ("Tambahkan ke Layar Utama" di HP, ikon install di address bar di desktop) dan jalan full offline setelah dimuat sekali — berguna banget di panggung yang wifi-nya suka ngambek. Kalau ada versi baru, muncul toast buat reload sekali tap. Di Chrome/Edge/Android, begitu browser-nya siap buat install, muncul juga toast Install sekali tap — dan masih bisa diakses lagi lewat',
-    jv: 'WorshipToolkit bisa diinstal ("Tambahake menyang Layar Utama" ing HP, ikon instal ing address bar ing desktop) lan mlaku offline kabeh sawise dimuat sepisan — migunani banget ing panggung sing wifine ora ajeg. Yen ana versi anyar, ana toast kanggo muat maneh sak tutulan. Ing Chrome/Edge/Android, pas browser-e wis siyap kanggo instal, ana uga toast Instal sak tutulan — lan isih bisa diakses maneh liwat',
+  'Check for updates': {
+    la: 'Renovationes quaerere',
+    'zh-TW': '檢查更新',
+    id: 'Periksa pembaruan',
+    jv: 'Priksa nganyari',
   },
-  'as long as the browser still allows it. On iPhone/iPad, a one-time tip points at Share → "Add to Home Screen" instead, since iOS has no install button to offer.': {
-    la: 'quamdiu instrumentum id adhuc permittit. In iPhone/iPad, consilium semel oblatum ad Communica → "Adde ad Quadrum Domesticum" indicat, quia iOS nullum papilionem instalandi offert.',
-    'zh-TW': '只要瀏覽器還允許就會一直在。iPhone/iPad 上則會顯示一次性提示，指向「分享」→「加入主畫面」，因為 iOS 沒有安裝按鈕可用。',
-    id: 'selama browser-nya masih ngizinin. Di iPhone/iPad, tips sekali muncul buat arahin ke Share → "Add to Home Screen", soalnya iOS nggak punya tombol install.',
-    jv: 'sak suwene browser-e isih ngidini. Ing iPhone/iPad, tips sepisan muncul kanggo nuduhake Share → "Add to Home Screen", amarga iOS ora duwe tombol instal.',
-  },
-  'Updates': { la: 'Renovationes', 'zh-TW': '更新', id: 'Pembaruan', jv: 'Nganyari' },
-  'App version': { la: 'Versio applicationis', 'zh-TW': '應用程式版本', id: 'Versi aplikasi', jv: 'Versi aplikasi' },
-  'Check for updates': { la: 'Renovationes quaerere', 'zh-TW': '檢查更新', id: 'Periksa pembaruan', jv: 'Priksa nganyari' },
   'Checking…': { la: 'Quaerens…', 'zh-TW': '檢查中…', id: 'Memeriksa…', jv: 'Lagi mriksa…' },
   'Update found — it will be ready to reload shortly.': {
     la: 'Renovatio inventa — mox parata erit ad recargandum.',
@@ -346,14 +454,16 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Gagal cek pembaruan — cek koneksimu.',
     jv: 'Gagal priksa nganyari — priksa sambunganmu.',
   },
-  'Open': { la: 'Aperi', 'zh-TW': '打開', id: 'Buka', jv: 'Bukak' },
+  Open: { la: 'Aperi', 'zh-TW': '打開', id: 'Buka', jv: 'Bukak' },
   'and use': { la: 'et utere', 'zh-TW': '並使用', id: 'lalu gunakan', jv: 'lan gunakke' },
-  'under Updates — it checks for a newer version, and if there isn\'t one, force-refreshes the app and clears its offline cache. If that button itself isn\'t loading, load the page once with': {
-    la: 'sub Renovationibus — versionem recentiorem quaerit, et si nulla est, applicationem cogit recargare et memoriam offline delet. Si ipse papilio non oneratur, paginam semel onera cum',
-    'zh-TW': '在「更新」底下——它會檢查是否有更新版本，如果沒有，就會強制重新整理並清除離線快取。如果連這個按鈕都打不開，請在網址加上',
-    id: 'di bawah Pembaruan — ini akan cek versi lebih baru, dan kalau nggak ada, paksa refresh app dan hapus cache offline-nya. Kalau tombolnya sendiri nggak mau muncul, muat halamannya sekali pakai',
-    jv: 'ing ngisor Nganyari — iki bakal priksa versi sing luwih anyar, lan yen ora ana, meksa refresh app lan mbusak cache offline-e. Yen tombole dhewe ora gelem muncul, muat kacane sepisan nganggo',
-  },
+  "under Updates — it checks for a newer version, and if there isn't one, force-refreshes the app and clears its offline cache. If that button itself isn't loading, load the page once with":
+    {
+      la: 'sub Renovationibus — versionem recentiorem quaerit, et si nulla est, applicationem cogit recargare et memoriam offline delet. Si ipse papilio non oneratur, paginam semel onera cum',
+      'zh-TW':
+        '在「更新」底下——它會檢查是否有更新版本，如果沒有，就會強制重新整理並清除離線快取。如果連這個按鈕都打不開，請在網址加上',
+      id: 'di bawah Pembaruan — ini akan cek versi lebih baru, dan kalau nggak ada, paksa refresh app dan hapus cache offline-nya. Kalau tombolnya sendiri nggak mau muncul, muat halamannya sekali pakai',
+      jv: 'ing ngisor Nganyari — iki bakal priksa versi sing luwih anyar, lan yen ora ana, meksa refresh app lan mbusak cache offline-e. Yen tombole dhewe ora gelem muncul, muat kacane sepisan nganggo',
+    },
   'added to the URL to skip the cache, then reload normally.': {
     la: 'additum ad URL ut memoriam vitet, deinde recarga normaliter.',
     'zh-TW': '，跳過快取後再正常重新整理一次即可。',
@@ -366,27 +476,48 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'App-nya kayak nyangkut di versi lama?',
     jv: 'App-e kaya kecanthol ing versi lawas?',
   },
-  'Exit stage mode': { la: 'Exire e modo scaenae', 'zh-TW': '離開舞台模式', id: 'Keluar mode panggung', jv: 'Metu saka mode panggung' },
-  'Stage mode': { la: 'Modus Scaenae', 'zh-TW': '舞台模式', id: 'Mode panggung', jv: 'Mode panggung' },
-  'click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button. Both the scroll speed and BPM boxes in the floating bar are editable, just like in the toolbar.': {
-    la: 'preme papilionem Scaenae in instrumentario pro visu perficiendi sine distractione: caput, index cantuum, et instrumentarium evanescunt, relinquentes solum tabulam tuam et parvam trabem natantem cum celeritate volutionis, metronomo, cantu priore/sequente, et papilione exeundi. Arculae celeritatis et BPM in trabe natante scribi possunt, sicut in instrumentario.',
-    'zh-TW': '點擊工具列的舞台按鈕，進入無干擾的演出檢視：頁首、歌曲清單和工具列都會消失，只留下你的譜面，以及一個包含捲動速度、節拍器、上一首／下一首和離開按鈕的小型浮動控制列。浮動控制列中的捲動速度與 BPM 方框都可以直接輸入，和工具列一樣。',
-    id: 'klik tombol Panggung di toolbar buat tampilan performa bebas gangguan: header, daftar lagu, dan toolbar semua hilang, tinggal chart-mu plus bar melayang kecil berisi kecepatan gulir, metronom, lagu sebelumnya/berikutnya, dan tombol keluar. Kotak kecepatan gulir dan BPM di bar melayang bisa diketik langsung, sama seperti di toolbar.',
-    jv: 'klik tombol Panggung ing toolbar kanggo tampilan pentas tanpa gangguan: header, dhaptar lagu, lan toolbar padha ilang, mung kari chart-mu plus bar ngambang cilik isine kacepetan gulung, metronom, lagu sadurunge/sabanjure, lan tombol metu. Kothak kacepetan gulung lan BPM ing bar ngambang bisa diketik langsung, padha kaya ing toolbar.',
+  'Exit stage mode': {
+    la: 'Exire e modo scaenae',
+    'zh-TW': '離開舞台模式',
+    id: 'Keluar mode panggung',
+    jv: 'Metu saka mode panggung',
   },
-  'View Only mode': { la: 'Modus Solum Videre', 'zh-TW': '僅檢視模式', id: 'Mode Hanya Lihat', jv: 'Mode Mung Deleng' },
-  'click the View Only button in the toolbar (or the floating bar in Stage mode) to lock the chart against accidental edits — handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when you reload the page.': {
-    la: 'preme papilionem Solum Videre in instrumentario (aut in trabe natante modi Scaenae) ut tabulam contra mutationes casuales claudas — utile cum tabellam alicui in coetu tradis. Mutatio chordarum, additio/ablatio chordarum/linearum/sectionum, mutatio verborum, annotationes, et renominatio tituli, BPM, vel mensurae temporis omnia prohibentur. Transpositio, Salire ad Clavem, Notae Bassi, Nashville, et Accidentalia plene utilia manent. Haec optio se reponit cum paginam iterum oneras.',
-    'zh-TW': '點擊工具列（或舞台模式浮動控制列）中的僅檢視按鈕，即可鎖定譜面避免被誤改——把平板交給團員時特別好用。和弦編輯、新增／刪除和弦／行／段落、歌詞編輯、註記，以及重新命名歌名、BPM 或拍號都會被停用。移調、跳至調性、低音音符、納許維爾記譜法和音名偏好則仍可正常使用。重新整理頁面後此設定會重設。',
-    id: 'klik tombol Hanya Lihat di toolbar (atau di bar melayang Mode Panggung) buat mengunci chart supaya nggak ke-edit nggak sengaja — cocok banget pas nge-share tablet ke anggota band. Edit chord, tambah/hapus chord/baris/bagian, edit lirik, anotasi, dan ganti nama judul/BPM/birama semua dinonaktifkan. Transpose, Lompat ke Kunci, Bass Notes, Nashville, dan Accidentals tetap bisa dipakai normal. Setelan ini reset lagi kalau halaman di-refresh.',
-    jv: 'klik tombol Mung Deleng ing toolbar (utawa ing bar ngambang Mode Panggung) kanggo ngunci chart supaya ora keowahan ora sengaja — migunani banget nalika masrahake tablet menyang anggota band. Ngowahi chord, nambah/mbusak chord/baris/bagean, ngowahi lirik, anotasi, lan ngganti jeneng judhul/BPM/wirama kabeh dipateni. Transpose, Loncat menyang Kunci, Bass Notes, Nashville, lan Accidentals isih iso dipigunakake normal. Setelan iki bakal reset yen kaca di-refresh.',
+  'Stage mode': {
+    la: 'Modus Scaenae',
+    'zh-TW': '舞台模式',
+    id: 'Mode panggung',
+    jv: 'Mode panggung',
   },
-  'Stage mode turns on View Only mode automatically, so the chart can\'t be bumped out of place while performing — turn it back off from the floating bar\'s': {
-    la: 'Modus Scaenae modum Solum Videre per se activat, ne tabula in usu perficiendi casu moveatur — id iterum claude ex trabe natante per papilionem',
-    'zh-TW': '舞台模式會自動開啟僅檢視模式，避免演出時不小心動到譜面——如需再次編輯，可在浮動控制列的',
-    id: 'Mode Panggung otomatis mengaktifkan Mode Hanya Lihat, biar chart nggak kegeser pas lagi tampil — matiin lagi lewat',
-    jv: 'Mode Panggung otomatis nguripake Mode Mung Deleng, supaya chart ora kegeser nalika lagi tampil — pateni maneh liwat',
+  'click the Stage button in the toolbar for a distraction-free performance view: the header, song list, and toolbar disappear, leaving only your chart plus a small floating bar with scroll speed, metronome, previous/next song, and an exit button. Both the scroll speed and BPM boxes in the floating bar are editable, just like in the toolbar.':
+    {
+      la: 'preme papilionem Scaenae in instrumentario pro visu perficiendi sine distractione: caput, index cantuum, et instrumentarium evanescunt, relinquentes solum tabulam tuam et parvam trabem natantem cum celeritate volutionis, metronomo, cantu priore/sequente, et papilione exeundi. Arculae celeritatis et BPM in trabe natante scribi possunt, sicut in instrumentario.',
+      'zh-TW':
+        '點擊工具列的舞台按鈕，進入無干擾的演出檢視：頁首、歌曲清單和工具列都會消失，只留下你的譜面，以及一個包含捲動速度、節拍器、上一首／下一首和離開按鈕的小型浮動控制列。浮動控制列中的捲動速度與 BPM 方框都可以直接輸入，和工具列一樣。',
+      id: 'klik tombol Panggung di toolbar buat tampilan performa bebas gangguan: header, daftar lagu, dan toolbar semua hilang, tinggal chart-mu plus bar melayang kecil berisi kecepatan gulir, metronom, lagu sebelumnya/berikutnya, dan tombol keluar. Kotak kecepatan gulir dan BPM di bar melayang bisa diketik langsung, sama seperti di toolbar.',
+      jv: 'klik tombol Panggung ing toolbar kanggo tampilan pentas tanpa gangguan: header, dhaptar lagu, lan toolbar padha ilang, mung kari chart-mu plus bar ngambang cilik isine kacepetan gulung, metronom, lagu sadurunge/sabanjure, lan tombol metu. Kothak kacepetan gulung lan BPM ing bar ngambang bisa diketik langsung, padha kaya ing toolbar.',
+    },
+  'View Only mode': {
+    la: 'Modus Solum Videre',
+    'zh-TW': '僅檢視模式',
+    id: 'Mode Hanya Lihat',
+    jv: 'Mode Mung Deleng',
   },
+  'click the View Only button in the toolbar (or the floating bar in Stage mode) to lock the chart against accidental edits — handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when you reload the page.':
+    {
+      la: 'preme papilionem Solum Videre in instrumentario (aut in trabe natante modi Scaenae) ut tabulam contra mutationes casuales claudas — utile cum tabellam alicui in coetu tradis. Mutatio chordarum, additio/ablatio chordarum/linearum/sectionum, mutatio verborum, annotationes, et renominatio tituli, BPM, vel mensurae temporis omnia prohibentur. Transpositio, Salire ad Clavem, Notae Bassi, Nashville, et Accidentalia plene utilia manent. Haec optio se reponit cum paginam iterum oneras.',
+      'zh-TW':
+        '點擊工具列（或舞台模式浮動控制列）中的僅檢視按鈕，即可鎖定譜面避免被誤改——把平板交給團員時特別好用。和弦編輯、新增／刪除和弦／行／段落、歌詞編輯、註記，以及重新命名歌名、BPM 或拍號都會被停用。移調、跳至調性、低音音符、納許維爾記譜法和音名偏好則仍可正常使用。重新整理頁面後此設定會重設。',
+      id: 'klik tombol Hanya Lihat di toolbar (atau di bar melayang Mode Panggung) buat mengunci chart supaya nggak ke-edit nggak sengaja — cocok banget pas nge-share tablet ke anggota band. Edit chord, tambah/hapus chord/baris/bagian, edit lirik, anotasi, dan ganti nama judul/BPM/birama semua dinonaktifkan. Transpose, Lompat ke Kunci, Bass Notes, Nashville, dan Accidentals tetap bisa dipakai normal. Setelan ini reset lagi kalau halaman di-refresh.',
+      jv: 'klik tombol Mung Deleng ing toolbar (utawa ing bar ngambang Mode Panggung) kanggo ngunci chart supaya ora keowahan ora sengaja — migunani banget nalika masrahake tablet menyang anggota band. Ngowahi chord, nambah/mbusak chord/baris/bagean, ngowahi lirik, anotasi, lan ngganti jeneng judhul/BPM/wirama kabeh dipateni. Transpose, Loncat menyang Kunci, Bass Notes, Nashville, lan Accidentals isih iso dipigunakake normal. Setelan iki bakal reset yen kaca di-refresh.',
+    },
+  "Stage mode turns on View Only mode automatically, so the chart can't be bumped out of place while performing — turn it back off from the floating bar's":
+    {
+      la: 'Modus Scaenae modum Solum Videre per se activat, ne tabula in usu perficiendi casu moveatur — id iterum claude ex trabe natante per papilionem',
+      'zh-TW':
+        '舞台模式會自動開啟僅檢視模式，避免演出時不小心動到譜面——如需再次編輯，可在浮動控制列的',
+      id: 'Mode Panggung otomatis mengaktifkan Mode Hanya Lihat, biar chart nggak kegeser pas lagi tampil — matiin lagi lewat',
+      jv: 'Mode Panggung otomatis nguripake Mode Mung Deleng, supaya chart ora kegeser nalika lagi tampil — pateni maneh liwat',
+    },
   'button if you still need to edit. It turns off again automatically when you exit Stage mode.': {
     la: 'preme, si adhuc mutare debes. Cum modo Scaenae exis, per se iterum se claudit.',
     'zh-TW': '按鈕上關閉，如果仍需要編輯的話。離開舞台模式時會自動再次關閉。',
@@ -425,12 +556,14 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'menampilkan daftar pintasan lengkap.',
     jv: 'nuduhake dhaptar trabasan lengkap.',
   },
-  'Collapse the sidebar (or the mobile tab bar) to see each song\'s position number instead — tap a number to jump straight to that song, or just press': {
-    la: 'Latus indicis (aut trabem mobilem) claude ut numerum positionis quisque cantus videas — numerum preme ut directe ad illum cantum salias, aut tantum preme',
-    'zh-TW': '收合側邊欄（或手機的分頁列）即可看到每首歌的位置編號——點一下編號可直接跳到該首歌曲，或直接按',
-    id: 'Ciutkan sidebar (atau tab bar di HP) buat lihat nomor urutan tiap lagu — ketuk nomornya buat langsung lompat ke lagu itu, atau tinggal tekan',
-    jv: 'Ciutake sidebar (utawa tab bar ing hp) kanggo ndeleng nomer urutane saben lagu — tekan nomere kanggo langsung loncat menyang lagu kuwi, utawa langsung pencet',
-  },
+  "Collapse the sidebar (or the mobile tab bar) to see each song's position number instead — tap a number to jump straight to that song, or just press":
+    {
+      la: 'Latus indicis (aut trabem mobilem) claude ut numerum positionis quisque cantus videas — numerum preme ut directe ad illum cantum salias, aut tantum preme',
+      'zh-TW':
+        '收合側邊欄（或手機的分頁列）即可看到每首歌的位置編號——點一下編號可直接跳到該首歌曲，或直接按',
+      id: 'Ciutkan sidebar (atau tab bar di HP) buat lihat nomor urutan tiap lagu — ketuk nomornya buat langsung lompat ke lagu itu, atau tinggal tekan',
+      jv: 'Ciutake sidebar (utawa tab bar ing hp) kanggo ndeleng nomer urutane saben lagu — tekan nomere kanggo langsung loncat menyang lagu kuwi, utawa langsung pencet',
+    },
   'on your keyboard from anywhere in the editor.': {
     la: 'in claviatura tua ex quolibet loco in instrumentario redactionis.',
     'zh-TW': '在編輯器的任何位置皆可使用。',
@@ -469,1208 +602,1434 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   },
 
   // ── app header ──
-  'Manual':     { la: 'Libellus',   'zh-TW': '手冊',         id: 'Panduan',        jv: 'Pandhuan'      },
-  'New':        { la: 'Novum',      'zh-TW': '新增',         id: 'Baru',           jv: 'Anyar'         },
-  'Untitled set': { la: 'Collectio Innominata', 'zh-TW': '未命名集合', id: 'Set Tanpa Nama', jv: 'Set Tanpa Jeneng' },
-  'Export':     { la: 'Exportare',  'zh-TW': '匯出',         id: 'Ekspor',         jv: 'Ekspor'        },
-  'Settings':   { la: 'Optiones',   'zh-TW': '設定',         id: 'Pengaturan',     jv: 'Setelan'       },
+  Manual: { la: 'Libellus', 'zh-TW': '手冊', id: 'Panduan', jv: 'Pandhuan' },
+  New: { la: 'Novum', 'zh-TW': '新增', id: 'Baru', jv: 'Anyar' },
+  'Untitled set': {
+    la: 'Collectio Innominata',
+    'zh-TW': '未命名集合',
+    id: 'Set Tanpa Nama',
+    jv: 'Set Tanpa Jeneng',
+  },
+  Export: { la: 'Exportare', 'zh-TW': '匯出', id: 'Ekspor', jv: 'Ekspor' },
+  Settings: { la: 'Optiones', 'zh-TW': '設定', id: 'Pengaturan', jv: 'Setelan' },
 
   // ── song editor toolbar ──
-  '↩ Undo':     { la: '↩ Rescindere', 'zh-TW': '↩ 撤銷',   id: '↩ Batalkan',    jv: '↩ Bali'        },
-  '↪ Redo':     { la: '↪ Refacere',   'zh-TW': '↪ 取消撤銷', id: '↪ Ulangi',    jv: '↪ Mbaleni'     },
-  'Key':        { la: 'Clavis',     'zh-TW': '調性',         id: 'Kunci',          jv: 'Kunci'         },
-  'Jump to':    { la: 'Salire ad',  'zh-TW': '跳至',         id: 'Lompat ke',      jv: 'Loncat menyang'},
-  'Reset':      { la: 'Reponere',   'zh-TW': '重設',         id: 'Reset',          jv: 'Reset'         },
-  'Autoscroll': { la: 'Auto-Volutio', 'zh-TW': '自動捲動',    id: 'Gulir Otomatis', jv: 'Gulung Otomatis'},
-  'Metronome':  { la: 'Metronomum', 'zh-TW': '節拍器',        id: 'Metronom',       jv: 'Metronom'      },
-  'View Only':  { la: 'Solum Videre', 'zh-TW': '僅檢視',      id: 'Hanya Lihat',    jv: 'Mung Deleng'   },
-  '🎹 Bass Notes': { la: '🎹 Notae Bassi', 'zh-TW': '🎹 低音音符', id: '🎹 Not Bass', jv: '🎹 Not Bass' },
-  '🎹 Bass':    { la: '🎹 Bassus',    'zh-TW': '🎹 低音',       id: '🎹 Bass',        jv: '🎹 Bass'       },
-  '1 2 3 Nashville': { la: 'I II III Nashville', 'zh-TW': '1 2 3 納許維爾', id: '1 2 3 Nashville', jv: '1 2 3 Nashville' },
-  '1 2 3':      { la: 'I II III',   'zh-TW': '1 2 3',        id: '1 2 3',          jv: '1 2 3'         },
-  'Add section':  { la: 'Addere Sectionem', 'zh-TW': '新增段落', id: 'Tambah Bagian', jv: 'Tambah Bagian' },
-  'Custom name…': { la: 'Nomen proprium…', 'zh-TW': '自訂名稱…', id: 'Nama khusus…', jv: 'Jeneng dhewe…' },
-  'Add':        { la: 'Addere',     'zh-TW': '新增',         id: 'Tambah',         jv: 'Tambah'        },
+  '↩ Undo': { la: '↩ Rescindere', 'zh-TW': '↩ 撤銷', id: '↩ Batalkan', jv: '↩ Bali' },
+  '↪ Redo': { la: '↪ Refacere', 'zh-TW': '↪ 取消撤銷', id: '↪ Ulangi', jv: '↪ Mbaleni' },
+  Key: { la: 'Clavis', 'zh-TW': '調性', id: 'Kunci', jv: 'Kunci' },
+  'Base key': { la: 'Clavis Basis', 'zh-TW': '原調', id: 'Kunci Dasar', jv: 'Kunci Dhasar' },
+  'Guess the key from the chords': {
+    la: 'Coniectare clavem ex accordibus',
+    'zh-TW': '從和弦推測調性',
+    id: 'Tebak kunci dari akornya',
+    jv: 'Kira-kira kuncine saka akore',
+  },
+  'Base key — the key the chart is written in': {
+    la: 'Clavis basis — clavis in qua tabula scripta est',
+    'zh-TW': '原調 — 譜面所寫的調性',
+    id: 'Kunci dasar — kunci asli chart ini ditulis',
+    jv: 'Kunci dhasar — kunci asline chart iki ditulis',
+  },
+  'Base key set to': {
+    la: 'Clavis basis posita ad',
+    'zh-TW': '原調已設為',
+    id: 'Kunci dasar disetel ke',
+    jv: 'Kunci dhasar disetel dadi',
+  },
+  'Jump to': { la: 'Salire ad', 'zh-TW': '跳至', id: 'Lompat ke', jv: 'Loncat menyang' },
+  Reset: { la: 'Reponere', 'zh-TW': '重設', id: 'Reset', jv: 'Reset' },
+  Autoscroll: {
+    la: 'Auto-Volutio',
+    'zh-TW': '自動捲動',
+    id: 'Gulir Otomatis',
+    jv: 'Gulung Otomatis',
+  },
+  Metronome: { la: 'Metronomum', 'zh-TW': '節拍器', id: 'Metronom', jv: 'Metronom' },
+  'View Only': { la: 'Solum Videre', 'zh-TW': '僅檢視', id: 'Hanya Lihat', jv: 'Mung Deleng' },
+  '🎹 Bass Notes': {
+    la: '🎹 Notae Bassi',
+    'zh-TW': '🎹 低音音符',
+    id: '🎹 Not Bass',
+    jv: '🎹 Not Bass',
+  },
+  '🎹 Bass': { la: '🎹 Bassus', 'zh-TW': '🎹 低音', id: '🎹 Bass', jv: '🎹 Bass' },
+  '1 2 3 Nashville': {
+    la: 'I II III Nashville',
+    'zh-TW': '1 2 3 納許維爾',
+    id: '1 2 3 Nashville',
+    jv: '1 2 3 Nashville',
+  },
+  '1 2 3': { la: 'I II III', 'zh-TW': '1 2 3', id: '1 2 3', jv: '1 2 3' },
+  'Add section': {
+    la: 'Addere Sectionem',
+    'zh-TW': '新增段落',
+    id: 'Tambah Bagian',
+    jv: 'Tambah Bagian',
+  },
+  'Custom name…': {
+    la: 'Nomen proprium…',
+    'zh-TW': '自訂名稱…',
+    id: 'Nama khusus…',
+    jv: 'Jeneng dhewe…',
+  },
+  Add: { la: 'Addere', 'zh-TW': '新增', id: 'Tambah', jv: 'Tambah' },
 
   // ── song section ──
-  '+ Line':     { la: '+ Linea',    'zh-TW': '+ 行',         id: '+ Baris',        jv: '+ Baris'       },
-  '+ chord':    { la: '+ chorda',   'zh-TW': '+ 和弦',       id: '+ chord',         jv: '+ chord'        },
-  '+ note':     { la: '+ nota',     'zh-TW': '+ 備註',       id: '+ catatan',      jv: '+ cathetan'    },
+  '+ Line': { la: '+ Linea', 'zh-TW': '+ 行', id: '+ Baris', jv: '+ Baris' },
+  '+ chord': { la: '+ chorda', 'zh-TW': '+ 和弦', id: '+ chord', jv: '+ chord' },
+  '+ note': { la: '+ nota', 'zh-TW': '+ 備註', id: '+ catatan', jv: '+ cathetan' },
 
   // ── song list ──
-  'Songs in Set':    { la: 'Cantus in Collectione', 'zh-TW': '歌曲列表', id: 'Lagu dalam Set', jv: 'Lagu ing Set' },
-  '+ New Song':      { la: '+ Cantus Novus', 'zh-TW': '+ 新歌', id: '+ Lagu Baru', jv: '+ Lagu Anyar'  },
-  '+ Import PDF':    { la: '+ Importare PDF', 'zh-TW': '+ 匯入 PDF', id: '+ Impor PDF', jv: '+ Impor PDF' },
-  'Importing…':      { la: 'Importando…', 'zh-TW': '匯入中…', id: 'Mengimpor…', jv: 'Ngimpor…'         },
-  'Already in set:': { la: 'Iam in collectione:', 'zh-TW': '已在列表中：', id: 'Sudah ada:', jv: 'Wis ana:' },
-  'Add anyway':      { la: 'Addere Nihilominus', 'zh-TW': '仍然新增', id: 'Tambah saja', jv: 'Tambah wae' },
-  'Skip duplicates': { la: 'Omittere Similes', 'zh-TW': '跳過重複', id: 'Lewati duplikat', jv: 'Lewati duplikat' },
-  'Cancel':          { la: 'Cancellare', 'zh-TW': '取消', id: 'Batal', jv: 'Batal'              },
+  'Songs in Set': {
+    la: 'Cantus in Collectione',
+    'zh-TW': '歌曲列表',
+    id: 'Lagu dalam Set',
+    jv: 'Lagu ing Set',
+  },
+  '+ New Song': { la: '+ Cantus Novus', 'zh-TW': '+ 新歌', id: '+ Lagu Baru', jv: '+ Lagu Anyar' },
+  '+ Import PDF': {
+    la: '+ Importare PDF',
+    'zh-TW': '+ 匯入 PDF',
+    id: '+ Impor PDF',
+    jv: '+ Impor PDF',
+  },
+  'Importing…': { la: 'Importando…', 'zh-TW': '匯入中…', id: 'Mengimpor…', jv: 'Ngimpor…' },
+  'Already in set:': {
+    la: 'Iam in collectione:',
+    'zh-TW': '已在列表中：',
+    id: 'Sudah ada:',
+    jv: 'Wis ana:',
+  },
+  'Add anyway': {
+    la: 'Addere Nihilominus',
+    'zh-TW': '仍然新增',
+    id: 'Tambah saja',
+    jv: 'Tambah wae',
+  },
+  'Skip duplicates': {
+    la: 'Omittere Similes',
+    'zh-TW': '跳過重複',
+    id: 'Lewati duplikat',
+    jv: 'Lewati duplikat',
+  },
+  Cancel: { la: 'Cancellare', 'zh-TW': '取消', id: 'Batal', jv: 'Batal' },
 
   // ── export modal ──
-  'Song PDF':              { la: 'PDF Cantus',                  'zh-TW': '歌曲 PDF',       id: 'PDF Lagu',            jv: 'PDF Lagu'           },
-  'Current song only':     { la: 'Solum cantus currens',        'zh-TW': '僅目前歌曲',     id: 'Lagu ini saja',       jv: 'Lagu iki wae'       },
-  'Set PDF':               { la: 'PDF Collectionis',            'zh-TW': '全集 PDF',       id: 'PDF Set',             jv: 'PDF Set'            },
-  'All songs in one file': { la: 'Omnes cantus in uno fasciculo', 'zh-TW': '所有歌曲合一檔', id: 'Semua lagu satu file', jv: 'Kabeh lagu siji file' },
-  'Separate PDFs':         { la: 'PDF Separati',                'zh-TW': '個別 PDF',       id: 'PDF Terpisah',        jv: 'PDF Kapisah'        },
+  'Song PDF': { la: 'PDF Cantus', 'zh-TW': '歌曲 PDF', id: 'PDF Lagu', jv: 'PDF Lagu' },
+  'Current song only': {
+    la: 'Solum cantus currens',
+    'zh-TW': '僅目前歌曲',
+    id: 'Lagu ini saja',
+    jv: 'Lagu iki wae',
+  },
+  'Set PDF': { la: 'PDF Collectionis', 'zh-TW': '全集 PDF', id: 'PDF Set', jv: 'PDF Set' },
+  'All songs in one file': {
+    la: 'Omnes cantus in uno fasciculo',
+    'zh-TW': '所有歌曲合一檔',
+    id: 'Semua lagu satu file',
+    jv: 'Kabeh lagu siji file',
+  },
+  'Separate PDFs': {
+    la: 'PDF Separati',
+    'zh-TW': '個別 PDF',
+    id: 'PDF Terpisah',
+    jv: 'PDF Kapisah',
+  },
   'Each song as its own PDF, in one .zip': {
     la: 'Quisque cantus ut PDF proprium, in uno .zip',
     'zh-TW': '每首歌各一個 PDF，打包成一個 .zip',
     id: 'Tiap lagu jadi PDF sendiri, dalam satu .zip',
     jv: 'Saben lagu dadi PDF dhewe, ing siji .zip',
   },
-  'Full set as .md file':  { la: 'Collectio ut fasciculus .md', 'zh-TW': '全集 .md 檔',    id: 'Set lengkap .md',     jv: 'Set lengkap .md'    },
-  'Generating…':           { la: 'Generando…',                  'zh-TW': '產生中…',        id: 'Membuat…',            jv: 'Digawe…'            },
-  'PDFs exported':         { la: 'PDF Exportata',               'zh-TW': 'PDF 已匯出',     id: 'PDF berhasil diekspor!', jv: 'PDF wis diekspor'   },
+  'Full set as .md file': {
+    la: 'Collectio ut fasciculus .md',
+    'zh-TW': '全集 .md 檔',
+    id: 'Set lengkap .md',
+    jv: 'Set lengkap .md',
+  },
+  'Generating…': { la: 'Generando…', 'zh-TW': '產生中…', id: 'Membuat…', jv: 'Digawe…' },
+  'PDFs exported': {
+    la: 'PDF Exportata',
+    'zh-TW': 'PDF 已匯出',
+    id: 'PDF berhasil diekspor!',
+    jv: 'PDF wis diekspor',
+  },
 
   // ── settings modal ──
-  'Appearance':   { la: 'Aspectus',          'zh-TW': '外觀',         id: 'Tampilan',       jv: 'Tampilan'      },
-  'Color':        { la: 'Color',             'zh-TW': '顏色',         id: 'Warna',          jv: 'Warna'         },
-  'Theme':        { la: 'Thema',             'zh-TW': '主題',         id: 'Tema',           jv: 'Tema'          },
-  'Light':        { la: 'Lux',               'zh-TW': '淺色',         id: 'Terang',         jv: 'Padhang'       },
-  'Dark':         { la: 'Tenebrae',          'zh-TW': '深色',         id: 'Gelap',          jv: 'Peteng'        },
-  'Accidentals':  { la: 'Accidentalia',      'zh-TW': '升降記號',     id: 'Tanda Nada',     jv: 'Tanda Nada'    },
-  'Flats':        { la: 'Bemolia',           'zh-TW': '降號 (♭)',    id: 'Mol (♭)',         jv: 'Mol (♭)'       },
-  'Auto':         { la: 'Automatice',        'zh-TW': '自動',         id: 'Otomatis',       jv: 'Otomatis'      },
-  'Sharps':       { la: 'Diesis',            'zh-TW': '升號 (♯)',    id: 'Kres (♯)',        jv: 'Kres (♯)'      },
-  'Chord font':   { la: 'Character Chordae', 'zh-TW': '和弦字型',     id: 'Font Chord',      jv: 'Font Chord'     },
-  'Classic':      { la: 'Classicum',         'zh-TW': '經典',         id: 'Klasik',         jv: 'Klasik'        },
-  'Readable':     { la: 'Legibile',          'zh-TW': '易讀',         id: 'Gampang Dibaca', jv: 'Gampang Diwaca'},
-  'choose between Classic (Courier New) and Readable (JetBrains Mono) — Readable is the default. Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.': {
-    la:      'elige inter Classicum (Courier New) et Legibile (JetBrains Mono) — Legibile praedefinitum est. Ambo sunt fontes vere monospatiati, ita compositio chordarum et verborum exacta manet utroque modo. Applicatur editori et exportationibus PDF.',
-    'zh-TW': '在經典（Courier New）和易讀（JetBrains Mono）之間選擇——預設為易讀。兩者都是真正的等寬字型，所以無論選哪個，和弦與歌詞的對齊都完全準確。同時套用於編輯器與 PDF 匯出。',
-    id:      'pilih antara Classic (Courier New) dan Readable (JetBrains Mono) — Readable itu defaultnya. Keduanya monospace asli, jadi posisi chord dan lirik tetap presisi apa pun pilihannya. Berlaku di editor maupun ekspor PDF.',
-    jv:      'pilih antarane Classic (Courier New) lan Readable (JetBrains Mono) — Readable kuwi defaulte. Loro-lorone monospace asli, dadi posisi chord lan lirik tetep pas senajan milih sing endi wae. Ditrapake ing editor lan uga ing ekspor PDF, nak.',
+  Appearance: { la: 'Aspectus', 'zh-TW': '外觀', id: 'Tampilan', jv: 'Tampilan' },
+  Color: { la: 'Color', 'zh-TW': '顏色', id: 'Warna', jv: 'Warna' },
+  Theme: { la: 'Thema', 'zh-TW': '主題', id: 'Tema', jv: 'Tema' },
+  Light: { la: 'Lux', 'zh-TW': '淺色', id: 'Terang', jv: 'Padhang' },
+  Dark: { la: 'Tenebrae', 'zh-TW': '深色', id: 'Gelap', jv: 'Peteng' },
+  Accidentals: { la: 'Accidentalia', 'zh-TW': '升降記號', id: 'Tanda Nada', jv: 'Tanda Nada' },
+  Flats: { la: 'Bemolia', 'zh-TW': '降號 (♭)', id: 'Mol (♭)', jv: 'Mol (♭)' },
+  Auto: { la: 'Automatice', 'zh-TW': '自動', id: 'Otomatis', jv: 'Otomatis' },
+  Sharps: { la: 'Diesis', 'zh-TW': '升號 (♯)', id: 'Kres (♯)', jv: 'Kres (♯)' },
+  'Chord font': {
+    la: 'Character Chordae',
+    'zh-TW': '和弦字型',
+    id: 'Font Chord',
+    jv: 'Font Chord',
   },
-  'Split-column view': { la: 'Visio Bicolumnis', 'zh-TW': '雙欄檢視', id: 'Tampilan Dua Kolom', jv: 'Tampilan Rong Kolom' },
-  'arranges the chart into two columns in the editor, the same layout rule used by two-column PDF exports. Only takes effect at 14 px text size or below, and only on tablet/desktop screens — phones always show a single column.': {
-    la:      'chartam in editore in duas columnas disponit, eadem regula quam exportationes PDF bicolumnes adhibent. Tantum valet ad magnitudinem textus 14px vel minorem, et solum in monitoribus tabellae vel scrinii — telephona semper unam columnam monstrant.',
-    'zh-TW': '在編輯器中將歌譜排成雙欄，套用與雙欄 PDF 匯出相同的規則。僅在文字大小 14px 以下、且限平板／桌面螢幕時生效──手機一律顯示單欄。',
-    id:      'menyusun chart jadi dua kolom di editor, pakai aturan yang sama kayak ekspor PDF dua kolom. Cuma aktif di ukuran teks 14px ke bawah, dan cuma di layar tablet/desktop — HP tetap satu kolom aja.',
-    jv:      'nyusun chart dadi rong kolom ing editor, nganggo aturan sing padha karo ekspor PDF rong kolom. Mung aktif ing ukuran teks 14px utawa kurang, lan mung ing layar tablet/desktop — HP tetep siji kolom wae, nak.',
+  Classic: { la: 'Classicum', 'zh-TW': '經典', id: 'Klasik', jv: 'Klasik' },
+  Readable: { la: 'Legibile', 'zh-TW': '易讀', id: 'Gampang Dibaca', jv: 'Gampang Diwaca' },
+  'choose between Classic (Courier New) and Readable (JetBrains Mono) — Readable is the default. Both are true monospace fonts, so chord and lyric alignment stays exact either way. Applies to the editor and to PDF exports.':
+    {
+      la: 'elige inter Classicum (Courier New) et Legibile (JetBrains Mono) — Legibile praedefinitum est. Ambo sunt fontes vere monospatiati, ita compositio chordarum et verborum exacta manet utroque modo. Applicatur editori et exportationibus PDF.',
+      'zh-TW':
+        '在經典（Courier New）和易讀（JetBrains Mono）之間選擇——預設為易讀。兩者都是真正的等寬字型，所以無論選哪個，和弦與歌詞的對齊都完全準確。同時套用於編輯器與 PDF 匯出。',
+      id: 'pilih antara Classic (Courier New) dan Readable (JetBrains Mono) — Readable itu defaultnya. Keduanya monospace asli, jadi posisi chord dan lirik tetap presisi apa pun pilihannya. Berlaku di editor maupun ekspor PDF.',
+      jv: 'pilih antarane Classic (Courier New) lan Readable (JetBrains Mono) — Readable kuwi defaulte. Loro-lorone monospace asli, dadi posisi chord lan lirik tetep pas senajan milih sing endi wae. Ditrapake ing editor lan uga ing ekspor PDF, nak.',
+    },
+  'Split-column view': {
+    la: 'Visio Bicolumnis',
+    'zh-TW': '雙欄檢視',
+    id: 'Tampilan Dua Kolom',
+    jv: 'Tampilan Rong Kolom',
   },
-  'On':           { la: 'Activum',           'zh-TW': '開啟',         id: 'Aktif',          jv: 'Aktif'         },
-  'Off':          { la: 'Inactivum',         'zh-TW': '關閉',         id: 'Nonaktif',       jv: 'Mati'          },
-  '⚠️ Split view only applies at 14px text size or below, and on tablet/desktop screens — mobile always shows one column.': {
-    la:      '⚠️ Visio bicolumnis tantum ad magnitudinem textus 14px vel minorem valet, et in monitoribus tabellae vel scrinii — mobile semper unam columnam monstrat.',
-    'zh-TW': '⚠️ 雙欄檢視僅適用於文字大小 14px 以下，且限平板／桌面螢幕──手機一律顯示單欄。',
-    id:      '⚠️ Tampilan dua kolom cuma jalan di ukuran teks 14px ke bawah, dan di layar tablet/desktop — HP tetap satu kolom aja, gaes.',
-    jv:      '⚠️ Tampilan rong kolom mung mlaku ing ukuran teks 14px utawa kurang, lan ing layar tablet/desktop — HP tetep siji kolom wae, nak.',
+  'arranges the chart into two columns in the editor, the same layout rule used by two-column PDF exports. Only takes effect at 14 px text size or below, and only on tablet/desktop screens — phones always show a single column.':
+    {
+      la: 'chartam in editore in duas columnas disponit, eadem regula quam exportationes PDF bicolumnes adhibent. Tantum valet ad magnitudinem textus 14px vel minorem, et solum in monitoribus tabellae vel scrinii — telephona semper unam columnam monstrant.',
+      'zh-TW':
+        '在編輯器中將歌譜排成雙欄，套用與雙欄 PDF 匯出相同的規則。僅在文字大小 14px 以下、且限平板／桌面螢幕時生效──手機一律顯示單欄。',
+      id: 'menyusun chart jadi dua kolom di editor, pakai aturan yang sama kayak ekspor PDF dua kolom. Cuma aktif di ukuran teks 14px ke bawah, dan cuma di layar tablet/desktop — HP tetap satu kolom aja.',
+      jv: 'nyusun chart dadi rong kolom ing editor, nganggo aturan sing padha karo ekspor PDF rong kolom. Mung aktif ing ukuran teks 14px utawa kurang, lan mung ing layar tablet/desktop — HP tetep siji kolom wae, nak.',
+    },
+  On: { la: 'Activum', 'zh-TW': '開啟', id: 'Aktif', jv: 'Aktif' },
+  Off: { la: 'Inactivum', 'zh-TW': '關閉', id: 'Nonaktif', jv: 'Mati' },
+  '⚠️ Split view only applies at 14px text size or below, and on tablet/desktop screens — mobile always shows one column.':
+    {
+      la: '⚠️ Visio bicolumnis tantum ad magnitudinem textus 14px vel minorem valet, et in monitoribus tabellae vel scrinii — mobile semper unam columnam monstrat.',
+      'zh-TW': '⚠️ 雙欄檢視僅適用於文字大小 14px 以下，且限平板／桌面螢幕──手機一律顯示單欄。',
+      id: '⚠️ Tampilan dua kolom cuma jalan di ukuran teks 14px ke bawah, dan di layar tablet/desktop — HP tetap satu kolom aja, gaes.',
+      jv: '⚠️ Tampilan rong kolom mung mlaku ing ukuran teks 14px utawa kurang, lan ing layar tablet/desktop — HP tetep siji kolom wae, nak.',
+    },
+  'Text size': {
+    la: 'Magnitudo Textus',
+    'zh-TW': '文字大小',
+    id: 'Ukuran Teks',
+    jv: 'Ukuran Teks',
   },
-  'Text size':    { la: 'Magnitudo Textus',  'zh-TW': '文字大小',     id: 'Ukuran Teks',    jv: 'Ukuran Teks'   },
-  'PDF font size':{ la: 'Magnitudo PDF',     'zh-TW': 'PDF 字型大小', id: 'Ukuran Font PDF',jv: 'Ukuran Font PDF'},
-  'Language':     { la: 'Lingua',            'zh-TW': '語言',         id: 'Bahasa',         jv: 'Basa'          },
+  'PDF font size': {
+    la: 'Magnitudo PDF',
+    'zh-TW': 'PDF 字型大小',
+    id: 'Ukuran Font PDF',
+    jv: 'Ukuran Font PDF',
+  },
+  Language: { la: 'Lingua', 'zh-TW': '語言', id: 'Bahasa', jv: 'Basa' },
   '⚠️ Above 14px PDFs use a single column — lyrics may still wrap.': {
-    la:      '⚠️ Supra 14px PDF unam columnam adhibet — verba adhuc frangi possunt.',
+    la: '⚠️ Supra 14px PDF unam columnam adhibet — verba adhuc frangi possunt.',
     'zh-TW': '⚠️ 超過 14px 時，PDF 使用單欄版面，歌詞可能自動換行。',
-    id:      '⚠️ Di atas 14px, PDF menggunakan satu kolom — lirik mungkin masih terbungkus.',
-    jv:      '⚠️ Yen ngluwihi 14px, PDF nggunakake siji kolom — lirik bisa tetep dibungkus.',
+    id: '⚠️ Di atas 14px, PDF menggunakan satu kolom — lirik mungkin masih terbungkus.',
+    jv: '⚠️ Yen ngluwihi 14px, PDF nggunakake siji kolom — lirik bisa tetep dibungkus.',
   },
 
   // ── sessions modal ──
-  'Saved Sets':      { la: 'Collectiones Servatae', 'zh-TW': '已儲存集合',     id: 'Set Tersimpan',       jv: 'Set Kasimpen'        },
-  '+ New':           { la: '+ Novum',               'zh-TW': '+ 新增',         id: '+ Baru',              jv: '+ Anyar'             },
-  'Modified':        { la: 'Mutatum',               'zh-TW': '修改於',         id: 'Diubah',              jv: 'Diowahi'             },
-  'Unsaved set':     { la: 'Collectio Non Servata', 'zh-TW': '未儲存集合',     id: 'Set Belum Disimpan',  jv: 'Set Durung Kasimpen' },
-  'Set name…':       { la: 'Nomen Collectionis…',   'zh-TW': '集合名稱…',      id: 'Nama set…',           jv: 'Jeneng set…'         },
-  'Save':            { la: 'Servare',               'zh-TW': '儲存',           id: 'Simpan',              jv: 'Simpen'              },
-  '↑ Import .wt file': { la: '↑ Importare Fasciculum .wt', 'zh-TW': '↑ 匯入 .wt 檔', id: '↑ Impor file .wt', jv: '↑ Impor file .wt' },
+  'Saved Sets': {
+    la: 'Collectiones Servatae',
+    'zh-TW': '已儲存集合',
+    id: 'Set Tersimpan',
+    jv: 'Set Kasimpen',
+  },
+  '+ New': { la: '+ Novum', 'zh-TW': '+ 新增', id: '+ Baru', jv: '+ Anyar' },
+  Modified: { la: 'Mutatum', 'zh-TW': '修改於', id: 'Diubah', jv: 'Diowahi' },
+  'Unsaved set': {
+    la: 'Collectio Non Servata',
+    'zh-TW': '未儲存集合',
+    id: 'Set Belum Disimpan',
+    jv: 'Set Durung Kasimpen',
+  },
+  'Set name…': {
+    la: 'Nomen Collectionis…',
+    'zh-TW': '集合名稱…',
+    id: 'Nama set…',
+    jv: 'Jeneng set…',
+  },
+  Save: { la: 'Servare', 'zh-TW': '儲存', id: 'Simpan', jv: 'Simpen' },
+  '↑ Import .wt file': {
+    la: '↑ Importare Fasciculum .wt',
+    'zh-TW': '↑ 匯入 .wt 檔',
+    id: '↑ Impor file .wt',
+    jv: '↑ Impor file .wt',
+  },
   'No saved sets yet. Enter a name above and click Save.': {
-    la:      'Nulla collectio servata. Inscribere nomen et premere Servare.',
+    la: 'Nulla collectio servata. Inscribere nomen et premere Servare.',
     'zh-TW': '尚無已儲存集合。請在上方輸入名稱並點擊儲存。',
-    id:      'Belum ada set tersimpan. Masukkan nama dan klik Simpan.',
-    jv:      'Durung ana set kasimpen. Tulis jeneng banjur klik Simpen.',
+    id: 'Belum ada set tersimpan. Masukkan nama dan klik Simpan.',
+    jv: 'Durung ana set kasimpen. Tulis jeneng banjur klik Simpen.',
   },
-  'songs':     { la: 'cantus', 'zh-TW': '首歌', id: 'lagu', jv: 'lagu' },
-  'song':      { la: 'cantus', 'zh-TW': '首歌', id: 'lagu', jv: 'lagu' },
-  'active':    { la: 'activum','zh-TW': '使用中', id: 'aktif', jv: 'aktif' },
-  'Load':      { la: 'Onerare','zh-TW': '載入',  id: 'Muat',  jv: 'Muat'  },
+  songs: { la: 'cantus', 'zh-TW': '首歌', id: 'lagu', jv: 'lagu' },
+  song: { la: 'cantus', 'zh-TW': '首歌', id: 'lagu', jv: 'lagu' },
+  active: { la: 'activum', 'zh-TW': '使用中', id: 'aktif', jv: 'aktif' },
+  Load: { la: 'Onerare', 'zh-TW': '載入', id: 'Muat', jv: 'Muat' },
   'You have unsaved work. Enter a name to keep it, or skip to discard.': {
-    la:      'Habes laborem non servatum. Inscribere nomen ut serves, vel omitte ut omittas.',
+    la: 'Habes laborem non servatum. Inscribere nomen ut serves, vel omitte ut omittas.',
     'zh-TW': '您有未儲存的內容。輸入名稱以保留，或跳過放棄。',
-    id:      'Ada pekerjaan belum disimpan. Masukkan nama untuk menyimpan, atau lewati.',
-    jv:      'Ana gaweyan durung kasimpen. Tulis jeneng kanggo nyimpen, utawa lewati.',
+    id: 'Ada pekerjaan belum disimpan. Masukkan nama untuk menyimpan, atau lewati.',
+    jv: 'Ana gaweyan durung kasimpen. Tulis jeneng kanggo nyimpen, utawa lewati.',
   },
-  'Set name (optional)…': { la: 'Nomen (optionale)…', 'zh-TW': '集合名稱（選填）…', id: 'Nama set (opsional)…', jv: 'Jeneng set (opsional)…' },
-  'Save & New':  { la: 'Servare & Novum',   'zh-TW': '儲存並新增', id: 'Simpan & Baru',    jv: 'Simpen & Anyar'   },
-  'Skip & New':  { la: 'Omittere & Novum',  'zh-TW': '跳過並新增', id: 'Lewati & Baru',    jv: 'Lewati & Anyar'   },
+  'Set name (optional)…': {
+    la: 'Nomen (optionale)…',
+    'zh-TW': '集合名稱（選填）…',
+    id: 'Nama set (opsional)…',
+    jv: 'Jeneng set (opsional)…',
+  },
+  'Save & New': {
+    la: 'Servare & Novum',
+    'zh-TW': '儲存並新增',
+    id: 'Simpan & Baru',
+    jv: 'Simpen & Anyar',
+  },
+  'Skip & New': {
+    la: 'Omittere & Novum',
+    'zh-TW': '跳過並新增',
+    id: 'Lewati & Baru',
+    jv: 'Lewati & Anyar',
+  },
 
   // ── upload page — hero ──
-  'WorshipToolkit': {
-    la:      'Arca Musica 🏛️',
+  WorshipToolkit: {
+    la: 'Arca Musica 🏛️',
     'zh-TW': '讚美神器 🀄',
-    id:      'Koper Pujian 🌴',
-    jv:      'Piranti Puji-Pujian 🌾',
+    id: 'Koper Pujian 🌴',
+    jv: 'Piranti Puji-Pujian 🌾',
   },
   'Upload a SongSelect PDF to edit keys, transpose chords, and export your set': {
-    la:      'Trade mihi PDF et carmina tua in ordinem redigentur',
+    la: 'Trade mihi PDF et carmina tua in ordinem redigentur',
     'zh-TW': '丟個 PDF 進來，我幫你轉調，你負責唱歌！',
-    id:      'Upload PDF kamu, biar kita yang atur nadanya, kamu tinggal nyanyi — gaskeun!',
-    jv:      'Lebokna PDF-mu, Cah, ben tak-urus lagune, kowe kari nyanyi karo ngguyu 😊',
+    id: 'Upload PDF kamu, biar kita yang atur nadanya, kamu tinggal nyanyi — gaskeun!',
+    jv: 'Lebokna PDF-mu, Cah, ben tak-urus lagune, kowe kari nyanyi karo ngguyu 😊',
   },
 
   // ── upload page — other ──
-  'Parsing PDF…':    { la: 'Legendo PDF…',          'zh-TW': '解析 PDF 中…',  id: 'Memproses PDF…',       jv: 'Ngolah PDF…'          },
+  'Parsing PDF…': {
+    la: 'Legendo PDF…',
+    'zh-TW': '解析 PDF 中…',
+    id: 'Memproses PDF…',
+    jv: 'Ngolah PDF…',
+  },
   'Drag & drop your SongSelect PDF here': {
     la: 'Huc trahere documentum PDF',
     'zh-TW': '將 SongSelect PDF 拖放到此處',
     id: 'Seret PDF SongSelect ke sini',
     jv: 'Seret PDF SongSelect mrene',
   },
-  'or':              { la: 'vel',                   'zh-TW': '或',             id: 'atau',                 jv: 'utawa'                },
-  'Choose File':     { la: 'Eligere Fasciculum',     'zh-TW': '選擇檔案',       id: 'Pilih File',           jv: 'Pilih File'           },
-  '✏️ Start from scratch': { la: '✏️ Incipere ab Initio', 'zh-TW': '✏️ 從頭開始', id: '✏️ Mulai dari awal', jv: '✏️ Miwiti saka nol'  },
-  '📂 Load set file': { la: '📂 Onerare Fasciculum', 'zh-TW': '📂 載入集合檔案', id: '📂 Muat file set',    jv: '📂 Muat file set'     },
-  'Transpose Keys':  { la: 'Claves Transponere',    'zh-TW': '轉調',           id: 'Transpose Nada',       jv: 'Transpose Nada'       },
+  or: { la: 'vel', 'zh-TW': '或', id: 'atau', jv: 'utawa' },
+  'Choose File': {
+    la: 'Eligere Fasciculum',
+    'zh-TW': '選擇檔案',
+    id: 'Pilih File',
+    jv: 'Pilih File',
+  },
+  '✏️ Start from scratch': {
+    la: '✏️ Incipere ab Initio',
+    'zh-TW': '✏️ 從頭開始',
+    id: '✏️ Mulai dari awal',
+    jv: '✏️ Miwiti saka nol',
+  },
+  '📂 Load set file': {
+    la: '📂 Onerare Fasciculum',
+    'zh-TW': '📂 載入集合檔案',
+    id: '📂 Muat file set',
+    jv: '📂 Muat file set',
+  },
+  'Transpose Keys': {
+    la: 'Claves Transponere',
+    'zh-TW': '轉調',
+    id: 'Transpose Nada',
+    jv: 'Transpose Nada',
+  },
   'Shift the entire song up or down by semitones, or jump directly to a target key': {
-    la:      'Totum cantum sursum vel deorsum per semitonos muta, vel salta ad clavem destinatam',
+    la: 'Totum cantum sursum vel deorsum per semitonos muta, vel salta ad clavem destinatam',
     'zh-TW': '將整首歌上移或下移半音，或直接跳至目標調性',
-    id:      'Geser nada lagu naik-turun sesuka hati, atau langsung cus ke nada target — gak pake ribet!',
-    jv:      'Geser nada lagu alon-alon utawa langsung mlumpat menyang nada sing dikarepake, ora perlu kesusu, Cah.',
+    id: 'Geser nada lagu naik-turun sesuka hati, atau langsung cus ke nada target — gak pake ribet!',
+    jv: 'Geser nada lagu alon-alon utawa langsung mlumpat menyang nada sing dikarepake, ora perlu kesusu, Cah.',
   },
-  'Edit Chords':     { la: 'Chordas Emendare',      'zh-TW': '編輯和弦',       id: 'Edit Chord',            jv: 'Edit Chord'            },
+  'Edit Chords': {
+    la: 'Chordas Emendare',
+    'zh-TW': '編輯和弦',
+    id: 'Edit Chord',
+    jv: 'Edit Chord',
+  },
   'Click any chord to rename it inline, or change individual chord placements': {
-    la:      'Clicca chordas ut renomines in situ, vel muta positiones chordas singularum',
+    la: 'Clicca chordas ut renomines in situ, vel muta positiones chordas singularum',
     'zh-TW': '點擊任意和弦以重新命名，或調整和弦位置',
-    id:      'Klik chord mana aja buat ganti nama, atau geser posisinya sesuka hati — anti ribet!',
-    jv:      'Klik chord sing dikarepake kanggo ngganti jeneng, utawa geser panggonane, alon-alon ora perlu kesusu.',
+    id: 'Klik chord mana aja buat ganti nama, atau geser posisinya sesuka hati — anti ribet!',
+    jv: 'Klik chord sing dikarepake kanggo ngganti jeneng, utawa geser panggonane, alon-alon ora perlu kesusu.',
   },
-  'Bass Notes':      { la: 'Notae Bassi',            'zh-TW': '低音音符',       id: 'Not Bass',             jv: 'Not Bass'             },
+  'Bass Notes': { la: 'Notae Bassi', 'zh-TW': '低音音符', id: 'Not Bass', jv: 'Not Bass' },
   'Toggle to show just the root/bass note of every chord — great for beginners': {
-    la:      'Commuta ut solum notam radicem/bassi cuiusque chordae videas — optimum pro initiis',
+    la: 'Commuta ut solum notam radicem/bassi cuiusque chordae videas — optimum pro initiis',
     'zh-TW': '切換顯示每個和弦的根音/低音，適合初學者',
-    id:      'Tampilin cuma not bass tiap chord — cocok banget buat pemula yang masih newbie!',
-    jv:      'Tampilake mung not bass saben chord — pas kanggo sing lagi sinau, ora usah kesusu.',
+    id: 'Tampilin cuma not bass tiap chord — cocok banget buat pemula yang masih newbie!',
+    jv: 'Tampilake mung not bass saben chord — pas kanggo sing lagi sinau, ora usah kesusu.',
   },
   'Download updated sheet as a formatted PDF or Markdown file to share with your team': {
-    la:      'Descarga schedam renovatam ut PDF formatum vel Markdown ad socios tuos',
+    la: 'Descarga schedam renovatam ut PDF formatum vel Markdown ad socios tuos',
     'zh-TW': '下載更新後的樂譜為 PDF 或 Markdown 格式以分享給團隊',
-    id:      'Unduh lembaran sebagai PDF atau Markdown untuk dibagikan ke tim',
-    jv:      'Undhuh lembar minangka PDF utawa Markdown kanggo dibagi',
+    id: 'Unduh lembaran sebagai PDF atau Markdown untuk dibagikan ke tim',
+    jv: 'Undhuh lembar minangka PDF utawa Markdown kanggo dibagi',
   },
-  'Nashville Numbers': { la: 'Numeri Nashville',     'zh-TW': '納許維爾數字',   id: 'Nomor Nashville',      jv: 'Nomor Nashville'      },
+  'Nashville Numbers': {
+    la: 'Numeri Nashville',
+    'zh-TW': '納許維爾數字',
+    id: 'Nomor Nashville',
+    jv: 'Nomor Nashville',
+  },
   'Switch every chord to scale-degree numbers — key-independent charts for ear-trained players': {
-    la:      'Muta omnes chordas ad numeros graduum — chartae independentes pro musicis auribus exercitatis',
+    la: 'Muta omnes chordas ad numeros graduum — chartae independentes pro musicis auribus exercitatis',
     'zh-TW': '將每個和弦轉換為音階度數數字，與調性無關',
-    id:      'Ubah semua chord jadi angka skala — bebas kunci, buat kamu yang kupingnya udah jago!',
-    jv:      'Ganti saben chord dadi angka skala — bebas kunci, kanggo sing kupinge wis pinter.',
+    id: 'Ubah semua chord jadi angka skala — bebas kunci, buat kamu yang kupingnya udah jago!',
+    jv: 'Ganti saben chord dadi angka skala — bebas kunci, kanggo sing kupinge wis pinter.',
   },
   'Stage Mode': {
-    la:      'Modus Scaenae',
+    la: 'Modus Scaenae',
     'zh-TW': '舞台模式',
-    id:      'Mode Panggung',
-    jv:      'Mode Panggung',
+    id: 'Mode Panggung',
+    jv: 'Mode Panggung',
   },
-  'A distraction-free full-screen view with autoscroll, metronome, and prev/next song controls built in': {
-    la:      'Visus plenus sine distractione cum volutione automatica, metronomo, et moderamine cantus prioris/sequentis inclusis',
-    'zh-TW': '無干擾全螢幕檢視，內建自動捲動、節拍器與上一首/下一首控制',
-    id:      'Tampilan full-screen bebas gangguan, lengkap dengan autoscroll, metronom, dan kontrol lagu sebelumnya/berikutnya',
-    jv:      'Tampilan full-screen tanpa gangguan, lengkap karo autoscroll, metronom, lan kontrol lagu sadurunge/sabanjure',
-  },
+  'A distraction-free full-screen view with autoscroll, metronome, and prev/next song controls built in':
+    {
+      la: 'Visus plenus sine distractione cum volutione automatica, metronomo, et moderamine cantus prioris/sequentis inclusis',
+      'zh-TW': '無干擾全螢幕檢視，內建自動捲動、節拍器與上一首/下一首控制',
+      id: 'Tampilan full-screen bebas gangguan, lengkap dengan autoscroll, metronom, dan kontrol lagu sebelumnya/berikutnya',
+      jv: 'Tampilan full-screen tanpa gangguan, lengkap karo autoscroll, metronom, lan kontrol lagu sadurunge/sabanjure',
+    },
   'Autoscroll & Metronome': {
-    la:      'Auto-Volutio & Metronomum',
+    la: 'Auto-Volutio & Metronomum',
     'zh-TW': '自動捲動與節拍器',
-    id:      'Autoscroll & Metronom',
-    jv:      'Autoscroll & Metronom',
+    id: 'Autoscroll & Metronom',
+    jv: 'Autoscroll & Metronom',
   },
-  'Hands-free scrolling and a built-in click track, both with adjustable speed and BPM you can type directly': {
-    la:      'Volutio sine manibus et metronomum inclusum, ambo cum celeritate et BPM quae directe scribi possunt',
-    'zh-TW': '免動手捲動與內建節拍器，速度與 BPM 都能直接輸入調整',
-    id:      'Scroll otomatis dan metronom bawaan, keduanya bisa diatur kecepatan/BPM-nya langsung lewat ketikan',
-    jv:      'Scroll otomatis lan metronom bawaan, loro-lorone bisa disetel kacepetan/BPM-e langsung liwat ketikan',
-  },
+  'Hands-free scrolling and a built-in click track, both with adjustable speed and BPM you can type directly':
+    {
+      la: 'Volutio sine manibus et metronomum inclusum, ambo cum celeritate et BPM quae directe scribi possunt',
+      'zh-TW': '免動手捲動與內建節拍器，速度與 BPM 都能直接輸入調整',
+      id: 'Scroll otomatis dan metronom bawaan, keduanya bisa diatur kecepatan/BPM-nya langsung lewat ketikan',
+      jv: 'Scroll otomatis lan metronom bawaan, loro-lorone bisa disetel kacepetan/BPM-e langsung liwat ketikan',
+    },
   'Saved Sets & Autosave': {
-    la:      'Collectiones Servatae & Auto-Servatio',
+    la: 'Collectiones Servatae & Auto-Servatio',
     'zh-TW': '已儲存集合與自動儲存',
-    id:      'Set Tersimpan & Autosave',
-    jv:      'Set Kasimpen & Autosave',
+    id: 'Set Tersimpan & Autosave',
+    jv: 'Set Kasimpen & Autosave',
   },
   'Keep up to 20 named sets, autosaved continuously, with full undo/redo history for every edit': {
-    la:      'Serva usque ad 20 collectiones nominatas, automatice servatas continue, cum historia plena rescindendi/refaciendi pro omni mutatione',
+    la: 'Serva usque ad 20 collectiones nominatas, automatice servatas continue, cum historia plena rescindendi/refaciendi pro omni mutatione',
     'zh-TW': '最多可保存 20 個命名集合，持續自動儲存，每次編輯都有完整的復原/重做記錄',
-    id:      'Simpan sampai 20 set dengan nama, autosave terus-menerus, lengkap dengan riwayat undo/redo tiap edit',
-    jv:      'Simpen nganti 20 set kanthi jeneng, autosave terus-terusan, lengkap karo riwayat undo/redo saben edit',
+    id: 'Simpan sampai 20 set dengan nama, autosave terus-menerus, lengkap dengan riwayat undo/redo tiap edit',
+    jv: 'Simpen nganti 20 set kanthi jeneng, autosave terus-terusan, lengkap karo riwayat undo/redo saben edit',
   },
   'Install & Work Offline': {
-    la:      'Instala & Labora Sine Interreti',
+    la: 'Instala & Labora Sine Interreti',
     'zh-TW': '安裝並離線使用',
-    id:      'Instal & Kerja Offline',
-    jv:      'Instal & Kerja Offline',
+    id: 'Instal & Kerja Offline',
+    jv: 'Instal & Kerja Offline',
   },
   'Add WorshipToolkit to your home screen and keep leading worship even with zero signal': {
-    la:      'Adde WorshipToolkit ad tuum monitorem domesticum et perge ducere cultum etiam sine signo',
+    la: 'Adde WorshipToolkit ad tuum monitorem domesticum et perge ducere cultum etiam sine signo',
     'zh-TW': '將 WorshipToolkit 加到主畫面，即使完全沒有訊號也能繼續敬拜帶領',
-    id:      'Tambahkan WorshipToolkit ke layar utama dan tetap bisa mimpin ibadah walau sinyal nol',
-    jv:      'Tambahna WorshipToolkit menyang layar utama lan tetep bisa mimpin pujian sanajan sinyal nol',
+    id: 'Tambahkan WorshipToolkit ke layar utama dan tetap bisa mimpin ibadah walau sinyal nol',
+    jv: 'Tambahna WorshipToolkit menyang layar utama lan tetep bisa mimpin pujian sanajan sinyal nol',
   },
   'Multi-File Upload & Search': {
-    la:      'Onus Plurium Fasciculorum & Quaerere',
+    la: 'Onus Plurium Fasciculorum & Quaerere',
     'zh-TW': '多檔上傳與搜尋',
-    id:      'Upload Banyak File & Pencarian',
-    jv:      'Upload Akeh File & Panggolekan',
+    id: 'Upload Banyak File & Pencarian',
+    jv: 'Upload Akeh File & Panggolekan',
   },
   'Import several PDFs at once, and filter your song list once it grows past a handful of songs': {
-    la:      'Importa plura PDF simul, et filtra indicem cantuum tuorum cum crescit',
+    la: 'Importa plura PDF simul, et filtra indicem cantuum tuorum cum crescit',
     'zh-TW': '一次匯入多個 PDF，歌曲清單變多後還能快速篩選',
-    id:      'Upload beberapa PDF sekaligus, dan filter daftar lagumu begitu udah mulai banyak',
-    jv:      'Upload pirang-pirang PDF pisan, lan filter dhaptar lagumu yen wis wiwit akeh',
+    id: 'Upload beberapa PDF sekaligus, dan filter daftar lagumu begitu udah mulai banyak',
+    jv: 'Upload pirang-pirang PDF pisan, lan filter dhaptar lagumu yen wis wiwit akeh',
   },
   'Undo, Themes & More': {
-    la:      'Rescindere, Themata & Plus',
+    la: 'Rescindere, Themata & Plus',
     'zh-TW': '撤銷、佈景主題等',
-    id:      'Batalkan, Tema & Lainnya',
-    jv:      'Bali, Tema & Liyane',
+    id: 'Batalkan, Tema & Lainnya',
+    jv: 'Bali, Tema & Liyane',
   },
-  'Full undo/redo history, dark mode, 9 color themes, and adjustable text size — all remembered between visits': {
-    la:      'Historia plena rescindendi/refaciendi, modus obscurus, 9 themata colorum, et magnitudo textus adaptabilis — omnia inter visitas memoria tenentur',
-    'zh-TW': '完整復原/重做記錄、深色模式、9 種色彩主題、文字大小可調整——每次造訪都會記住。',
-    id:      'Riwayat undo/redo lengkap, mode gelap, 9 tema warna, ukuran teks bisa diatur — semua diinget, santuy!',
-    jv:      'Riwayat undo/redo lengkap, mode peteng, 9 tema warna, ukuran teks iso disetel — kabeh dieling-eling, tenang wae.',
-  },
+  'Full undo/redo history, dark mode, 9 color themes, and adjustable text size — all remembered between visits':
+    {
+      la: 'Historia plena rescindendi/refaciendi, modus obscurus, 9 themata colorum, et magnitudo textus adaptabilis — omnia inter visitas memoria tenentur',
+      'zh-TW': '完整復原/重做記錄、深色模式、9 種色彩主題、文字大小可調整——每次造訪都會記住。',
+      id: 'Riwayat undo/redo lengkap, mode gelap, 9 tema warna, ukuran teks bisa diatur — semua diinget, santuy!',
+      jv: 'Riwayat undo/redo lengkap, mode peteng, 9 tema warna, ukuran teks iso disetel — kabeh dieling-eling, tenang wae.',
+    },
   '📖 New here? Read the full user manual →': {
-    la:      '📖 Novus hic? Lege manuale completum →',
+    la: '📖 Novus hic? Lege manuale completum →',
     'zh-TW': '📖 第一次使用？閱讀完整使用手冊 →',
-    id:      '📖 Baru gabung? Cus baca manualnya biar gak nyasar →',
-    jv:      '📖 Anyar mrene, Cah? Wacanen pandhuane sik, ben ora bingung →',
+    id: '📖 Baru gabung? Cus baca manualnya biar gak nyasar →',
+    jv: '📖 Anyar mrene, Cah? Wacanen pandhuane sik, ben ora bingung →',
   },
   '🧪 Try the beta — new features land here first →': {
-    la:      '🧪 Experire betam — nova hic primo adsunt →',
+    la: '🧪 Experire betam — nova hic primo adsunt →',
     'zh-TW': '🧪 試用 Beta 版 — 新功能先在這裡登場 →',
-    id:      '🧪 Cobain versi beta — fitur baru mejeng di sini duluan, jadi anak paling update!',
-    jv:      '🧪 Coba beta, Cah — fitur anyar mrene dhisik, kowe dadi sing paling ngerti dhisik →',
+    id: '🧪 Cobain versi beta — fitur baru mejeng di sini duluan, jadi anak paling update!',
+    jv: '🧪 Coba beta, Cah — fitur anyar mrene dhisik, kowe dadi sing paling ngerti dhisik →',
   },
 
   // ── manual page — header ──
   '← Back to WorshipToolkit': {
-    la:      '← Redi ad Arcam Musicam',
+    la: '← Redi ad Arcam Musicam',
     'zh-TW': '← 返回讚美神器',
-    id:      '← Balik ke Koper Pujian',
-    jv:      '← Bali menyang Piranti Puji-Pujian',
+    id: '← Balik ke Koper Pujian',
+    jv: '← Bali menyang Piranti Puji-Pujian',
   },
   'User Manual': {
-    la:      'Manuale Civium',
+    la: 'Manuale Civium',
     'zh-TW': '使用手冊',
-    id:      'Buku Panduan',
-    jv:      'Buku Tuntunan',
+    id: 'Buku Panduan',
+    jv: 'Buku Tuntunan',
   },
-  'Everything you need to upload, edit, transpose, and share chord charts with your worship team.': {
-    la:      'Omnia quae tibi opus sunt ad documenta chordarum chori tui sacri importandum, emendandum, transponendum et communicandum. Senatus Romanus adprobat.',
-    'zh-TW': '姐幫你整理好了——上傳、編輯、移調、分享，一條龍全搞定！',
-    id:      'Semua yang lo butuhin buat upload, edit, transpose, dan share chord ke tim praise — semuanya ada di sini, no drama, gaskeun!',
-    jv:      'Kabeh sing kok butuhake kanggo upload, ngedit, transpose, lan ngedum chord karo tim puji-pujian, ora usah bingung, nak.',
-  },
+  'Everything you need to upload, edit, transpose, and share chord charts with your worship team.':
+    {
+      la: 'Omnia quae tibi opus sunt ad documenta chordarum chori tui sacri importandum, emendandum, transponendum et communicandum. Senatus Romanus adprobat.',
+      'zh-TW': '姐幫你整理好了——上傳、編輯、移調、分享，一條龍全搞定！',
+      id: 'Semua yang lo butuhin buat upload, edit, transpose, dan share chord ke tim praise — semuanya ada di sini, no drama, gaskeun!',
+      jv: 'Kabeh sing kok butuhake kanggo upload, ngedit, transpose, lan ngedum chord karo tim puji-pujian, ora usah bingung, nak.',
+    },
 
   // ── manual page — TOC ──
   'On this page': {
-    la:      'In hac pagina',
+    la: 'In hac pagina',
     'zh-TW': '本頁內容',
-    id:      'Di halaman ini',
-    jv:      'Ing kaca iki',
+    id: 'Di halaman ini',
+    jv: 'Ing kaca iki',
   },
   '1. Getting started': {
-    la:      'I. Initium Faciendum Est',
+    la: 'I. Initium Faciendum Est',
     'zh-TW': '1. 開始使用',
-    id:      '1. Cara Mulai',
-    jv:      '1. Wiwitan',
+    id: '1. Cara Mulai',
+    jv: '1. Wiwitan',
   },
   '2. Your song set': {
-    la:      'II. Collectio Cantuum Tuorum',
+    la: 'II. Collectio Cantuum Tuorum',
     'zh-TW': '2. 你的歌曲集合',
-    id:      '2. Set Lagu Kamu',
-    jv:      '2. Set Lagumu',
+    id: '2. Set Lagu Kamu',
+    jv: '2. Set Lagumu',
   },
   '3. Editing chords & lyrics': {
-    la:      'III. Emendatio Chordarum & Verborum',
+    la: 'III. Emendatio Chordarum & Verborum',
     'zh-TW': '3. 編輯和弦與歌詞',
-    id:      '3. Edit Chord & Lirik',
-    jv:      '3. Ngedit Chord & Lirik',
+    id: '3. Edit Chord & Lirik',
+    jv: '3. Ngedit Chord & Lirik',
   },
   '4. Working with sections': {
-    la:      'IV. De Laborando cum Sectionibus',
+    la: 'IV. De Laborando cum Sectionibus',
     'zh-TW': '4. 使用段落',
-    id:      '4. Bekerja dengan Bagian Lagu',
-    jv:      '4. Nggarap Bagian Lagu',
+    id: '4. Bekerja dengan Bagian Lagu',
+    jv: '4. Nggarap Bagian Lagu',
   },
   '5. Keys & transposition': {
-    la:      'V. Claves & Transpositio',
+    la: 'V. Claves & Transpositio',
     'zh-TW': '5. 調性與移調',
-    id:      '5. Kunci & Transposisi',
-    jv:      '5. Kunci & Transpose',
+    id: '5. Kunci & Transposisi',
+    jv: '5. Kunci & Transpose',
   },
   '6. Bass notes & Nashville numbers': {
-    la:      'VI. Notae Bassi & Numeri Nashville',
+    la: 'VI. Notae Bassi & Numeri Nashville',
     'zh-TW': '6. 低音音符與納許維爾數字',
-    id:      '6. Not Bass & Nomor Nashville',
-    jv:      '6. Not Bass & Nomor Nashville',
+    id: '6. Not Bass & Nomor Nashville',
+    jv: '6. Not Bass & Nomor Nashville',
   },
   '7. Undo & redo': {
-    la:      'VII. Rescindere & Refacere',
+    la: 'VII. Rescindere & Refacere',
     'zh-TW': '7. 撤銷與取消撤銷',
-    id:      '7. Batalkan & Ulangi',
-    jv:      '7. Bali & Mbaleni',
+    id: '7. Batalkan & Ulangi',
+    jv: '7. Bali & Mbaleni',
   },
   '8. Exporting & sharing': {
-    la:      'VIII. Exportatio & Communicatio',
+    la: 'VIII. Exportatio & Communicatio',
     'zh-TW': '8. 匯出與分享',
-    id:      '8. Ekspor & Berbagi',
-    jv:      '8. Ekspor & Bagi-Bagi',
+    id: '8. Ekspor & Berbagi',
+    jv: '8. Ekspor & Bagi-Bagi',
   },
   '9. Saved sets & autosave': {
-    la:      'IX. Collectiones Servatae & Custodia Automatica',
+    la: 'IX. Collectiones Servatae & Custodia Automatica',
     'zh-TW': '9. 已儲存集合與自動儲存',
-    id:      '9. Set Tersimpan & Autosave',
-    jv:      '9. Set Kasimpen & Simpen Otomatis',
+    id: '9. Set Tersimpan & Autosave',
+    jv: '9. Set Kasimpen & Simpen Otomatis',
   },
   '10. Appearance & accessibility': {
-    la:      'X. Aspectus & Accessibilitas',
+    la: 'X. Aspectus & Accessibilitas',
     'zh-TW': '10. 外觀與無障礙設定',
-    id:      '10. Tampilan & Aksesibilitas',
-    jv:      '10. Tampilan & Aksesibilitas',
+    id: '10. Tampilan & Aksesibilitas',
+    jv: '10. Tampilan & Aksesibilitas',
   },
   '11. Tips, autosave & troubleshooting': {
-    la:      'XI. Consilia, Custodia Automatica & Remedia',
+    la: 'XI. Consilia, Custodia Automatica & Remedia',
     'zh-TW': '11. 技巧、自動儲存與疑難排解',
-    id:      '11. Tips, Autosave & Pemecahan Masalah',
-    jv:      '11. Tips, Simpen Otomatis & Ngatasi Masalah',
+    id: '11. Tips, Autosave & Pemecahan Masalah',
+    jv: '11. Tips, Simpen Otomatis & Ngatasi Masalah',
   },
 
   // ── §1 Getting started ──
-  'WorshipToolkit turns a SongSelect chord chart PDF into an editable, transposable chart you can reshape and export. Everything happens in your browser — nothing is uploaded to a server.': {
-    la:      'WorshipToolkit documentum PDF chordarum SongSelect in tabulam editabilem et transponibilem mutat, quam reformare et exportare potes. Omnia in navigatro tuo fiunt — nihil ad servitorem transmittitur. Magnum est!',
-    'zh-TW': 'WorshipToolkit 把你的 SongSelect PDF 變成可以隨意編輯、移調的和弦圖，全部在你的瀏覽器裡搞定——沒有任何東西被上傳到伺服器，姐保證！',
-    id:      'WorshipToolkit ubah PDF chord SongSelect kamu jadi chart yang bisa diedit dan ditranspose sesuka hati. Semua terjadi di browser kamu — gak ada yang diupload ke server, sumpah deh, aman total!',
-    jv:      'WorshipToolkit ngowahi PDF chord SongSelect dadi chart sing iso diedit lan ditranspose, nak. Kabeh kedadean ing browser-mu — ora ana sing diunggah menyang server, tentrem uwis, ora usah kuatir.',
-  },
+  'WorshipToolkit turns a SongSelect chord chart PDF into an editable, transposable chart you can reshape and export. Everything happens in your browser — nothing is uploaded to a server.':
+    {
+      la: 'WorshipToolkit documentum PDF chordarum SongSelect in tabulam editabilem et transponibilem mutat, quam reformare et exportare potes. Omnia in navigatro tuo fiunt — nihil ad servitorem transmittitur. Magnum est!',
+      'zh-TW':
+        'WorshipToolkit 把你的 SongSelect PDF 變成可以隨意編輯、移調的和弦圖，全部在你的瀏覽器裡搞定——沒有任何東西被上傳到伺服器，姐保證！',
+      id: 'WorshipToolkit ubah PDF chord SongSelect kamu jadi chart yang bisa diedit dan ditranspose sesuka hati. Semua terjadi di browser kamu — gak ada yang diupload ke server, sumpah deh, aman total!',
+      jv: 'WorshipToolkit ngowahi PDF chord SongSelect dadi chart sing iso diedit lan ditranspose, nak. Kabeh kedadean ing browser-mu — ora ana sing diunggah menyang server, tentrem uwis, ora usah kuatir.',
+    },
   'Open the app and either': {
-    la:      'Aperi applicationem et aut',
+    la: 'Aperi applicationem et aut',
     'zh-TW': '打開 App，然後可以',
-    id:      'Buka app-nya, terus',
-    jv:      'Bukak app-e, banjur',
+    id: 'Buka app-nya, terus',
+    jv: 'Bukak app-e, banjur',
   },
   'a SongSelect PDF onto the drop zone, click': {
-    la:      'documentum SongSelect PDF in zonam disponendi, vel premes',
+    la: 'documentum SongSelect PDF in zonam disponendi, vel premes',
     'zh-TW': 'SongSelect PDF 拖到這裡，或點',
-    id:      'PDF SongSelect ke area drop, klik',
-    jv:      'PDF SongSelect menyang area drop, utawa klik',
+    id: 'PDF SongSelect ke area drop, klik',
+    jv: 'PDF SongSelect menyang area drop, utawa klik',
   },
   'to pick one, click': {
-    la:      'ut unum elicias, vel',
+    la: 'ut unum elicias, vel',
     'zh-TW': '選擇一個檔案，或點',
-    id:      'untuk pilih file, klik',
-    jv:      'kanggo milih file, utawa klik',
+    id: 'untuk pilih file, klik',
+    jv: 'kanggo milih file, utawa klik',
   },
   'to create a blank song, or click': {
-    la:      'ut cantum vacuum crees, vel premes',
+    la: 'ut cantum vacuum crees, vel premes',
     'zh-TW': '新建空白歌曲，或點',
-    id:      'untuk buat lagu kosong, atau klik',
-    jv:      'gawe lagu kosong, utawa klik',
+    id: 'untuk buat lagu kosong, atau klik',
+    jv: 'gawe lagu kosong, utawa klik',
   },
   'to resume from a previously exported': {
-    la:      'ut e fasciculo antea exportato resumas',
+    la: 'ut e fasciculo antea exportato resumas',
     'zh-TW': '繼續先前匯出的',
-    id:      'untuk lanjutin dari file',
-    jv:      'kanggo nerusake saka file',
+    id: 'untuk lanjutin dari file',
+    jv: 'kanggo nerusake saka file',
   },
   'file.': {
-    la:      'fasciculo.',
+    la: 'fasciculo.',
     'zh-TW': '檔案。',
-    id:      'yang pernah diekspor.',
-    jv:      'sing tau diekspor.',
+    id: 'yang pernah diekspor.',
+    jv: 'sing tau diekspor.',
   },
   'The app parses the PDF automatically. Multi-song PDFs are split into individual songs.': {
-    la:      'Applicatio PDF automatice legit. Documenta PDF cum multis cantibus in cantus singulos dividuntur. Mirabile dictu!',
+    la: 'Applicatio PDF automatice legit. Documenta PDF cum multis cantibus in cantus singulos dividuntur. Mirabile dictu!',
     'zh-TW': 'App 會自動解析 PDF 喔！包含多首歌的 PDF 也會自動拆分成單曲，不用你手動一首首來。',
-    id:      'App otomatis parsing PDF-nya. PDF yang isinya banyak lagu langsung dipecah jadi lagu-lagu terpisah — mantap jiwa!',
-    jv:      'App iki otomatis ngurai PDF-e, nak. PDF sing isi akeh lagu langsung dipisah dadi lagu siji-siji.',
+    id: 'App otomatis parsing PDF-nya. PDF yang isinya banyak lagu langsung dipecah jadi lagu-lagu terpisah — mantap jiwa!',
+    jv: 'App iki otomatis ngurai PDF-e, nak. PDF sing isi akeh lagu langsung dipisah dadi lagu siji-siji.',
   },
-  'You can select or drop several PDF files at once — they are parsed one by one, and any file that fails shows its own error message while the rest still load.': {
-    la:      'Plura documenta PDF simul eligere vel demittere potes — singillatim leguntur, et si quod deficit, suum nuntium erroris ostendit dum cetera nihilominus onerantur.',
-    'zh-TW': '可以一次選取或拖入多個 PDF 檔案——它們會逐一解析，失敗的檔案會顯示各自的錯誤訊息，其餘的照樣載入。',
-    id:      'Kamu bisa pilih atau drop beberapa file PDF sekaligus — diproses satu per satu, dan kalau ada yang gagal, dia nunjukin error-nya sendiri sementara sisanya tetap masuk. Praktis!',
-    jv:      'Sampeyan bisa milih utawa nyelehake pirang-pirang file PDF bebarengan — diproses siji-siji, lan yen ana sing gagal bakal nuduhake pesen kesalahane dhewe, dene liyane tetep mlebu.',
-  },
-  'sets with more than 5 songs show a search box above the list to filter by title. Reordering is paused while a filter is active.': {
-    la:      'collectiones cum plus quam quinque cantibus capsam quaerendi supra indicem ostendunt ad titulos eligendos. Reordinare intermittitur dum filtrum activum est.',
-    'zh-TW': '超過 5 首歌的集合會在清單上方顯示搜尋框，可依歌名篩選。篩選時暫停拖曳排序。',
-    id:      'set dengan lebih dari 5 lagu bakal nampilin kotak pencarian di atas daftar buat filter judul. Selama filter aktif, drag buat urut ulang di-pause dulu.',
-    jv:      'set sing luwih saka 5 lagu bakal nuduhake kothak panggolekan ing ndhuwur dhaptar kanggo nyaring miturut irah-irahan. Nalika saringan aktif, ngurutake maneh dilereni dhisik.',
-  },
-  'An amber dot on the 💾 button means your songs are not yet in a named set — name and save them, or they will be replaced if you load another set.': {
-    la:      'Punctum flavum in papilione 💾 significat cantus tuos nondum in collectione nominata esse — nomina et serva eos, aut substituentur si aliam collectionem oneraveris.',
-    'zh-TW': '💾 按鈕上的琥珀色圓點表示你的歌曲還沒存進命名的集合——快命名並儲存，不然載入其他集合時會被覆蓋喔！',
-    id:      'Titik amber di tombol 💾 artinya lagu-lagumu belum masuk set bernama — buruan kasih nama dan simpan, kalau nggak bakal ketimpa pas kamu buka set lain!',
-    jv:      'Titik kuning ing tombol 💾 tegese lagu-lagumu durung mlebu set sing dijenengi — jenengana lan simpenen, yen ora bakal keganti yen sampeyan mbukak set liyane.',
-  },
+  'You can select or drop several PDF files at once — they are parsed one by one, and any file that fails shows its own error message while the rest still load.':
+    {
+      la: 'Plura documenta PDF simul eligere vel demittere potes — singillatim leguntur, et si quod deficit, suum nuntium erroris ostendit dum cetera nihilominus onerantur.',
+      'zh-TW':
+        '可以一次選取或拖入多個 PDF 檔案——它們會逐一解析，失敗的檔案會顯示各自的錯誤訊息，其餘的照樣載入。',
+      id: 'Kamu bisa pilih atau drop beberapa file PDF sekaligus — diproses satu per satu, dan kalau ada yang gagal, dia nunjukin error-nya sendiri sementara sisanya tetap masuk. Praktis!',
+      jv: 'Sampeyan bisa milih utawa nyelehake pirang-pirang file PDF bebarengan — diproses siji-siji, lan yen ana sing gagal bakal nuduhake pesen kesalahane dhewe, dene liyane tetep mlebu.',
+    },
+  'sets with more than 5 songs show a search box above the list to filter by title. Reordering is paused while a filter is active.':
+    {
+      la: 'collectiones cum plus quam quinque cantibus capsam quaerendi supra indicem ostendunt ad titulos eligendos. Reordinare intermittitur dum filtrum activum est.',
+      'zh-TW': '超過 5 首歌的集合會在清單上方顯示搜尋框，可依歌名篩選。篩選時暫停拖曳排序。',
+      id: 'set dengan lebih dari 5 lagu bakal nampilin kotak pencarian di atas daftar buat filter judul. Selama filter aktif, drag buat urut ulang di-pause dulu.',
+      jv: 'set sing luwih saka 5 lagu bakal nuduhake kothak panggolekan ing ndhuwur dhaptar kanggo nyaring miturut irah-irahan. Nalika saringan aktif, ngurutake maneh dilereni dhisik.',
+    },
+  'An amber dot on the 💾 button means your songs are not yet in a named set — name and save them, or they will be replaced if you load another set.':
+    {
+      la: 'Punctum flavum in papilione 💾 significat cantus tuos nondum in collectione nominata esse — nomina et serva eos, aut substituentur si aliam collectionem oneraveris.',
+      'zh-TW':
+        '💾 按鈕上的琥珀色圓點表示你的歌曲還沒存進命名的集合——快命名並儲存，不然載入其他集合時會被覆蓋喔！',
+      id: 'Titik amber di tombol 💾 artinya lagu-lagumu belum masuk set bernama — buruan kasih nama dan simpan, kalau nggak bakal ketimpa pas kamu buka set lain!',
+      jv: 'Titik kuning ing tombol 💾 tegese lagu-lagumu durung mlebu set sing dijenengi — jenengana lan simpenen, yen ora bakal keganti yen sampeyan mbukak set liyane.',
+    },
   'Two-column layouts and superscript chord extensions (e.g.': {
-    la:      'Dispositiones bicolumnes et extensiones chordarum superscriptae (e.g.',
+    la: 'Dispositiones bicolumnes et extensiones chordarum superscriptae (e.g.',
     'zh-TW': '雙欄排版和上標和弦延伸音（例如',
-    id:      'Layout dua kolom dan ekstensi chord superscript (mis.',
-    jv:      'Layout rong kolom lan ekstensi chord superscript (tuladha',
+    id: 'Layout dua kolom dan ekstensi chord superscript (mis.',
+    jv: 'Layout rong kolom lan ekstensi chord superscript (tuladha',
   },
   'are recognized and normalized automatically (e.g. to': {
-    la:      'agnoscantur et normalizantur automatice (e.g. ad',
+    la: 'agnoscantur et normalizantur automatice (e.g. ad',
     'zh-TW': '）都會自動識別並標準化（例如轉為',
-    id:      ') dikenali dan dinormalisasi otomatis (mis. jadi',
-    jv:      ') dikenali lan dinormalisasi otomatis (tuladha dadi',
+    id: ') dikenali dan dinormalisasi otomatis (mis. jadi',
+    jv: ') dikenali lan dinormalisasi otomatis (tuladha dadi',
   },
   ').': {
-    la:      ').',
+    la: ').',
     'zh-TW': '）。',
-    id:      ').',
-    jv:      ').',
+    id: ').',
+    jv: ').',
   },
   'Direction notes such as': {
-    la:      'Notae directionis ut',
+    la: 'Notae directionis ut',
     'zh-TW': '方向標記如',
-    id:      'Catatan arah seperti',
-    jv:      'Cathetan arah kaya',
+    id: 'Catatan arah seperti',
+    jv: 'Cathetan arah kaya',
   },
   ', and bar notation like': {
-    la:      ', et notatio barrarum sicut',
+    la: ', et notatio barrarum sicut',
     'zh-TW': '，以及小節符號如',
-    id:      ', dan notasi bar seperti',
-    jv:      ', lan notasi bar kaya',
+    id: ', dan notasi bar seperti',
+    jv: ', lan notasi bar kaya',
   },
   ', are preserved as italic annotations under the relevant line.': {
-    la:      ', ut annotationes italicae sub linea pertinenti servantur.',
+    la: ', ut annotationes italicae sub linea pertinenti servantur.',
     'zh-TW': '，都會以斜體標記保留在相關行的下方。',
-    id:      ', disimpan sebagai anotasi miring di bawah baris yang sesuai.',
-    jv:      ', disimpen minangka anotasi miring ing ngisor baris sing cocog.',
+    id: ', disimpan sebagai anotasi miring di bawah baris yang sesuai.',
+    jv: ', disimpen minangka anotasi miring ing ngisor baris sing cocog.',
   },
   'Only PDF files are supported.': {
-    la:      'Solum fascicula PDF sustentantur.',
+    la: 'Solum fascicula PDF sustentantur.',
     'zh-TW': '只支援 PDF 檔案。',
-    id:      'Cuma file PDF yang didukung ya!',
-    jv:      'Mung file PDF sing didukung.',
+    id: 'Cuma file PDF yang didukung ya!',
+    jv: 'Mung file PDF sing didukung.',
   },
-  'If nothing is detected, double-check that the file is a SongSelect-style chord chart PDF, not a scanned image.': {
-    la:      'Si nihil detectum est, verifica documentum esse PDF chordarum generis SongSelect, non imaginem depictam. Machina non oculis videt!',
-    'zh-TW': '如果什麼都沒解析到，請確認這是 SongSelect 格式的和弦圖 PDF，不能是掃描圖片喔！程式讀文字，不讀像素！',
-    id:      'Kalau gak ke-detect, pastiin filenya PDF chord SongSelect beneran, bukan foto/scan ya bestie! App ini baca teks, bukan gambar!',
-    jv:      'Yen ora ketemu apa-apa, pastikna file-e iku PDF chord SongSelect beneran, dudu gambar sing discan, nak. App iki maca teks, ora gambar.',
-  },
+  'If nothing is detected, double-check that the file is a SongSelect-style chord chart PDF, not a scanned image.':
+    {
+      la: 'Si nihil detectum est, verifica documentum esse PDF chordarum generis SongSelect, non imaginem depictam. Machina non oculis videt!',
+      'zh-TW':
+        '如果什麼都沒解析到，請確認這是 SongSelect 格式的和弦圖 PDF，不能是掃描圖片喔！程式讀文字，不讀像素！',
+      id: 'Kalau gak ke-detect, pastiin filenya PDF chord SongSelect beneran, bukan foto/scan ya bestie! App ini baca teks, bukan gambar!',
+      jv: 'Yen ora ketemu apa-apa, pastikna file-e iku PDF chord SongSelect beneran, dudu gambar sing discan, nak. App iki maca teks, ora gambar.',
+    },
 
   // ── §2 Your song set ──
   'Once a PDF is loaded (or you start from scratch), every song appears in the': {
-    la:      'Postquam PDF oneratum est (vel ab initio incipis), omnis cantus apparet in',
+    la: 'Postquam PDF oneratum est (vel ab initio incipis), omnis cantus apparet in',
     'zh-TW': '載入 PDF（或從頭開始）後，每首歌都會出現在',
-    id:      'Setelah PDF dimuat (atau mulai dari nol), semua lagu muncul di daftar',
-    jv:      'Sawise PDF dimuat (utawa miwiti saka nol), saben lagu katon ing dhaftar',
+    id: 'Setelah PDF dimuat (atau mulai dari nol), semua lagu muncul di daftar',
+    jv: 'Sawise PDF dimuat (utawa miwiti saka nol), saben lagu katon ing dhaftar',
   },
   'list on the left (on mobile, a horizontal scrollable tab bar at the top).': {
-    la:      'lista ad sinistram (in telephono, taenia horizontalis volubilis in summo).',
+    la: 'lista ad sinistram (in telephono, taenia horizontalis volubilis in summo).',
     'zh-TW': '（左側清單）（手機版則是頂部水平可捲動標籤列）。',
-    id:      'di kiri (di HP, ada tab bar horizontal di atas).',
-    jv:      'ing sisih kiwa (ing HP, ana tab bar horizontal ing ndhuwur).',
+    id: 'di kiri (di HP, ada tab bar horizontal di atas).',
+    jv: 'ing sisih kiwa (ing HP, ana tab bar horizontal ing ndhuwur).',
   },
   'Click any song in the list to switch the editor to that song.': {
-    la:      'Clicca quemvis cantum in lista ut editorem ad illum commutes.',
+    la: 'Clicca quemvis cantum in lista ut editorem ad illum commutes.',
     'zh-TW': '點擊列表中的任一首歌，即可切換到該歌曲的編輯器。',
-    id:      'Klik lagu apa aja di daftar buat pindah ke editor lagu itu, gampang kan?',
-    jv:      'Klik lagu apa wae ing dhaftar, mengko langsung pindhah menyang editor lagu kuwi, gampang ta?',
+    id: 'Klik lagu apa aja di daftar buat pindah ke editor lagu itu, gampang kan?',
+    jv: 'Klik lagu apa wae ing dhaftar, mengko langsung pindhah menyang editor lagu kuwi, gampang ta?',
   },
   'The current key for each song is shown next to its title.': {
-    la:      'Clavis actualis cuiusque cantus proxima titulo demonstratur.',
+    la: 'Clavis actualis cuiusque cantus proxima titulo demonstratur.',
     'zh-TW': '每首歌的目前調性會顯示在標題旁邊。',
-    id:      'Kunci saat ini untuk setiap lagu ditampilkan di samping judulnya.',
-    jv:      'Kunci saiki saben lagu ditampilake ing jejere judule.',
+    id: 'Kunci saat ini untuk setiap lagu ditampilkan di samping judulnya.',
+    jv: 'Kunci saiki saben lagu ditampilake ing jejere judule.',
   },
   'Rename a song title': {
-    la:      'Renominare Titulum Cantus',
+    la: 'Renominare Titulum Cantus',
     'zh-TW': '重新命名歌曲標題',
-    id:      'Ganti Nama Judul Lagu',
-    jv:      'Ngganti Jeneng Judul Lagu',
+    id: 'Ganti Nama Judul Lagu',
+    jv: 'Ngganti Jeneng Judul Lagu',
   },
   'click the song title in the editor toolbar (above the BPM chip) to edit it inline. Press': {
-    la:      'premes in titulo cantus in barra instrumentorum (supra pagellam BPM) ut in situ edas. Premes',
+    la: 'premes in titulo cantus in barra instrumentorum (supra pagellam BPM) ut in situ edas. Premes',
     'zh-TW': '點擊工具列中的歌曲標題（BPM 標籤上方）即可就地編輯。按',
-    id:      'klik judul lagu di toolbar editor (di atas chip BPM) untuk edit langsung. Tekan',
-    jv:      'klik judul lagu ing toolbar editor (ndhuwur chip BPM) kanggo ngedit langsung. Pencet',
+    id: 'klik judul lagu di toolbar editor (di atas chip BPM) untuk edit langsung. Tekan',
+    jv: 'klik judul lagu ing toolbar editor (ndhuwur chip BPM) kanggo ngedit langsung. Pencet',
   },
   'to save or': {
-    la:      'ut serves vel',
+    la: 'ut serves vel',
     'zh-TW': '儲存，或按',
-    id:      'untuk simpan, atau',
-    jv:      'kanggo nyimpen utawa',
+    id: 'untuk simpan, atau',
+    jv: 'kanggo nyimpen utawa',
   },
   'to cancel. This is especially useful for songs added as blank "New Song" entries.': {
-    la:      'ut cancelles. Hoc maxime utile est pro cantibus additis ut ingressus vacuus "Cantus Novus". Inscribe nomen dignum!',
+    la: 'ut cancelles. Hoc maxime utile est pro cantibus additis ut ingressus vacuus "Cantus Novus". Inscribe nomen dignum!',
     'zh-TW': '取消。對於以空白「新歌曲」方式新增的歌曲特別有用——記得給它一個名字！',
-    id:      'untuk batal. Berguna banget untuk lagu yang ditambah sebagai entri "Lagu Baru" kosong!',
-    jv:      'kanggo batal. Iki migunani banget kanggo lagu sing ditambah minangka "Lagu Anyar" kosong, nak.',
+    id: 'untuk batal. Berguna banget untuk lagu yang ditambah sebagai entri "Lagu Baru" kosong!',
+    jv: 'kanggo batal. Iki migunani banget kanggo lagu sing ditambah minangka "Lagu Anyar" kosong, nak.',
   },
   'Remove a song': {
-    la:      'Removere Cantum',
+    la: 'Removere Cantum',
     'zh-TW': '移除歌曲',
-    id:      'Hapus Lagu',
-    jv:      'Mbusak Lagu',
+    id: 'Hapus Lagu',
+    jv: 'Mbusak Lagu',
   },
   'hover over a song in the list and click the': {
-    la:      'sustine super cantum in lista et premes',
+    la: 'sustine super cantum in lista et premes',
     'zh-TW': '將滑鼠懸停在列表中的歌曲上，點擊',
-    id:      'arahkan kursor ke lagu di daftar, lalu klik',
-    jv:      'arahke kursor menyang lagu ing dhaftar, banjur klik',
+    id: 'arahkan kursor ke lagu di daftar, lalu klik',
+    jv: 'arahke kursor menyang lagu ing dhaftar, banjur klik',
   },
   'button that appears on the right. Removing the last song returns you to the upload screen.': {
-    la:      'papilionem qui apparet ad dextram. Remotio ultimi cantus te ad paginam importationis reducit.',
+    la: 'papilionem qui apparet ad dextram. Remotio ultimi cantus te ad paginam importationis reducit.',
     'zh-TW': '右側出現的按鈕。移除最後一首歌會返回上傳畫面。',
-    id:      'yang muncul di kanan. Hapus lagu terakhir bakal balik ke layar upload.',
-    jv:      'tombol sing katon ing tengen. Mbusak lagu pungkasan bakal bali menyang layar upload.',
+    id: 'yang muncul di kanan. Hapus lagu terakhir bakal balik ke layar upload.',
+    jv: 'tombol sing katon ing tengen. Mbusak lagu pungkasan bakal bali menyang layar upload.',
   },
   'Collapse the sidebar': {
-    la:      'Contrahere Barra Lateralis',
+    la: 'Contrahere Barra Lateralis',
     'zh-TW': '收合側邊欄',
-    id:      'Ciutkan Sidebar',
-    jv:      'Ciutake Sidebar',
+    id: 'Ciutkan Sidebar',
+    jv: 'Ciutake Sidebar',
   },
   'on desktop and tablet, click the': {
-    la:      'in computatro et tabella, premes',
+    la: 'in computatro et tabella, premes',
     'zh-TW': '在電腦或平板上，點擊',
-    id:      'di desktop/tablet, klik',
-    jv:      'ing komputer lan tablet, klik',
+    id: 'di desktop/tablet, klik',
+    jv: 'ing komputer lan tablet, klik',
   },
-  'button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click': {
-    la:      'papilionem in capite barra lateralis ut eum in fasciam angustam contrahas, plus spatii editoriis dans. Premes',
-    'zh-TW': '側邊欄標題中的按鈕，將其收合為窄條，給編輯器更多空間。點擊',
-    id:      'di header sidebar untuk ciutkannya jadi strip tipis, biar editor makin lega. Klik',
-    jv:      'ing header sidebar kanggo nyempitake dadi strip tipis, menehi ruang luwih kanggo editor. Klik',
-  },
+  'button in the sidebar header to collapse it to a narrow strip, giving more room to the editor. Click':
+    {
+      la: 'papilionem in capite barra lateralis ut eum in fasciam angustam contrahas, plus spatii editoriis dans. Premes',
+      'zh-TW': '側邊欄標題中的按鈕，將其收合為窄條，給編輯器更多空間。點擊',
+      id: 'di header sidebar untuk ciutkannya jadi strip tipis, biar editor makin lega. Klik',
+      jv: 'ing header sidebar kanggo nyempitake dadi strip tipis, menehi ruang luwih kanggo editor. Klik',
+    },
   'to expand it again. On mobile, tap': {
-    la:      'ut iterum expandas. In telephono, tange',
+    la: 'ut iterum expandas. In telephono, tange',
     'zh-TW': '再次展開。在手機上，點按',
-    id:      'untuk buka lagi. Di HP, tap',
-    jv:      'kanggo mbukak maneh. Ing HP, tap',
+    id: 'untuk buka lagi. Di HP, tap',
+    jv: 'kanggo mbukak maneh. Ing HP, tap',
   },
   'to collapse the song bar and free up vertical space; tap again (': {
-    la:      'ut tabulam cantuum contrahas et spatium verticale liberes; tange iterum (',
+    la: 'ut tabulam cantuum contrahas et spatium verticale liberes; tange iterum (',
     'zh-TW': '收合歌曲列以釋放垂直空間；再次點按（',
-    id:      'untuk ciutkan bar lagu biar ada ruang lebih; tap lagi (',
-    jv:      'kanggo nyimpet bar lagu lan mbebasake ruang vertikal; tap maneh (',
+    id: 'untuk ciutkan bar lagu biar ada ruang lebih; tap lagi (',
+    jv: 'kanggo nyimpet bar lagu lan mbebasake ruang vertikal; tap maneh (',
   },
   ') to expand it.': {
-    la:      ') ut expandas.',
+    la: ') ut expandas.',
     'zh-TW': '）再次展開。',
-    id:      ') untuk buka lagi.',
-    jv:      ') kanggo mbukak maneh.',
+    id: ') untuk buka lagi.',
+    jv: ') kanggo mbukak maneh.',
   },
   'Adding songs to an existing set': {
-    la:      'Addere Cantus ad Collectionem Existentem',
+    la: 'Addere Cantus ad Collectionem Existentem',
     'zh-TW': '在現有集合中新增歌曲',
-    id:      'Tambah Lagu ke Set yang Ada',
-    jv:      'Nambahake Lagu menyang Set sing Wis Ana',
+    id: 'Tambah Lagu ke Set yang Ada',
+    jv: 'Nambahake Lagu menyang Set sing Wis Ana',
   },
   'On desktop and tablet,': {
-    la:      'In computatro et tabella,',
+    la: 'In computatro et tabella,',
     'zh-TW': '在電腦與平板上，',
-    id:      'Di desktop dan tablet,',
-    jv:      'Ing komputer lan tablet,',
+    id: 'Di desktop dan tablet,',
+    jv: 'Ing komputer lan tablet,',
   },
-  'and': {
-    la:      'et',
+  and: {
+    la: 'et',
     'zh-TW': '和',
-    id:      'dan',
-    jv:      'lan',
+    id: 'dan',
+    jv: 'lan',
   },
   'appear directly at the end of the song list (below the last song). On mobile, tap the': {
-    la:      'apparent directe in fine listae cantuum (post ultimum cantum). In telephono, tange',
+    la: 'apparent directe in fine listae cantuum (post ultimum cantum). In telephono, tange',
     'zh-TW': '直接出現在歌曲列表末尾（最後一首歌下方）。在手機上，點按',
-    id:      'muncul langsung di akhir daftar lagu (setelah lagu terakhir). Di HP, tap',
-    jv:      'katon langsung ing pungkasane dhaftar lagu (sawise lagu pungkasan). Ing HP, tap',
+    id: 'muncul langsung di akhir daftar lagu (setelah lagu terakhir). Di HP, tap',
+    jv: 'katon langsung ing pungkasane dhaftar lagu (sawise lagu pungkasan). Ing HP, tap',
   },
   'button at the end of the tab strip to reveal them:': {
-    la:      'papilionem in fine taeniae tabellarum ut eos reveles:',
+    la: 'papilionem in fine taeniae tabellarum ut eos reveles:',
     'zh-TW': '標籤列末尾的按鈕來顯示它們：',
-    id:      'di ujung tab strip untuk munculkan mereka:',
-    jv:      'tombol ing pungkasane tab strip kanggo namoake:',
+    id: 'di ujung tab strip untuk munculkan mereka:',
+    jv: 'tombol ing pungkasane tab strip kanggo namoake:',
   },
-  'adds a blank song to the bottom of the list. Give it a name, add sections, and build it from scratch.': {
-    la:      'addit cantum vacuum in fundo listae. Da ei nomen dignum, adde sectiones, et aedifica ex nihilo!',
-    'zh-TW': '在列表底部新增一首空白歌曲。給它一個名字、加入段落，從頭打造！',
-    id:      'tambah lagu kosong di bawah daftar. Kasih nama, tambah bagian, dan build dari nol!',
-    jv:      'nambahake lagu kosong ing pungkasane dhaftar. Wenehana jeneng, tambah bagian, lan bangun saka nol.',
-  },
+  'adds a blank song to the bottom of the list. Give it a name, add sections, and build it from scratch.':
+    {
+      la: 'addit cantum vacuum in fundo listae. Da ei nomen dignum, adde sectiones, et aedifica ex nihilo!',
+      'zh-TW': '在列表底部新增一首空白歌曲。給它一個名字、加入段落，從頭打造！',
+      id: 'tambah lagu kosong di bawah daftar. Kasih nama, tambah bagian, dan build dari nol!',
+      jv: 'nambahake lagu kosong ing pungkasane dhaftar. Wenehana jeneng, tambah bagian, lan bangun saka nol.',
+    },
   'appends songs from another PDF': {
-    la:      'appendit cantus e alio PDF',
+    la: 'appendit cantus e alio PDF',
     'zh-TW': '從另一個 PDF 附加歌曲',
-    id:      'menambahkan lagu dari PDF lain',
-    jv:      'nambahake lagu saka PDF liya',
+    id: 'menambahkan lagu dari PDF lain',
+    jv: 'nambahake lagu saka PDF liya',
   },
-  'without': {
-    la:      'sine',
+  without: {
+    la: 'sine',
     'zh-TW': '，而不',
-    id:      'tanpa',
-    jv:      'tanpa',
+    id: 'tanpa',
+    jv: 'tanpa',
   },
-  'replacing what\'s already in your set. Great for building a multi-song set from separate files.': {
-    la:      'reponendo quae iam in collectione tua sunt. Optimum pro construendo collectione multorum cantuum ex fasciculis separatis!',
-    'zh-TW': '替換已有的歌曲。非常適合從多個獨立檔案建立多曲集！',
-    id:      'mengganti yang sudah ada di set kamu. Cocok banget buat bikin set multi-lagu dari file terpisah!',
-    jv:      'ngganti sing wis ana ing set-mu. Cocok banget kanggo nggawe set multi-lagu saka file terpisah.',
-  },
+  "replacing what's already in your set. Great for building a multi-song set from separate files.":
+    {
+      la: 'reponendo quae iam in collectione tua sunt. Optimum pro construendo collectione multorum cantuum ex fasciculis separatis!',
+      'zh-TW': '替換已有的歌曲。非常適合從多個獨立檔案建立多曲集！',
+      id: 'mengganti yang sudah ada di set kamu. Cocok banget buat bikin set multi-lagu dari file terpisah!',
+      jv: 'ngganti sing wis ana ing set-mu. Cocok banget kanggo nggawe set multi-lagu saka file terpisah.',
+    },
   'If any imported song title already exists in the set, a warning appears. You can choose to': {
-    la:      'Si titulus cuiusvis cantus importati iam in collectione exstat, monitio apparet. Eligere potes',
+    la: 'Si titulus cuiusvis cantus importati iam in collectione exstat, monitio apparet. Eligere potes',
     'zh-TW': '如果匯入的歌曲標題已存在於集合中，會出現警告。你可以選擇',
-    id:      'Kalau ada judul lagu yang sudah ada di set, bakal ada peringatan. Kamu bisa pilih',
-    jv:      'Yen ana judul lagu sing wis ana ing set, ana peringatan. Kowe iso milih',
+    id: 'Kalau ada judul lagu yang sudah ada di set, bakal ada peringatan. Kamu bisa pilih',
+    jv: 'Yen ana judul lagu sing wis ana ing set, ana peringatan. Kowe iso milih',
   },
   '(add all including duplicates) or': {
-    la:      '(adde omnes cum similibus) vel',
+    la: '(adde omnes cum similibus) vel',
     'zh-TW': '（新增全部包含重複）或',
-    id:      '(tambah semua termasuk duplikat) atau',
-    jv:      '(tambah kabeh kalebu duplikat) utawa',
+    id: '(tambah semua termasuk duplikat) atau',
+    jv: '(tambah kabeh kalebu duplikat) utawa',
   },
   '(only import songs with new titles).': {
-    la:      '(importa solum cantus cum titulis novis).',
+    la: '(importa solum cantus cum titulis novis).',
     'zh-TW': '（只匯入新標題的歌曲）。',
-    id:      '(hanya impor lagu dengan judul baru).',
-    jv:      '(mung impor lagu kanthi judul anyar).',
+    id: '(hanya impor lagu dengan judul baru).',
+    jv: '(mung impor lagu kanthi judul anyar).',
   },
   'Reordering songs': {
-    la:      'Cantus Reordinare',
+    la: 'Cantus Reordinare',
     'zh-TW': '重新排序歌曲',
-    id:      'Mengubah Urutan Lagu',
-    jv:      'Ngurutake Maneh Lagu',
+    id: 'Mengubah Urutan Lagu',
+    jv: 'Ngurutake Maneh Lagu',
   },
   'Drag the': {
-    la:      'Trahere',
+    la: 'Trahere',
     'zh-TW': '拖動',
-    id:      'Seret',
-    jv:      'Seret',
+    id: 'Seret',
+    jv: 'Seret',
   },
-  'handle on any song row up or down to reorder the list. This also works on touch screens — press and hold the handle, then drag.': {
-    la:      'sigillum in quavis serie cantus sursum vel deorsum ut listam reordines. Hoc etiam in schermatibus tactu laborat — premes et tene, tum trahe!',
-    'zh-TW': '任何歌曲列上的把手上下拖動，重新排序列表。觸控螢幕也可以——長按把手後再拖。',
-    id:      'handle di baris lagu mana aja ke atas/bawah untuk ubah urutan. Ini juga bisa di layar sentuh — tekan tahan handlenya, terus seret!',
-    jv:      'handle ing baris lagu apa wae munggah utawa mudhun kanggo ngurut maneh dhaftar. Iki uga iso ing layar sentuh — pencet lan tahan handle-e, banjur seret.',
-  },
+  'handle on any song row up or down to reorder the list. This also works on touch screens — press and hold the handle, then drag.':
+    {
+      la: 'sigillum in quavis serie cantus sursum vel deorsum ut listam reordines. Hoc etiam in schermatibus tactu laborat — premes et tene, tum trahe!',
+      'zh-TW': '任何歌曲列上的把手上下拖動，重新排序列表。觸控螢幕也可以——長按把手後再拖。',
+      id: 'handle di baris lagu mana aja ke atas/bawah untuk ubah urutan. Ini juga bisa di layar sentuh — tekan tahan handlenya, terus seret!',
+      jv: 'handle ing baris lagu apa wae munggah utawa mudhun kanggo ngurut maneh dhaftar. Iki uga iso ing layar sentuh — pencet lan tahan handle-e, banjur seret.',
+    },
   'Reordering is undoable with': {
-    la:      'Reordinatio rescindi potest cum',
+    la: 'Reordinatio rescindi potest cum',
     'zh-TW': '重新排序可以用',
-    id:      'Urutan ulang bisa dibatalkan dengan',
-    jv:      'Ngurutake maneh iso dibatalake nganggo',
+    id: 'Urutan ulang bisa dibatalkan dengan',
+    jv: 'Ngurutake maneh iso dibatalake nganggo',
   },
   '.': {
-    la:      '.',
+    la: '.',
     'zh-TW': '。',
-    id:      '.',
-    jv:      '.',
+    id: '.',
+    jv: '.',
   },
 
   // ── §3 Editing chords & lyrics ──
   'The editor mirrors the printed layout: chords float above the lyric line they belong to.': {
-    la:      'Editor dispositionem impressam speculi instar ostendit: chordae supra lineam verborum ad quam pertinent volant.',
+    la: 'Editor dispositionem impressam speculi instar ostendit: chordae supra lineam verborum ad quam pertinent volant.',
     'zh-TW': '編輯器模仿印刷排版：和弦浮在對應的歌詞行上方。',
-    id:      'Editor mencerminkan tata letak cetak: chord mengambang di atas baris lirik yang sesuai.',
-    jv:      'Editor niru tata letak cetak: chord ngambang ing ndhuwur baris lirik sing cocog.',
+    id: 'Editor mencerminkan tata letak cetak: chord mengambang di atas baris lirik yang sesuai.',
+    jv: 'Editor niru tata letak cetak: chord ngambang ing ndhuwur baris lirik sing cocog.',
   },
-  'Chords': {
-    la:      'Chordae',
+  Chords: {
+    la: 'Chordae',
     'zh-TW': '和弦',
-    id:      'Chord',
-    jv:      'Chord',
+    id: 'Chord',
+    jv: 'Chord',
   },
   'Rename a chord': {
-    la:      'Renominare Chordam',
+    la: 'Renominare Chordam',
     'zh-TW': '重新命名和弦',
-    id:      'Ganti Nama Chord',
-    jv:      'Ngganti Jeneng Chord',
+    id: 'Ganti Nama Chord',
+    jv: 'Ngganti Jeneng Chord',
   },
   'click it, type the new chord, then press': {
-    la:      'premes, inscribe chordam novam, deinde premes',
+    la: 'premes, inscribe chordam novam, deinde premes',
     'zh-TW': '點擊它，輸入新和弦，然後按',
-    id:      'klik, ketik chord baru, lalu tekan',
-    jv:      'klik, ketik chord anyar, banjur pencet',
+    id: 'klik, ketik chord baru, lalu tekan',
+    jv: 'klik, ketik chord anyar, banjur pencet',
   },
   '(or click elsewhere) to save. Press': {
-    la:      '(vel alibi premes) ut serves. Premes',
+    la: '(vel alibi premes) ut serves. Premes',
     'zh-TW': '（或點擊其他地方）儲存。按',
-    id:      '(atau klik di tempat lain) untuk simpan. Tekan',
-    jv:      '(utawa klik neng ngendi wae) kanggo nyimpen. Pencet',
+    id: '(atau klik di tempat lain) untuk simpan. Tekan',
+    jv: '(utawa klik neng ngendi wae) kanggo nyimpen. Pencet',
   },
   'to cancel.': {
-    la:      'ut cancelles.',
+    la: 'ut cancelles.',
     'zh-TW': '取消。',
-    id:      'untuk batal.',
-    jv:      'kanggo batal.',
+    id: 'untuk batal.',
+    jv: 'kanggo batal.',
   },
   'Reposition a chord': {
-    la:      'Reponere Chordam',
+    la: 'Reponere Chordam',
     'zh-TW': '調整和弦位置',
-    id:      'Pindahkan Posisi Chord',
-    jv:      'Nggeser Posisi Chord',
+    id: 'Pindahkan Posisi Chord',
+    jv: 'Nggeser Posisi Chord',
   },
   'click and drag it left or right to line it up exactly where it falls in the lyric.': {
-    la:      'premes et trahe sinistrorsum vel dextrorsum ut eum colloces exacte ubi in verbis cadit.',
+    la: 'premes et trahe sinistrorsum vel dextrorsum ut eum colloces exacte ubi in verbis cadit.',
     'zh-TW': '點擊並左右拖動，將其精確對準歌詞中的位置。',
-    id:      'klik terus seret ke kiri-kanan sampai pas banget di posisi liriknya, no asal-asalan!',
-    jv:      'klik banjur seret mengiwa utawa mengetan, nganti pas persis ing lirike, ora usah kesusu.',
+    id: 'klik terus seret ke kiri-kanan sampai pas banget di posisi liriknya, no asal-asalan!',
+    jv: 'klik banjur seret mengiwa utawa mengetan, nganti pas persis ing lirike, ora usah kesusu.',
   },
   'Add a chord': {
-    la:      'Addere Chordam',
+    la: 'Addere Chordam',
     'zh-TW': '新增和弦',
-    id:      'Tambah Chord',
-    jv:      'Nambah Chord',
+    id: 'Tambah Chord',
+    jv: 'Nambah Chord',
   },
   'use the': {
-    la:      'adhibere',
+    la: 'adhibere',
     'zh-TW': '使用',
-    id:      'gunakan',
-    jv:      'nggunakake',
+    id: 'gunakan',
+    jv: 'nggunakake',
   },
   'button in the left gutter of a line, or click': {
-    la:      'papilionem in margine sinistro lineae, vel premes',
+    la: 'papilionem in margine sinistro lineae, vel premes',
     'zh-TW': '行左側的按鈕，或點擊',
-    id:      'tombol di gutter kiri baris, atau klik',
-    jv:      'tombol ing sisih kiwa baris, utawa klik',
+    id: 'tombol di gutter kiri baris, atau klik',
+    jv: 'tombol ing sisih kiwa baris, utawa klik',
   },
   'on an empty line. New chords start as': {
-    la:      'in linea vacua. Chordae novae incipiunt ut',
+    la: 'in linea vacua. Chordae novae incipiunt ut',
     'zh-TW': '在空白行上。新和弦預設為',
-    id:      'di baris kosong. Chord baru dimulai sebagai',
-    jv:      'ing baris kosong. Chord anyar diwiwiti minangka',
+    id: 'di baris kosong. Chord baru dimulai sebagai',
+    jv: 'ing baris kosong. Chord anyar diwiwiti minangka',
   },
   'and open for editing immediately.': {
-    la:      'et statim ad edendum aperiuntur.',
+    la: 'et statim ad edendum aperiuntur.',
     'zh-TW': '，並立即開啟編輯模式。',
-    id:      'dan langsung terbuka untuk diedit.',
-    jv:      'lan langsung mbukak kanggo diedit.',
+    id: 'dan langsung terbuka untuk diedit.',
+    jv: 'lan langsung mbukak kanggo diedit.',
   },
   'Remove a chord': {
-    la:      'Removere Chordam',
+    la: 'Removere Chordam',
     'zh-TW': '移除和弦',
-    id:      'Hapus Chord',
-    jv:      'Mbusak Chord',
+    id: 'Hapus Chord',
+    jv: 'Mbusak Chord',
   },
   'hover over it and click the small': {
-    la:      'sustine super eam et premes parvum',
+    la: 'sustine super eam et premes parvum',
     'zh-TW': '將滑鼠懸停在上面，點擊小小的',
-    id:      'arahkan kursor ke sana dan klik tombol kecil',
-    jv:      'arahke kursor menyang kono lan klik tombol cilik',
+    id: 'arahkan kursor ke sana dan klik tombol kecil',
+    jv: 'arahke kursor menyang kono lan klik tombol cilik',
   },
   'that appears.': {
-    la:      'quod apparet.',
+    la: 'quod apparet.',
     'zh-TW': '按鈕即可。',
-    id:      'yang muncul.',
-    jv:      'sing katon.',
+    id: 'yang muncul.',
+    jv: 'sing katon.',
   },
   'Lyrics & lines': {
-    la:      'Verba & Lineae',
+    la: 'Verba & Lineae',
     'zh-TW': '歌詞與行',
-    id:      'Lirik & Baris',
-    jv:      'Lirik & Baris',
+    id: 'Lirik & Baris',
+    jv: 'Lirik & Baris',
   },
   'Click directly into any lyric line to edit the text in place.': {
-    la:      'Clicca directe in quamvis lineam verborum ut textum in situ edas.',
+    la: 'Clicca directe in quamvis lineam verborum ut textum in situ edas.',
     'zh-TW': '直接點擊任何歌詞行即可就地編輯文字。',
-    id:      'Klik langsung ke baris lirik mana saja untuk edit teksnya di tempat.',
-    jv:      'Klik langsung menyang baris lirik apa wae kanggo ngedit teks ing kono.',
+    id: 'Klik langsung ke baris lirik mana saja untuk edit teksnya di tempat.',
+    jv: 'Klik langsung menyang baris lirik apa wae kanggo ngedit teks ing kono.',
   },
   'Add a new line under a section with the': {
-    la:      'Adde lineam novam sub sectione cum',
+    la: 'Adde lineam novam sub sectione cum',
     'zh-TW': '使用',
-    id:      'Tambah baris baru di bawah bagian dengan',
-    jv:      'Tambah baris anyar ing ngisor bagian nganggo',
+    id: 'Tambah baris baru di bawah bagian dengan',
+    jv: 'Tambah baris anyar ing ngisor bagian nganggo',
   },
-  'button in that section\'s header.': {
-    la:      'papilione in capite illius sectionis.',
+  "button in that section's header.": {
+    la: 'papilione in capite illius sectionis.',
     'zh-TW': '按鈕在該段落的標題中新增行。',
-    id:      'di header bagian tersebut.',
-    jv:      'ing header bagian kasebut.',
+    id: 'di header bagian tersebut.',
+    jv: 'ing header bagian kasebut.',
   },
   'Remove a line using the': {
-    la:      'Remove lineam cum',
+    la: 'Remove lineam cum',
     'zh-TW': '使用',
-    id:      'Hapus baris menggunakan',
-    jv:      'Mbusak baris nganggo',
+    id: 'Hapus baris menggunakan',
+    jv: 'Mbusak baris nganggo',
   },
   'button in its left gutter. A section always keeps at least one line.': {
-    la:      'papilione in margine sinistro eius. Sectio semper servat saltem unam lineam.',
+    la: 'papilione in margine sinistro eius. Sectio semper servat saltem unam lineam.',
     'zh-TW': '左側的按鈕移除行。每個段落至少保留一行。',
-    id:      'tombol di gutter kirinya. Setiap bagian selalu punya minimal satu baris.',
-    jv:      'tombol ing sisih kiwa. Saben bagian tansah njaga minimal siji baris.',
+    id: 'tombol di gutter kirinya. Setiap bagian selalu punya minimal satu baris.',
+    jv: 'tombol ing sisih kiwa. Saben bagian tansah njaga minimal siji baris.',
   },
   'Tempo & time signature': {
-    la:      'Tempus & Modus Temporis',
+    la: 'Tempus & Modus Temporis',
     'zh-TW': '速度與拍號',
-    id:      'Tempo & Tanda Birama',
-    jv:      'Tempo & Tanda Birama',
+    id: 'Tempo & Tanda Birama',
+    jv: 'Tempo & Tanda Birama',
   },
   'Edit tempo': {
-    la:      'Emendare Tempus',
+    la: 'Emendare Tempus',
     'zh-TW': '編輯速度',
-    id:      'Edit Tempo',
-    jv:      'Edit Tempo',
+    id: 'Edit Tempo',
+    jv: 'Edit Tempo',
   },
   'chip in the toolbar, type a new number, then press': {
-    la:      'pagellam in barra instrumentorum, inscribe numerum novum, deinde premes',
+    la: 'pagellam in barra instrumentorum, inscribe numerum novum, deinde premes',
     'zh-TW': '工具列中的標籤，輸入新數字，然後按',
-    id:      'chip di toolbar, ketik angka baru, lalu tekan',
-    jv:      'chip ing toolbar, ketik angka anyar, banjur pencet',
+    id: 'chip di toolbar, ketik angka baru, lalu tekan',
+    jv: 'chip ing toolbar, ketik angka anyar, banjur pencet',
   },
   '(or click elsewhere) to save. Clearing it shows a': {
-    la:      '(vel alibi premes) ut serves. Si deles, apparet',
+    la: '(vel alibi premes) ut serves. Si deles, apparet',
     'zh-TW': '（或點擊其他地方）儲存。清除後會顯示',
-    id:      '(atau klik di tempat lain) untuk simpan. Menghapusnya akan menampilkan',
-    jv:      '(utawa klik neng ngendi wae) kanggo nyimpen. Yen dihapus, katon',
+    id: '(atau klik di tempat lain) untuk simpan. Menghapusnya akan menampilkan',
+    jv: '(utawa klik neng ngendi wae) kanggo nyimpen. Yen dihapus, katon',
   },
   'placeholder you can click to set a new value. Press': {
-    la:      'indicem qui premi potest ad valorem novum ponendum. Premes',
+    la: 'indicem qui premi potest ad valorem novum ponendum. Premes',
     'zh-TW': '佔位符，點擊可設定新值。按',
-    id:      'placeholder yang bisa diklik untuk set nilai baru. Tekan',
-    jv:      'placeholder sing iso diklik kanggo nyetel nilai anyar. Pencet',
+    id: 'placeholder yang bisa diklik untuk set nilai baru. Tekan',
+    jv: 'placeholder sing iso diklik kanggo nyetel nilai anyar. Pencet',
   },
   'Edit time signature': {
-    la:      'Emendare Modum Temporis',
+    la: 'Emendare Modum Temporis',
     'zh-TW': '編輯拍號',
-    id:      'Edit Tanda Birama',
-    jv:      'Edit Tanda Birama',
+    id: 'Edit Tanda Birama',
+    jv: 'Edit Tanda Birama',
   },
   'click the time signature chip (e.g.': {
-    la:      'premes pagellam modi temporis (e.g.',
+    la: 'premes pagellam modi temporis (e.g.',
     'zh-TW': '點擊拍號標籤（例如',
-    id:      'klik chip tanda birama (mis.',
-    jv:      'klik chip tanda birama (tuladha',
+    id: 'klik chip tanda birama (mis.',
+    jv: 'klik chip tanda birama (tuladha',
   },
   'next to the BPM chip, type a new signature such as': {
-    la:      'proxima pagellae BPM, inscribe signaturam novam ut',
+    la: 'proxima pagellae BPM, inscribe signaturam novam ut',
     'zh-TW': '）在 BPM 標籤旁，輸入新的拍號如',
-    id:      ') di samping chip BPM, ketik tanda birama baru seperti',
-    jv:      ') ing jejere chip BPM, ketik tanda birama anyar kaya',
+    id: ') di samping chip BPM, ketik tanda birama baru seperti',
+    jv: ') ing jejere chip BPM, ketik tanda birama anyar kaya',
   },
   ', then press': {
-    la:      ', deinde premes',
+    la: ', deinde premes',
     'zh-TW': '，然後按',
-    id:      ', lalu tekan',
-    jv:      ', banjur pencet',
+    id: ', lalu tekan',
+    jv: ', banjur pencet',
   },
   'to save. An invalid entry reverts to the previous value. Press': {
-    la:      'ut serves. Inscriptio invalida ad valorem priorem revertitur. Premes',
+    la: 'ut serves. Inscriptio invalida ad valorem priorem revertitur. Premes',
     'zh-TW': '儲存。無效的輸入會還原為先前的值。按',
-    id:      'untuk simpan. Tanda birama yang tidak valid akan kembali ke nilai sebelumnya. Tekan',
-    jv:      'kanggo nyimpen. Input sing ora valid bakal bali menyang nilai sadurunge. Pencet',
+    id: 'untuk simpan. Tanda birama yang tidak valid akan kembali ke nilai sebelumnya. Tekan',
+    jv: 'kanggo nyimpen. Input sing ora valid bakal bali menyang nilai sadurunge. Pencet',
   },
   'AUTOSCROLL control': {
-    la:      'Moderamen Auto-Volutionis',
+    la: 'Moderamen Auto-Volutionis',
     'zh-TW': '自動捲動控制',
-    id:      'Kontrol Gulir Otomatis',
-    jv:      'Kontrol Gulung Otomatis',
+    id: 'Kontrol Gulir Otomatis',
+    jv: 'Kontrol Gulung Otomatis',
   },
   'button to turn scrolling on or off. When on, a speed stepper appears: use the': {
-    la:      'ad volutionem activandam vel deactivandam. Cum activa, gradus celeritatis apparet: utere',
+    la: 'ad volutionem activandam vel deactivandam. Cum activa, gradus celeritatis apparet: utere',
     'zh-TW': '按鈕來開啟或關閉捲動。開啟後會出現速度調整器：使用',
-    id:      'untuk menyalakan atau mematikan gulir. Saat menyala, penyetel kecepatan muncul: gunakan',
-    jv:      'kanggo nguripake utawa mateni gulung. Nalika urip, panyetel kecepatan katon: gunakke',
+    id: 'untuk menyalakan atau mematikan gulir. Saat menyala, penyetel kecepatan muncul: gunakan',
+    jv: 'kanggo nguripake utawa mateni gulung. Nalika urip, panyetel kecepatan katon: gunakke',
   },
-  'buttons, or type a number directly into the box (0–30). Speed starts off every time — it\'s not saved between songs or sessions.': {
-    la:      'clavibus, vel numerum directe in arcula scribe (0–30). Celeritas semper deactivata incipit — inter cantus vel sessiones non servatur.',
-    'zh-TW': '按鈕，或直接在方框中輸入數字（0–30）。速度每次都從關閉開始 — 不會在歌曲或工作階段之間儲存。',
-    id:      'tombol, atau ketik angka langsung di kotak (0–30). Kecepatan selalu mati setiap saat — tidak disimpan antar lagu atau sesi.',
-    jv:      'tombol, utawa ketik angka langsung ing kothak (0–30). Kecepatan tansah mati saben wektu — ora disimpen antarane lagu utawa sesi.',
-  },
+  "buttons, or type a number directly into the box (0–30). Speed starts off every time — it's not saved between songs or sessions.":
+    {
+      la: 'clavibus, vel numerum directe in arcula scribe (0–30). Celeritas semper deactivata incipit — inter cantus vel sessiones non servatur.',
+      'zh-TW':
+        '按鈕，或直接在方框中輸入數字（0–30）。速度每次都從關閉開始 — 不會在歌曲或工作階段之間儲存。',
+      id: 'tombol, atau ketik angka langsung di kotak (0–30). Kecepatan selalu mati setiap saat — tidak disimpan antar lagu atau sesi.',
+      jv: 'tombol, utawa ketik angka langsung ing kothak (0–30). Kecepatan tansah mati saben wektu — ora disimpen antarane lagu utawa sesi.',
+    },
   'METRONOME control': {
-    la:      'Moderamen Metronomi',
+    la: 'Moderamen Metronomi',
     'zh-TW': '節拍器控制',
-    id:      'Kontrol Metronom',
-    jv:      'Kontrol Metronom',
+    id: 'Kontrol Metronom',
+    jv: 'Kontrol Metronom',
   },
   'in the toolbar, click the': {
-    la:      'in barra instrumentorum, preme',
+    la: 'in barra instrumentorum, preme',
     'zh-TW': '在工具列中，點擊',
-    id:      'di toolbar, klik',
-    jv:      'ing toolbar, klik',
+    id: 'di toolbar, klik',
+    jv: 'ing toolbar, klik',
   },
-  'icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song\'s BPM info (or 80 if the song has none). Use the': {
-    la:      'iconem ad metronomum activandum vel deactivandum. Cum activus, gradus BPM iuxta apparet, ex informatione BPM cantus praedefinitus (vel 80 si cantus eam non habet). Utere',
-    'zh-TW': '圖示來開啟或關閉節拍器。開啟後，旁邊會顯示 BPM 調整器，預設值取自歌曲的 BPM 資訊（若無則為 80）。使用',
-    id:      'ikon untuk menyalakan atau mematikan metronom. Saat menyala, penyetel BPM muncul di sampingnya, dengan nilai awal dari info BPM lagu (atau 80 jika lagu tidak memilikinya). Gunakan',
-    jv:      'ikon kanggo nguripake utawa mateni metronom. Nalika urip, panyetel BPM katon ing sandhinge, kanthi nilai awal saka info BPM lagu (utawa 80 yen lagu ora duwe). Gunakke',
-  },
-  'buttons, or type a number directly into the box, to adjust it (30–300). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.': {
-    la:      'clavibus, vel numerum directe in arcula scribe, ad id moderandum (30–300). Metronomum automatice deactivatur cum cantum mutas vel paginam reficis, et semper BPM cantus iterum legit cum proximo activatur.',
-    'zh-TW': '按鈕，或直接在方框中輸入數字來調整（30–300）。當你切換歌曲或重新整理頁面時，節拍器會自動關閉，並在下次開啟時重新讀取歌曲的 BPM。',
-    id:      'tombol, atau ketik angka langsung di kotak, untuk menyesuaikannya (30–300). Metronom otomatis mati saat kamu berpindah lagu atau memuat ulang halaman, dan selalu membaca ulang BPM lagu saat kamu menyalakannya lagi.',
-    jv:      'tombol, utawa ketik angka langsung ing kothak, kanggo nyetel (30–300). Metronom otomatis mati nalika kowe pindhah lagu utawa muat ulang kaca, lan tansah maca maneh BPM lagu nalika kowe nguripake maneh.',
-  },
-  'Annotations': {
-    la:      'Annotationes',
+  "icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song's BPM info (or 80 if the song has none). Use the":
+    {
+      la: 'iconem ad metronomum activandum vel deactivandum. Cum activus, gradus BPM iuxta apparet, ex informatione BPM cantus praedefinitus (vel 80 si cantus eam non habet). Utere',
+      'zh-TW':
+        '圖示來開啟或關閉節拍器。開啟後，旁邊會顯示 BPM 調整器，預設值取自歌曲的 BPM 資訊（若無則為 80）。使用',
+      id: 'ikon untuk menyalakan atau mematikan metronom. Saat menyala, penyetel BPM muncul di sampingnya, dengan nilai awal dari info BPM lagu (atau 80 jika lagu tidak memilikinya). Gunakan',
+      jv: 'ikon kanggo nguripake utawa mateni metronom. Nalika urip, panyetel BPM katon ing sandhinge, kanthi nilai awal saka info BPM lagu (utawa 80 yen lagu ora duwe). Gunakke',
+    },
+  "buttons, or type a number directly into the box, to adjust it (30–300). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song's BPM the next time you turn it on.":
+    {
+      la: 'clavibus, vel numerum directe in arcula scribe, ad id moderandum (30–300). Metronomum automatice deactivatur cum cantum mutas vel paginam reficis, et semper BPM cantus iterum legit cum proximo activatur.',
+      'zh-TW':
+        '按鈕，或直接在方框中輸入數字來調整（30–300）。當你切換歌曲或重新整理頁面時，節拍器會自動關閉，並在下次開啟時重新讀取歌曲的 BPM。',
+      id: 'tombol, atau ketik angka langsung di kotak, untuk menyesuaikannya (30–300). Metronom otomatis mati saat kamu berpindah lagu atau memuat ulang halaman, dan selalu membaca ulang BPM lagu saat kamu menyalakannya lagi.',
+      jv: 'tombol, utawa ketik angka langsung ing kothak, kanggo nyetel (30–300). Metronom otomatis mati nalika kowe pindhah lagu utawa muat ulang kaca, lan tansah maca maneh BPM lagu nalika kowe nguripake maneh.',
+    },
+  Annotations: {
+    la: 'Annotationes',
     'zh-TW': '標記',
-    id:      'Anotasi',
-    jv:      'Anotasi',
+    id: 'Anotasi',
+    jv: 'Anotasi',
   },
   'Add a note': {
-    la:      'Addere Notam',
+    la: 'Addere Notam',
     'zh-TW': '新增標記',
-    id:      'Tambah Catatan',
-    jv:      'Nambah Cathetan',
+    id: 'Tambah Catatan',
+    jv: 'Nambah Cathetan',
   },
   'on a lyric line with no annotation, hover it and click': {
-    la:      'in linea verborum sine annotatione, sustine super eam et premes',
+    la: 'in linea verborum sine annotatione, sustine super eam et premes',
     'zh-TW': '在沒有標記的歌詞行上，懸停並點擊',
-    id:      'pada baris lirik tanpa anotasi, arahkan kursor dan klik',
-    jv:      'ing baris lirik tanpa anotasi, arahke kursor lan klik',
+    id: 'pada baris lirik tanpa anotasi, arahkan kursor dan klik',
+    jv: 'ing baris lirik tanpa anotasi, arahke kursor lan klik',
   },
   ', type a direction note or bar notation (e.g.': {
-    la:      ', inscribe notam directionis vel notationem barrarum (e.g.',
+    la: ', inscribe notam directionis vel notationem barrarum (e.g.',
     'zh-TW': '，輸入方向標記或小節符號（例如',
-    id:      ', ketik catatan arah atau notasi bar (mis.',
-    jv:      ', ketik cathetan arah utawa notasi bar (tuladha',
+    id: ', ketik catatan arah atau notasi bar (mis.',
+    jv: ', ketik cathetan arah utawa notasi bar (tuladha',
   },
   '), then press': {
-    la:      '), deinde premes',
+    la: '), deinde premes',
     'zh-TW': '），然後按',
-    id:      '), lalu tekan',
-    jv:      '), banjur pencet',
+    id: '), lalu tekan',
+    jv: '), banjur pencet',
   },
   'to save.': {
-    la:      'ut serves.',
+    la: 'ut serves.',
     'zh-TW': '儲存。',
-    id:      'untuk simpan.',
-    jv:      'kanggo nyimpen.',
+    id: 'untuk simpan.',
+    jv: 'kanggo nyimpen.',
   },
   'Edit a note': {
-    la:      'Emendare Notam',
+    la: 'Emendare Notam',
     'zh-TW': '編輯標記',
-    id:      'Edit Catatan',
-    jv:      'Edit Cathetan',
+    id: 'Edit Catatan',
+    jv: 'Edit Cathetan',
   },
   'click an existing annotation to edit it in place.': {
-    la:      'premes annotationem existentem ut eam in situ edas.',
+    la: 'premes annotationem existentem ut eam in situ edas.',
     'zh-TW': '點擊現有標記即可就地編輯。',
-    id:      'klik anotasi yang ada untuk edit langsung di tempat.',
-    jv:      'klik anotasi sing wis ana kanggo ngedit ing kono.',
+    id: 'klik anotasi yang ada untuk edit langsung di tempat.',
+    jv: 'klik anotasi sing wis ana kanggo ngedit ing kono.',
   },
   'Remove a note': {
-    la:      'Removere Notam',
+    la: 'Removere Notam',
     'zh-TW': '移除標記',
-    id:      'Hapus Catatan',
-    jv:      'Mbusak Cathetan',
+    id: 'Hapus Catatan',
+    jv: 'Mbusak Cathetan',
   },
   'while editing, click the': {
-    la:      'dum edis, premes',
+    la: 'dum edis, premes',
     'zh-TW': '編輯時，點擊',
-    id:      'saat mengedit, klik',
-    jv:      'nalika ngedit, klik',
+    id: 'saat mengedit, klik',
+    jv: 'nalika ngedit, klik',
   },
   'next to the annotation input.': {
-    la:      'proxima campo annotationis.',
+    la: 'proxima campo annotationis.',
     'zh-TW': '標記輸入欄旁的按鈕。',
-    id:      'di samping input anotasi.',
-    jv:      'ing jejere input anotasi.',
+    id: 'di samping input anotasi.',
+    jv: 'ing jejere input anotasi.',
   },
   'Annotations are stored untransposed and transposed only for display, so bar notation like': {
-    la:      'Annotationes sine transpositione servantur et solum ad ostendendum transponuntur, ita notatio barrarum ut',
+    la: 'Annotationes sine transpositione servantur et solum ad ostendendum transponuntur, ita notatio barrarum ut',
     'zh-TW': '標記以原始調性儲存，僅在顯示時移調，所以小節符號如',
-    id:      'Anotasi disimpan tanpa transpose dan hanya di-transpose untuk tampilan, jadi notasi bar seperti',
-    jv:      'Anotasi disimpen tanpa transpose lan mung ditranspose kanggo tampilan, dadi notasi bar kaya',
+    id: 'Anotasi disimpan tanpa transpose dan hanya di-transpose untuk tampilan, jadi notasi bar seperti',
+    jv: 'Anotasi disimpen tanpa transpose lan mung ditranspose kanggo tampilan, dadi notasi bar kaya',
   },
   'stays correct no matter how many times you transpose the song.': {
-    la:      'semper recta manet quotcumque vicibus cantum transponis.',
+    la: 'semper recta manet quotcumque vicibus cantum transponis.',
     'zh-TW': '不管你移調幾次都會保持正確。',
-    id:      'tetap benar berapa kali pun kamu transpose lagunya.',
-    jv:      'tetep bener sak pirang-pirange kowe transpose lagune, nak.',
+    id: 'tetap benar berapa kali pun kamu transpose lagunya.',
+    jv: 'tetep bener sak pirang-pirange kowe transpose lagune, nak.',
   },
 
   // ── §4 Working with sections ──
   'Add a section': {
-    la:      'Addere Sectionem',
+    la: 'Addere Sectionem',
     'zh-TW': '新增段落',
-    id:      'Tambah Bagian',
-    jv:      'Nambah Bagian',
+    id: 'Tambah Bagian',
+    jv: 'Nambah Bagian',
   },
-  'below the song, use the quick-pick buttons (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) or type a custom name and click': {
-    la:      'sub cantu, adhibere papiliones veloces (INTRO, VERSUS, CHORUS, PRE-CHORUS, PONS, OUTRO, TAG) vel inscribere nomen proprium et premere',
-    'zh-TW': '在歌曲下方，使用快速選取按鈕（INTRO、VERSE、CHORUS、PRE-CHORUS、BRIDGE、OUTRO、TAG），或輸入自訂名稱並點擊',
-    id:      'di bawah lagu, pakai tombol cepat (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) atau ketik nama khusus dan klik',
-    jv:      'ing ngisor lagu, nggunakake tombol cepet (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) utawa ketik jeneng dhewe lan klik',
-  },
+  'below the song, use the quick-pick buttons (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) or type a custom name and click':
+    {
+      la: 'sub cantu, adhibere papiliones veloces (INTRO, VERSUS, CHORUS, PRE-CHORUS, PONS, OUTRO, TAG) vel inscribere nomen proprium et premere',
+      'zh-TW':
+        '在歌曲下方，使用快速選取按鈕（INTRO、VERSE、CHORUS、PRE-CHORUS、BRIDGE、OUTRO、TAG），或輸入自訂名稱並點擊',
+      id: 'di bawah lagu, pakai tombol cepat (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) atau ketik nama khusus dan klik',
+      jv: 'ing ngisor lagu, nggunakake tombol cepet (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) utawa ketik jeneng dhewe lan klik',
+    },
   '/ press': {
-    la:      '/ premes',
+    la: '/ premes',
     'zh-TW': '/ 按',
-    id:      '/ tekan',
-    jv:      '/ pencet',
+    id: '/ tekan',
+    jv: '/ pencet',
   },
   'Reorder sections': {
-    la:      'Sectiones Reordinare',
+    la: 'Sectiones Reordinare',
     'zh-TW': '重新排序段落',
-    id:      'Ubah Urutan Bagian',
-    jv:      'Ngurutake Maneh Bagian',
+    id: 'Ubah Urutan Bagian',
+    jv: 'Ngurutake Maneh Bagian',
   },
-  'drag handle in a section\'s header and drop it where you want it.': {
-    la:      'sigillum trahendi in capite sectionis et depone ubi vis.',
+  "drag handle in a section's header and drop it where you want it.": {
+    la: 'sigillum trahendi in capite sectionis et depone ubi vis.',
     'zh-TW': '段落標題中的拖動把手，放到你想要的位置。',
-    id:      'drag handle di header bagian dan taruh di tempat yang kamu mau.',
-    jv:      'drag handle ing header bagian lan seleh ing panggonan sing kok karepake.',
+    id: 'drag handle di header bagian dan taruh di tempat yang kamu mau.',
+    jv: 'drag handle ing header bagian lan seleh ing panggonan sing kok karepake.',
   },
   'grab the': {
-    la:      'cape',
+    la: 'cape',
     'zh-TW': '抓住',
-    id:      'pegang',
-    jv:      'cekel',
+    id: 'pegang',
+    jv: 'cekel',
   },
   'Remove a section': {
-    la:      'Removere Sectionem',
+    la: 'Removere Sectionem',
     'zh-TW': '移除段落',
-    id:      'Hapus Bagian',
-    jv:      'Mbusak Bagian',
+    id: 'Hapus Bagian',
+    jv: 'Mbusak Bagian',
   },
   'click the': {
-    la:      'premes',
+    la: 'premes',
     'zh-TW': '點擊',
-    id:      'klik',
-    jv:      'klik',
+    id: 'klik',
+    jv: 'klik',
   },
   'button in the section header.': {
-    la:      'papilionem in capite sectionis.',
+    la: 'papilionem in capite sectionis.',
     'zh-TW': '段落標題中的按鈕。',
-    id:      'tombol di header bagian.',
-    jv:      'tombol ing header bagian.',
+    id: 'tombol di header bagian.',
+    jv: 'tombol ing header bagian.',
   },
 
   // ── §5 Keys & transposition ──
   'Step transpose': {
-    la:      'Transpositio Gradatim',
+    la: 'Transpositio Gradatim',
     'zh-TW': '半音移調',
-    id:      'Transpose Bertahap',
-    jv:      'Transpose Setengah Nada',
+    id: 'Transpose Bertahap',
+    jv: 'Transpose Setengah Nada',
   },
-  'buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.': {
-    la:      'papiliones iuxta ostentationem clavis ut totum cantum sursum vel deorsum per semitonum moveant. Omnis chorda in pagina statim renovatur. Mirabile!',
-    'zh-TW': '調性顯示旁的按鈕，每次上移或下移整首歌一個半音。頁面上所有和弦即時更新！',
-    id:      'tombol di samping tampilan kunci untuk naik/turun satu semitone sekaligus. Semua chord di halaman auto-update, secepat kilat!',
-    jv:      'tombol ing jejere tampilan kunci kanggo munggah utawa mudhun siji semitone. Kabeh chord ing kaca langsung dianyari, cepet kaya kilat, nak.',
-  },
+  'buttons next to the key display to move the whole song up or down one semitone at a time. Every chord on the page updates instantly.':
+    {
+      la: 'papiliones iuxta ostentationem clavis ut totum cantum sursum vel deorsum per semitonum moveant. Omnis chorda in pagina statim renovatur. Mirabile!',
+      'zh-TW': '調性顯示旁的按鈕，每次上移或下移整首歌一個半音。頁面上所有和弦即時更新！',
+      id: 'tombol di samping tampilan kunci untuk naik/turun satu semitone sekaligus. Semua chord di halaman auto-update, secepat kilat!',
+      jv: 'tombol ing jejere tampilan kunci kanggo munggah utawa mudhun siji semitone. Kabeh chord ing kaca langsung dianyari, cepet kaya kilat, nak.',
+    },
   'Jump to a key': {
-    la:      'Saltire ad Clavem',
+    la: 'Saltire ad Clavem',
     'zh-TW': '跳至調性',
-    id:      'Langsung ke Kunci',
-    jv:      'Loncat menyang Kunci',
+    id: 'Langsung ke Kunci',
+    jv: 'Loncat menyang Kunci',
   },
   'pick any key directly from the': {
-    la:      'eligere quamlibet clavem directe e',
+    la: 'eligere quamlibet clavem directe e',
     'zh-TW': '直接從',
-    id:      'pilih kunci langsung dari',
-    jv:      'pilih kunci langsung saka',
+    id: 'pilih kunci langsung dari',
+    jv: 'pilih kunci langsung saka',
   },
   'dropdown. The list uses your current Accidentals preference (see §10).': {
-    la:      'menu cadente. Lista adhibet praeferentiam Accidentalium tuam currentem (vide §10).',
+    la: 'menu cadente. Lista adhibet praeferentiam Accidentalium tuam currentem (vide §10).',
     'zh-TW': '下拉選單直接選任何調性。列表使用你目前的升降記號偏好（見第 10 節）。',
-    id:      'dropdown. Daftarnya pakai preferensi Akidental kamu saat ini (lihat §10).',
-    jv:      'dropdown. Dhaftare nggunakake preferensi Akidental-mu saiki (delok §10).',
+    id: 'dropdown. Daftarnya pakai preferensi Akidental kamu saat ini (lihat §10).',
+    jv: 'dropdown. Dhaftare nggunakake preferensi Akidental-mu saiki (delok §10).',
   },
-  'once you\'ve transposed, a': {
-    la:      'postquam transposuisti,',
+  "once you've transposed, a": {
+    la: 'postquam transposuisti,',
     'zh-TW': '移調後，',
-    id:      'setelah transpose,',
-    jv:      'sawise transpose,',
+    id: 'setelah transpose,',
+    jv: 'sawise transpose,',
   },
   'button appears showing the original key; click it to snap straight back.': {
-    la:      'papilio apparet ostendens clavem originalem; premes eum ut statim revertaris.',
+    la: 'papilio apparet ostendens clavem originalem; premes eum ut statim revertaris.',
     'zh-TW': '按鈕出現並顯示原始調性；點擊即可立即還原。',
-    id:      'tombol muncul menampilkan kunci asli; klik untuk langsung balik ke semula.',
-    jv:      'tombol katon nampilake kunci asli; klik kanggo langsung bali.',
+    id: 'tombol muncul menampilkan kunci asli; klik untuk langsung balik ke semula.',
+    jv: 'tombol katon nampilake kunci asli; klik kanggo langsung bali.',
   },
   'Whenever the song is transposed, a banner above the chart confirms the change, e.g.': {
-    la:      'Quotienscumque cantus transponitur, taenia supra tabulam mutationem confirmat, e.g.',
+    la: 'Quotienscumque cantus transponitur, taenia supra tabulam mutationem confirmat, e.g.',
     'zh-TW': '每次移調時，和弦圖上方的橫幅會確認變更，例如',
-    id:      'Setiap kali lagu ditranspose, banner di atas chart mengonfirmasi perubahannya, mis.',
-    jv:      'Saben kali lagu ditranspose, banner ing ndhuwur chart ngonfirmasi owahane, tuladha',
+    id: 'Setiap kali lagu ditranspose, banner di atas chart mengonfirmasi perubahannya, mis.',
+    jv: 'Saben kali lagu ditranspose, banner ing ndhuwur chart ngonfirmasi owahane, tuladha',
   },
   'Transposed from G → A (+2 semitones)': {
-    la:      'Transpositum e G → A (+2 semitoni)',
+    la: 'Transpositum e G → A (+2 semitoni)',
     'zh-TW': '從 G 移調至 A（+2 個半音）',
-    id:      'Ditranspose dari G → A (+2 semitone)',
-    jv:      'Ditranspose saka G → A (+2 semitone)',
+    id: 'Ditranspose dari G → A (+2 semitone)',
+    jv: 'Ditranspose saka G → A (+2 semitone)',
   },
 
   // ── §6 Bass notes & Nashville numbers ──
   'toggles every chord down to just its root/bass note (e.g.': {
-    la:      'omnes chordas ad solam notam radicem/bassi commutat (e.g.',
+    la: 'omnes chordas ad solam notam radicem/bassi commutat (e.g.',
     'zh-TW': '將每個和弦切換為僅顯示根音/低音（例如',
-    id:      'toggle setiap chord ke not bass/root-nya saja (mis.',
-    jv:      'ngowahi saben chord dadi mung not bass/root-ne wae (tuladha',
+    id: 'toggle setiap chord ke not bass/root-nya saja (mis.',
+    jv: 'ngowahi saben chord dadi mung not bass/root-ne wae (tuladha',
   },
   '). Handy for simplified or beginner charts.': {
-    la:      '). Utile pro tabulis simplicioribus vel pro initiis. Optima!',
+    la: '). Utile pro tabulis simplicioribus vel pro initiis. Optima!',
     'zh-TW': '）。非常適合簡化版或初學者使用！',
-    id:      '). Cocok banget untuk chart yang disederhanakan atau pemula, dijamin gak pusing!',
-    jv:      '). Migunani banget kanggo chart sing disederhanakake utawa kanggo pemula, ora usah bingung.',
+    id: '). Cocok banget untuk chart yang disederhanakan atau pemula, dijamin gak pusing!',
+    jv: '). Migunani banget kanggo chart sing disederhanakake utawa kanggo pemula, ora usah bingung.',
   },
-  'converts every chord to a scale-degree number (1–7, with ♭/♯ prefixes for accidentals), relative to the song\'s current key. Useful for ear-trained players and key-independent charts.': {
-    la:      'omnes chordas ad numerum gradus scalae (1–7, cum praefixis ♭/♯ pro accidentalibus), relative ad clavem cantus currentem, convertit. Utile pro musicis auribus exercitatis et tabulis a clave independentibus.',
-    'zh-TW': '將每個和弦轉換為音階度數數字（1–7，升降記號加前綴），相對於歌曲目前調性。對受過音感訓練的演奏者和不依賴調性的樂譜非常有用！',
-    id:      'mengubah setiap chord ke nomor skala (1–7, dengan awalan ♭/♯), relatif ke kunci lagu saat ini. Berguna untuk pemain yang terlatih telinga dan chart yang bebas kunci!',
-    jv:      'ngowahi saben chord dadi nomor skala (1–7, kanthi awalan ♭/♯), relatif marang kunci lagu saiki. Migunani kanggo pemain sing wis terlatih kuping lan chart sing bebas kunci.',
-  },
+  "converts every chord to a scale-degree number (1–7, with ♭/♯ prefixes for accidentals), relative to the song's current key. Useful for ear-trained players and key-independent charts.":
+    {
+      la: 'omnes chordas ad numerum gradus scalae (1–7, cum praefixis ♭/♯ pro accidentalibus), relative ad clavem cantus currentem, convertit. Utile pro musicis auribus exercitatis et tabulis a clave independentibus.',
+      'zh-TW':
+        '將每個和弦轉換為音階度數數字（1–7，升降記號加前綴），相對於歌曲目前調性。對受過音感訓練的演奏者和不依賴調性的樂譜非常有用！',
+      id: 'mengubah setiap chord ke nomor skala (1–7, dengan awalan ♭/♯), relatif ke kunci lagu saat ini. Berguna untuk pemain yang terlatih telinga dan chart yang bebas kunci!',
+      jv: 'ngowahi saben chord dadi nomor skala (1–7, kanthi awalan ♭/♯), relatif marang kunci lagu saiki. Migunani kanggo pemain sing wis terlatih kuping lan chart sing bebas kunci.',
+    },
   'Both toggles can be combined with transposition, and both are respected by every export.': {
-    la:      'Ambo commutamina cum transpositione combinari possunt, et ambo in omni exportatione respiciuntur.',
+    la: 'Ambo commutamina cum transpositione combinari possunt, et ambo in omni exportatione respiciuntur.',
     'zh-TW': '這兩個切換可以與移調結合使用，且所有匯出都會遵循這些設定。',
-    id:      'Kedua toggle bisa dikombinasikan dengan transposisi, dan keduanya berlaku di semua ekspor.',
-    jv:      'Loro-lorone toggle iso digabungake karo transposisi, lan loro-lorone dihormati ing saben ekspor.',
+    id: 'Kedua toggle bisa dikombinasikan dengan transposisi, dan keduanya berlaku di semua ekspor.',
+    jv: 'Loro-lorone toggle iso digabungake karo transposisi, lan loro-lorone dihormati ing saben ekspor.',
   },
 
   // ── §7 Undo & redo ──
-  'Every edit — chord changes, lyric edits, section moves, additions and removals — can be undone.': {
-    la:      'Omnis emendatio — mutationes chordarum, emendationes verborum, motus sectionum, additiones et remota — rescindi potest. Noli timere errare!',
-    'zh-TW': '每個編輯——和弦更改、歌詞編輯、段落移動、新增和刪除——都可以撤銷。大膽做，後悔了就按撤銷！',
-    id:      'Setiap edit — perubahan chord, edit lirik, pindah bagian, tambah dan hapus — bisa dibatalkan. Gak perlu takut salah!',
-    jv:      'Saben edit — owahane chord, ngedit lirik, mindah bagian, nambah lan mbusak — iso dibatalake. Ora usah wedi salah, nak!',
-  },
+  'Every edit — chord changes, lyric edits, section moves, additions and removals — can be undone.':
+    {
+      la: 'Omnis emendatio — mutationes chordarum, emendationes verborum, motus sectionum, additiones et remota — rescindi potest. Noli timere errare!',
+      'zh-TW':
+        '每個編輯——和弦更改、歌詞編輯、段落移動、新增和刪除——都可以撤銷。大膽做，後悔了就按撤銷！',
+      id: 'Setiap edit — perubahan chord, edit lirik, pindah bagian, tambah dan hapus — bisa dibatalkan. Gak perlu takut salah!',
+      jv: 'Saben edit — owahane chord, ngedit lirik, mindah bagian, nambah lan mbusak — iso dibatalake. Ora usah wedi salah, nak!',
+    },
   'Use the': {
-    la:      'Adhibere',
+    la: 'Adhibere',
     'zh-TW': '使用',
-    id:      'Gunakan',
-    jv:      'Nggunakake',
+    id: 'Gunakan',
+    jv: 'Nggunakake',
   },
   'buttons in the toolbar.': {
-    la:      'papiliones in barra instrumentorum.',
+    la: 'papiliones in barra instrumentorum.',
     'zh-TW': '工具列中的按鈕。',
-    id:      'tombol di toolbar.',
-    jv:      'tombol ing toolbar.',
+    id: 'tombol di toolbar.',
+    jv: 'tombol ing toolbar.',
   },
   'Or use the keyboard:': {
-    la:      'Vel adhibere claviarium:',
+    la: 'Vel adhibere claviarium:',
     'zh-TW': '或使用鍵盤：',
-    id:      'Atau pakai keyboard:',
-    jv:      'Utawa nggunakake keyboard:',
+    id: 'Atau pakai keyboard:',
+    jv: 'Utawa nggunakake keyboard:',
   },
   'to undo,': {
-    la:      'ut rescindas,',
+    la: 'ut rescindas,',
     'zh-TW': '撤銷，',
-    id:      'untuk batalkan,',
-    jv:      'kanggo mbatalake,',
+    id: 'untuk batalkan,',
+    jv: 'kanggo mbatalake,',
   },
   'to redo.': {
-    la:      'ut refacias.',
+    la: 'ut refacias.',
     'zh-TW': '取消撤銷。',
-    id:      'untuk ulangi.',
-    jv:      'kanggo mbaleni.',
+    id: 'untuk ulangi.',
+    jv: 'kanggo mbaleni.',
   },
   'History holds up to 50 steps per editing session, and is cleared whenever you load a new PDF.': {
-    la:      'Historia tenet usque ad 50 gradus per sessionem editionis, et expungitur quotienscumque novum PDF oneras.',
+    la: 'Historia tenet usque ad 50 gradus per sessionem editionis, et expungitur quotienscumque novum PDF oneras.',
     'zh-TW': '歷史記錄最多保留每次編輯工作階段的 50 個步驟，每次載入新 PDF 時會清除。',
-    id:      'Riwayat menyimpan hingga 50 langkah per sesi editing, dan dihapus setiap kali kamu load PDF baru.',
-    jv:      'Riwayat nyimpen nganti 50 langkah saben sesi ngedit, lan dihapus saben kowe muat PDF anyar.',
+    id: 'Riwayat menyimpan hingga 50 langkah per sesi editing, dan dihapus setiap kali kamu load PDF baru.',
+    jv: 'Riwayat nyimpen nganti 50 langkah saben sesi ngedit, lan dihapus saben kowe muat PDF anyar.',
   },
 
   // ── §8 Exporting & sharing ──
   'Click the': {
-    la:      'Premes',
+    la: 'Premes',
     'zh-TW': '點擊',
-    id:      'Klik',
-    jv:      'Klik',
+    id: 'Klik',
+    jv: 'Klik',
   },
   'button in the app header to open the export panel. Four options are available:': {
-    la:      'papilionem in capite applicationis ut tabulam exportationis aperias. Quattuor optiones adsunt:',
+    la: 'papilionem in capite applicationis ut tabulam exportationis aperias. Quattuor optiones adsunt:',
     'zh-TW': 'App 標題中的按鈕開啟匯出面板。有四個選項：',
-    id:      'di header app untuk buka panel ekspor. Ada empat pilihan:',
-    jv:      'ing header app kanggo mbukak panel ekspor. Ana papat pilihan:',
+    id: 'di header app untuk buka panel ekspor. Ada empat pilihan:',
+    jv: 'ing header app kanggo mbukak panel ekspor. Ana papat pilihan:',
   },
-  'exports every song as its own PDF file, bundled together in a single .zip download — handy when each musician just needs their own song.': {
-    la:      'exportat quemque cantum ut fasciculum PDF proprium, in uno .zip coniunctos — utile cum quisque musicus solum cantum suum eget.',
-    'zh-TW': '將每首歌各自匯出為一個 PDF 檔，打包成單一 .zip 下載——當每位樂手只需要自己那首歌時很方便。',
-    id:      'ekspor tiap lagu jadi file PDF sendiri, digabung dalam satu unduhan .zip — praktis kalau tiap pemusik cuma butuh lagunya sendiri.',
-    jv:      'ngekspor saben lagu dadi file PDF dhewe, dibundel dadi siji undhuhan .zip — kepenak yen saben pemusik mung butuh lagune dhewe.',
-  },
+  'exports every song as its own PDF file, bundled together in a single .zip download — handy when each musician just needs their own song.':
+    {
+      la: 'exportat quemque cantum ut fasciculum PDF proprium, in uno .zip coniunctos — utile cum quisque musicus solum cantum suum eget.',
+      'zh-TW':
+        '將每首歌各自匯出為一個 PDF 檔，打包成單一 .zip 下載——當每位樂手只需要自己那首歌時很方便。',
+      id: 'ekspor tiap lagu jadi file PDF sendiri, digabung dalam satu unduhan .zip — praktis kalau tiap pemusik cuma butuh lagunya sendiri.',
+      jv: 'ngekspor saben lagu dadi file PDF dhewe, dibundel dadi siji undhuhan .zip — kepenak yen saben pemusik mung butuh lagune dhewe.',
+    },
 
   // ── §1 import from Ultimate Guitar ──
   'Importing from Ultimate Guitar': {
@@ -1679,648 +2038,696 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Mengimpor dari Ultimate Guitar',
     jv: 'Ngimpor saka Ultimate Guitar',
   },
-  'Besides PDFs, you can pull chord charts straight from ultimate-guitar.com. Click the 🔗 Import button in the app header — or the 🔗 Import from Ultimate Guitar option on the upload screen — then paste one or more links.': {
-    la: 'Praeter PDF, tabulas chordarum directe ex ultimate-guitar.com trahere potes. Preme bullam 🔗 Import in capite applicationis — vel optionem 🔗 Import from Ultimate Guitar in pagina onerationis — deinde unum vel plures nexus insere.',
-    'zh-TW': '除了 PDF，你也可以直接從 ultimate-guitar.com 抓取和弦圖。點擊 App 標題中的 🔗 Import 按鈕——或上傳畫面上的 🔗 從 Ultimate Guitar 匯入 選項——然後貼上一個或多個連結。',
-    id: 'Selain PDF, kamu bisa ambil chord chart langsung dari ultimate-guitar.com. Klik tombol 🔗 Import di header app — atau opsi 🔗 Impor dari Ultimate Guitar di layar unggah — lalu tempel satu atau beberapa tautan.',
-    jv: 'Kejaba PDF, kowe bisa njupuk chord chart langsung saka ultimate-guitar.com. Klik tombol 🔗 Import ing header app — utawa pilihan 🔗 Impor saka Ultimate Guitar ing layar unggah — banjur tempel siji utawa luwih tautan.',
-  },
-  'Paste a single chords-page URL, or a whole block of text — a set list, a chat message, an email — and WorshipToolkit pulls out every Ultimate Guitar link it finds.': {
-    la: 'Insere unum URL paginae chordarum, vel totum textum — indicem cantuum, nuntium colloquii, epistulam — et WorshipToolkit omnem nexum Ultimate Guitar quem invenit extrahit.',
-    'zh-TW': '貼上單一和弦頁面網址，或一整段文字——歌單、聊天訊息、電子郵件——WorshipToolkit 會擷取其中找到的每個 Ultimate Guitar 連結。',
-    id: 'Tempel satu URL halaman chord, atau seluruh blok teks — daftar lagu, pesan chat, email — dan WorshipToolkit akan mengambil setiap tautan Ultimate Guitar yang ditemukan.',
-    jv: 'Tempel siji URL kaca chord, utawa sakabehe teks — dhaptar lagu, pesen chat, email — lan WorshipToolkit bakal njupuk saben tautan Ultimate Guitar sing ketemu.',
-  },
-  'Links are imported one by one with a progress count. If a link fails, the rest still import and the failed ones stay listed so you can retry just those.': {
-    la: 'Nexus singillatim importantur cum numero progressus. Si nexus deficit, ceteri tamen importantur et deficientes in indice manent ut eos solos iterum conari possis.',
-    'zh-TW': '連結會逐一匯入並顯示進度。若某個連結失敗，其餘仍會匯入，失敗的會列出來讓你只重試那些。',
-    id: 'Tautan diimpor satu per satu dengan hitungan progres. Kalau ada tautan yang gagal, sisanya tetap diimpor dan yang gagal tetap terdaftar supaya bisa kamu coba lagi.',
-    jv: 'Tautan diimpor siji-siji karo etungan progres. Yen ana tautan sing gagal, liyane tetep mlebu lan sing gagal tetep kadhaptar supaya bisa dicoba maneh.',
-  },
+  'Besides PDFs, you can pull chord charts straight from ultimate-guitar.com. Click the 🔗 Import button in the app header — or the 🔗 Import from Ultimate Guitar option on the upload screen — then paste one or more links.':
+    {
+      la: 'Praeter PDF, tabulas chordarum directe ex ultimate-guitar.com trahere potes. Preme bullam 🔗 Import in capite applicationis — vel optionem 🔗 Import from Ultimate Guitar in pagina onerationis — deinde unum vel plures nexus insere.',
+      'zh-TW':
+        '除了 PDF，你也可以直接從 ultimate-guitar.com 抓取和弦圖。點擊 App 標題中的 🔗 Import 按鈕——或上傳畫面上的 🔗 從 Ultimate Guitar 匯入 選項——然後貼上一個或多個連結。',
+      id: 'Selain PDF, kamu bisa ambil chord chart langsung dari ultimate-guitar.com. Klik tombol 🔗 Import di header app — atau opsi 🔗 Impor dari Ultimate Guitar di layar unggah — lalu tempel satu atau beberapa tautan.',
+      jv: 'Kejaba PDF, kowe bisa njupuk chord chart langsung saka ultimate-guitar.com. Klik tombol 🔗 Import ing header app — utawa pilihan 🔗 Impor saka Ultimate Guitar ing layar unggah — banjur tempel siji utawa luwih tautan.',
+    },
+  'Paste a single chords-page URL, or a whole block of text — a set list, a chat message, an email — and WorshipToolkit pulls out every Ultimate Guitar link it finds.':
+    {
+      la: 'Insere unum URL paginae chordarum, vel totum textum — indicem cantuum, nuntium colloquii, epistulam — et WorshipToolkit omnem nexum Ultimate Guitar quem invenit extrahit.',
+      'zh-TW':
+        '貼上單一和弦頁面網址，或一整段文字——歌單、聊天訊息、電子郵件——WorshipToolkit 會擷取其中找到的每個 Ultimate Guitar 連結。',
+      id: 'Tempel satu URL halaman chord, atau seluruh blok teks — daftar lagu, pesan chat, email — dan WorshipToolkit akan mengambil setiap tautan Ultimate Guitar yang ditemukan.',
+      jv: 'Tempel siji URL kaca chord, utawa sakabehe teks — dhaptar lagu, pesen chat, email — lan WorshipToolkit bakal njupuk saben tautan Ultimate Guitar sing ketemu.',
+    },
+  'Links are imported one by one with a progress count. If a link fails, the rest still import and the failed ones stay listed so you can retry just those.':
+    {
+      la: 'Nexus singillatim importantur cum numero progressus. Si nexus deficit, ceteri tamen importantur et deficientes in indice manent ut eos solos iterum conari possis.',
+      'zh-TW':
+        '連結會逐一匯入並顯示進度。若某個連結失敗，其餘仍會匯入，失敗的會列出來讓你只重試那些。',
+      id: 'Tautan diimpor satu per satu dengan hitungan progres. Kalau ada tautan yang gagal, sisanya tetap diimpor dan yang gagal tetap terdaftar supaya bisa kamu coba lagi.',
+      jv: 'Tautan diimpor siji-siji karo etungan progres. Yen ana tautan sing gagal, liyane tetep mlebu lan sing gagal tetep kadhaptar supaya bisa dicoba maneh.',
+    },
   'Heads up:': { la: 'Cave:', 'zh-TW': '注意：', id: 'Perhatian:', jv: 'Elinga:' },
-  'Ultimate Guitar has no public API, so imports are relayed through free third-party proxies and can occasionally be blocked — if a link fails, wait a moment and try again. Only chords pages import cleanly; pure guitar-tab (fretboard) pages are not supported.': {
-    la: 'Ultimate Guitar API publicam non habet, ergo importationes per proxies gratuitos tertiae partis transmittuntur et interdum impediri possunt — si nexus deficit, paulisper exspecta et iterum conare. Solae paginae chordarum pure importantur; paginae solius tabulaturae (fretboard) non sustinentur.',
-    'zh-TW': 'Ultimate Guitar 沒有公開 API，因此匯入是透過免費的第三方代理轉送，偶爾可能被封鎖——若連結失敗，稍候再試一次。只有和弦頁面能正確匯入；純吉他 tab（指板）頁面不支援。',
-    id: 'Ultimate Guitar tidak punya API publik, jadi impor diteruskan lewat proxy pihak ketiga gratis dan kadang bisa diblokir — kalau tautan gagal, tunggu sebentar lalu coba lagi. Hanya halaman chord yang terimpor rapi; halaman tab gitar murni (fretboard) tidak didukung.',
-    jv: 'Ultimate Guitar ora duwe API umum, mula impor diterusake liwat proxy pihak katelu gratis lan kadhang bisa diblokir — yen tautan gagal, enteni sedhela banjur coba maneh. Mung kaca chord sing mlebu resik; kaca tab gitar murni (fretboard) ora didhukung.',
-  },
-  'the 🔗 button in the app header appends songs imported from Ultimate Guitar links to your current set, the same way + Import PDF does.': {
-    la: 'bulla 🔗 in capite applicationis cantus ex nexibus Ultimate Guitar importatos collectioni tuae currenti adiungit, eodem modo quo + Import PDF facit.',
-    'zh-TW': 'App 標題中的 🔗 按鈕會將從 Ultimate Guitar 連結匯入的歌曲附加到你目前的集合，方式與 + Import PDF 相同。',
-    id: 'tombol 🔗 di header app menambahkan lagu yang diimpor dari tautan Ultimate Guitar ke set kamu saat ini, sama seperti + Import PDF.',
-    jv: 'tombol 🔗 ing header app nambahake lagu sing diimpor saka tautan Ultimate Guitar menyang set saiki, padha kaya + Import PDF.',
-  },
-  'exports just the song you\'re currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.': {
-    la:      'exportat solum cantum quem nunc edis ut PDF chordarum purum, monospace. In magnitudine PDF 14 px defalta, dispositio est bicolumnis; magnitudines maiores ad unam columnam automatice commutantur.',
-    'zh-TW': '將你目前編輯的歌曲匯出為乾淨的等寬字體和弦圖 PDF。預設 14px PDF 字型大小時為雙欄版面，更大尺寸自動切換為單欄。',
-    id:      'ekspor lagu yang sedang kamu edit sebagai PDF chord chart yang bersih, monospace. Di ukuran font PDF default 14px layoutnya dua kolom; ukuran lebih besar otomatis beralih ke satu kolom.',
-    jv:      'ngekspor mung lagu sing lagi kok edit minangka PDF chord chart sing resik, monospace. Ing ukuran font PDF default 14px, layoute rong kolom; ukuran luwih gedhe otomatis dadi siji kolom.',
-  },
+  'Ultimate Guitar has no public API, so imports are relayed through free third-party proxies and can occasionally be blocked — if a link fails, wait a moment and try again. Only chords pages import cleanly; pure guitar-tab (fretboard) pages are not supported.':
+    {
+      la: 'Ultimate Guitar API publicam non habet, ergo importationes per proxies gratuitos tertiae partis transmittuntur et interdum impediri possunt — si nexus deficit, paulisper exspecta et iterum conare. Solae paginae chordarum pure importantur; paginae solius tabulaturae (fretboard) non sustinentur.',
+      'zh-TW':
+        'Ultimate Guitar 沒有公開 API，因此匯入是透過免費的第三方代理轉送，偶爾可能被封鎖——若連結失敗，稍候再試一次。只有和弦頁面能正確匯入；純吉他 tab（指板）頁面不支援。',
+      id: 'Ultimate Guitar tidak punya API publik, jadi impor diteruskan lewat proxy pihak ketiga gratis dan kadang bisa diblokir — kalau tautan gagal, tunggu sebentar lalu coba lagi. Hanya halaman chord yang terimpor rapi; halaman tab gitar murni (fretboard) tidak didukung.',
+      jv: 'Ultimate Guitar ora duwe API umum, mula impor diterusake liwat proxy pihak katelu gratis lan kadhang bisa diblokir — yen tautan gagal, enteni sedhela banjur coba maneh. Mung kaca chord sing mlebu resik; kaca tab gitar murni (fretboard) ora didhukung.',
+    },
+  'the 🔗 button in the app header appends songs imported from Ultimate Guitar links to your current set, the same way + Import PDF does.':
+    {
+      la: 'bulla 🔗 in capite applicationis cantus ex nexibus Ultimate Guitar importatos collectioni tuae currenti adiungit, eodem modo quo + Import PDF facit.',
+      'zh-TW':
+        'App 標題中的 🔗 按鈕會將從 Ultimate Guitar 連結匯入的歌曲附加到你目前的集合，方式與 + Import PDF 相同。',
+      id: 'tombol 🔗 di header app menambahkan lagu yang diimpor dari tautan Ultimate Guitar ke set kamu saat ini, sama seperti + Import PDF.',
+      jv: 'tombol 🔗 ing header app nambahake lagu sing diimpor saka tautan Ultimate Guitar menyang set saiki, padha kaya + Import PDF.',
+    },
+  "exports just the song you're currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.":
+    {
+      la: 'exportat solum cantum quem nunc edis ut PDF chordarum purum, monospace. In magnitudine PDF 14 px defalta, dispositio est bicolumnis; magnitudines maiores ad unam columnam automatice commutantur.',
+      'zh-TW':
+        '將你目前編輯的歌曲匯出為乾淨的等寬字體和弦圖 PDF。預設 14px PDF 字型大小時為雙欄版面，更大尺寸自動切換為單欄。',
+      id: 'ekspor lagu yang sedang kamu edit sebagai PDF chord chart yang bersih, monospace. Di ukuran font PDF default 14px layoutnya dua kolom; ukuran lebih besar otomatis beralih ke satu kolom.',
+      jv: 'ngekspor mung lagu sing lagi kok edit minangka PDF chord chart sing resik, monospace. Ing ukuran font PDF default 14px, layoute rong kolom; ukuran luwih gedhe otomatis dadi siji kolom.',
+    },
   'exports every song in the set into a single PDF, in list order, one song per page.': {
-    la:      'exportat omnes cantus in collectione in unum PDF, in ordine listae, unum cantum per paginam.',
+    la: 'exportat omnes cantus in collectione in unum PDF, in ordine listae, unum cantum per paginam.',
     'zh-TW': '將集合中的每首歌以列表順序匯出為單一 PDF，每頁一首歌。',
-    id:      'ekspor semua lagu di set ke satu PDF, urut sesuai daftar, satu lagu per halaman.',
-    jv:      'ngekspor kabeh lagu ing set dadi siji PDF, urut kaya dhaftar, siji lagu saben kaca.',
+    id: 'ekspor semua lagu di set ke satu PDF, urut sesuai daftar, satu lagu per halaman.',
+    jv: 'ngekspor kabeh lagu ing set dadi siji PDF, urut kaya dhaftar, siji lagu saben kaca.',
   },
   'exports the full set as a': {
-    la:      'exportat collectionem completam ut',
+    la: 'exportat collectionem completam ut',
     'zh-TW': '將整個集合匯出為',
-    id:      'ekspor set lengkap sebagai file',
-    jv:      'ngekspor set lengkap minangka file',
+    id: 'ekspor set lengkap sebagai file',
+    jv: 'ngekspor set lengkap minangka file',
   },
   'file, with chord rows placed above each lyric line, viewable in any Markdown reader.': {
-    la:      'fasciculum, cum seriebus chordarum supra quamlibet lineam verborum positis, in quolibet lectore Markdown videndum.',
+    la: 'fasciculum, cum seriebus chordarum supra quamlibet lineam verborum positis, in quolibet lectore Markdown videndum.',
     'zh-TW': '檔案，和弦行放在每行歌詞上方，可在任何 Markdown 閱讀器中查看。',
-    id:      'dengan baris chord di atas setiap baris lirik, bisa dibuka di semua Markdown reader.',
-    jv:      'kanthi baris chord ing ndhuwur saben baris lirik, iso didelok ing Markdown reader apa wae.',
+    id: 'dengan baris chord di atas setiap baris lirik, bisa dibuka di semua Markdown reader.',
+    jv: 'kanthi baris chord ing ndhuwur saben baris lirik, iso didelok ing Markdown reader apa wae.',
   },
-  'All exports respect your current transposition, the Bass Notes toggle, the Nashville toggle, your Accidentals preference, and include any direction/bar-notation annotations, correctly transposed.': {
-    la:      'Omnes exportationes transpositionem tuam currentem, commutamen Notarum Bassi, commutamen Nashville, praeferentiam Accidentalium tuam observant, et annotationes directionis/notationis barrarum, recte transpositas, includunt.',
-    'zh-TW': '所有匯出都遵循你目前的移調、低音音符切換、Nashville 切換、升降記號偏好，並包含所有方向/小節標記，且已正確移調。',
-    id:      'Semua ekspor mengikuti transposisi saat ini, toggle Bass Notes, toggle Nashville, preferensi Akidental, dan termasuk semua anotasi arah/notasi bar yang sudah ditranspose dengan benar.',
-    jv:      'Kabeh ekspor ngurmati transposisi saiki, toggle Bass Notes, toggle Nashville, preferensi Akidental, lan kalebu kabeh anotasi arah/notasi bar sing wis ditranspose kanthi bener.',
-  },
+  'All exports respect your current transposition, the Bass Notes toggle, the Nashville toggle, your Accidentals preference, and include any direction/bar-notation annotations, correctly transposed.':
+    {
+      la: 'Omnes exportationes transpositionem tuam currentem, commutamen Notarum Bassi, commutamen Nashville, praeferentiam Accidentalium tuam observant, et annotationes directionis/notationis barrarum, recte transpositas, includunt.',
+      'zh-TW':
+        '所有匯出都遵循你目前的移調、低音音符切換、Nashville 切換、升降記號偏好，並包含所有方向/小節標記，且已正確移調。',
+      id: 'Semua ekspor mengikuti transposisi saat ini, toggle Bass Notes, toggle Nashville, preferensi Akidental, dan termasuk semua anotasi arah/notasi bar yang sudah ditranspose dengan benar.',
+      jv: 'Kabeh ekspor ngurmati transposisi saiki, toggle Bass Notes, toggle Nashville, preferensi Akidental, lan kalebu kabeh anotasi arah/notasi bar sing wis ditranspose kanthi bener.',
+    },
   'To adjust the': {
-    la:      'Ad emendandum',
+    la: 'Ad emendandum',
     'zh-TW': '若要調整',
-    id:      'Untuk mengatur',
-    jv:      'Kanggo nyetel',
+    id: 'Untuk mengatur',
+    jv: 'Kanggo nyetel',
   },
-  '(10–20 px, default 14 px), open ⚙️ Settings → Export. Sizes above 14 px switch the PDF to a single-column layout; a warning is shown in Settings when this threshold is exceeded.': {
-    la:      '(10–20 px, defalta 14 px), aperi ⚙️ Optiones → Exportationem. Magnitudines supra 14 px PDF ad dispositionem unius columnae commutant; monitio in Optionibus ostenditur cum hic limes superatur.',
-    'zh-TW': '（10–20px，預設 14px），請開啟 ⚙️ 設定 → 匯出。超過 14px 的尺寸會將 PDF 切換為單欄版面；超過此閾值時，設定中會顯示警告。',
-    id:      '(10–20px, default 14px), buka ⚙️ Pengaturan → Ekspor. Ukuran di atas 14px akan beralih ke layout satu kolom; peringatan ditampilkan di Pengaturan kalau batas ini terlampaui.',
-    jv:      '(10–20px, default 14px), bukak ⚙️ Setelan → Ekspor. Ukuran ing ndhuwur 14px ngalih menyang layout siji kolom; peringatan ditampilake ing Setelan yen wates iki dilewati.',
-  },
+  '(10–20 px, default 14 px), open ⚙️ Settings → Export. Sizes above 14 px switch the PDF to a single-column layout; a warning is shown in Settings when this threshold is exceeded.':
+    {
+      la: '(10–20 px, defalta 14 px), aperi ⚙️ Optiones → Exportationem. Magnitudines supra 14 px PDF ad dispositionem unius columnae commutant; monitio in Optionibus ostenditur cum hic limes superatur.',
+      'zh-TW':
+        '（10–20px，預設 14px），請開啟 ⚙️ 設定 → 匯出。超過 14px 的尺寸會將 PDF 切換為單欄版面；超過此閾值時，設定中會顯示警告。',
+      id: '(10–20px, default 14px), buka ⚙️ Pengaturan → Ekspor. Ukuran di atas 14px akan beralih ke layout satu kolom; peringatan ditampilkan di Pengaturan kalau batas ini terlampaui.',
+      jv: '(10–20px, default 14px), bukak ⚙️ Setelan → Ekspor. Ukuran ing ndhuwur 14px ngalih menyang layout siji kolom; peringatan ditampilake ing Setelan yen wates iki dilewati.',
+    },
   'Round-trip friendly:': {
-    la:      'Amicalis itineri duplici:',
+    la: 'Amicalis itineri duplici:',
     'zh-TW': '支援重新匯入：',
-    id:      'Ramah untuk re-upload:',
-    jv:      'Cocok kanggo re-upload:',
+    id: 'Ramah untuk re-upload:',
+    jv: 'Cocok kanggo re-upload:',
   },
-  'PDFs exported from WorshipToolkit can be re-uploaded later. The app embeds the exact column layout in the file so your edits, chord positions, and structure come back intact — no need to keep a separate source file.': {
-    la:      'PDF exportata ex WorshipToolkit postea onerari possunt. Applicatio dispositionem exactam columnarum in fasciculum inserit, ita emendationes tuae, positiones chordarum, et structura integrae redeunt — non opus est fasciculum fontis separatum servare.',
-    'zh-TW': 'WorshipToolkit 匯出的 PDF 之後可以重新上傳。App 會在檔案中嵌入精確的欄位版面，所以你的編輯、和弦位置和結構都會完整保留——不需要保存單獨的來源檔案！',
-    id:      'PDF yang diekspor dari WorshipToolkit bisa di-upload lagi nanti. App menyematkan layout kolom persis di filenya, jadi editan, posisi chord, dan struktur kamu balik utuh — gak perlu simpan file sumber terpisah!',
-    jv:      'PDF sing diekspor saka WorshipToolkit iso diunggah maneh mengko. App nyematake layout kolom sing persis ing file-e, dadi editanmu, posisi chord, lan struktur bali utuh — ora perlu nyimpen file sumber terpisah, nak.',
-  },
+  'PDFs exported from WorshipToolkit can be re-uploaded later. The app embeds the exact column layout in the file so your edits, chord positions, and structure come back intact — no need to keep a separate source file.':
+    {
+      la: 'PDF exportata ex WorshipToolkit postea onerari possunt. Applicatio dispositionem exactam columnarum in fasciculum inserit, ita emendationes tuae, positiones chordarum, et structura integrae redeunt — non opus est fasciculum fontis separatum servare.',
+      'zh-TW':
+        'WorshipToolkit 匯出的 PDF 之後可以重新上傳。App 會在檔案中嵌入精確的欄位版面，所以你的編輯、和弦位置和結構都會完整保留——不需要保存單獨的來源檔案！',
+      id: 'PDF yang diekspor dari WorshipToolkit bisa di-upload lagi nanti. App menyematkan layout kolom persis di filenya, jadi editan, posisi chord, dan struktur kamu balik utuh — gak perlu simpan file sumber terpisah!',
+      jv: 'PDF sing diekspor saka WorshipToolkit iso diunggah maneh mengko. App nyematake layout kolom sing persis ing file-e, dadi editanmu, posisi chord, lan struktur bali utuh — ora perlu nyimpen file sumber terpisah, nak.',
+    },
 
   // ── §9 Saved sets & autosave ──
-  'A': {
-    la:      'Una',
+  A: {
+    la: 'Una',
     'zh-TW': '一個',
-    id:      'Sebuah',
-    jv:      'Siji',
+    id: 'Sebuah',
+    jv: 'Siji',
   },
-  'set': {
-    la:      'collectio',
+  set: {
+    la: 'collectio',
     'zh-TW': '集合',
-    id:      'set',
-    jv:      'set',
+    id: 'set',
+    jv: 'set',
   },
-  'is your current collection of songs. Saving a set lets you snapshot it and return to it later — even if you close the browser or start working on a different set in the meantime.': {
-    la:      'est collectio tua actualis cantuum. Servatio collectionis te sinit eam in imagine congelata capere et ad eam postea redire — etiam si navigatrum claudis vel interea aliam collectionem laborans.',
-    'zh-TW': '是你目前的歌曲集合。儲存集合讓你可以快照它並在之後返回——即使你關閉瀏覽器或開始處理其他集合。',
-    id:      'adalah koleksi lagu kamu saat ini. Menyimpan set itu kayak nge-save game — bisa balik kapan aja, biar browser ditutup atau kamu lagi sibuk ngerjain set lain!',
-    jv:      'yaiku koleksi lagumu saiki. Nyimpen set kuwi kaya nyelehke gaweyan ing lemari, mengko iso dijupuk maneh kapan wae, senajan browser ditutup utawa lagi nggarap set liya, nak.',
-  },
-  'The header shows the active set\'s name (e.g.': {
-    la:      'Caput ostendit nomen collectionis activae (e.g.',
+  'is your current collection of songs. Saving a set lets you snapshot it and return to it later — even if you close the browser or start working on a different set in the meantime.':
+    {
+      la: 'est collectio tua actualis cantuum. Servatio collectionis te sinit eam in imagine congelata capere et ad eam postea redire — etiam si navigatrum claudis vel interea aliam collectionem laborans.',
+      'zh-TW':
+        '是你目前的歌曲集合。儲存集合讓你可以快照它並在之後返回——即使你關閉瀏覽器或開始處理其他集合。',
+      id: 'adalah koleksi lagu kamu saat ini. Menyimpan set itu kayak nge-save game — bisa balik kapan aja, biar browser ditutup atau kamu lagi sibuk ngerjain set lain!',
+      jv: 'yaiku koleksi lagumu saiki. Nyimpen set kuwi kaya nyelehke gaweyan ing lemari, mengko iso dijupuk maneh kapan wae, senajan browser ditutup utawa lagi nggarap set liya, nak.',
+    },
+  "The header shows the active set's name (e.g.": {
+    la: 'Caput ostendit nomen collectionis activae (e.g.',
     'zh-TW': '標題顯示作用中集合的名稱（例如',
-    id:      'Header menampilkan nama set aktif (mis.',
-    jv:      'Header nampilake jeneng set aktif (tuladha',
+    id: 'Header menampilkan nama set aktif (mis.',
+    jv: 'Header nampilake jeneng set aktif (tuladha',
   },
   '), or': {
-    la:      '), vel',
+    la: '), vel',
     'zh-TW': '），或',
-    id:      '), atau',
-    jv:      '), utawa',
+    id: '), atau',
+    jv: '), utawa',
   },
   'Sunday Service': {
-    la:      'Ministerium Dominicale',
+    la: 'Ministerium Dominicale',
     'zh-TW': '主日崇拜',
-    id:      'Kebaktian Minggu',
-    jv:      'Ibadah Minggu',
+    id: 'Kebaktian Minggu',
+    jv: 'Ibadah Minggu',
   },
   'if nothing is saved yet. Click it to open the': {
-    la:      'si nihil adhuc servatum est. Premes eam ut aperias',
+    la: 'si nihil adhuc servatum est. Premes eam ut aperias',
     'zh-TW': '若尚未儲存任何內容。點擊開啟',
-    id:      'kalau belum ada yang tersimpan. Klik untuk buka',
-    jv:      'yen durung ana sing kasimpen. Klik kanggo mbukak',
+    id: 'kalau belum ada yang tersimpan. Klik untuk buka',
+    jv: 'yen durung ana sing kasimpen. Klik kanggo mbukak',
   },
   'panel. At the top of the panel, the current set name and last-modified time are shown — or': {
-    la:      'tabulam. In summo tabulae, nomen collectionis currentis et tempus ultimae modificationis monstrantur — vel',
+    la: 'tabulam. In summo tabulae, nomen collectionis currentis et tempus ultimae modificationis monstrantur — vel',
     'zh-TW': '面板。面板頂部顯示目前集合名稱和最後修改時間——或',
-    id:      'panel. Di bagian atas panel, nama set saat ini dan waktu terakhir diubah ditampilkan — atau',
-    jv:      'panel. Ing ndhuwur panel, jeneng set saiki lan wektu terakhir diowahi ditampilake — utawa',
+    id: 'panel. Di bagian atas panel, nama set saat ini dan waktu terakhir diubah ditampilkan — atau',
+    jv: 'panel. Ing ndhuwur panel, jeneng set saiki lan wektu terakhir diowahi ditampilake — utawa',
   },
   'if no set is active yet.': {
-    la:      'si nulla collectio adhuc activa est.',
+    la: 'si nulla collectio adhuc activa est.',
     'zh-TW': '（若尚無作用中的集合）。',
-    id:      'kalau belum ada set yang aktif.',
-    jv:      'yen durung ana set sing aktif.',
+    id: 'kalau belum ada set yang aktif.',
+    jv: 'yen durung ana set sing aktif.',
   },
   'Starting a new set': {
-    la:      'Initium Collectionis Novae',
+    la: 'Initium Collectionis Novae',
     'zh-TW': '開始新的集合',
-    id:      'Mulai Set Baru',
-    jv:      'Miwiti Set Anyar',
+    id: 'Mulai Set Baru',
+    jv: 'Miwiti Set Anyar',
   },
   'in the header (or': {
-    la:      'in capite (vel',
+    la: 'in capite (vel',
     'zh-TW': '（標題中）（或',
-    id:      'di header (atau',
-    jv:      'ing header (utawa',
+    id: 'di header (atau',
+    jv: 'ing header (utawa',
   },
-  'inside the Saved Sets panel) to clear the workspace and start fresh. On mobile the header button shows just the': {
-    la:      'intra tabulam Collectionum Servatarum) ut spatium laboris purges et denuo incipiatur. In telephono papilio capitis solum',
-    'zh-TW': '（在已儲存集合面板內）以清除工作區並重新開始。在手機上，標題按鈕僅顯示',
-    id:      'di dalam panel Set Tersimpan) untuk bersihkan workspace dan mulai dari awal. Di HP tombol header cuma tampilkan',
-    jv:      'ing jero panel Set Kasimpen) kanggo ngresiki workspace lan miwiti saka awal. Ing HP, tombol header mung nampilake',
-  },
+  'inside the Saved Sets panel) to clear the workspace and start fresh. On mobile the header button shows just the':
+    {
+      la: 'intra tabulam Collectionum Servatarum) ut spatium laboris purges et denuo incipiatur. In telephono papilio capitis solum',
+      'zh-TW': '（在已儲存集合面板內）以清除工作區並重新開始。在手機上，標題按鈕僅顯示',
+      id: 'di dalam panel Set Tersimpan) untuk bersihkan workspace dan mulai dari awal. Di HP tombol header cuma tampilkan',
+      jv: 'ing jero panel Set Kasimpen) kanggo ngresiki workspace lan miwiti saka awal. Ing HP, tombol header mung nampilake',
+    },
   'icon.': {
-    la:      'iconem ostendit.',
+    la: 'iconem ostendit.',
     'zh-TW': '圖示。',
-    id:      'ikonnya aja.',
-    jv:      'ikon wae.',
+    id: 'ikonnya aja.',
+    jv: 'ikon wae.',
   },
-  'If you\'re currently in a named set (it\'s already autosaved), the workspace clears immediately.': {
-    la:      'Si nunc in collectione nominata es (iam automatice servata est), spatium laboris statim purgatur.',
-    'zh-TW': '如果你目前在一個已命名的集合中（已自動儲存），工作區會立即清除。',
-    id:      'Kalau kamu lagi di set yang sudah dinamai (sudah autosaved), workspace langsung bersih.',
-    jv:      'Yen saiki kowe ana ing set sing wis dijenengi (wis disimpen otomatis), workspace langsung resik.',
-  },
+  "If you're currently in a named set (it's already autosaved), the workspace clears immediately.":
+    {
+      la: 'Si nunc in collectione nominata es (iam automatice servata est), spatium laboris statim purgatur.',
+      'zh-TW': '如果你目前在一個已命名的集合中（已自動儲存），工作區會立即清除。',
+      id: 'Kalau kamu lagi di set yang sudah dinamai (sudah autosaved), workspace langsung bersih.',
+      jv: 'Yen saiki kowe ana ing set sing wis dijenengi (wis disimpen otomatis), workspace langsung resik.',
+    },
   'If you have unsaved work, a prompt appears: enter a name to save it first, or click': {
-    la:      'Si laborem non servatum habes, monitio apparet: inscribe nomen ut prius serves, vel premes',
+    la: 'Si laborem non servatum habes, monitio apparet: inscribe nomen ut prius serves, vel premes',
     'zh-TW': '如果你有未儲存的工作，會出現提示：輸入名稱先儲存，或點擊',
-    id:      'Kalau ada pekerjaan yang belum disimpan, akan muncul prompt: masukkan nama untuk simpan dulu, atau klik',
-    jv:      'Yen ana gaweyan sing durung kasimpen, ana prompt: tulis jeneng kanggo nyimpen dhisik, utawa klik',
+    id: 'Kalau ada pekerjaan yang belum disimpan, akan muncul prompt: masukkan nama untuk simpan dulu, atau klik',
+    jv: 'Yen ana gaweyan sing durung kasimpen, ana prompt: tulis jeneng kanggo nyimpen dhisik, utawa klik',
   },
   'to discard and continue.': {
-    la:      'ut omittas et pergas.',
+    la: 'ut omittas et pergas.',
     'zh-TW': '放棄並繼續。',
-    id:      'untuk buang dan lanjut.',
-    jv:      'kanggo mbuwang lan nerusake.',
+    id: 'untuk buang dan lanjut.',
+    jv: 'kanggo mbuwang lan nerusake.',
   },
   'Saving a set': {
-    la:      'Servare Collectionem',
+    la: 'Servare Collectionem',
     'zh-TW': '儲存集合',
-    id:      'Menyimpan Set',
-    jv:      'Nyimpen Set',
+    id: 'Menyimpan Set',
+    jv: 'Nyimpen Set',
   },
   'Type a name for your set (e.g.': {
-    la:      'Inscribe nomen pro collectione tua (e.g.',
+    la: 'Inscribe nomen pro collectione tua (e.g.',
     'zh-TW': '為你的集合輸入名稱（例如',
-    id:      'Ketik nama untuk set kamu (mis.',
-    jv:      'Ketik jeneng kanggo set-mu (tuladha',
+    id: 'Ketik nama untuk set kamu (mis.',
+    jv: 'Ketik jeneng kanggo set-mu (tuladha',
   },
   'Sunday 29 June': {
-    la:      'Dominica XXIX Iunii',
+    la: 'Dominica XXIX Iunii',
     'zh-TW': '6月29日主日',
-    id:      'Minggu 29 Juni',
-    jv:      'Minggu 29 Juni',
+    id: 'Minggu 29 Juni',
+    jv: 'Minggu 29 Juni',
   },
   'in the input at the top of the panel and click': {
-    la:      'in campo in summo tabulae et premes',
+    la: 'in campo in summo tabulae et premes',
     'zh-TW': '在面板頂部的輸入框中，然後點擊',
-    id:      'di input di atas panel, lalu klik',
-    jv:      'ing input ing ndhuwur panel, banjur klik',
+    id: 'di input di atas panel, lalu klik',
+    jv: 'ing input ing ndhuwur panel, banjur klik',
   },
   '(or press': {
-    la:      '(vel premes',
+    la: '(vel premes',
     'zh-TW': '（或按',
-    id:      '(atau tekan',
-    jv:      '(utawa pencet',
+    id: '(atau tekan',
+    jv: '(utawa pencet',
   },
   'or press': {
-    la:      'vel preme',
+    la: 'vel preme',
     'zh-TW': '或按下',
-    id:      'atau tekan',
-    jv:      'utawa pencet',
+    id: 'atau tekan',
+    jv: 'utawa pencet',
   },
-  'press': {
-    la:      'preme',
+  press: {
+    la: 'preme',
     'zh-TW': '按下',
-    id:      'tekan',
-    jv:      'pencet',
+    id: 'tekan',
+    jv: 'pencet',
   },
-  'Click': {
-    la:      'Preme',
+  Click: {
+    la: 'Preme',
     'zh-TW': '點擊',
-    id:      'Klik',
-    jv:      'Pencet',
+    id: 'Klik',
+    jv: 'Pencet',
   },
-  'click': {
-    la:      'preme',
+  click: {
+    la: 'preme',
     'zh-TW': '點擊',
-    id:      'klik',
-    jv:      'pencet',
+    id: 'klik',
+    jv: 'pencet',
   },
-  'Delete': {
-    la:      'Delere',
+  Delete: {
+    la: 'Delere',
     'zh-TW': '刪除',
-    id:      'Hapus',
-    jv:      'Busak',
+    id: 'Hapus',
+    jv: 'Busak',
   },
   'drag & drop': {
-    la:      'trahe et pone',
+    la: 'trahe et pone',
     'zh-TW': '拖放',
-    id:      'seret & taruh',
-    jv:      'seret & sèlèh',
+    id: 'seret & taruh',
+    jv: 'seret & sèlèh',
   },
   'Import .wt file': {
-    la:      'Importare fasciculum .wt',
+    la: 'Importare fasciculum .wt',
     'zh-TW': '匯入 .wt 檔案',
-    id:      'Impor file .wt',
-    jv:      'Impor file .wt',
+    id: 'Impor file .wt',
+    jv: 'Impor file .wt',
   },
-  'If you save again with the same name, the existing set is updated in place rather than duplicated.': {
-    la:      'Si iterum cum eodem nomine servas, collectio existens in situ renovatur potius quam duplicatur.',
-    'zh-TW': '如果用相同名稱再次儲存，現有集合會就地更新，而不是重複新增。',
-    id:      'Kalau simpan lagi dengan nama yang sama, set yang ada langsung diperbarui, bukan diduplikat.',
-    jv:      'Yen nyimpen maneh nganggo jeneng sing padha, set sing wis ana diperbarui ing kono, ora diduplikat.',
-  },
+  'If you save again with the same name, the existing set is updated in place rather than duplicated.':
+    {
+      la: 'Si iterum cum eodem nomine servas, collectio existens in situ renovatur potius quam duplicatur.',
+      'zh-TW': '如果用相同名稱再次儲存，現有集合會就地更新，而不是重複新增。',
+      id: 'Kalau simpan lagi dengan nama yang sama, set yang ada langsung diperbarui, bukan diduplikat.',
+      jv: 'Yen nyimpen maneh nganggo jeneng sing padha, set sing wis ana diperbarui ing kono, ora diduplikat.',
+    },
   'Up to 20 sets can be stored. If you exceed this limit, the oldest set is removed.': {
-    la:      'Usque ad 20 collectiones servari possunt. Si hunc limitem superas, collectio vetustissima removetur.',
+    la: 'Usque ad 20 collectiones servari possunt. Si hunc limitem superas, collectio vetustissima removetur.',
     'zh-TW': '最多可以儲存 20 個集合。超過限制時，最舊的集合會被移除。',
-    id:      'Maksimal 20 set bisa disimpan. Kalau melebihi batas, set paling lama dihapus.',
-    jv:      'Nganti 20 set iso disimpen. Yen ngluwihi wates, set sing paling lawas dicopot.',
+    id: 'Maksimal 20 set bisa disimpan. Kalau melebihi batas, set paling lama dihapus.',
+    jv: 'Nganti 20 set iso disimpen. Yen ngluwihi wates, set sing paling lawas dicopot.',
   },
   'Autosave to the active set': {
-    la:      'Custodia Automatica ad Collectionem Activam',
+    la: 'Custodia Automatica ad Collectionem Activam',
     'zh-TW': '自動儲存至作用中集合',
-    id:      'Autosave ke Set Aktif',
-    jv:      'Simpen Otomatis menyang Set Aktif',
+    id: 'Autosave ke Set Aktif',
+    jv: 'Simpen Otomatis menyang Set Aktif',
   },
   'Once a set is saved or loaded, it becomes the': {
-    la:      'Postquam collectio servata vel onerata est, fit',
+    la: 'Postquam collectio servata vel onerata est, fit',
     'zh-TW': '一旦集合被儲存或載入，它就成為',
-    id:      'Setelah set disimpan atau dimuat, ia menjadi',
-    jv:      'Sawise set kasimpen utawa dimuat, dadi',
+    id: 'Setelah set disimpan atau dimuat, ia menjadi',
+    jv: 'Sawise set kasimpen utawa dimuat, dadi',
   },
   'active set': {
-    la:      'collectio activa',
+    la: 'collectio activa',
     'zh-TW': '作用中集合',
-    id:      'set aktif',
-    jv:      'set aktif',
+    id: 'set aktif',
+    jv: 'set aktif',
   },
-  '. Every edit you make — chord changes, transpositions, section moves — is automatically saved back to that set in real time. No need to keep clicking Save.': {
-    la:      '. Omnis emendatio quam facis — mutationes chordarum, transpositiones, motus sectionum — automatice ad illam collectionem in tempore reali servantur. Non opus est Servare iterum et iterum premere!',
-    'zh-TW': '。你所做的每個編輯——和弦更改、移調、段落移動——都會即時自動儲存回該集合。不需要一直點儲存！',
-    id:      '. Setiap edit yang kamu buat — perubahan chord, transposisi, pindah bagian — otomatis disimpan ke set itu secara real time. Gak perlu terus-terusan klik Simpan!',
-    jv:      '. Saben edit sing kowe gawe — owahane chord, transposisi, mindah bagian — otomatis disimpen bali menyang set kasebut kanthi real time. Ora perlu terus-terusan klik Simpen, nak.',
-  },
+  '. Every edit you make — chord changes, transpositions, section moves — is automatically saved back to that set in real time. No need to keep clicking Save.':
+    {
+      la: '. Omnis emendatio quam facis — mutationes chordarum, transpositiones, motus sectionum — automatice ad illam collectionem in tempore reali servantur. Non opus est Servare iterum et iterum premere!',
+      'zh-TW':
+        '。你所做的每個編輯——和弦更改、移調、段落移動——都會即時自動儲存回該集合。不需要一直點儲存！',
+      id: '. Setiap edit yang kamu buat — perubahan chord, transposisi, pindah bagian — otomatis disimpan ke set itu secara real time. Gak perlu terus-terusan klik Simpan!',
+      jv: '. Saben edit sing kowe gawe — owahane chord, transposisi, mindah bagian — otomatis disimpen bali menyang set kasebut kanthi real time. Ora perlu terus-terusan klik Simpen, nak.',
+    },
   'The active set is highlighted with an': {
-    la:      'Collectio activa insignita est cum',
+    la: 'Collectio activa insignita est cum',
     'zh-TW': '作用中集合以',
-    id:      'Set aktif disorot dengan badge',
-    jv:      'Set aktif disorot nganggo badge',
+    id: 'Set aktif disorot dengan badge',
+    jv: 'Set aktif disorot nganggo badge',
   },
   'badge in the panel, and its name appears in the header button.': {
-    la:      'insigni in tabula, et nomen eius in papilione capitis apparet.',
+    la: 'insigni in tabula, et nomen eius in papilione capitis apparet.',
     'zh-TW': '徽章在面板中突出顯示，其名稱出現在標題按鈕中。',
-    id:      'di panel, dan namanya muncul di tombol header.',
-    jv:      'ing panel, lan jenenge katon ing tombol header.',
+    id: 'di panel, dan namanya muncul di tombol header.',
+    jv: 'ing panel, lan jenenge katon ing tombol header.',
   },
-  'If you reload the page, the app restores both your songs and the active set so you can continue right where you left off.': {
-    la:      'Si paginam recargas, applicatio cantus tuos et collectionem activam restaurat ut ibi pergere possis ubi reliquisti.',
-    'zh-TW': '如果你重新載入頁面，App 會還原你的歌曲和作用中集合，讓你從上次停下的地方繼續。',
-    id:      'Kalau kamu reload halaman, app memulihkan lagu dan set aktif kamu sehingga bisa lanjut tepat dari mana kamu berhenti.',
-    jv:      'Yen kowe reload kaca, app mulihake lagumu lan set aktif supaya kowe iso nerusake saka ngendi kowe mungkasi.',
-  },
+  'If you reload the page, the app restores both your songs and the active set so you can continue right where you left off.':
+    {
+      la: 'Si paginam recargas, applicatio cantus tuos et collectionem activam restaurat ut ibi pergere possis ubi reliquisti.',
+      'zh-TW': '如果你重新載入頁面，App 會還原你的歌曲和作用中集合，讓你從上次停下的地方繼續。',
+      id: 'Kalau kamu reload halaman, app memulihkan lagu dan set aktif kamu sehingga bisa lanjut tepat dari mana kamu berhenti.',
+      jv: 'Yen kowe reload kaca, app mulihake lagumu lan set aktif supaya kowe iso nerusake saka ngendi kowe mungkasi.',
+    },
   'Loading a set': {
-    la:      'Onerare Collectionem',
+    la: 'Onerare Collectionem',
     'zh-TW': '載入集合',
-    id:      'Memuat Set',
-    jv:      'Muat Set',
+    id: 'Memuat Set',
+    jv: 'Muat Set',
   },
   'Each saved set shows its name, save date, and song count. Click': {
-    la:      'Quaelibet collectio servata nomen, diem servationis, et numerum cantuum ostendit. Premes',
+    la: 'Quaelibet collectio servata nomen, diem servationis, et numerum cantuum ostendit. Premes',
     'zh-TW': '每個已儲存的集合顯示其名稱、儲存日期和歌曲數量。點擊',
-    id:      'Setiap set tersimpan menampilkan nama, tanggal simpan, dan jumlah lagu. Klik',
-    jv:      'Saben set kasimpen nampilake jeneng, tanggal simpen, lan cacah lagu. Klik',
+    id: 'Setiap set tersimpan menampilkan nama, tanggal simpan, dan jumlah lagu. Klik',
+    jv: 'Saben set kasimpen nampilake jeneng, tanggal simpen, lan cacah lagu. Klik',
   },
   'to restore it — the editor updates immediately and that set becomes the new active set.': {
-    la:      'ut eam restaures — editor statim renovatur et illa collectio fit nova collectio activa.',
+    la: 'ut eam restaures — editor statim renovatur et illa collectio fit nova collectio activa.',
     'zh-TW': '還原它——編輯器立即更新，該集合成為新的作用中集合。',
-    id:      'untuk pulihkannya — editor langsung update dan set itu jadi set aktif baru.',
-    jv:      'kanggo mulihake — editor langsung diperbarui lan set kasebut dadi set aktif anyar.',
+    id: 'untuk pulihkannya — editor langsung update dan set itu jadi set aktif baru.',
+    jv: 'kanggo mulihake — editor langsung diperbarui lan set kasebut dadi set aktif anyar.',
   },
   'Managing sets': {
-    la:      'Administratio Collectionum',
+    la: 'Administratio Collectionum',
     'zh-TW': '管理集合',
-    id:      'Kelola Set',
-    jv:      'Ngatur Set',
+    id: 'Kelola Set',
+    jv: 'Ngatur Set',
   },
-  'Rename': {
-    la:      'Renominare',
+  Rename: {
+    la: 'Renominare',
     'zh-TW': '重新命名',
-    id:      'Ganti Nama',
-    jv:      'Ngganti Jeneng',
+    id: 'Ganti Nama',
+    jv: 'Ngganti Jeneng',
   },
   'click the pencil icon (✎) on any set to rename it inline, then press': {
-    la:      'premes iconem stili (✎) in qualibet collectione ut eam in situ renomines, deinde premes',
+    la: 'premes iconem stili (✎) in qualibet collectione ut eam in situ renomines, deinde premes',
     'zh-TW': '點擊任何集合上的鉛筆圖示（✎）以就地重新命名，然後按',
-    id:      'klik ikon pensil (✎) di set mana saja untuk ganti nama langsung, lalu tekan',
-    jv:      'klik ikon pensil (✎) ing set apa wae kanggo ngganti jeneng langsung, banjur pencet',
+    id: 'klik ikon pensil (✎) di set mana saja untuk ganti nama langsung, lalu tekan',
+    jv: 'klik ikon pensil (✎) ing set apa wae kanggo ngganti jeneng langsung, banjur pencet',
   },
   'or click elsewhere.': {
-    la:      'vel alibi premes.',
+    la: 'vel alibi premes.',
     'zh-TW': '或點擊其他地方。',
-    id:      'atau klik di tempat lain.',
-    jv:      'utawa klik neng ngendi wae.',
+    id: 'atau klik di tempat lain.',
+    jv: 'utawa klik neng ngendi wae.',
   },
   'click the ✕ button to permanently remove a set from storage.': {
-    la:      'premes papilionem ✕ ut collectionem permanenter e memoria removes.',
+    la: 'premes papilionem ✕ ut collectionem permanenter e memoria removes.',
     'zh-TW': '點擊 ✕ 按鈕以永久從儲存中移除集合。',
-    id:      'klik tombol ✕ untuk hapus set dari storage secara permanen.',
-    jv:      'klik tombol ✕ kanggo mbusak set saka storage kanthi permanen.',
+    id: 'klik tombol ✕ untuk hapus set dari storage secara permanen.',
+    jv: 'klik tombol ✕ kanggo mbusak set saka storage kanthi permanen.',
   },
   'Sets are stored only in': {
-    la:      'Collectiones servantur solum in',
+    la: 'Collectiones servantur solum in',
     'zh-TW': '集合僅儲存在',
-    id:      'Set hanya tersimpan di',
-    jv:      'Set mung disimpen ing',
+    id: 'Set hanya tersimpan di',
+    jv: 'Set mung disimpen ing',
   },
   'this browser': {
-    la:      'hoc navigatro',
+    la: 'hoc navigatro',
     'zh-TW': '此瀏覽器',
-    id:      'browser ini',
-    jv:      'browser iki',
+    id: 'browser ini',
+    jv: 'browser iki',
   },
-  'on': {
-    la:      'in',
+  on: {
+    la: 'in',
     'zh-TW': '的',
-    id:      'di',
-    jv:      'ing',
+    id: 'di',
+    jv: 'ing',
   },
   'this device': {
-    la:      'hoc instrumento',
+    la: 'hoc instrumento',
     'zh-TW': '此裝置上',
-    id:      'perangkat ini',
-    jv:      'perangkat iki',
+    id: 'perangkat ini',
+    jv: 'perangkat iki',
   },
   '. Use export/import (below) to move them to another device.': {
-    la:      '. Adhibere exportationem/importationem (infra) ut eas ad aliud instrumentum moves.',
+    la: '. Adhibere exportationem/importationem (infra) ut eas ad aliud instrumentum moves.',
     'zh-TW': '。使用匯出/匯入（下方）將它們移到另一台裝置。',
-    id:      '. Gunakan ekspor/impor (di bawah) untuk memindahkannya ke perangkat lain.',
-    jv:      '. Nggunakake ekspor/impor (ing ngisor) kanggo mindahake menyang perangkat liya.',
+    id: '. Gunakan ekspor/impor (di bawah) untuk memindahkannya ke perangkat lain.',
+    jv: '. Nggunakake ekspor/impor (ing ngisor) kanggo mindahake menyang perangkat liya.',
   },
   'Exporting and importing set files': {
-    la:      'Exportatio et Importatio Fasciculorum Collectionum',
+    la: 'Exportatio et Importatio Fasciculorum Collectionum',
     'zh-TW': '匯出與匯入集合檔案',
-    id:      'Ekspor dan Impor File Set',
-    jv:      'Ekspor lan Impor File Set',
+    id: 'Ekspor dan Impor File Set',
+    jv: 'Ekspor lan Impor File Set',
   },
   'Export (↓)': {
-    la:      'Exportare (↓)',
+    la: 'Exportare (↓)',
     'zh-TW': '匯出（↓）',
-    id:      'Ekspor (↓)',
-    jv:      'Ekspor (↓)',
+    id: 'Ekspor (↓)',
+    jv: 'Ekspor (↓)',
   },
   'click the download button on any saved set to save it as a': {
-    la:      'premes papilionem descensus in qualibet collectione servata ut eam ut',
+    la: 'premes papilionem descensus in qualibet collectione servata ut eam ut',
     'zh-TW': '點擊任何已儲存集合上的下載按鈕，將其儲存為',
-    id:      'klik tombol unduh di set tersimpan mana saja untuk simpan sebagai file',
-    jv:      'klik tombol unduh ing set kasimpen apa wae kanggo nyimpen minangka file',
+    id: 'klik tombol unduh di set tersimpan mana saja untuk simpan sebagai file',
+    jv: 'klik tombol unduh ing set kasimpen apa wae kanggo nyimpen minangka file',
   },
-  'file. This file contains the full song data including all edits, transpositions, and chord positions.': {
-    la:      'fasciculum serves. Hic fasciculus continet data plena cantuum cum omnibus emendationibus, transpositionibus, et positionibus chordarum.',
-    'zh-TW': '檔案。此檔案包含完整歌曲資料，包括所有編輯、移調和和弦位置。',
-    id:      '.wt. File ini berisi data lagu lengkap termasuk semua editan, transposisi, dan posisi chord.',
-    jv:      '.wt. File iki ngemot data lagu lengkap kalebu kabeh editan, transposisi, lan posisi chord.',
-  },
+  'file. This file contains the full song data including all edits, transpositions, and chord positions.':
+    {
+      la: 'fasciculum serves. Hic fasciculus continet data plena cantuum cum omnibus emendationibus, transpositionibus, et positionibus chordarum.',
+      'zh-TW': '檔案。此檔案包含完整歌曲資料，包括所有編輯、移調和和弦位置。',
+      id: '.wt. File ini berisi data lagu lengkap termasuk semua editan, transposisi, dan posisi chord.',
+      jv: '.wt. File iki ngemot data lagu lengkap kalebu kabeh editan, transposisi, lan posisi chord.',
+    },
   'Import from the Saved Sets panel': {
-    la:      'Importare e Tabula Collectionum Servatarum',
+    la: 'Importare e Tabula Collectionum Servatarum',
     'zh-TW': '從已儲存集合面板匯入',
-    id:      'Impor dari Panel Set Tersimpan',
-    jv:      'Impor saka Panel Set Kasimpen',
+    id: 'Impor dari Panel Set Tersimpan',
+    jv: 'Impor saka Panel Set Kasimpen',
   },
   'at the top of the panel, pick a previously exported': {
-    la:      'in summo tabulae, elige antea exportatum',
+    la: 'in summo tabulae, elige antea exportatum',
     'zh-TW': '在面板頂部，選擇先前匯出的',
-    id:      'di atas panel, pilih file',
-    jv:      'ing ndhuwur panel, pilih file',
+    id: 'di atas panel, pilih file',
+    jv: 'ing ndhuwur panel, pilih file',
   },
-  'file, and the set loads into the editor immediately. It\'s also saved to your set list so you can return to it later.': {
-    la:      'fasciculum, et collectio statim in editorem oneratur. Etiam in lista collectionum tuarum servatur ut ad eam postea redire possis.',
-    'zh-TW': '檔案，集合會立即載入到編輯器中。它也會儲存到你的集合列表中，方便你之後返回。',
-    id:      '.wt yang pernah diekspor, dan set langsung dimuat ke editor. Set juga disimpan ke daftar set kamu biar bisa balik lagi nanti.',
-    jv:      '.wt sing tau diekspor, lan set langsung dimuat menyang editor. Set uga kasimpen menyang dhaftar set-mu supaya iso bali mengko.',
-  },
+  "file, and the set loads into the editor immediately. It's also saved to your set list so you can return to it later.":
+    {
+      la: 'fasciculum, et collectio statim in editorem oneratur. Etiam in lista collectionum tuarum servatur ut ad eam postea redire possis.',
+      'zh-TW': '檔案，集合會立即載入到編輯器中。它也會儲存到你的集合列表中，方便你之後返回。',
+      id: '.wt yang pernah diekspor, dan set langsung dimuat ke editor. Set juga disimpan ke daftar set kamu biar bisa balik lagi nanti.',
+      jv: '.wt sing tau diekspor, lan set langsung dimuat menyang editor. Set uga kasimpen menyang dhaftar set-mu supaya iso bali mengko.',
+    },
   'Import from the upload page': {
-    la:      'Importare e Pagina Importationis',
+    la: 'Importare e Pagina Importationis',
     'zh-TW': '從上傳頁面匯入',
-    id:      'Impor dari Halaman Upload',
-    jv:      'Impor saka Kaca Upload',
+    id: 'Impor dari Halaman Upload',
+    jv: 'Impor saka Kaca Upload',
   },
   'on the landing/upload page, click': {
-    la:      'in pagina initiali/importationis, premes',
+    la: 'in pagina initiali/importationis, premes',
     'zh-TW': '在登陸/上傳頁面，點擊',
-    id:      'di halaman landing/upload, klik',
-    jv:      'ing kaca landing/upload, klik',
+    id: 'di halaman landing/upload, klik',
+    jv: 'ing kaca landing/upload, klik',
   },
   'to open a': {
-    la:      'ut aperias',
+    la: 'ut aperias',
     'zh-TW': '以直接開啟',
-    id:      'untuk buka file',
-    jv:      'kanggo mbukak file',
+    id: 'untuk buka file',
+    jv: 'kanggo mbukak file',
   },
   'file directly without going through the panel.': {
-    la:      'fasciculum directe sine tabula.',
+    la: 'fasciculum directe sine tabula.',
     'zh-TW': '檔案，無需透過面板。',
-    id:      '.wt langsung tanpa perlu lewat panel.',
-    jv:      '.wt langsung tanpa perlu liwat panel.',
+    id: '.wt langsung tanpa perlu lewat panel.',
+    jv: '.wt langsung tanpa perlu liwat panel.',
   },
-  'files are plain JSON and can be shared via email, cloud drive, AirDrop, or any other file-transfer method.': {
-    la:      'fascicula sunt JSON simplex et communicari possunt per epistulamelectronicam, discum nubis, AirDrop, vel quamlibet aliam methodum translationis fasciculorum.',
-    'zh-TW': '檔案是純 JSON 格式，可以透過電子郵件、雲端硬碟、AirDrop 或任何其他檔案傳輸方式分享。',
-    id:      'file berformat JSON biasa dan bisa dibagikan via email, cloud drive, AirDrop, atau cara transfer file lainnya.',
-    jv:      'file iku JSON biasa lan iso dibagi liwat email, cloud drive, AirDrop, utawa cara transfer file liyane.',
-  },
+  'files are plain JSON and can be shared via email, cloud drive, AirDrop, or any other file-transfer method.':
+    {
+      la: 'fascicula sunt JSON simplex et communicari possunt per epistulamelectronicam, discum nubis, AirDrop, vel quamlibet aliam methodum translationis fasciculorum.',
+      'zh-TW':
+        '檔案是純 JSON 格式，可以透過電子郵件、雲端硬碟、AirDrop 或任何其他檔案傳輸方式分享。',
+      id: 'file berformat JSON biasa dan bisa dibagikan via email, cloud drive, AirDrop, atau cara transfer file lainnya.',
+      jv: 'file iku JSON biasa lan iso dibagi liwat email, cloud drive, AirDrop, utawa cara transfer file liyane.',
+    },
 
   // ── §10 Appearance & accessibility ──
-  'button in the app header to open the Settings panel. All display and export preferences live here and are remembered between visits.': {
-    la:      'papilionem in capite applicationis ut tabulam Optionum aperias. Omnes praeferentiae ostentationis et exportationis hic habitant et inter visitas memoria tenentur.',
-    'zh-TW': 'App 標題中的按鈕開啟設定面板。所有顯示和匯出偏好都在這裡，並在訪問之間記住。',
-    id:      'di header app untuk buka panel Pengaturan. Semua preferensi tampilan dan ekspor ada di sini dan diingat antar kunjungan.',
-    jv:      'ing header app kanggo mbukak panel Setelan. Kabeh preferensi tampilan lan ekspor ana ing kene lan dieling-eling antarane kunjungan.',
-  },
-  'choose an accent color theme: 8 solid colors (Blue default, Pink, Red, Amber, Green, Purple, Teal, Orange) plus 2 subtle-pattern themes (Disco, Confetti). The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.': {
-    la:      'elige thema coloris accentus: 8 colores solidi (Caeruleum defalta, Roseum, Rubrum, Succinum, Viride, Purpureum, Cyaneum, Aurantiacum) et 2 themata subtiliter picta (Disco, Confetti). Color electus papilionibus, ostentioni chordarum, et elementis interactivis per totam applicationem applicatur. Cum modo Lucis et Tenebrarum laborat.',
-    'zh-TW': '選擇強調色主題：8 種純色（藍色預設、粉色、紅色、琥珀色、綠色、紫色、青色、橘色），另有 2 款低調圖案主題（迪斯可、彩紙）。所選顏色應用於整個 App 的按鈕、和弦顯示和互動元素。支援淺色和深色模式！',
-    id:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Merah, Amber, Hijau, Ungu, Teal, Oranye) plus 2 tema pola halus (Disco, Confetti). Warna yang dipilih berlaku untuk tombol, tampilan chord, dan elemen interaktif di seluruh app. Cocok dengan mode Terang maupun Gelap!',
-    jv:      'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Abang, Amber, Ijo, Ungu, Teal, Oranye) lan 2 tema pola alus (Disco, Confetti). Warna sing dipilih diterapake menyang tombol, tampilan chord, lan elemen interaktif ing sak kabehe app. Cocok karo mode Padhang lan Peteng.',
-  },
-  'toggle between Light and Dark mode. WorshipToolkit follows your system\'s preference the first time you open it.': {
-    la:      'commuta inter modum Lucis et Tenebrarum. WorshipToolkit praeferentiam systematis tui prima vice qua eam aperis sequitur.',
-    'zh-TW': '在淺色和深色模式之間切換。WorshipToolkit 第一次開啟時會跟隨你的系統偏好設定。',
-    id:      'beralih antara mode Terang dan Gelap. Pertama kali dibuka, WorshipToolkit nurut aja sama settingan sistem kamu — gak neko-neko!',
-    jv:      'ngalih antarane mode Padhang lan Peteng. Pisanan dibukak, WorshipToolkit manut wae karo setelan sistem-mu, ora neko-neko, nak.',
-  },
+  'button in the app header to open the Settings panel. All display and export preferences live here and are remembered between visits.':
+    {
+      la: 'papilionem in capite applicationis ut tabulam Optionum aperias. Omnes praeferentiae ostentationis et exportationis hic habitant et inter visitas memoria tenentur.',
+      'zh-TW': 'App 標題中的按鈕開啟設定面板。所有顯示和匯出偏好都在這裡，並在訪問之間記住。',
+      id: 'di header app untuk buka panel Pengaturan. Semua preferensi tampilan dan ekspor ada di sini dan diingat antar kunjungan.',
+      jv: 'ing header app kanggo mbukak panel Setelan. Kabeh preferensi tampilan lan ekspor ana ing kene lan dieling-eling antarane kunjungan.',
+    },
+  'choose an accent color theme: 8 solid colors (Blue default, Pink, Red, Amber, Green, Purple, Teal, Orange) plus 2 subtle-pattern themes (Disco, Confetti). The selected color applies to buttons, chord display, and interactive elements throughout the app. Works with both Light and Dark mode.':
+    {
+      la: 'elige thema coloris accentus: 8 colores solidi (Caeruleum defalta, Roseum, Rubrum, Succinum, Viride, Purpureum, Cyaneum, Aurantiacum) et 2 themata subtiliter picta (Disco, Confetti). Color electus papilionibus, ostentioni chordarum, et elementis interactivis per totam applicationem applicatur. Cum modo Lucis et Tenebrarum laborat.',
+      'zh-TW':
+        '選擇強調色主題：8 種純色（藍色預設、粉色、紅色、琥珀色、綠色、紫色、青色、橘色），另有 2 款低調圖案主題（迪斯可、彩紙）。所選顏色應用於整個 App 的按鈕、和弦顯示和互動元素。支援淺色和深色模式！',
+      id: 'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Merah, Amber, Hijau, Ungu, Teal, Oranye) plus 2 tema pola halus (Disco, Confetti). Warna yang dipilih berlaku untuk tombol, tampilan chord, dan elemen interaktif di seluruh app. Cocok dengan mode Terang maupun Gelap!',
+      jv: 'pilih tema warna aksen: 8 warna solid (Biru default, Pink, Abang, Amber, Ijo, Ungu, Teal, Oranye) lan 2 tema pola alus (Disco, Confetti). Warna sing dipilih diterapake menyang tombol, tampilan chord, lan elemen interaktif ing sak kabehe app. Cocok karo mode Padhang lan Peteng.',
+    },
+  "toggle between Light and Dark mode. WorshipToolkit follows your system's preference the first time you open it.":
+    {
+      la: 'commuta inter modum Lucis et Tenebrarum. WorshipToolkit praeferentiam systematis tui prima vice qua eam aperis sequitur.',
+      'zh-TW': '在淺色和深色模式之間切換。WorshipToolkit 第一次開啟時會跟隨你的系統偏好設定。',
+      id: 'beralih antara mode Terang dan Gelap. Pertama kali dibuka, WorshipToolkit nurut aja sama settingan sistem kamu — gak neko-neko!',
+      jv: 'ngalih antarane mode Padhang lan Peteng. Pisanan dibukak, WorshipToolkit manut wae karo setelan sistem-mu, ora neko-neko, nak.',
+    },
   'choose how chord and key names are spelled:': {
-    la:      'eligere quomodo nomina chordarum et clavium scribantur:',
+    la: 'eligere quomodo nomina chordarum et clavium scribantur:',
     'zh-TW': '選擇和弦和調性名稱的拼寫方式：',
-    id:      'pilih cara penulisan nama chord dan kunci:',
-    jv:      'pilih carane nulis jeneng chord lan kunci:',
+    id: 'pilih cara penulisan nama chord dan kunci:',
+    jv: 'pilih carane nulis jeneng chord lan kunci:',
   },
   'always use flat notation (Db, Eb, Ab, Bb, Gb) everywhere.': {
-    la:      'semper adhibere notationem bemolium (Db, Eb, Ab, Bb, Gb) ubique.',
+    la: 'semper adhibere notationem bemolium (Db, Eb, Ab, Bb, Gb) ubique.',
     'zh-TW': '在所有地方始終使用降記號（Db, Eb, Ab, Bb, Gb）。',
-    id:      'selalu gunakan notasi mol (Db, Eb, Ab, Bb, Gb) di mana saja.',
-    jv:      'tansah nggunakake notasi mol (Db, Eb, Ab, Bb, Gb) ing ngendi wae.',
+    id: 'selalu gunakan notasi mol (Db, Eb, Ab, Bb, Gb) di mana saja.',
+    jv: 'tansah nggunakake notasi mol (Db, Eb, Ab, Bb, Gb) ing ngendi wae.',
   },
-  'default': {
-    la:      'defalta',
+  default: {
+    la: 'defalta',
     'zh-TW': '預設',
-    id:      'default',
-    jv:      'bawaan',
+    id: 'default',
+    jv: 'bawaan',
   },
   'uses conventional key-context spelling: flat keys use flats, sharp keys use sharps.': {
-    la:      'adhibet scripturam conventionalem contextus clavis: claves bemolium bemolia adhibent, claves diesis diesim adhibent.',
+    la: 'adhibet scripturam conventionalem contextus clavis: claves bemolium bemolia adhibent, claves diesis diesim adhibent.',
     'zh-TW': '使用常規調性上下文拼寫：降調使用降記號，升調使用升記號。',
-    id:      'menggunakan ejaan konteks kunci konvensional: kunci mol pakai mol, kunci kres pakai kres.',
-    jv:      'nggunakake ejaan konteks kunci konvensional: kunci mol nggunakake mol, kunci kres nggunakake kres.',
+    id: 'menggunakan ejaan konteks kunci konvensional: kunci mol pakai mol, kunci kres pakai kres.',
+    jv: 'nggunakake ejaan konteks kunci konvensional: kunci mol nggunakake mol, kunci kres nggunakake kres.',
   },
   'always use sharp notation (C#, D#, G#, A#, F#) everywhere.': {
-    la:      'semper adhibere notationem diesis (C#, D#, G#, A#, F#) ubique.',
+    la: 'semper adhibere notationem diesis (C#, D#, G#, A#, F#) ubique.',
     'zh-TW': '在所有地方始終使用升記號（C#, D#, G#, A#, F#）。',
-    id:      'selalu gunakan notasi kres (C#, D#, G#, A#, F#) di mana saja.',
-    jv:      'tansah nggunakake notasi kres (C#, D#, G#, A#, F#) ing ngendi wae.',
+    id: 'selalu gunakan notasi kres (C#, D#, G#, A#, F#) di mana saja.',
+    jv: 'tansah nggunakake notasi kres (C#, D#, G#, A#, F#) ing ngendi wae.',
   },
-  'The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.': {
-    la:      'Electio simul applicatur papilionibus chordarum in editore, ostentioni clavis in barra instrumentorum et laterali, listae cadenti "Salire ad", et omnibus exportationibus PDF et Markdown.',
-    'zh-TW': '這個選擇同時應用於編輯器中的和弦按鈕、工具列和側邊欄的調性顯示、「跳至」下拉列表，以及所有 PDF 和 Markdown 匯出。',
-    id:      'Pilihan berlaku serentak untuk tombol chord di editor, tampilan kunci di toolbar dan sidebar, daftar dropdown "Lompat ke", dan semua ekspor PDF dan Markdown.',
-    jv:      'Pilihan iki diterapake bebarengan menyang tombol chord ing editor, tampilan kunci ing toolbar lan sidebar, dhaftar dropdown "Loncat menyang", lan kabeh ekspor PDF lan Markdown.',
-  },
-  'use': {
-    la:      'adhibere',
+  'The choice applies simultaneously to chord buttons in the editor, the toolbar and sidebar key display, the "Jump to" dropdown list, and all PDF and Markdown exports.':
+    {
+      la: 'Electio simul applicatur papilionibus chordarum in editore, ostentioni clavis in barra instrumentorum et laterali, listae cadenti "Salire ad", et omnibus exportationibus PDF et Markdown.',
+      'zh-TW':
+        '這個選擇同時應用於編輯器中的和弦按鈕、工具列和側邊欄的調性顯示、「跳至」下拉列表，以及所有 PDF 和 Markdown 匯出。',
+      id: 'Pilihan berlaku serentak untuk tombol chord di editor, tampilan kunci di toolbar dan sidebar, daftar dropdown "Lompat ke", dan semua ekspor PDF dan Markdown.',
+      jv: 'Pilihan iki diterapake bebarengan menyang tombol chord ing editor, tampilan kunci ing toolbar lan sidebar, dhaftar dropdown "Loncat menyang", lan kabeh ekspor PDF lan Markdown.',
+    },
+  use: {
+    la: 'adhibere',
     'zh-TW': '使用',
-    id:      'gunakan',
-    jv:      'nggunakake',
+    id: 'gunakan',
+    jv: 'nggunakake',
   },
-  'to scale the whole app\'s text up or down (11–32 px). Useful for large-screen presentations at the larger end, or for fitting more chart on a small phone screen at the smaller end.': {
-    la:      'ut textum totius applicationis sursum vel deorsum scias (11–32 px). Utile pro praesensationibus in schermate magno ad extremum maius, aut ad plus tabulae in schermate telephonico parvo ad extremum minus.',
-    'zh-TW': '放大或縮小整個 App 的文字（11–32px）。較大時適合大螢幕展示，較小時則能在手機小螢幕上容納更多譜面內容。',
-    id:      'untuk perbesar/perkecil teks seluruh app (11–32px). Berguna untuk presentasi layar besar di ukuran yang lebih besar, atau muat lebih banyak chart di layar HP kecil pada ukuran yang lebih kecil.',
-    jv:      'kanggo mbakake utawa ngecilike teks kabeh app (11–32px). Migunani banget kanggo presentasi layar gede, utawa kanggo nyawisake chart luwih akeh ing layar hp cilik.',
-  },
-  'sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.': {
-    la:      'ponit magnitudinem textus in PDF exportatis (10–20 px, defalta 14 px), independenter a magnitudine textus in schemate. Magnitudines supra 14 px ad dispositionem unius columnae commutant; monitio ostenditur cum hic limes superatur.',
-    'zh-TW': '設定匯出 PDF 中使用的字型大小（10–20px，預設 14px），與螢幕文字大小無關。超過 14px 的尺寸切換為單欄版面；超過此閾值時會顯示警告。',
-    id:      'mengatur ukuran font yang digunakan di PDF ekspor (10–20px, default 14px), terlepas dari ukuran teks di layar. Ukuran di atas 14px beralih ke layout satu kolom; peringatan ditampilkan kalau batas ini terlampaui.',
-    jv:      'nyetel ukuran font sing digunakake ing PDF ekspor (10–20px, default 14px), independen saka ukuran teks ing layar. Ukuran ing ndhuwur 14px ngalih menyang layout siji kolom; peringatan ditampilake yen wates iki dilewati.',
-  },
+  "to scale the whole app's text up or down (11–32 px). Useful for large-screen presentations at the larger end, or for fitting more chart on a small phone screen at the smaller end.":
+    {
+      la: 'ut textum totius applicationis sursum vel deorsum scias (11–32 px). Utile pro praesensationibus in schermate magno ad extremum maius, aut ad plus tabulae in schermate telephonico parvo ad extremum minus.',
+      'zh-TW':
+        '放大或縮小整個 App 的文字（11–32px）。較大時適合大螢幕展示，較小時則能在手機小螢幕上容納更多譜面內容。',
+      id: 'untuk perbesar/perkecil teks seluruh app (11–32px). Berguna untuk presentasi layar besar di ukuran yang lebih besar, atau muat lebih banyak chart di layar HP kecil pada ukuran yang lebih kecil.',
+      jv: 'kanggo mbakake utawa ngecilike teks kabeh app (11–32px). Migunani banget kanggo presentasi layar gede, utawa kanggo nyawisake chart luwih akeh ing layar hp cilik.',
+    },
+  'sets the font size used in exported PDFs (10–20 px, default 14 px), independently of the on-screen text size. Sizes above 14 px switch to single-column layout; a warning is shown when this threshold is exceeded.':
+    {
+      la: 'ponit magnitudinem textus in PDF exportatis (10–20 px, defalta 14 px), independenter a magnitudine textus in schemate. Magnitudines supra 14 px ad dispositionem unius columnae commutant; monitio ostenditur cum hic limes superatur.',
+      'zh-TW':
+        '設定匯出 PDF 中使用的字型大小（10–20px，預設 14px），與螢幕文字大小無關。超過 14px 的尺寸切換為單欄版面；超過此閾值時會顯示警告。',
+      id: 'mengatur ukuran font yang digunakan di PDF ekspor (10–20px, default 14px), terlepas dari ukuran teks di layar. Ukuran di atas 14px beralih ke layout satu kolom; peringatan ditampilkan kalau batas ini terlampaui.',
+      jv: 'nyetel ukuran font sing digunakake ing PDF ekspor (10–20px, default 14px), independen saka ukuran teks ing layar. Ukuran ing ndhuwur 14px ngalih menyang layout siji kolom; peringatan ditampilake yen wates iki dilewati.',
+    },
   'Five UI languages are available. Switch using the pill buttons in': {
-    la:      'Quinque linguae interfaciei adsunt. Commuta adhibendo papiliones in',
+    la: 'Quinque linguae interfaciei adsunt. Commuta adhibendo papiliones in',
     'zh-TW': '提供五種介面語言。使用藥丸按鈕切換，位於',
-    id:      'Ada lima bahasa UI yang tersedia. Ganti pakai tombol pill di',
-    jv:      'Ana lima basa UI sing kasedhiya. Ganti nganggo tombol pill ing',
+    id: 'Ada lima bahasa UI yang tersedia. Ganti pakai tombol pill di',
+    jv: 'Ana lima basa UI sing kasedhiya. Ganti nganggo tombol pill ing',
   },
   'or directly from the row of pills at the top of this manual page.': {
-    la:      'vel directe ex serie papilionum in summo huius paginae manualis.',
+    la: 'vel directe ex serie papilionum in summo huius paginae manualis.',
     'zh-TW': '或直接從本手冊頁面頂部的藥丸列切換。',
-    id:      'atau langsung dari baris tombol pill di atas halaman manual ini.',
-    jv:      'utawa langsung saka baris tombol pill ing ndhuwur kaca manual iki.',
+    id: 'atau langsung dari baris tombol pill di atas halaman manual ini.',
+    jv: 'utawa langsung saka baris tombol pill ing ndhuwur kaca manual iki.',
   },
   'humorous Latin. Activating it shows a toast notification. Unlocks the': {
-    la:      'Latinum iocosum. Activatio eius demonstrationem panis tosti ostendit. Reserat',
+    la: 'Latinum iocosum. Activatio eius demonstrationem panis tosti ostendit. Reserat',
     'zh-TW': '幽默拉丁文。啟用時會顯示提示通知，還會解鎖',
-    id:      'Latin yang lucu. Mengaktifkannya menampilkan notifikasi toast. Membuka kunci bagian',
-    jv:      'Latinum sing lucu. Ngaktifake bakal nampilake notifikasi toast. Mbukak bagian',
+    id: 'Latin yang lucu. Mengaktifkannya menampilkan notifikasi toast. Membuka kunci bagian',
+    jv: 'Latinum sing lucu. Ngaktifake bakal nampilake notifikasi toast. Mbukak bagian',
   },
   'section on this page.': {
-    la:      'sectionem in hac pagina.',
+    la: 'sectionem in hac pagina.',
     'zh-TW': '部分在本頁面上。',
-    id:      'di halaman ini.',
-    jv:      'ing kaca iki.',
+    id: 'di halaman ini.',
+    jv: 'ing kaca iki.',
   },
   'Traditional Chinese': {
-    la:      'Sinica Traditionalis',
+    la: 'Sinica Traditionalis',
     'zh-TW': '繁體中文',
-    id:      'Bahasa Mandarin Tradisional',
-    jv:      'Mandarin Tradisional',
+    id: 'Bahasa Mandarin Tradisional',
+    jv: 'Mandarin Tradisional',
   },
-  'Javanese': {
-    la:      'Iavanica',
+  Javanese: {
+    la: 'Iavanica',
     'zh-TW': '爪哇語',
-    id:      'Bahasa Jawa',
-    jv:      'Basa Jawa',
+    id: 'Bahasa Jawa',
+    jv: 'Basa Jawa',
   },
-  'Language preference is saved per set — loading a saved set restores the language it was saved with. The home page app name and tagline also change per language (because why not).': {
-    la:      'Praeferentia linguae per collectionem servatur — oneratio collectionis servatae linguam cum qua servata est restaurat. Nomen applicationis in pagina initiali et inscriptio etiam per linguam mutantur (quia cur non?).',
-    'zh-TW': '語言偏好按集合儲存——載入已儲存的集合會還原它儲存時的語言。首頁的 App 名稱和標語也會隨語言變更（因為何不呢？）。',
-    id:      'Preferensi bahasa disimpan per set — memuat set yang tersimpan memulihkan bahasa yang digunakan saat disimpan. Nama app dan tagline di halaman utama juga berubah per bahasa (karena kenapa enggak?).',
-    jv:      'Preferensi basa kasimpen per set — muat set kasimpen mulihake basa sing digunakake nalika disimpen. Jeneng app lan tagline ing kaca ngarep uga owah per basa (amarga kenapa ora?).',
-  },
+  'Language preference is saved per set — loading a saved set restores the language it was saved with. The home page app name and tagline also change per language (because why not).':
+    {
+      la: 'Praeferentia linguae per collectionem servatur — oneratio collectionis servatae linguam cum qua servata est restaurat. Nomen applicationis in pagina initiali et inscriptio etiam per linguam mutantur (quia cur non?).',
+      'zh-TW':
+        '語言偏好按集合儲存——載入已儲存的集合會還原它儲存時的語言。首頁的 App 名稱和標語也會隨語言變更（因為何不呢？）。',
+      id: 'Preferensi bahasa disimpan per set — memuat set yang tersimpan memulihkan bahasa yang digunakan saat disimpan. Nama app dan tagline di halaman utama juga berubah per bahasa (karena kenapa enggak?).',
+      jv: 'Preferensi basa kasimpen per set — muat set kasimpen mulihake basa sing digunakake nalika disimpen. Jeneng app lan tagline ing kaca ngarep uga owah per basa (amarga kenapa ora?).',
+    },
 
   // ── §11 Tips, autosave & troubleshooting ──
-  'Autosave': {
-    la:      'Custodia Automatica',
+  Autosave: {
+    la: 'Custodia Automatica',
     'zh-TW': '自動儲存',
-    id:      'Autosave',
-    jv:      'Simpen Otomatis',
+    id: 'Autosave',
+    jv: 'Simpen Otomatis',
   },
-  'your set is continuously saved to this browser\'s local storage. Refreshing or closing the tab won\'t lose your work; only starting a new set via': {
-    la:      'collectio tua continue in memoria locali huius navigatri servatur. Renovatio vel clausio tabulae non perdet laborem tuum; solum initium novae collectionis per',
-    'zh-TW': '你的集合持續儲存到此瀏覽器的本地存儲。重新整理或關閉標籤不會丟失你的工作；只有通過',
-    id:      'set kamu terus-menerus disimpan ke local storage browser ini. Refresh atau tutup tab gak akan kehilangan pekerjaan kamu; hanya memulai set baru via',
-    jv:      'set-mu terus-terusan disimpen menyang local storage browser iki. Refresh utawa nutup tab ora bakal ilang gaweyanmu; mung miwiti set anyar liwat',
-  },
+  "your set is continuously saved to this browser's local storage. Refreshing or closing the tab won't lose your work; only starting a new set via":
+    {
+      la: 'collectio tua continue in memoria locali huius navigatri servatur. Renovatio vel clausio tabulae non perdet laborem tuum; solum initium novae collectionis per',
+      'zh-TW': '你的集合持續儲存到此瀏覽器的本地存儲。重新整理或關閉標籤不會丟失你的工作；只有通過',
+      id: 'set kamu terus-menerus disimpan ke local storage browser ini. Refresh atau tutup tab gak akan kehilangan pekerjaan kamu; hanya memulai set baru via',
+      jv: 'set-mu terus-terusan disimpen menyang local storage browser iki. Refresh utawa nutup tab ora bakal ilang gaweyanmu; mung miwiti set anyar liwat',
+    },
   'in the header clears the workspace.': {
-    la:      'in capite spatium laboris purgat.',
+    la: 'in capite spatium laboris purgat.',
     'zh-TW': '標題中開始新集合才會清除工作區。',
-    id:      'di header yang membersihkan workspace.',
-    jv:      'ing header sing ngresiki workspace.',
+    id: 'di header yang membersihkan workspace.',
+    jv: 'ing header sing ngresiki workspace.',
   },
   'Everything is local': {
-    la:      'Omnia Localia Sunt',
+    la: 'Omnia Localia Sunt',
     'zh-TW': '一切都在本地',
-    id:      'Semua Tersimpan Lokal',
-    jv:      'Kabeh Lokal',
+    id: 'Semua Tersimpan Lokal',
+    jv: 'Kabeh Lokal',
   },
-  'no song data leaves your device. Clearing your browser\'s site data will remove your saved sets.': {
-    la:      'nulla data cantuum instrumentum tuum relinquunt. Expurgatio datae situs navigatri tui collectiones tuas servatas removebit.',
-    'zh-TW': '沒有歌曲資料會離開你的裝置。清除瀏覽器的網站資料會移除你的已儲存集合。',
-    id:      'gak ada data lagu yang kabur dari perangkat kamu. Tapi awas, hapus data situs browser = set kamu ikut lenyap juga!',
-    jv:      'ora ana data lagu sing lunga saka perangkat-mu. Nanging ati-ati, ngresiki data situs browser bakal melu mbusak set kasimpen-mu, nak.',
-  },
+  "no song data leaves your device. Clearing your browser's site data will remove your saved sets.":
+    {
+      la: 'nulla data cantuum instrumentum tuum relinquunt. Expurgatio datae situs navigatri tui collectiones tuas servatas removebit.',
+      'zh-TW': '沒有歌曲資料會離開你的裝置。清除瀏覽器的網站資料會移除你的已儲存集合。',
+      id: 'gak ada data lagu yang kabur dari perangkat kamu. Tapi awas, hapus data situs browser = set kamu ikut lenyap juga!',
+      jv: 'ora ana data lagu sing lunga saka perangkat-mu. Nanging ati-ati, ngresiki data situs browser bakal melu mbusak set kasimpen-mu, nak.',
+    },
   'Nothing parsed from my PDF?': {
-    la:      'Nihil e PDF meo lectum est?',
+    la: 'Nihil e PDF meo lectum est?',
     'zh-TW': 'PDF 沒有解析到任何內容？',
-    id:      'Gak ada yang ke-parse dari PDF?',
-    jv:      'Ora ana sing diurai saka PDF-ku?',
+    id: 'Gak ada yang ke-parse dari PDF?',
+    jv: 'Ora ana sing diurai saka PDF-ku?',
   },
-  'Make sure it\'s an actual SongSelect chord chart export, not a scanned/photographed image — the parser reads text, not pixels.': {
-    la:      'Verifica esse exportationem veram chartarum chordarum SongSelect, non imaginem depictam/photographatam — machina textum legit, non pixelos. Oculi machinae non sunt!',
-    'zh-TW': '確認這是實際的 SongSelect 和弦圖匯出，不是掃描/拍攝的圖片——解析器讀取文字，不讀像素！',
-    id:      'Pastiin itu ekspor chord chart SongSelect yang asli, bukan gambar scan/foto — parser baca teks, bukan piksel ya!',
-    jv:      'Pastikna iku ekspor chord chart SongSelect sing beneran, dudu gambar scan/foto — parser maca teks, ora piksel, nak.',
-  },
-  'Chord didn\'t land where I dragged it?': {
-    la:      'Chorda non cecidit ubi eam traxi?',
+  "Make sure it's an actual SongSelect chord chart export, not a scanned/photographed image — the parser reads text, not pixels.":
+    {
+      la: 'Verifica esse exportationem veram chartarum chordarum SongSelect, non imaginem depictam/photographatam — machina textum legit, non pixelos. Oculi machinae non sunt!',
+      'zh-TW':
+        '確認這是實際的 SongSelect 和弦圖匯出，不是掃描/拍攝的圖片——解析器讀取文字，不讀像素！',
+      id: 'Pastiin itu ekspor chord chart SongSelect yang asli, bukan gambar scan/foto — parser baca teks, bukan piksel ya!',
+      jv: 'Pastikna iku ekspor chord chart SongSelect sing beneran, dudu gambar scan/foto — parser maca teks, ora piksel, nak.',
+    },
+  "Chord didn't land where I dragged it?": {
+    la: 'Chorda non cecidit ubi eam traxi?',
     'zh-TW': '和弦沒有落在我拖到的地方？',
-    id:      'Chord gak landing di tempat yang aku seret?',
-    jv:      'Chord ora mudhun ing panggonan sing tak seret?',
+    id: 'Chord gak landing di tempat yang aku seret?',
+    jv: 'Chord ora mudhun ing panggonan sing tak seret?',
   },
-  'Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.': {
-    la:      'Positiones ad characteres integros coniunguntur ne chordae umquam superponantur; depone eam paululum longius in linea si resilivit.',
-    'zh-TW': '位置會對齊到完整字符，這樣和弦就永遠不會重疊；如果它彈回去了，就沿著行再往前一點放。',
-    id:      'Posisi snap ke karakter utuh supaya chord gak pernah tumpang tindih; taruh sedikit lebih jauh di baris kalau balik lagi.',
-    jv:      'Posisi snap menyang karakter lengkap supaya chord ora pernah tumpang tindih; seleh sethithik luwih adoh ing baris yen bali maneh.',
-  },
+  'Positions snap to whole characters so chords never overlap; drop it a little further along the line if it snapped back.':
+    {
+      la: 'Positiones ad characteres integros coniunguntur ne chordae umquam superponantur; depone eam paululum longius in linea si resilivit.',
+      'zh-TW':
+        '位置會對齊到完整字符，這樣和弦就永遠不會重疊；如果它彈回去了，就沿著行再往前一點放。',
+      id: 'Posisi snap ke karakter utuh supaya chord gak pernah tumpang tindih; taruh sedikit lebih jauh di baris kalau balik lagi.',
+      jv: 'Posisi snap menyang karakter lengkap supaya chord ora pernah tumpang tindih; seleh sethithik luwih adoh ing baris yen bali maneh.',
+    },
   'Want a clean slate for one song only?': {
-    la:      'Vis tabulam puram pro uno cantu solum?',
+    la: 'Vis tabulam puram pro uno cantu solum?',
     'zh-TW': '只想為單首歌清空畫布？',
-    id:      'Mau mulai bersih untuk satu lagu aja?',
-    jv:      'Pengen mulai bersih kanggo siji lagu wae?',
+    id: 'Mau mulai bersih untuk satu lagu aja?',
+    jv: 'Pengen mulai bersih kanggo siji lagu wae?',
   },
   'You can remove and re-add sections/lines rather than starting a whole new upload.': {
-    la:      'Potes sectiones/lineas removere et readhere potius quam ab initio totum oneras.',
+    la: 'Potes sectiones/lineas removere et readhere potius quam ab initio totum oneras.',
     'zh-TW': '你可以移除並重新新增段落/行，而不必整個重新上傳。',
-    id:      'Kamu bisa hapus dan tambah ulang bagian/baris daripada mulai upload baru dari awal.',
-    jv:      'Kowe iso mbusak lan nambah maneh bagian/baris tinimbang miwiti upload anyar saka nol.',
+    id: 'Kamu bisa hapus dan tambah ulang bagian/baris daripada mulai upload baru dari awal.',
+    jv: 'Kowe iso mbusak lan nambah maneh bagian/baris tinimbang miwiti upload anyar saka nol.',
   },
 };
 
@@ -2361,7 +2768,8 @@ export class UiSettingsService {
   hintsSeen: string[] = [];
 
   // Touch-first device (phone/tablet) — used to pick tap-vs-click hint wording.
-  readonly isCoarsePointer = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
+  readonly isCoarsePointer =
+    typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
 
   hintSeen(id: string): boolean {
     return this.hintsSeen.includes(id);
@@ -2380,8 +2788,12 @@ export class UiSettingsService {
   private toastStickyUntil = 0;
 
   showSettingsModal = false;
-  openSettingsModal()  { this.showSettingsModal = true; }
-  closeSettingsModal() { this.showSettingsModal = false; }
+  openSettingsModal() {
+    this.showSettingsModal = true;
+  }
+  closeSettingsModal() {
+    this.showSettingsModal = false;
+  }
 
   showShortcutsModal = false;
 
@@ -2399,7 +2811,9 @@ export class UiSettingsService {
     // only from 16.4 — the CSS layout must fully work without it.
     try {
       document.documentElement.requestFullscreen?.()?.catch(() => {});
-    } catch { /* unsupported */ }
+    } catch {
+      /* unsupported */
+    }
   }
 
   exitStageMode() {
@@ -2475,7 +2889,9 @@ export class UiSettingsService {
     }
   }
 
-  get latinMode(): boolean { return this.language === 'la'; }
+  get latinMode(): boolean {
+    return this.language === 'la';
+  }
 
   t(key: string): string {
     if (this.language === 'en') return key;
@@ -2497,7 +2913,11 @@ export class UiSettingsService {
   // General-purpose toast. `msg` is translated via t(). Error and action
   // toasts take priority: while one is live, an ordinary success/info toast
   // won't clobber it. durationMs 0 = sticky until dismissed/replaced.
-  showToast(msg: string, kind: ToastKind = 'success', opts?: { durationMs?: number; action?: ToastAction; priority?: boolean }) {
+  showToast(
+    msg: string,
+    kind: ToastKind = 'success',
+    opts?: { durationMs?: number; action?: ToastAction; priority?: boolean },
+  ) {
     const isPriority = kind === 'error' || !!opts?.action || !!opts?.priority;
     if (!isPriority && this.toastMsg() && Date.now() < this.toastStickyUntil) return;
 
@@ -2548,7 +2968,10 @@ export class UiSettingsService {
       const now = Date.now();
       if (now - this.lastQuotaToast > 30_000) {
         this.lastQuotaToast = now;
-        this.showToast('Storage is full — recent changes may not be saved. Export your set as a backup.', 'error');
+        this.showToast(
+          'Storage is full — recent changes may not be saved. Export your set as a backup.',
+          'error',
+        );
       }
       return false;
     }
@@ -2586,23 +3009,27 @@ export class UiSettingsService {
     if (raw) {
       try {
         const p = JSON.parse(raw) as Record<string, unknown>;
-        this.theme    = (p['theme'] === 'light' || p['theme'] === 'dark') ? p['theme'] as 'light' | 'dark'
-                      : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        this.theme =
+          p['theme'] === 'light' || p['theme'] === 'dark'
+            ? (p['theme'] as 'light' | 'dark')
+            : window.matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
         const sz = (p['fontSize'] as number) ?? 14;
         this.fontSize = this.fontSizes.includes(sz) ? sz : 14;
         const psz = (p['pdfFontSize'] as number) ?? 14;
         this.pdfFontSize = this.pdfFontSizes.includes(psz) ? psz : 14;
         const acc = p['chordAccidentals'] as string;
-        this.chordAccidentals = (acc === 'sharps' || acc === 'flats') ? acc : 'auto';
+        this.chordAccidentals = acc === 'sharps' || acc === 'flats' ? acc : 'auto';
         // language: prefer new 'language' key, fall back to old 'latinMode' boolean
         const lang = p['language'] as string;
-        if (lang && ['en','la','zh-TW','id','jv'].includes(lang)) {
+        if (lang && ['en', 'la', 'zh-TW', 'id', 'jv'].includes(lang)) {
           this.language = lang as Language;
         } else {
           this.language = p['latinMode'] === true ? 'la' : 'en';
         }
         const ct = p['colorTheme'] as string;
-        this.colorTheme = (this.colorThemes as string[]).includes(ct) ? ct as ColorTheme : 'blue';
+        this.colorTheme = (this.colorThemes as string[]).includes(ct) ? (ct as ColorTheme) : 'blue';
         // 'readable' (JetBrains Mono) is the default; only an explicit prior
         // choice of 'classic' opts back out, so old prefs blobs saved before
         // this field existed pick up the new default automatically.
@@ -2610,7 +3037,9 @@ export class UiSettingsService {
         this.chordFont = cf === 'classic' ? 'classic' : 'readable';
         this.editorSplitColumns = p['editorSplitColumns'] === true;
         const hints = p['hintsSeen'];
-        this.hintsSeen = Array.isArray(hints) ? hints.filter((h): h is string => typeof h === 'string') : [];
+        this.hintsSeen = Array.isArray(hints)
+          ? hints.filter((h): h is string => typeof h === 'string')
+          : [];
       } catch {
         this.theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         // Persist a clean blob immediately — otherwise the same corrupted JSON
@@ -2619,13 +3048,19 @@ export class UiSettingsService {
       }
     } else {
       const oldTheme = localStorage.getItem(LEGACY_THEME_KEY) as 'light' | 'dark' | null;
-      this.theme = (oldTheme === 'light' || oldTheme === 'dark') ? oldTheme
-                 : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      this.theme =
+        oldTheme === 'light' || oldTheme === 'dark'
+          ? oldTheme
+          : window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
       const oldSize = parseInt(localStorage.getItem(LEGACY_FONT_KEY) ?? '', 10);
       if (this.fontSizes.includes(oldSize)) this.fontSize = oldSize;
       this.language = localStorage.getItem(LEGACY_LATIN_KEY) === 'true' ? 'la' : 'en';
       this.savePrefs();
-      [LEGACY_THEME_KEY, LEGACY_FONT_KEY, LEGACY_LATIN_KEY].forEach(k => localStorage.removeItem(k));
+      [LEGACY_THEME_KEY, LEGACY_FONT_KEY, LEGACY_LATIN_KEY].forEach((k) =>
+        localStorage.removeItem(k),
+      );
     }
     this.applyTheme();
     this.applyFontSize();
@@ -2634,17 +3069,20 @@ export class UiSettingsService {
   }
 
   private savePrefs() {
-    this.safeSetItem(PREFS_KEY, JSON.stringify({
-      theme: this.theme,
-      fontSize: this.fontSize,
-      pdfFontSize: this.pdfFontSize,
-      chordAccidentals: this.chordAccidentals,
-      language: this.language,
-      colorTheme: this.colorTheme,
-      chordFont: this.chordFont,
-      editorSplitColumns: this.editorSplitColumns,
-      hintsSeen: this.hintsSeen,
-    }));
+    this.safeSetItem(
+      PREFS_KEY,
+      JSON.stringify({
+        theme: this.theme,
+        fontSize: this.fontSize,
+        pdfFontSize: this.pdfFontSize,
+        chordAccidentals: this.chordAccidentals,
+        language: this.language,
+        colorTheme: this.colorTheme,
+        chordFont: this.chordFont,
+        editorSplitColumns: this.editorSplitColumns,
+        hintsSeen: this.hintsSeen,
+      }),
+    );
   }
 
   toggleTheme() {
@@ -2713,9 +3151,12 @@ export class UiSettingsService {
     for (const { style, weight, path } of variants) {
       const url = new URL(path, document.baseURI).href;
       const face = new FontFace('JetBrains Mono', `url(${url})`, { style, weight });
-      face.load()
-        .then(loaded => document.fonts.add(loaded))
-        .catch(() => { /* offline or blocked — falls back to the Courier stack */ });
+      face
+        .load()
+        .then((loaded) => document.fonts.add(loaded))
+        .catch(() => {
+          /* offline or blocked — falls back to the Courier stack */
+        });
     }
   }
 }

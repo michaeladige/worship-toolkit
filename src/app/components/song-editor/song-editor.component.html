@@ -1,226 +1,280 @@
 <div class="editor">
   <!-- Toolbar -->
   @if (!ui.stageMode()) {
-  <div class="toolbar">
-    <div class="toolbar-left">
-      <div class="song-meta">
-        @if (editingTitle !== null) {
-          <input
-            class="title-input"
-            type="text"
-            [(ngModel)]="editingTitle"
-            (keydown)="titleKeydown($event)"
-            (blur)="commitTitle()"
-            appAutofocus
-            maxlength="120"
-          />
-        } @else {
-          <div class="title-edit-trigger" (click)="startEditTitle()" title="Click to rename">
-            <h2 class="song-title">{{ song.title }}</h2>
-            <span class="edit-pencil" aria-hidden="true">✎</span>
-          </div>
-        }
-        @if (song.authors.length) {
-          <span class="song-authors">{{ song.authors[0] }}</span>
-        }
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <div class="song-meta">
+          @if (editingTitle !== null) {
+            <input
+              class="title-input"
+              type="text"
+              [(ngModel)]="editingTitle"
+              (keydown)="titleKeydown($event)"
+              (blur)="commitTitle()"
+              appAutofocus
+              maxlength="120"
+            />
+          } @else {
+            <div class="title-edit-trigger" (click)="startEditTitle()" title="Click to rename">
+              <h2 class="song-title">{{ song.title }}</h2>
+              <span class="edit-pencil" aria-hidden="true">✎</span>
+            </div>
+          }
+          @if (song.authors.length) {
+            <span class="song-authors">{{ song.authors[0] }}</span>
+          }
+        </div>
+
+        <div class="meta-chips">
+          @if (editingTempo !== null) {
+            <span class="chip chip--editing">
+              BPM
+              <input
+                class="chip-input"
+                type="text"
+                inputmode="numeric"
+                maxlength="3"
+                [(ngModel)]="editingTempo"
+                (keydown)="tempoKeydown($event)"
+                (blur)="commitTempo()"
+                appAutofocus
+                [style.width.ch]="(editingTempo.length || 1) + 1"
+              />
+            </span>
+          } @else {
+            <button
+              class="chip chip--btn"
+              [class.chip--empty]="!song.tempo"
+              (click)="startEditTempo()"
+              title="Click to edit tempo"
+            >
+              {{ song.tempo ? 'BPM ' + song.tempo : '+ BPM' }}
+            </button>
+          }
+          @if (editingTimeSignature !== null) {
+            <span class="chip chip--editing">
+              <input
+                class="chip-input"
+                type="text"
+                maxlength="6"
+                [(ngModel)]="editingTimeSignature"
+                (keydown)="timeSignatureKeydown($event)"
+                (blur)="commitTimeSignature()"
+                appAutofocus
+                [style.width.ch]="(editingTimeSignature.length || 1) + 1"
+              />
+            </span>
+          } @else {
+            <button
+              class="chip chip--btn"
+              (click)="startEditTimeSignature()"
+              title="Click to edit time signature"
+            >
+              {{ song.timeSignature }}
+            </button>
+          }
+
+          <!-- Base key: the key the chart is written in. Editing it relabels the
+             song without transposing any chords (unlike the Key/Jump-to controls). -->
+          @if (editingBaseKey) {
+            <span class="chip chip--editing chip--basekey">
+              {{ ui.t('Base key') }}
+              <select
+                class="chip-select"
+                [ngModel]="song.originalKey"
+                (ngModelChange)="setBaseKey($event)"
+                appAutofocus
+              >
+                @for (k of allKeys; track k) {
+                  <option [value]="k">{{ k }}</option>
+                }
+              </select>
+              <button
+                class="chip-detect"
+                (click)="autoDetectKey()"
+                [title]="ui.t('Guess the key from the chords')"
+              >
+                {{ ui.t('Auto') }}
+              </button>
+            </span>
+          } @else {
+            <button
+              class="chip chip--btn"
+              (click)="startEditBaseKey()"
+              [title]="ui.t('Base key — the key the chart is written in')"
+            >
+              🔑 {{ song.originalKey }}
+            </button>
+          }
+        </div>
+
+        <div class="undo-redo-group">
+          <button
+            class="history-btn"
+            [disabled]="!canUndo"
+            (click)="undo.emit()"
+            title="Undo (Ctrl+Z)"
+          >
+            {{ ui.t('↩ Undo') }}
+          </button>
+          <button
+            class="history-btn"
+            [disabled]="!canRedo"
+            (click)="redo.emit()"
+            title="Redo (Ctrl+Shift+Z)"
+          >
+            {{ ui.t('↪ Redo') }}
+          </button>
+        </div>
       </div>
 
-      <div class="meta-chips">
-        @if (editingTempo !== null) {
-          <span class="chip chip--editing">
-            BPM
+      <div class="toolbar-right">
+        <!-- Key / Transpose -->
+        <div class="key-control">
+          <label>{{ ui.t('Key') }}</label>
+          <button class="step-btn" (click)="transpose(-1)" title="Transpose down">&#9660;</button>
+          <span class="key-display">{{ effectiveKey }}</span>
+          <button class="step-btn" (click)="transpose(1)" title="Transpose up">&#9650;</button>
+        </div>
+
+        <div class="key-jump">
+          <label>{{ ui.t('Jump to') }}</label>
+          <select [ngModel]="effectiveKey" (ngModelChange)="setKey($event)">
+            @for (k of allKeys; track k) {
+              <option [value]="k">{{ k }}</option>
+            }
+          </select>
+        </div>
+
+        @if (song.transposeSemitones !== 0) {
+          <button class="reset-btn" (click)="resetTranspose()" title="Reset to original key">
+            {{ ui.t('Reset') }} ({{ song.originalKey }})
+          </button>
+        }
+
+        <!-- Autoscroll -->
+        <div class="autoscroll-control" [class.active]="autoscrollSpeed > 0">
+          <button
+            class="autoscroll-toggle-btn"
+            [class.active]="autoscrollSpeed > 0"
+            (click)="toggleAutoscroll()"
+            [attr.aria-pressed]="autoscrollSpeed > 0"
+            [title]="ui.t('Autoscroll')"
+          >
+            <span class="control-icon" aria-hidden="true">⏬</span>
+            <span class="control-label-text">{{ ui.t('Autoscroll') }}</span>
+          </button>
+          @if (autoscrollSpeed > 0) {
+            <button
+              class="step-btn"
+              (click)="decreaseAutoscrollSpeed()"
+              [disabled]="autoscrollSpeed <= 0"
+              title="Decrease autoscroll speed"
+            >
+              &#9660;
+            </button>
             <input
-              class="chip-input"
+              class="autoscroll-speed"
               type="text"
               inputmode="numeric"
-              maxlength="3"
-              [(ngModel)]="editingTempo"
-              (keydown)="tempoKeydown($event)"
-              (blur)="commitTempo()"
-              appAutofocus
-              [style.width.ch]="(editingTempo.length || 1) + 1"
+              pattern="[0-9]*"
+              maxlength="2"
+              [ngModel]="autoscrollSpeed"
+              (change)="onAutoscrollSpeedInput($any($event.target).value)"
+              [title]="ui.t('Autoscroll')"
             />
-          </span>
-        } @else {
-          <button
-            class="chip chip--btn"
-            [class.chip--empty]="!song.tempo"
-            (click)="startEditTempo()"
-            title="Click to edit tempo"
-          >{{ song.tempo ? 'BPM ' + song.tempo : '+ BPM' }}</button>
-        }
-        @if (editingTimeSignature !== null) {
-          <span class="chip chip--editing">
-            <input
-              class="chip-input"
-              type="text"
-              maxlength="6"
-              [(ngModel)]="editingTimeSignature"
-              (keydown)="timeSignatureKeydown($event)"
-              (blur)="commitTimeSignature()"
-              appAutofocus
-              [style.width.ch]="(editingTimeSignature.length || 1) + 1"
-            />
-          </span>
-        } @else {
-          <button
-            class="chip chip--btn"
-            (click)="startEditTimeSignature()"
-            title="Click to edit time signature"
-          >{{ song.timeSignature }}</button>
-        }
-      </div>
-
-      <div class="undo-redo-group">
-        <button class="history-btn" [disabled]="!canUndo" (click)="undo.emit()" title="Undo (Ctrl+Z)">{{ ui.t('↩ Undo') }}</button>
-        <button class="history-btn" [disabled]="!canRedo" (click)="redo.emit()" title="Redo (Ctrl+Shift+Z)">{{ ui.t('↪ Redo') }}</button>
-      </div>
-    </div>
-
-    <div class="toolbar-right">
-      <!-- Key / Transpose -->
-      <div class="key-control">
-        <label>{{ ui.t('Key') }}</label>
-        <button class="step-btn" (click)="transpose(-1)" title="Transpose down">&#9660;</button>
-        <span class="key-display">{{ effectiveKey }}</span>
-        <button class="step-btn" (click)="transpose(1)" title="Transpose up">&#9650;</button>
-      </div>
-
-      <div class="key-jump">
-        <label>{{ ui.t('Jump to') }}</label>
-        <select [ngModel]="effectiveKey" (ngModelChange)="setKey($event)">
-          @for (k of allKeys; track k) {
-            <option [value]="k">{{ k }}</option>
+            <button
+              class="step-btn"
+              (click)="increaseAutoscrollSpeed()"
+              [disabled]="autoscrollSpeed >= maxAutoscrollSpeed"
+              title="Increase autoscroll speed"
+            >
+              &#9650;
+            </button>
           }
-        </select>
-      </div>
+        </div>
 
-      @if (song.transposeSemitones !== 0) {
-        <button class="reset-btn" (click)="resetTranspose()" title="Reset to original key">
-          {{ ui.t('Reset') }} ({{ song.originalKey }})
-        </button>
-      }
-
-      <!-- Autoscroll -->
-      <div class="autoscroll-control" [class.active]="autoscrollSpeed > 0">
-        <button
-          class="autoscroll-toggle-btn"
-          [class.active]="autoscrollSpeed > 0"
-          (click)="toggleAutoscroll()"
-          [attr.aria-pressed]="autoscrollSpeed > 0"
-          [title]="ui.t('Autoscroll')"
-        >
-          <span class="control-icon" aria-hidden="true">⏬</span>
-          <span class="control-label-text">{{ ui.t('Autoscroll') }}</span>
-        </button>
-        @if (autoscrollSpeed > 0) {
+        <!-- Metronome -->
+        <div class="metronome-control" [class.active]="metronomeOn">
           <button
-            class="step-btn"
-            (click)="decreaseAutoscrollSpeed()"
-            [disabled]="autoscrollSpeed <= 0"
-            title="Decrease autoscroll speed"
-          >&#9660;</button>
-          <input
-            class="autoscroll-speed"
-            type="text"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            maxlength="2"
-            [ngModel]="autoscrollSpeed"
-            (change)="onAutoscrollSpeedInput($any($event.target).value)"
-            [title]="ui.t('Autoscroll')"
-          />
-          <button
-            class="step-btn"
-            (click)="increaseAutoscrollSpeed()"
-            [disabled]="autoscrollSpeed >= maxAutoscrollSpeed"
-            title="Increase autoscroll speed"
-          >&#9650;</button>
-        }
-      </div>
-
-      <!-- Metronome -->
-      <div class="metronome-control" [class.active]="metronomeOn">
-        <button
-          class="metronome-toggle-btn"
-          [class.active]="metronomeOn"
-          (click)="toggleMetronome()"
-          [attr.aria-pressed]="metronomeOn"
-          [title]="ui.t('Metronome')"
-        >
-          <span class="control-icon" aria-hidden="true">&#9833;</span>
-          <span class="control-label-text">{{ ui.t('Metronome') }}</span>
-        </button>
-        @if (metronomeOn) {
-          <button
-            class="step-btn"
-            (click)="decreaseBpm()"
-            [disabled]="bpm <= minBpm"
-            title="Decrease BPM"
-          >&#9660;</button>
-          <input
-            class="metronome-bpm"
-            type="text"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            maxlength="3"
-            [ngModel]="bpm"
-            (change)="onBpmInput($any($event.target).value)"
+            class="metronome-toggle-btn"
+            [class.active]="metronomeOn"
+            (click)="toggleMetronome()"
+            [attr.aria-pressed]="metronomeOn"
             [title]="ui.t('Metronome')"
-          />
-          <button
-            class="step-btn"
-            (click)="increaseBpm()"
-            [disabled]="bpm >= maxBpm"
-            title="Increase BPM"
-          >&#9650;</button>
-        }
+          >
+            <span class="control-icon" aria-hidden="true">&#9833;</span>
+            <span class="control-label-text">{{ ui.t('Metronome') }}</span>
+          </button>
+          @if (metronomeOn) {
+            <button
+              class="step-btn"
+              (click)="decreaseBpm()"
+              [disabled]="bpm <= minBpm"
+              title="Decrease BPM"
+            >
+              &#9660;
+            </button>
+            <input
+              class="metronome-bpm"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]*"
+              maxlength="3"
+              [ngModel]="bpm"
+              (change)="onBpmInput($any($event.target).value)"
+              [title]="ui.t('Metronome')"
+            />
+            <button
+              class="step-btn"
+              (click)="increaseBpm()"
+              [disabled]="bpm >= maxBpm"
+              title="Increase BPM"
+            >
+              &#9650;
+            </button>
+          }
+        </div>
+
+        <!-- Bass notes toggle -->
+        <button
+          class="toggle-btn"
+          [class.active]="song.showBassNotesOnly"
+          (click)="toggleBassNotes()"
+          title="Show bass/root notes only"
+        >
+          <span class="label-full">{{ ui.t('🎹 Bass Notes') }}</span>
+          <span class="label-short">{{ ui.t('🎹 Bass') }}</span>
+        </button>
+
+        <!-- Nashville notation toggle -->
+        <button
+          class="toggle-btn"
+          [class.active]="song.showNashville"
+          (click)="toggleNashville()"
+          title="Nashville number notation"
+        >
+          <span class="label-full">{{ ui.t('1 2 3 Nashville') }}</span>
+          <span class="label-short">{{ ui.t('1 2 3') }}</span>
+        </button>
+
+        <!-- View Only mode -->
+        <button
+          class="toggle-btn"
+          [class.active]="ui.viewOnly()"
+          (click)="ui.toggleViewOnly()"
+          [attr.aria-pressed]="ui.viewOnly()"
+          [title]="ui.t('View Only')"
+        >
+          {{ ui.viewOnly() ? '🔒' : '🔓' }} {{ ui.t('View Only') }}
+        </button>
+
+        <!-- Stage mode -->
+        <button class="toggle-btn stage-btn" (click)="ui.enterStageMode()" [title]="ui.t('Stage')">
+          🎤 {{ ui.t('Stage') }}
+        </button>
       </div>
-
-      <!-- Bass notes toggle -->
-      <button
-        class="toggle-btn"
-        [class.active]="song.showBassNotesOnly"
-        (click)="toggleBassNotes()"
-        title="Show bass/root notes only"
-      >
-        <span class="label-full">{{ ui.t('🎹 Bass Notes') }}</span>
-        <span class="label-short">{{ ui.t('🎹 Bass') }}</span>
-      </button>
-
-      <!-- Nashville notation toggle -->
-      <button
-        class="toggle-btn"
-        [class.active]="song.showNashville"
-        (click)="toggleNashville()"
-        title="Nashville number notation"
-      >
-        <span class="label-full">{{ ui.t('1 2 3 Nashville') }}</span>
-        <span class="label-short">{{ ui.t('1 2 3') }}</span>
-      </button>
-
-      <!-- View Only mode -->
-      <button
-        class="toggle-btn"
-        [class.active]="ui.viewOnly()"
-        (click)="ui.toggleViewOnly()"
-        [attr.aria-pressed]="ui.viewOnly()"
-        [title]="ui.t('View Only')"
-      >
-        {{ ui.viewOnly() ? '🔒' : '🔓' }} {{ ui.t('View Only') }}
-      </button>
-
-      <!-- Stage mode -->
-      <button
-        class="toggle-btn stage-btn"
-        (click)="ui.enterStageMode()"
-        [title]="ui.t('Stage')"
-      >
-        🎤 {{ ui.t('Stage') }}
-      </button>
-
     </div>
-  </div>
   }
 
   <!-- One-time chord-editing hint -->
@@ -228,19 +282,26 @@
     <div class="hint-banner">
       <span class="hint-text">
         💡
-        {{ ui.isCoarsePointer
-          ? ui.t('Tip: tap a chord to edit it — press and drag to move it.')
-          : ui.t('Tip: click a chord to edit it — drag to move it.') }}
+        {{
+          ui.isCoarsePointer
+            ? ui.t('Tip: tap a chord to edit it — press and drag to move it.')
+            : ui.t('Tip: click a chord to edit it — drag to move it.')
+        }}
       </span>
-      <button class="hint-dismiss-btn" (click)="ui.dismissHint('chord-edit')">{{ ui.t('Got it') }}</button>
+      <button class="hint-dismiss-btn" (click)="ui.dismissHint('chord-edit')">
+        {{ ui.t('Got it') }}
+      </button>
     </div>
   }
 
   <!-- Original key indicator -->
   @if (song.transposeSemitones !== 0) {
     <div class="key-banner">
-      Transposed from <strong>{{ song.originalKey }}</strong> → <strong>{{ effectiveKey }}</strong>
-      ({{ song.transposeSemitones > 0 ? '+' : '' }}{{ song.transposeSemitones }} semitone{{ Math.abs(song.transposeSemitones) !== 1 ? 's' : '' }})
+      Transposed from <strong>{{ song.originalKey }}</strong> →
+      <strong>{{ effectiveKey }}</strong> ({{ song.transposeSemitones > 0 ? '+' : ''
+      }}{{ song.transposeSemitones }} semitone{{
+        Math.abs(song.transposeSemitones) !== 1 ? 's' : ''
+      }})
     </div>
   }
 
@@ -276,7 +337,9 @@
           class="custom-section-add"
           [disabled]="!newSectionName.trim()"
           (click)="addSection(newSectionName)"
-        >{{ ui.t('Add') }}</button>
+        >
+          {{ ui.t('Add') }}
+        </button>
       </div>
     </div>
   </div>
@@ -289,20 +352,40 @@
         (click)="prevSong.emit()"
         [disabled]="selectedIndex === 0"
         [title]="ui.t('Previous song')"
-      >⏮</button>
+      >
+        ⏮
+      </button>
       <button
         class="stage-bar-btn"
         (click)="nextSong.emit()"
         [disabled]="selectedIndex === songs.length - 1"
         [title]="ui.t('Next song')"
-      >⏭</button>
+      >
+        ⏭
+      </button>
 
       <span class="stage-bar-title">{{ song.title }}</span>
 
-      <div class="stage-bar-group" [class.active]="autoscrollSpeed > 0" [title]="ui.t('Autoscroll')">
-        <button class="stage-bar-btn" (click)="toggleAutoscroll()" [attr.aria-pressed]="autoscrollSpeed > 0">⏬</button>
+      <div
+        class="stage-bar-group"
+        [class.active]="autoscrollSpeed > 0"
+        [title]="ui.t('Autoscroll')"
+      >
+        <button
+          class="stage-bar-btn"
+          (click)="toggleAutoscroll()"
+          [attr.aria-pressed]="autoscrollSpeed > 0"
+        >
+          ⏬
+        </button>
         @if (autoscrollSpeed > 0) {
-          <button class="stage-bar-btn" (click)="decreaseAutoscrollSpeed()" [disabled]="autoscrollSpeed <= 0">&#9660;</button>
+          <button
+            class="stage-bar-btn"
+            (click)="decreaseAutoscrollSpeed()"
+            [disabled]="autoscrollSpeed <= 0"
+          >
+            &#9660;
+          </button>
           <input
             class="stage-bar-value"
             type="text"
@@ -313,14 +396,24 @@
             (change)="onAutoscrollSpeedInput($any($event.target).value)"
             [title]="ui.t('Autoscroll')"
           />
-          <button class="stage-bar-btn" (click)="increaseAutoscrollSpeed()" [disabled]="autoscrollSpeed >= maxAutoscrollSpeed">&#9650;</button>
+          <button
+            class="stage-bar-btn"
+            (click)="increaseAutoscrollSpeed()"
+            [disabled]="autoscrollSpeed >= maxAutoscrollSpeed"
+          >
+            &#9650;
+          </button>
         }
       </div>
 
       <div class="stage-bar-group" [class.active]="metronomeOn" [title]="ui.t('Metronome')">
-        <button class="stage-bar-btn" (click)="toggleMetronome()" [attr.aria-pressed]="metronomeOn">&#9833;</button>
+        <button class="stage-bar-btn" (click)="toggleMetronome()" [attr.aria-pressed]="metronomeOn">
+          &#9833;
+        </button>
         @if (metronomeOn) {
-          <button class="stage-bar-btn" (click)="decreaseBpm()" [disabled]="bpm <= minBpm">&#9660;</button>
+          <button class="stage-bar-btn" (click)="decreaseBpm()" [disabled]="bpm <= minBpm">
+            &#9660;
+          </button>
           <input
             class="stage-bar-value"
             type="text"
@@ -331,7 +424,9 @@
             (change)="onBpmInput($any($event.target).value)"
             [title]="ui.t('Metronome')"
           />
-          <button class="stage-bar-btn" (click)="increaseBpm()" [disabled]="bpm >= maxBpm">&#9650;</button>
+          <button class="stage-bar-btn" (click)="increaseBpm()" [disabled]="bpm >= maxBpm">
+            &#9650;
+          </button>
         }
       </div>
 
@@ -341,9 +436,17 @@
         (click)="ui.toggleViewOnly()"
         [attr.aria-pressed]="ui.viewOnly()"
         [title]="ui.t('View Only')"
-      >{{ ui.viewOnly() ? '🔒' : '🔓' }}</button>
+      >
+        {{ ui.viewOnly() ? '🔒' : '🔓' }}
+      </button>
 
-      <button class="stage-bar-btn stage-exit-btn" (click)="ui.exitStageMode()" [title]="ui.t('Exit stage mode')">✕</button>
+      <button
+        class="stage-bar-btn stage-exit-btn"
+        (click)="ui.exitStageMode()"
+        [title]="ui.t('Exit stage mode')"
+      >
+        ✕
+      </button>
     </div>
   }
 </div>
