@@ -35,9 +35,9 @@ interface RawChord {
 // Cloudflare). These free/keyless proxies relay the request; any of them can be
 // blocked or down at any time, hence the fallback chain + clear error handling.
 const PROXIES: ((url: string) => string)[] = [
-  u => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
-  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-  u => `https://thingproxy.freeboard.io/fetch/${u}`,
+  (u) => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+  (u) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  (u) => `https://thingproxy.freeboard.io/fetch/${u}`,
 ];
 
 const FETCH_TIMEOUT_MS = 15000;
@@ -108,7 +108,10 @@ export class UltimateGuitarService {
    */
   extractUrls(text: string): string[] {
     if (!text) return [];
-    const candidates = text.match(/https?:\/\/[^\s<>"'`)\]]+|(?:www\.|tabs\.)?ultimate-guitar\.com\/[^\s<>"'`)\]]+/gi) ?? [];
+    const candidates =
+      text.match(
+        /https?:\/\/[^\s<>"'`)\]]+|(?:www\.|tabs\.)?ultimate-guitar\.com\/[^\s<>"'`)\]]+/gi,
+      ) ?? [];
     const seen = new Set<string>();
     const urls: string[] = [];
     for (const raw of candidates) {
@@ -221,8 +224,8 @@ export class UltimateGuitarService {
 
         const refLen = Math.max(chordText.length, lyric.length, 1);
         const chords: ChordToken[] = rawChords
-          .filter(c => c.chord.trim().length > 0)
-          .map(c => ({
+          .filter((c) => c.chord.trim().length > 0)
+          .map((c) => ({
             chord: c.chord,
             charPos: c.col,
             xPercent: Math.min(100, (c.col / refLen) * 100),
@@ -237,7 +240,10 @@ export class UltimateGuitarService {
       ensureSection().lines.push({ chords: [], lyric: raw, isChordsOnly: false });
     }
 
-    const key = meta.tonality_name?.trim() || 'C';
+    const liveSections = sections.filter((s) => s.lines.length > 0);
+    // Prefer UG's own tonality; otherwise guess the base key from the chords so
+    // we don't mislabel the chart 'C' (which would throw off Nashville/transpose).
+    const key = this.normalizeKey(meta.tonality_name) || this.chordSvc.detectKey(liveSections);
     return {
       id: crypto.randomUUID(),
       title: meta.song_name?.trim() || 'Untitled',
@@ -246,10 +252,20 @@ export class UltimateGuitarService {
       originalKey: key,
       tempo: '',
       timeSignature: '4/4',
-      sections: sections.filter(s => s.lines.length > 0),
+      sections: liveSections,
       transposeSemitones: 0,
       showBassNotesOnly: false,
     };
+  }
+
+  // Reduce UG's tonality_name to a plain pitch the app can transpose. UG may hand
+  // back a minor name like "Am"; the transposer keys off note letters only, so a
+  // literal "Am" would never match — keep just the root (e.g. "Am" -> "A", "F#m" -> "F#").
+  private normalizeKey(tonality: string | undefined): string {
+    const trimmed = tonality?.trim();
+    if (!trimmed) return '';
+    const m = trimmed.match(/^([A-G][b#]?)/);
+    return m ? m[1] : '';
   }
 
   // Strip the [ch]..[/ch] tags from one line, returning the de-tagged text plus

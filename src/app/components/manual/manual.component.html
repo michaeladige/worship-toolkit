@@ -199,6 +199,13 @@ Sephiroth!</pre>
       <li><strong>{{ ui.t('Reset') }}</strong> &mdash; {{ ui.t('once you\'ve transposed, a') }} <strong>{{ ui.t('Reset') }}</strong> {{ ui.t('button appears showing the original key; click it to snap straight back.') }}</li>
       <li>{{ ui.t('Whenever the song is transposed, a banner above the chart confirms the change, e.g.') }} <em>{{ ui.t('Transposed from G → A (+2 semitones)') }}</em>{{ ui.t('.') }}</li>
     </ul>
+
+    <h3>{{ ui.t('Base key') }}</h3>
+    <ul>
+      <li><strong>🔑 {{ ui.t('Base key') }}</strong> &mdash; {{ ui.t('the chip at the left of the toolbar shows the key the chart is actually written in. Click it to relabel the base key directly — unlike Jump to Key or step transpose above, this never moves a single chord on the page; only the key label, Nashville numbers, and accidental spelling update.') }}</li>
+      <li><strong>{{ ui.t('Auto') }}</strong> &mdash; {{ ui.t('while editing the base key, click Auto to guess it from the chords already on the chart — handy when a chart has no key info at all.') }}</li>
+      <li>{{ ui.t('Charts that import without key metadata — some Ultimate Guitar pages, or PDFs missing the "Key -" line — now guess the base key automatically from their chords instead of defaulting to C.') }}</li>
+    </ul>
   </section>
 
   <section id="notation" class="manual-section">
@@ -333,6 +340,28 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>2.0.4</h3></summary>
+      <ul>
+        <li><strong>Fixed:</strong> base key detection still guessed C instead of G for very common charts built on the I-V-vi-IV/IV-V-vi-I progression (e.g. C, D, Em, G), where the "wrong" key's chord happens to appear more often and open more lines. Detection now also checks whether each candidate key's ii/iii/IV/V/vi chords have the major/minor quality a real diatonic scale expects — a major chord standing in for what should be a minor ii (or vice versa) is strong evidence the chart is actually in the neighboring key a fifth away.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>2.0.3</h3></summary>
+      <ul>
+        <li><strong>Fixed:</strong> base key detection often guessed C instead of G (and could make similar mistakes for other key pairs a fifth apart). It now weighs overall chord frequency and how often each chord opens a line, counting each repeated section once instead of once per repeat, so a heavily-repeated chorus can no longer out-vote a verse printed only once.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>2.0.2</h3></summary>
+      <ul>
+        <li><strong>Base key detection</strong> &mdash; songs imported without key metadata (some Ultimate Guitar pages, or PDFs missing the "Key -" line) now have their base key guessed automatically from the chords on the chart, instead of defaulting to C.</li>
+        <li><strong>Manual base key editing</strong> &mdash; a new 🔑 base key chip in the editor toolbar lets you relabel a song's base key directly, without transposing — only the key label, Nashville numbering, and accidental spelling change. An Auto button next to it re-runs the key guess at any time.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>2.0.1</h3></summary>
       <ul>
         <li><strong>Import from Ultimate Guitar</strong> &mdash; a new 🔗 Import button in the app header (and on the upload screen) pulls chord charts straight from ultimate-guitar.com. Paste a chords-page link and it's parsed into an editable, transposable song.</li>

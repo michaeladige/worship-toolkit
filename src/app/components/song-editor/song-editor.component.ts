@@ -1,4 +1,15 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef, ElementRef, ViewChild, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParsedSong } from '../../models/song.model';
@@ -68,7 +79,11 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   }
 
   get effectiveKey(): string {
-    return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones, this.ui.chordAccidentals);
+    return this.chordSvc.transposeKey(
+      this.song.originalKey,
+      this.song.transposeSemitones,
+      this.ui.chordAccidentals,
+    );
   }
 
   get allKeys(): string[] {
@@ -77,7 +92,7 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
 
   // The chord-editing hint only makes sense once there are chords to click.
   get songHasChords(): boolean {
-    return this.song.sections.some(sec => sec.lines.some(l => l.chords.length > 0));
+    return this.song.sections.some((sec) => sec.lines.some((l) => l.chords.length > 0));
   }
 
   updateSong(updated: ParsedSong) {
@@ -94,6 +109,33 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   setKey(key: string) {
     const semitones = this.chordSvc.semitonesBetween(this.song.originalKey, key);
     this.updateSong({ ...this.song, transposeSemitones: semitones });
+  }
+
+  // Relabel the song's base (original) key WITHOUT moving any chords — unlike
+  // setKey()/transpose(), transposeSemitones is left untouched, so only the key
+  // label, Nashville reference, and accidental spelling change. This is how a
+  // user corrects a mis-detected or metadata-less key (e.g. Ultimate Guitar imports).
+  editingBaseKey = false;
+
+  startEditBaseKey() {
+    if (this.ui.viewOnly()) return;
+    this.editingBaseKey = true;
+  }
+
+  setBaseKey(key: string) {
+    this.editingBaseKey = false;
+    if (key && key !== this.song.originalKey) {
+      this.updateSong({ ...this.song, originalKey: key });
+    }
+  }
+
+  autoDetectKey() {
+    const detected = this.chordSvc.detectKey(this.song.sections);
+    this.editingBaseKey = false;
+    if (detected !== this.song.originalKey) {
+      this.updateSong({ ...this.song, originalKey: detected });
+    }
+    this.ui.showToast(this.ui.t('Base key set to') + ' ' + detected);
   }
 
   toggleBassNotes() {
@@ -117,10 +159,17 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
     this.editingTitle = null;
     if (v) this.updateSong({ ...this.song, title: v });
   }
-  cancelTitle() { this.editingTitle = null; }
+  cancelTitle() {
+    this.editingTitle = null;
+  }
   titleKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') { e.preventDefault(); this.commitTitle(); }
-    if (e.key === 'Escape') { this.cancelTitle(); }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.commitTitle();
+    }
+    if (e.key === 'Escape') {
+      this.cancelTitle();
+    }
   }
 
   startEditTempo() {
@@ -140,8 +189,13 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   }
 
   tempoKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') { e.preventDefault(); this.commitTempo(); }
-    if (e.key === 'Escape') { this.cancelTempo(); }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.commitTempo();
+    }
+    if (e.key === 'Escape') {
+      this.cancelTempo();
+    }
   }
 
   setTempo(value: string) {
@@ -167,8 +221,13 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   }
 
   timeSignatureKeydown(e: KeyboardEvent) {
-    if (e.key === 'Enter') { e.preventDefault(); this.commitTimeSignature(); }
-    if (e.key === 'Escape') { this.cancelTimeSignature(); }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.commitTimeSignature();
+    }
+    if (e.key === 'Escape') {
+      this.cancelTimeSignature();
+    }
   }
 
   setTimeSignature(value: string) {
@@ -247,7 +306,8 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
           this.autoscrollFloatTop = el.scrollTop;
         }
         const dtSeconds = (ts - this.autoscrollLastTs) / 1000;
-        this.autoscrollFloatTop += this.autoscrollSpeed * SongEditorComponent.AUTOSCROLL_PX_PER_SEC_PER_LEVEL * dtSeconds;
+        this.autoscrollFloatTop +=
+          this.autoscrollSpeed * SongEditorComponent.AUTOSCROLL_PX_PER_SEC_PER_LEVEL * dtSeconds;
         el.scrollTop = this.autoscrollFloatTop;
       }
       this.autoscrollLastTs = ts;
@@ -294,9 +354,10 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
     // Always re-derive from the song's own tempo rather than remembering a
     // previously hand-adjusted BPM from an earlier on/off cycle.
     const parsed = parseInt(this.song.tempo, 10);
-    this.bpm = Number.isFinite(parsed) && parsed > 0
-      ? Math.max(this.minBpm, Math.min(this.maxBpm, parsed))
-      : 80;
+    this.bpm =
+      Number.isFinite(parsed) && parsed > 0
+        ? Math.max(this.minBpm, Math.min(this.maxBpm, parsed))
+        : 80;
 
     // Created/resumed inside this click handler so Safari/iOS autoplay
     // policy sees it as a genuine user gesture.

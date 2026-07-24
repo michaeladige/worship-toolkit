@@ -2,6 +2,22 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.0.4] - 2026-07-25
+
+### Fixed
+- **Base key detection still guessed C instead of G for the ubiquitous IV-V-vi-I / I-V-vi-IV progression** (e.g. a chart built entirely from C, D, Em, G) — C and G share 6 of 7 major-scale notes, and in this progression the "wrong" key's chord (C) is typically both the most frequent chord and the one that opens the most lines, so the previous frequency/line-start-weighted scoring consistently favored it. Detection now also scores whether each candidate key's ii/iii/IV/V/vi chords carry the major/minor quality a real diatonic major scale expects (e.g. ii should be minor) — a major chord standing in for an expected-minor scale degree (or vice versa) is strong evidence the chart is actually built on the neighboring key a fifth away.
+
+## [2.0.3] - 2026-07-24
+
+### Fixed
+- **Base key detection often guessed C instead of G** (and could make similar mistakes for other fifth-related key pairs) — songs whose chords fit both the C major and G major scale equally well were tie-broken mainly by which chord happened to appear first or last in the whole chart, which a repeated chorus (very common in Ultimate Guitar imports, which retag `[Chorus]` before every repeat) could easily tip the wrong way. Detection now weighs overall chord frequency first, and how often each chord opens a line as a strong secondary signal — counting each repeated section once, not once per repeat, so a heavily-repeated chorus can no longer out-vote a verse printed only once.
+
+## [2.0.2] - 2026-07-24
+
+### Added
+- **Base key detection** — songs imported without key metadata (some Ultimate Guitar pages, or PDFs missing the "Key -" line) now have their base key guessed automatically from the chords on the chart, instead of defaulting to C. The guess weighs which major scale best fits the chord roots, then disambiguates a major key from its relative minor using chord quality, presence of the dominant chord, and how the song resolves.
+- **Manual base key editing** — a new 🔑 base key chip in the editor toolbar lets you relabel a song's base key directly, without transposing. Unlike the existing Key/Jump-to control (which moves every chord), editing the base key only updates the key label, Nashville numbering, and accidental spelling. An **Auto** button next to it re-runs the key guess against the song's current chords at any time.
+
 ## [2.0.1] - 2026-07-24
 
 ### Added
