@@ -2,6 +2,12 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.0.2] - 2026-07-24
+
+### Added
+- **Base key detection** — songs imported without key metadata (some Ultimate Guitar pages, or PDFs missing the "Key -" line) now have their base key guessed automatically from the chords on the chart, instead of defaulting to C. The guess weighs which major scale best fits the chord roots, then disambiguates a major key from its relative minor using chord quality, presence of the dominant chord, and how the song resolves.
+- **Manual base key editing** — a new 🔑 base key chip in the editor toolbar lets you relabel a song's base key directly, without transposing. Unlike the existing Key/Jump-to control (which moves every chord), editing the base key only updates the key label, Nashville numbering, and accidental spelling. An **Auto** button next to it re-runs the key guess against the song's current chords at any time.
+
 ## [2.0.1] - 2026-07-24
 
 ### Added

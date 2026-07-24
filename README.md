@@ -48,6 +48,8 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 
 ### Key & Notation
 - Transpose up/down by semitone with arrow buttons, or jump directly to a target key
+- **Base key detection** — songs imported without key metadata (some Ultimate Guitar pages, or PDFs missing the "Key -" line) get their base key guessed automatically from the chords on the chart, instead of defaulting to C
+- **Manual base key editing** — click the 🔑 base key chip in the toolbar to relabel a song's base key directly, without transposing; only the key label, Nashville numbers, and accidental spelling change, no chords move. An **Auto** button re-runs the key guess against the song's chords at any time
 - **Accidentals preference** — choose ♭ Flats, Auto (key-context), or ♯ Sharps; applies everywhere simultaneously (editor, toolbar, exports)
 - Reset to the original PDF key at any time
 - **Bass Notes** toggle — displays only the root/bass note of every chord

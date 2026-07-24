@@ -636,6 +636,30 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Kunci dasar disetel ke',
     jv: 'Kunci dhasar disetel dadi',
   },
+  'the chip at the left of the toolbar shows the key the chart is actually written in. Click it to relabel the base key directly — unlike Jump to Key or step transpose above, this never moves a single chord on the page; only the key label, Nashville numbers, and accidental spelling update.':
+    {
+      la: 'papilio ad laevam instrumentarii ostendit clavem in qua tabula vere scripta est. Preme eam ut clavem basis directe renomines — dissimiliter a Salire ad Clavem vel transpositione gradus supra, hoc numquam ullam chordam in pagina movet; solum titulus clavis, numeri Nashville, et scriptura accidentalium mutantur.',
+      'zh-TW':
+        '工具列左側的標籤顯示譜面實際所寫的調性。點擊它即可直接重新標示原調——跟上方的「跳至調性」或逐半音移調不同，這絕不會移動頁面上任何一個和弦；只有調性標籤、納許維爾數字和音名拼寫會更新。',
+      id: 'chip di sisi kiri toolbar nunjukin kunci asli chart ini ditulis. Klik buat ganti label kunci dasar langsung — beda sama Lompat ke Kunci atau transpose step di atas, ini nggak bakal mindahin satu chord pun di halaman; cuma label kunci, angka Nashville, dan ejaan accidental yang berubah.',
+      jv: 'chip ing sisih kiwa toolbar nuduhake kunci sing pancen ditulis ing chart iki. Klik kanggo ngganti label kunci dhasar langsung — beda karo Loncat menyang Kunci utawa transpose step ing dhuwur, iki ora bakal mindhah chord siji-sijia ing kaca; mung label kunci, angka Nashville, lan panulisan accidental sing owah.',
+    },
+  'while editing the base key, click Auto to guess it from the chords already on the chart — handy when a chart has no key info at all.':
+    {
+      la: 'dum clavem basis mutas, preme Auto ut eam ex chordis iam in tabula coniectes — utile cum tabula nullam omnino informationem clavis habet.',
+      'zh-TW':
+        '編輯原調時，點擊「自動」即可從譜面上已有的和弦猜測調性——當譜面完全沒有調性資訊時特別好用。',
+      id: 'pas lagi edit kunci dasar, klik Otomatis buat nebak kuncinya dari chord yang udah ada di chart — cocok banget kalau chart-nya sama sekali nggak ada info kunci.',
+      jv: 'nalika ngowahi kunci dhasar, klik Otomatis kanggo ngira-ira kuncine saka chord sing wis ana ing chart — migunani banget yen chart-e babar pisan ora ana informasi kunci.',
+    },
+  'Charts that import without key metadata — some Ultimate Guitar pages, or PDFs missing the "Key -" line — now guess the base key automatically from their chords instead of defaulting to C.':
+    {
+      la: 'Tabulae quae sine notitia clavis important — quaedam paginae Ultimate Guitar, aut chartae PDF sine linea "Key -" — nunc clavem basis per se ex chordis suis coniectant, potius quam ad C defaltam.',
+      'zh-TW':
+        '匯入時沒有調性資料的譜面——部分 Ultimate Guitar 頁面，或缺少「Key -」那一行的 PDF——現在會自動從和弦猜測原調，而不是預設為 C。',
+      id: 'Chart yang diimpor tanpa data kunci — beberapa halaman Ultimate Guitar, atau PDF yang nggak punya baris "Key -" — sekarang otomatis nebak kunci dasarnya dari chord-nya, bukan default ke C lagi.',
+      jv: 'Chart sing diimpor tanpa data kunci — sawetara kaca Ultimate Guitar, utawa PDF sing ora duwe baris "Key -" — saiki otomatis ngira-ira kunci dhasare saka chord-e, ora default dadi C maneh.',
+    },
   'Jump to': { la: 'Salire ad', 'zh-TW': '跳至', id: 'Lompat ke', jv: 'Loncat menyang' },
   Reset: { la: 'Reponere', 'zh-TW': '重設', id: 'Reset', jv: 'Reset' },
   Autoscroll: {
