@@ -11,6 +11,7 @@ const MAX_SESSIONS = 20;
 export class SessionsService {
   showModal = false;
   showExportModal = false;
+  showImportUrlModal = false;
   currentSongIndex = 0;
   activeSessionId: string | null = null;
 
@@ -27,6 +28,16 @@ export class SessionsService {
 
   private loadSubject = new Subject<ParsedSong[]>();
   readonly sessionLoad$ = this.loadSubject.asObservable();
+
+  // Channel for songs imported from a toolbar-launched modal (rendered outside
+  // WorkspaceComponent, so it can't reach the workspace via @Output). The
+  // workspace subscribes and appends them to the current set.
+  private appendSubject = new Subject<ParsedSong[]>();
+  readonly songsAppend$ = this.appendSubject.asObservable();
+
+  appendSongs(songs: ParsedSong[]): void {
+    if (songs.length) this.appendSubject.next(songs);
+  }
 
   initActiveSession(): void {
     this.activeSessionId = localStorage.getItem(ACTIVE_KEY) ?? null;
@@ -129,6 +140,9 @@ export class SessionsService {
 
   openExportModal(): void  { this.showExportModal = true; }
   closeExportModal(): void { this.showExportModal = false; }
+
+  openImportUrlModal(): void  { this.showImportUrlModal = true; }
+  closeImportUrlModal(): void { this.showImportUrlModal = false; }
 
   private persist(sessions: SavedSession[]): void {
     this.ui.safeSetItem(SESSIONS_KEY, JSON.stringify(sessions));

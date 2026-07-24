@@ -177,6 +177,58 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   },
   'Search songs': { la: 'Quaerere Cantus', 'zh-TW': '搜尋歌曲', id: 'Cari lagu', jv: 'Golek lagu' },
 
+  // ── import from URL ──
+  'Import from Ultimate Guitar': {
+    la: 'Importare ex Ultimate Guitar',
+    'zh-TW': '從 Ultimate Guitar 匯入',
+    id: 'Impor dari Ultimate Guitar',
+    jv: 'Impor saka Ultimate Guitar',
+  },
+  '🔗 Import from Ultimate Guitar': {
+    la: '🔗 Importare ex Ultimate Guitar',
+    'zh-TW': '🔗 從 Ultimate Guitar 匯入',
+    id: '🔗 Impor dari Ultimate Guitar',
+    jv: '🔗 Impor saka Ultimate Guitar',
+  },
+  'Import': { la: 'Importare', 'zh-TW': '匯入', id: 'Impor', jv: 'Impor' },
+  'Paste an ultimate-guitar.com URL': {
+    la: 'Insere nexum ultimate-guitar.com',
+    'zh-TW': '貼上 ultimate-guitar.com 網址',
+    id: 'Tempel URL ultimate-guitar.com',
+    jv: 'Tempel URL ultimate-guitar.com',
+  },
+  'Open a chords page on ultimate-guitar.com and paste its link.': {
+    la: 'Aperi paginam chordarum in ultimate-guitar.com et nexum eius insere.',
+    'zh-TW': '在 ultimate-guitar.com 開啟和弦頁面並貼上連結。',
+    id: 'Buka halaman chord di ultimate-guitar.com lalu tempel tautannya.',
+    jv: 'Bukak kaca chord ing ultimate-guitar.com banjur tempel tautane.',
+  },
+  'Song imported': {
+    la: 'Cantus Importatus',
+    'zh-TW': '歌曲已匯入',
+    id: 'Lagu berhasil diimpor!',
+    jv: 'Lagu wis mlebu',
+  },
+  'Import failed.': { la: 'Importatio defecit.', 'zh-TW': '匯入失敗。', id: 'Impor gagal.', jv: 'Impor gagal.' },
+  "Couldn't reach Ultimate Guitar. The page may be blocked — try again.": {
+    la: 'Ultimate Guitar attingi non potuit. Pagina fortasse impedita est — iterum conare.',
+    'zh-TW': '無法連上 Ultimate Guitar，頁面可能被封鎖——請再試一次。',
+    id: 'Nggak bisa nyambung ke Ultimate Guitar. Halamannya mungkin diblokir — coba lagi ya!',
+    jv: 'Ora bisa nyambung menyang Ultimate Guitar. Kacane bisa uga diblokir — coba maneh ya.',
+  },
+  "That doesn't look like an Ultimate Guitar URL.": {
+    la: 'Hoc non videtur nexus Ultimate Guitar.',
+    'zh-TW': '這看起來不像 Ultimate Guitar 的網址。',
+    id: 'Kayaknya itu bukan URL Ultimate Guitar deh.',
+    jv: 'Kayane iku dudu URL Ultimate Guitar.',
+  },
+  "Couldn't read the chart from that page.": {
+    la: 'Tabula ex illa pagina legi non potuit.',
+    'zh-TW': '無法從該頁面讀取譜表。',
+    id: 'Nggak bisa baca chart dari halaman itu.',
+    jv: 'Ora bisa maca chart saka kaca kuwi.',
+  },
+
   // ── hints & shortcuts ──
   'Tip: click a chord to edit it — drag to move it.': {
     la: 'Consilium: chordam preme ut eam mutes — trahe ut eam moveas.',

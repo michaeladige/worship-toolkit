@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PdfParserService } from '../../services/pdf-parser.service';
 import { ExportService } from '../../services/export.service';
+import { UltimateGuitarService } from '../../services/ultimate-guitar.service';
 import { ParsedSong } from '../../models/song.model';
 import { UiSettingsService } from '../../services/ui-settings.service';
 
@@ -12,7 +14,7 @@ const TAGLINE_FADE_MS = 250;
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
 })
@@ -26,6 +28,10 @@ export class UploadComponent implements OnInit, OnDestroy {
   fileErrors: { name: string; message: string }[] = [];
   sessionImportError = '';
 
+  ugUrl = '';
+  ugImporting = false;
+  ugImportError = '';
+
   readonly tagline = signal('');
   readonly taglineVisible = signal(true);
   private taglineTimer: ReturnType<typeof setInterval> | null = null;
@@ -33,6 +39,7 @@ export class UploadComponent implements OnInit, OnDestroy {
   constructor(
     private parser: PdfParserService,
     private exportSvc: ExportService,
+    private ug: UltimateGuitarService,
     public ui: UiSettingsService,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -86,6 +93,25 @@ export class UploadComponent implements OnInit, OnDestroy {
       this.songsLoaded.emit(songs);
     } catch (err) {
       this.sessionImportError = err instanceof Error ? err.message : 'Invalid set file.';
+      this.cdr.detectChanges();
+    }
+  }
+
+  async importFromUrl() {
+    const url = this.ugUrl.trim();
+    if (!url || this.ugImporting) return;
+    this.ugImporting = true;
+    this.ugImportError = '';
+    this.cdr.detectChanges();
+    try {
+      const songs = await this.ug.importFromUrl(url);
+      this.ugUrl = '';
+      this.songsLoaded.emit(songs);
+    } catch (err) {
+      this.ugImportError = err instanceof Error && err.message ? err.message : 'Import failed.';
+      this.cdr.detectChanges();
+    } finally {
+      this.ugImporting = false;
       this.cdr.detectChanges();
     }
   }

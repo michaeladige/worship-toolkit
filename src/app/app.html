@@ -27,6 +27,11 @@
       >💾<span class="set-name"> {{ sessionsSvc.activeSessionName || ui.t('Untitled set') }}</span> ▾</button>
       <button
         class="ui-ctrl-btn"
+        (click)="sessionsSvc.openImportUrlModal()"
+        title="Import a song from an Ultimate Guitar URL"
+      >🔗<span class="ctrl-label"> {{ ui.t('Import') }}</span></button>
+      <button
+        class="ui-ctrl-btn"
         (click)="sessionsSvc.openExportModal()"
         [disabled]="sessionsSvc.currentSongs.length === 0"
         title="Export songs"
@@ -48,6 +53,10 @@
 
   @if (sessionsSvc.showExportModal) {
     <app-export-modal />
+  }
+
+  @if (sessionsSvc.showImportUrlModal) {
+    <app-import-url-modal />
   }
 
   @if (ui.showSettingsModal) {

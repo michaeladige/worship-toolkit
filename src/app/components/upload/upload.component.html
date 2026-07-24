@@ -45,6 +45,24 @@
     }
   </div>
 
+  <div class="start-fresh-row url-import-row">
+    <span class="start-fresh-divider">{{ ui.t('or') }}</span>
+    <input
+      class="url-import-input"
+      type="url"
+      [(ngModel)]="ugUrl"
+      [placeholder]="ui.t('Paste an ultimate-guitar.com URL')"
+      [disabled]="ugImporting"
+      (keydown.enter)="importFromUrl()"
+    />
+    <button class="start-fresh-btn" (click)="importFromUrl()" [disabled]="ugImporting || !ugUrl.trim()">
+      @if (ugImporting) { {{ ui.t('Importing…') }} } @else { {{ ui.t('🔗 Import from Ultimate Guitar') }} }
+    </button>
+    @if (ugImportError) {
+      <span class="session-import-error">{{ ui.t(ugImportError) }}</span>
+    }
+  </div>
+
   @if (error) {
     <div class="error-msg">{{ error }}</div>
   }
