@@ -1,6 +1,6 @@
 # WorshipToolkit
 
-A chord chart editor for worship teams. Upload a SongSelect PDF, edit and transpose the charts, build multi-song sets, and export clean PDFs or Markdown files ready to share.
+A chord chart editor for worship teams. Upload a SongSelect PDF or import from Ultimate Guitar, edit and transpose the charts, build multi-song sets, and export clean PDFs or Markdown files ready to share.
 
 **Live app:** https://michaeladige.github.io/worship-toolkit/
 **Beta (in-progress features):** https://michaeladige.github.io/worship-toolkit/beta/
@@ -13,9 +13,11 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 
 ## Features
 
-### PDF Import & Song Sets
+### Import & Song Sets
 - Drag-and-drop or file-picker upload for SongSelect chord chart PDFs
 - Parses multi-song PDFs into individual songs automatically
+- **Import from Ultimate Guitar** — paste an ultimate-guitar.com chords-page link (via the 🔗 Import button in the header or on the upload screen) to fetch and parse it into an editable, transposable song. Fetched through free third-party CORS proxies since the app is fully client-side; only chords pages (not pure guitar-tab pages) are supported
+- **Batch URL import** — paste a whole block of text (a set list, chat message, or email) and every Ultimate Guitar link is extracted and imported at once, with a live progress count and per-link error reporting so one bad link never sinks the batch
 - Handles two-column layouts, superscript chord extensions (e.g. Fm⁷ → Fm7)
 - Preserves direction notes (e.g. *To Tag*) and bar notation (e.g. `| Am7 | G |`) as italic annotations
 - **Broken ligature recovery** — some SongSelect PDFs embed a font that loses the "fi"/"fl" in words like "satisfied" or "flesh"; imports automatically recover the correct word using a bundled word list
@@ -54,6 +56,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 ### Export
 - **Song PDF** — exports the current song as a clean monospace chord chart PDF (two-column at default 14 px, single-column at larger sizes)
 - **Set PDF** — exports every song in the set in one file, in list order
+- **Separate PDFs** — exports every song as its own PDF, bundled into a single `.zip` download (filenames from song titles) — handy when each musician just needs their own song
 - **Markdown** — exports the full set as a `.md` file with chord rows above lyrics
 - All exports respect the current transposition, bass-notes toggle, Nashville toggle, accidentals preference, and annotations
 - **PDF font size** — configurable independently from the on-screen text size (10–20 px, default 14 px) via ⚙️ Settings
@@ -97,6 +100,7 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 | Routing | Angular Router |
 | PDF parsing | pdfjs-dist |
 | PDF export | jsPDF |
+| ZIP bundling (separate-PDF export) | JSZip |
 | Drag & drop | Angular CDK |
 | Fonts | Courier New (system), JetBrains Mono (self-hosted, [OFL-1.1](./public/fonts/JetBrainsMono-OFL.txt)) |
 | Hosting | GitHub Pages via GitHub Actions |

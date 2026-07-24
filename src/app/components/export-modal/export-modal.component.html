@@ -26,6 +26,15 @@
         @if (exporting) { <span class="opt-spinner"></span> }
       </button>
 
+      <button class="export-option" (click)="exportSeparatePdfs()" [disabled]="exporting">
+        <span class="opt-icon">🗂️</span>
+        <span class="opt-body">
+          <strong>{{ ui.t('Separate PDFs') }}</strong>
+          <span class="opt-desc">{{ ui.t('Each song as its own PDF, in one .zip') }}</span>
+        </span>
+        @if (exporting) { <span class="opt-spinner"></span> }
+      </button>
+
       <button class="export-option" (click)="exportMarkdown()" [disabled]="exporting">
         <span class="opt-icon">📝</span>
         <span class="opt-body">

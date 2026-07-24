@@ -55,6 +55,23 @@ export class ExportModalComponent {
     } finally { this.exporting = false; this.cdr.detectChanges(); }
   }
 
+  async exportSeparatePdfs() {
+    this.exporting = true;
+    try {
+      await this.exportSvc.toSeparatePdfs(
+        this.sessionsSvc.currentSongs,
+        this.ui.pdfFontSize,
+        this.ui.chordAccidentals,
+        this.ui.chordFont,
+        this.sessionsSvc.activeSessionName ?? 'worship-set',
+      );
+      this.ui.showToast('PDFs exported');
+    } catch (err) {
+      console.error(err);
+      this.ui.showToast('PDF export failed. Please try again.', 'error');
+    } finally { this.exporting = false; this.cdr.detectChanges(); }
+  }
+
   exportMarkdown() {
     this.exportSvc.downloadMarkdown(this.sessionsSvc.currentSongs, this.ui.chordAccidentals);
     this.ui.showToast('Markdown exported');

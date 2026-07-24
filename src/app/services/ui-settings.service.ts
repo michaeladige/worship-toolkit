@@ -512,8 +512,16 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   'Current song only':     { la: 'Solum cantus currens',        'zh-TW': '僅目前歌曲',     id: 'Lagu ini saja',       jv: 'Lagu iki wae'       },
   'Set PDF':               { la: 'PDF Collectionis',            'zh-TW': '全集 PDF',       id: 'PDF Set',             jv: 'PDF Set'            },
   'All songs in one file': { la: 'Omnes cantus in uno fasciculo', 'zh-TW': '所有歌曲合一檔', id: 'Semua lagu satu file', jv: 'Kabeh lagu siji file' },
+  'Separate PDFs':         { la: 'PDF Separati',                'zh-TW': '個別 PDF',       id: 'PDF Terpisah',        jv: 'PDF Kapisah'        },
+  'Each song as its own PDF, in one .zip': {
+    la: 'Quisque cantus ut PDF proprium, in uno .zip',
+    'zh-TW': '每首歌各一個 PDF，打包成一個 .zip',
+    id: 'Tiap lagu jadi PDF sendiri, dalam satu .zip',
+    jv: 'Saben lagu dadi PDF dhewe, ing siji .zip',
+  },
   'Full set as .md file':  { la: 'Collectio ut fasciculus .md', 'zh-TW': '全集 .md 檔',    id: 'Set lengkap .md',     jv: 'Set lengkap .md'    },
   'Generating…':           { la: 'Generando…',                  'zh-TW': '產生中…',        id: 'Membuat…',            jv: 'Digawe…'            },
+  'PDFs exported':         { la: 'PDF Exportata',               'zh-TW': 'PDF 已匯出',     id: 'PDF berhasil diekspor!', jv: 'PDF wis diekspor'   },
 
   // ── settings modal ──
   'Appearance':   { la: 'Aspectus',          'zh-TW': '外觀',         id: 'Tampilan',       jv: 'Tampilan'      },
@@ -1651,11 +1659,56 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id:      'Klik',
     jv:      'Klik',
   },
-  'button in the app header to open the export panel. Three options are available:': {
-    la:      'papilionem in capite applicationis ut tabulam exportationis aperias. Tres optiones adsunt:',
-    'zh-TW': 'App 標題中的按鈕開啟匯出面板。有三個選項：',
-    id:      'di header app untuk buka panel ekspor. Ada tiga pilihan:',
-    jv:      'ing header app kanggo mbukak panel ekspor. Ana telu pilihan:',
+  'button in the app header to open the export panel. Four options are available:': {
+    la:      'papilionem in capite applicationis ut tabulam exportationis aperias. Quattuor optiones adsunt:',
+    'zh-TW': 'App 標題中的按鈕開啟匯出面板。有四個選項：',
+    id:      'di header app untuk buka panel ekspor. Ada empat pilihan:',
+    jv:      'ing header app kanggo mbukak panel ekspor. Ana papat pilihan:',
+  },
+  'exports every song as its own PDF file, bundled together in a single .zip download — handy when each musician just needs their own song.': {
+    la:      'exportat quemque cantum ut fasciculum PDF proprium, in uno .zip coniunctos — utile cum quisque musicus solum cantum suum eget.',
+    'zh-TW': '將每首歌各自匯出為一個 PDF 檔，打包成單一 .zip 下載——當每位樂手只需要自己那首歌時很方便。',
+    id:      'ekspor tiap lagu jadi file PDF sendiri, digabung dalam satu unduhan .zip — praktis kalau tiap pemusik cuma butuh lagunya sendiri.',
+    jv:      'ngekspor saben lagu dadi file PDF dhewe, dibundel dadi siji undhuhan .zip — kepenak yen saben pemusik mung butuh lagune dhewe.',
+  },
+
+  // ── §1 import from Ultimate Guitar ──
+  'Importing from Ultimate Guitar': {
+    la: 'Importatio ex Ultimate Guitar',
+    'zh-TW': '從 Ultimate Guitar 匯入',
+    id: 'Mengimpor dari Ultimate Guitar',
+    jv: 'Ngimpor saka Ultimate Guitar',
+  },
+  'Besides PDFs, you can pull chord charts straight from ultimate-guitar.com. Click the 🔗 Import button in the app header — or the 🔗 Import from Ultimate Guitar option on the upload screen — then paste one or more links.': {
+    la: 'Praeter PDF, tabulas chordarum directe ex ultimate-guitar.com trahere potes. Preme bullam 🔗 Import in capite applicationis — vel optionem 🔗 Import from Ultimate Guitar in pagina onerationis — deinde unum vel plures nexus insere.',
+    'zh-TW': '除了 PDF，你也可以直接從 ultimate-guitar.com 抓取和弦圖。點擊 App 標題中的 🔗 Import 按鈕——或上傳畫面上的 🔗 從 Ultimate Guitar 匯入 選項——然後貼上一個或多個連結。',
+    id: 'Selain PDF, kamu bisa ambil chord chart langsung dari ultimate-guitar.com. Klik tombol 🔗 Import di header app — atau opsi 🔗 Impor dari Ultimate Guitar di layar unggah — lalu tempel satu atau beberapa tautan.',
+    jv: 'Kejaba PDF, kowe bisa njupuk chord chart langsung saka ultimate-guitar.com. Klik tombol 🔗 Import ing header app — utawa pilihan 🔗 Impor saka Ultimate Guitar ing layar unggah — banjur tempel siji utawa luwih tautan.',
+  },
+  'Paste a single chords-page URL, or a whole block of text — a set list, a chat message, an email — and WorshipToolkit pulls out every Ultimate Guitar link it finds.': {
+    la: 'Insere unum URL paginae chordarum, vel totum textum — indicem cantuum, nuntium colloquii, epistulam — et WorshipToolkit omnem nexum Ultimate Guitar quem invenit extrahit.',
+    'zh-TW': '貼上單一和弦頁面網址，或一整段文字——歌單、聊天訊息、電子郵件——WorshipToolkit 會擷取其中找到的每個 Ultimate Guitar 連結。',
+    id: 'Tempel satu URL halaman chord, atau seluruh blok teks — daftar lagu, pesan chat, email — dan WorshipToolkit akan mengambil setiap tautan Ultimate Guitar yang ditemukan.',
+    jv: 'Tempel siji URL kaca chord, utawa sakabehe teks — dhaptar lagu, pesen chat, email — lan WorshipToolkit bakal njupuk saben tautan Ultimate Guitar sing ketemu.',
+  },
+  'Links are imported one by one with a progress count. If a link fails, the rest still import and the failed ones stay listed so you can retry just those.': {
+    la: 'Nexus singillatim importantur cum numero progressus. Si nexus deficit, ceteri tamen importantur et deficientes in indice manent ut eos solos iterum conari possis.',
+    'zh-TW': '連結會逐一匯入並顯示進度。若某個連結失敗，其餘仍會匯入，失敗的會列出來讓你只重試那些。',
+    id: 'Tautan diimpor satu per satu dengan hitungan progres. Kalau ada tautan yang gagal, sisanya tetap diimpor dan yang gagal tetap terdaftar supaya bisa kamu coba lagi.',
+    jv: 'Tautan diimpor siji-siji karo etungan progres. Yen ana tautan sing gagal, liyane tetep mlebu lan sing gagal tetep kadhaptar supaya bisa dicoba maneh.',
+  },
+  'Heads up:': { la: 'Cave:', 'zh-TW': '注意：', id: 'Perhatian:', jv: 'Elinga:' },
+  'Ultimate Guitar has no public API, so imports are relayed through free third-party proxies and can occasionally be blocked — if a link fails, wait a moment and try again. Only chords pages import cleanly; pure guitar-tab (fretboard) pages are not supported.': {
+    la: 'Ultimate Guitar API publicam non habet, ergo importationes per proxies gratuitos tertiae partis transmittuntur et interdum impediri possunt — si nexus deficit, paulisper exspecta et iterum conare. Solae paginae chordarum pure importantur; paginae solius tabulaturae (fretboard) non sustinentur.',
+    'zh-TW': 'Ultimate Guitar 沒有公開 API，因此匯入是透過免費的第三方代理轉送，偶爾可能被封鎖——若連結失敗，稍候再試一次。只有和弦頁面能正確匯入；純吉他 tab（指板）頁面不支援。',
+    id: 'Ultimate Guitar tidak punya API publik, jadi impor diteruskan lewat proxy pihak ketiga gratis dan kadang bisa diblokir — kalau tautan gagal, tunggu sebentar lalu coba lagi. Hanya halaman chord yang terimpor rapi; halaman tab gitar murni (fretboard) tidak didukung.',
+    jv: 'Ultimate Guitar ora duwe API umum, mula impor diterusake liwat proxy pihak katelu gratis lan kadhang bisa diblokir — yen tautan gagal, enteni sedhela banjur coba maneh. Mung kaca chord sing mlebu resik; kaca tab gitar murni (fretboard) ora didhukung.',
+  },
+  'the 🔗 button in the app header appends songs imported from Ultimate Guitar links to your current set, the same way + Import PDF does.': {
+    la: 'bulla 🔗 in capite applicationis cantus ex nexibus Ultimate Guitar importatos collectioni tuae currenti adiungit, eodem modo quo + Import PDF facit.',
+    'zh-TW': 'App 標題中的 🔗 按鈕會將從 Ultimate Guitar 連結匯入的歌曲附加到你目前的集合，方式與 + Import PDF 相同。',
+    id: 'tombol 🔗 di header app menambahkan lagu yang diimpor dari tautan Ultimate Guitar ke set kamu saat ini, sama seperti + Import PDF.',
+    jv: 'tombol 🔗 ing header app nambahake lagu sing diimpor saka tautan Ultimate Guitar menyang set saiki, padha kaya + Import PDF.',
   },
   'exports just the song you\'re currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.': {
     la:      'exportat solum cantum quem nunc edis ut PDF chordarum purum, monospace. In magnitudine PDF 14 px defalta, dispositio est bicolumnis; magnitudines maiores ad unam columnam automatice commutantur.',
