@@ -47,20 +47,32 @@
 
   <div class="start-fresh-row url-import-row">
     <span class="start-fresh-divider">{{ ui.t('or') }}</span>
-    <input
-      class="url-import-input"
-      type="url"
-      [(ngModel)]="ugUrl"
-      [placeholder]="ui.t('Paste an ultimate-guitar.com URL')"
-      [disabled]="ugImporting"
-      (keydown.enter)="importFromUrl()"
-    />
-    <button class="start-fresh-btn" (click)="importFromUrl()" [disabled]="ugImporting || !ugUrl.trim()">
-      @if (ugImporting) { {{ ui.t('Importing…') }} } @else { {{ ui.t('🔗 Import from Ultimate Guitar') }} }
-    </button>
-    @if (ugImportError) {
-      <span class="session-import-error">{{ ui.t(ugImportError) }}</span>
-    }
+    <div class="url-import-group">
+      <textarea
+        class="url-import-input"
+        rows="3"
+        [(ngModel)]="ugUrl"
+        [placeholder]="ui.t('Paste text or Ultimate Guitar links — we\'ll pull out the URLs')"
+        [disabled]="ugImporting"
+      ></textarea>
+      @if (ugFoundCount > 0 && !ugImporting) {
+        <span class="found-count">{{ ugFoundCount }} {{ ui.t('link(s) found') }}</span>
+      }
+      <button class="start-fresh-btn" (click)="importFromUrls()" [disabled]="ugImporting || ugFoundCount === 0">
+        @if (ugImporting) {
+          {{ ui.t('Importing…') }}@if (ugProgress) { {{ ugProgress.done }} / {{ ugProgress.total }} }
+        } @else {
+          {{ ui.t('🔗 Import from Ultimate Guitar') }}
+        }
+      </button>
+      @if (ugErrors.length) {
+        <ul class="url-import-errors">
+          @for (e of ugErrors; track e.url) {
+            <li class="session-import-error">{{ e.url }} — {{ ui.t(e.message) }}</li>
+          }
+        </ul>
+      }
+    </div>
   </div>
 
   @if (error) {

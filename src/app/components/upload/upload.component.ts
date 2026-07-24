@@ -30,7 +30,12 @@ export class UploadComponent implements OnInit, OnDestroy {
 
   ugUrl = '';
   ugImporting = false;
-  ugImportError = '';
+  ugProgress: { done: number; total: number } | null = null;
+  ugErrors: { url: string; message: string }[] = [];
+
+  get ugFoundCount(): number {
+    return this.ug.extractUrls(this.ugUrl).length;
+  }
 
   readonly tagline = signal('');
   readonly taglineVisible = signal(true);
@@ -97,21 +102,32 @@ export class UploadComponent implements OnInit, OnDestroy {
     }
   }
 
-  async importFromUrl() {
-    const url = this.ugUrl.trim();
-    if (!url || this.ugImporting) return;
+  async importFromUrls() {
+    const urls = this.ug.extractUrls(this.ugUrl);
+    if (!urls.length || this.ugImporting) return;
     this.ugImporting = true;
-    this.ugImportError = '';
+    this.ugErrors = [];
+    this.ugProgress = { done: 0, total: urls.length };
     this.cdr.detectChanges();
     try {
-      const songs = await this.ug.importFromUrl(url);
-      this.ugUrl = '';
-      this.songsLoaded.emit(songs);
-    } catch (err) {
-      this.ugImportError = err instanceof Error && err.message ? err.message : 'Import failed.';
-      this.cdr.detectChanges();
+      const { songs, errors } = await this.ug.importFromUrls(urls, (done, total) => {
+        this.ugProgress = { done, total };
+        this.cdr.detectChanges();
+      });
+      if (songs.length) {
+        // Emitting songsLoaded replaces the empty workspace and unmounts this
+        // component, so any failures are surfaced via a sticky toast rather than
+        // the inline list (which would vanish with the component).
+        if (errors.length) this.ui.showToast("Some songs couldn't be imported.", 'error');
+        this.ugUrl = '';
+        this.songsLoaded.emit(songs);
+      } else {
+        // Nothing parsed — stay on the upload screen and show failures inline.
+        this.ugErrors = errors;
+      }
     } finally {
       this.ugImporting = false;
+      this.ugProgress = null;
       this.cdr.detectChanges();
     }
   }

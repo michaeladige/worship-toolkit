@@ -70,6 +70,59 @@ export class UltimateGuitarService {
     return [song];
   }
 
+  /**
+   * Import a batch of URLs sequentially. Public proxies + Cloudflare are
+   * rate-sensitive, so requests are made one at a time (this also mirrors the
+   * multi-PDF upload path and gives clean 1-of-N progress). A per-URL failure
+   * never aborts the batch — it is collected in `errors` so the caller can
+   * import every song that parsed and report the rest.
+   */
+  async importFromUrls(
+    urls: string[],
+    onProgress?: (done: number, total: number, url: string) => void,
+  ): Promise<{ songs: ParsedSong[]; errors: { url: string; message: string }[] }> {
+    const songs: ParsedSong[] = [];
+    const errors: { url: string; message: string }[] = [];
+    for (let i = 0; i < urls.length; i++) {
+      const url = urls[i];
+      onProgress?.(i, urls.length, url);
+      try {
+        songs.push(...(await this.importFromUrl(url)));
+      } catch (err) {
+        errors.push({
+          url,
+          message: err instanceof Error && err.message ? err.message : 'Import failed.',
+        });
+      }
+    }
+    onProgress?.(urls.length, urls.length, '');
+    return { songs, errors };
+  }
+
+  /**
+   * Sanitize arbitrary pasted text down to a deduped list of Ultimate Guitar
+   * URLs. Handles clean one-per-line input as well as links buried in prose (a
+   * chat message, an email, a set list): it grabs both scheme-qualified tokens
+   * and bare `…ultimate-guitar.com/…` tokens, trims wrapping/trailing
+   * punctuation, adds a missing scheme, and drops anything that isn't a UG URL.
+   */
+  extractUrls(text: string): string[] {
+    if (!text) return [];
+    const candidates = text.match(/https?:\/\/[^\s<>"'`)\]]+|(?:www\.|tabs\.)?ultimate-guitar\.com\/[^\s<>"'`)\]]+/gi) ?? [];
+    const seen = new Set<string>();
+    const urls: string[] = [];
+    for (const raw of candidates) {
+      // Strip trailing punctuation that commonly rides along in prose.
+      const trimmed = raw.replace(/[.,;:!?)\]}>'"`]+$/, '');
+      const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+      if (this.isUltimateGuitarUrl(withScheme) && !seen.has(withScheme)) {
+        seen.add(withScheme);
+        urls.push(withScheme);
+      }
+    }
+    return urls;
+  }
+
   private isUltimateGuitarUrl(url: string): boolean {
     try {
       const host = new URL(url).hostname;

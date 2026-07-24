@@ -12,16 +12,23 @@ import { UltimateGuitarService } from '../../services/ultimate-guitar.service';
   styleUrl: './import-url-modal.component.scss',
 })
 export class ImportUrlModalComponent {
-  url = '';
+  urlsText = '';
   isLoading = false;
-  error = '';
+  progress: { done: number; total: number } | null = null;
+  errors: { url: string; message: string }[] = [];
 
   constructor(
     public sessionsSvc: SessionsService,
     public ui: UiSettingsService,
-    private ug: UltimateGuitarService,
+    public ug: UltimateGuitarService,
     private cdr: ChangeDetectorRef,
   ) {}
+
+  // How many Ultimate Guitar links the sanitizer found in the pasted text —
+  // shown live under the textarea and used to enable the Import button.
+  get foundCount(): number {
+    return this.ug.extractUrls(this.urlsText).length;
+  }
 
   @HostListener('document:keydown.escape')
   onEscape() {
@@ -34,22 +41,31 @@ export class ImportUrlModalComponent {
   }
 
   async submit() {
-    const url = this.url.trim();
-    if (!url || this.isLoading) return;
+    const urls = this.ug.extractUrls(this.urlsText);
+    if (!urls.length || this.isLoading) return;
     this.isLoading = true;
-    this.error = '';
+    this.errors = [];
+    this.progress = { done: 0, total: urls.length };
     this.cdr.detectChanges();
     try {
-      const songs = await this.ug.importFromUrl(url);
-      this.sessionsSvc.appendSongs(songs);
-      this.ui.showToast('Song imported');
-      this.url = '';
-      this.sessionsSvc.closeImportUrlModal();
-    } catch (err) {
-      this.error = err instanceof Error && err.message ? err.message : 'Import failed.';
-      this.ui.showToast(this.error, 'error');
+      const { songs, errors } = await this.ug.importFromUrls(urls, (done, total) => {
+        this.progress = { done, total };
+        this.cdr.detectChanges();
+      });
+      if (songs.length) this.sessionsSvc.appendSongs(songs);
+      if (errors.length === 0) {
+        this.ui.showToast(songs.length === 1 ? 'Song imported' : 'Songs imported');
+        this.urlsText = '';
+        this.sessionsSvc.closeImportUrlModal();
+      } else {
+        this.errors = errors;
+        // Keep only the failed URLs in the box so re-submitting retries just those.
+        this.urlsText = errors.map(e => e.url).join('\n');
+        this.ui.showToast("Some songs couldn't be imported.", 'error');
+      }
     } finally {
       this.isLoading = false;
+      this.progress = null;
       this.cdr.detectChanges();
     }
   }

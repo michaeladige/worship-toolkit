@@ -228,6 +228,31 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Nggak bisa baca chart dari halaman itu.',
     jv: 'Ora bisa maca chart saka kaca kuwi.',
   },
+  'Songs imported': {
+    la: 'Cantus Importati',
+    'zh-TW': '歌曲已匯入',
+    id: 'Lagu berhasil diimpor!',
+    jv: 'Lagu wis mlebu',
+  },
+  "Some songs couldn't be imported.": {
+    la: 'Nonnulli cantus importari non potuerunt.',
+    'zh-TW': '部分歌曲無法匯入。',
+    id: 'Beberapa lagu nggak bisa diimpor.',
+    jv: 'Sawetara lagu ora bisa diimpor.',
+  },
+  "Paste text or Ultimate Guitar links — we'll pull out the URLs": {
+    la: 'Insere textum vel nexus Ultimate Guitar — nos URLs extrahemus',
+    'zh-TW': '貼上文字或 Ultimate Guitar 連結——我們會擷取網址',
+    id: 'Tempel teks atau tautan Ultimate Guitar — kami yang ambil URL-nya',
+    jv: 'Tempel teks utawa tautan Ultimate Guitar — awak dhewe sing njupuk URL-e',
+  },
+  'link(s) found': { la: 'nexus inventi', 'zh-TW': '個連結', id: 'tautan ditemukan', jv: 'tautan ketemu' },
+  'Open chords pages on ultimate-guitar.com and paste their links, one per line or as text.': {
+    la: 'Aperi paginas chordarum in ultimate-guitar.com et nexus earum insere, singulos per lineam vel ut textum.',
+    'zh-TW': '在 ultimate-guitar.com 開啟和弦頁面，然後貼上連結，一行一個或直接貼文字。',
+    id: 'Buka halaman chord di ultimate-guitar.com lalu tempel tautannya, satu per baris atau sebagai teks.',
+    jv: 'Bukak kaca chord ing ultimate-guitar.com banjur tempel tautane, siji saben baris utawa dadi teks.',
+  },
 
   // ── hints & shortcuts ──
   'Tip: click a chord to edit it — drag to move it.': {

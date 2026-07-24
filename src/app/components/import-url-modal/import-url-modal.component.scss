@@ -69,10 +69,13 @@
   padding: 0.6rem 0.75rem;
   font-family: inherit;
   font-size: 0.9rem;
+  line-height: 1.4;
   color: var(--color-text);
   background: var(--color-bg, var(--color-surface));
   border: 1px solid var(--color-border);
   border-radius: 8px;
+  resize: vertical;
+  min-height: 4.5rem;
 
   &:focus {
     outline: none;
@@ -80,6 +83,40 @@
   }
 
   &:disabled { opacity: 0.6; }
+}
+
+.found-count {
+  margin: -0.25rem 0 0;
+  font-size: 0.76rem;
+  color: var(--color-muted);
+}
+
+.import-errors {
+  margin: 0;
+  padding: 0.6rem 0.75rem;
+  background: color-mix(in srgb, var(--color-danger, #d33) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-danger, #d33) 30%, transparent);
+  border-radius: 8px;
+  font-size: 0.8rem;
+
+  .import-errors-title {
+    margin: 0 0 0.4rem;
+    font-weight: 600;
+    color: var(--color-danger, #d33);
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .err-url {
+    word-break: break-all;
+    color: var(--color-text);
+  }
 }
 
 .import-btn {
