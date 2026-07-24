@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SongSection } from '../models/song.model';
 
 export type Accidentals = 'auto' | 'sharps' | 'flats';
 
@@ -201,7 +202,13 @@ export class ChordService {
   // charts that arrive without key metadata (some Ultimate Guitar imports, PDFs
   // missing the SongSelect "Key -" line). Returns a plain pitch string spelled
   // like allKeys('auto'), so the result is always a valid `originalKey`.
-  detectKey(chords: string[]): string {
+  //
+  // Takes sections (rather than a flat chord list) because which chord *opens a
+  // line* is a far stronger tonic signal than the song's overall first/last chord:
+  // pop/worship progressions overwhelmingly start each line back on the tonic, so
+  // tallying that across every line is much harder to fool than one lucky/unlucky
+  // chord at the very start or end of the whole chart.
+  detectKey(sections: SongSection[]): string {
     // Major-scale pitch-class offsets from the tonic (also the natural-minor set
     // of the relative minor a minor-third below — that ambiguity is resolved in
     // stage 2 below).
@@ -215,18 +222,40 @@ export class ChordService {
     // pitch class -> counts of that root appearing as a major vs minor chord
     const majorAt = new Array(12).fill(0);
     const minorAt = new Array(12).fill(0);
-    for (const raw of chords) {
-      const parsed = this.parseChord(raw);
-      if (!parsed) continue;
-      const pc = this.noteToIndex(parsed.root);
-      if (pc === -1) continue;
-      roots.push(pc);
-      if (firstRoot === -1) firstRoot = pc;
-      lastRoot = pc;
-      // Minor = an "m" quality not followed into "maj". parseChord folds the
-      // quality into `suffix`, so a leading lowercase "m" (but not "maj") marks it.
-      if (/^m(?!aj)/.test(parsed.suffix)) minorAt[pc]++;
-      else majorAt[pc]++;
+    // pitch class -> counts of that root *opening a line* (see comment above)
+    const majorLineStart = new Array(12).fill(0);
+    const minorLineStart = new Array(12).fill(0);
+
+    // A section name repeated verbatim (chorus printed out 3 times, say) is one
+    // piece of structural evidence, not three — otherwise a heavily-repeated
+    // chorus could out-vote a verse printed only once even though it's the same
+    // progression each time. Only the *first* instance of each section name
+    // contributes to the line-start tally below.
+    const seenSectionNames = new Set<string>();
+
+    for (const section of sections) {
+      const nameKey = section.name.trim().toUpperCase();
+      const countLineStarts = !seenSectionNames.has(nameKey);
+      seenSectionNames.add(nameKey);
+
+      for (const line of section.lines) {
+        let isLineStart = true;
+        for (const token of line.chords) {
+          const parsed = this.parseChord(token.chord);
+          if (!parsed) continue;
+          const pc = this.noteToIndex(parsed.root);
+          if (pc === -1) continue;
+          // Minor = an "m" quality not followed into "maj". parseChord folds the
+          // quality into `suffix`, so a leading lowercase "m" (but not "maj") marks it.
+          const isMinor = /^m(?!aj)/.test(parsed.suffix);
+          (isMinor ? minorAt : majorAt)[pc]++;
+          if (isLineStart && countLineStarts) (isMinor ? minorLineStart : majorLineStart)[pc]++;
+          isLineStart = false;
+          roots.push(pc);
+          if (firstRoot === -1) firstRoot = pc;
+          lastRoot = pc;
+        }
+      }
     }
     if (roots.length === 0) return 'C';
 
@@ -248,16 +277,25 @@ export class ChordService {
     // Stage 2: within the best-fitting scale(s), decide the actual tonic. A major
     // key and its relative minor (tonic + 9) share the same scale, so score both
     // the major tonic and the relative minor of every best-scoring candidate and
-    // pick the strongest. The tonic chord's own quality, the presence of its
-    // dominant (a fifth up), and the first/last chords all point at it.
-    const present = (pc: number): boolean => majorAt[pc] > 0 || minorAt[pc] > 0;
+    // pick the strongest. Overall chord frequency is the primary signal (weighted
+    // 3x when it matches the candidate's expected major/minor quality); how often
+    // the chord opens a line is a strong secondary signal. The dominant chord and
+    // the whole chart's first/last chord are kept only as small tie-breakers —
+    // large enough to settle a genuine tie, too small to override a real
+    // frequency or line-start lead, so one coincidental leading/trailing chord
+    // (e.g. an intro or outro vamp on the IV chord) can't hijack the result.
+    const dominantFreq = (pc: number): number => majorAt[pc] + minorAt[pc];
     const score = (pc: number, isMinor: boolean): number => {
-      // Reward the candidate appearing in its expected quality most.
-      let s = isMinor ? 3 * minorAt[pc] + majorAt[pc] : 3 * majorAt[pc] + minorAt[pc];
-      if (present((pc + 7) % 12)) s += 2; // dominant a fifth above the tonic
-      if (pc === lastRoot) s += 3; // songs usually resolve to the tonic
-      if (pc === firstRoot) s += 2;
-      if (!isMinor) s += 0.1; // break exact ties toward the (more common) major key
+      const own = isMinor ? minorAt[pc] : majorAt[pc];
+      const other = isMinor ? majorAt[pc] : minorAt[pc];
+      const ownStart = isMinor ? minorLineStart[pc] : majorLineStart[pc];
+      const otherStart = isMinor ? majorLineStart[pc] : minorLineStart[pc];
+      let s = 3 * own + other;
+      s += 2 * ownStart + 0.5 * otherStart;
+      s += Math.min(1, 0.25 * dominantFreq((pc + 7) % 12)); // dominant a fifth above the tonic
+      if (pc === lastRoot) s += 0.3; // songs often (not always) resolve to the tonic
+      if (pc === firstRoot) s += 0.3;
+      if (!isMinor) s += 0.05; // break exact ties toward the (more common) major key
       return s;
     };
     let best = bestTonics[0];

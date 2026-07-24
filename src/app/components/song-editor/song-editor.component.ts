@@ -130,10 +130,7 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   }
 
   autoDetectKey() {
-    const chords = this.song.sections.flatMap((s) =>
-      s.lines.flatMap((l) => l.chords.map((c) => c.chord)),
-    );
-    const detected = this.chordSvc.detectKey(chords);
+    const detected = this.chordSvc.detectKey(this.song.sections);
     this.editingBaseKey = false;
     if (detected !== this.song.originalKey) {
       this.updateSong({ ...this.song, originalKey: detected });

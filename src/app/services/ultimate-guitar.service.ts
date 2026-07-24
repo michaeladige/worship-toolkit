@@ -243,9 +243,7 @@ export class UltimateGuitarService {
     const liveSections = sections.filter((s) => s.lines.length > 0);
     // Prefer UG's own tonality; otherwise guess the base key from the chords so
     // we don't mislabel the chart 'C' (which would throw off Nashville/transpose).
-    const key =
-      this.normalizeKey(meta.tonality_name) ||
-      this.chordSvc.detectKey(this.collectChords(liveSections));
+    const key = this.normalizeKey(meta.tonality_name) || this.chordSvc.detectKey(liveSections);
     return {
       id: crypto.randomUUID(),
       title: meta.song_name?.trim() || 'Untitled',
@@ -258,11 +256,6 @@ export class UltimateGuitarService {
       transposeSemitones: 0,
       showBassNotesOnly: false,
     };
-  }
-
-  // Flatten every chord token's text out of the parsed sections, for key detection.
-  private collectChords(sections: SongSection[]): string[] {
-    return sections.flatMap((s) => s.lines.flatMap((l) => l.chords.map((c) => c.chord)));
   }
 
   // Reduce UG's tonality_name to a plain pitch the app can transpose. UG may hand

@@ -35,12 +35,56 @@ const SEED_SONG = [
   },
 ];
 
-async function openSeeded(page: Page) {
-  await page.addInitScript((seed) => {
-    localStorage.setItem('worship_toolkit_session', JSON.stringify(seed));
-  }, SEED_SONG);
+// A G-major song shaped like a real Ultimate Guitar import: one VERSE opening on
+// G, but a CHORUS opening on C (its IV chord) printed out three times verbatim —
+// the exact repetition pattern that used to bias detectKey toward C, since a
+// heavily-repeated chorus could out-vote a verse printed only once.
+const CHORUS_HEAVY_SONG = [
+  {
+    id: 'seed-2',
+    title: 'Chorus Heavy Song',
+    authors: [],
+    key: 'C',
+    originalKey: 'C',
+    tempo: '',
+    timeSignature: '4/4',
+    sections: [
+      {
+        name: 'VERSE',
+        lines: [{ chords: chordLine(['G', 'D', 'Em', 'C']), lyric: 'v1', isChordsOnly: false }],
+      },
+      {
+        name: 'CHORUS',
+        lines: [{ chords: chordLine(['C', 'G', 'Am', 'D']), lyric: 'c1', isChordsOnly: false }],
+      },
+      {
+        name: 'VERSE',
+        lines: [{ chords: chordLine(['G', 'D', 'Em', 'C']), lyric: 'v2', isChordsOnly: false }],
+      },
+      {
+        name: 'CHORUS',
+        lines: [{ chords: chordLine(['C', 'G', 'Am', 'D']), lyric: 'c2', isChordsOnly: false }],
+      },
+      {
+        name: 'CHORUS',
+        lines: [{ chords: chordLine(['C', 'G', 'Am', 'D']), lyric: 'c3', isChordsOnly: false }],
+      },
+    ],
+    transposeSemitones: 0,
+    showBassNotesOnly: false,
+  },
+];
+
+function chordLine(chords: string[]) {
+  return chords.map((chord, i) => ({ chord, xPercent: i * 20, charPos: i * 6 }));
+}
+
+async function openSeeded(page: Page, seed: unknown[] = SEED_SONG, title = 'Seed Song') {
+  await page.addInitScript((s) => {
+    localStorage.setItem('worship_toolkit_session', JSON.stringify(s));
+  }, seed);
   await page.goto('/');
-  await expect(page.locator('h2.song-title')).toHaveText('Seed Song');
+  await expect(page.locator('h2.song-title')).toHaveText(title);
   await expect(page.locator('.chord-btn').first()).toBeVisible();
 }
 
@@ -77,5 +121,17 @@ test.describe('Base key', () => {
     // Detection corrected the label to G, still without moving the chords.
     await expect(baseKeyChip(page)).toContainText('G');
     expect(await chordTexts(page)).toEqual(['G', 'C', 'D', 'Em']);
+  });
+
+  test('auto-detect is not thrown off by a chorus repeated verbatim', async ({ page }) => {
+    await openSeeded(page, CHORUS_HEAVY_SONG, 'Chorus Heavy Song');
+
+    await baseKeyChip(page).click();
+    await page.locator('.chip--basekey .chip-detect').click();
+
+    const toast = page.locator('.latin-toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('Base key set to G');
+    await expect(baseKeyChip(page)).toContainText('G');
   });
 });

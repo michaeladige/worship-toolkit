@@ -340,6 +340,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>2.0.3</h3></summary>
+      <ul>
+        <li><strong>Fixed:</strong> base key detection often guessed C instead of G (and could make similar mistakes for other key pairs a fifth apart). It now weighs overall chord frequency and how often each chord opens a line, counting each repeated section once instead of once per repeat, so a heavily-repeated chorus can no longer out-vote a verse printed only once.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>2.0.2</h3></summary>
       <ul>
         <li><strong>Base key detection</strong> &mdash; songs imported without key metadata (some Ultimate Guitar pages, or PDFs missing the "Key -" line) now have their base key guessed automatically from the chords on the chart, instead of defaulting to C.</li>

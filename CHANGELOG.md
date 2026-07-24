@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.0.3] - 2026-07-24
+
+### Fixed
+- **Base key detection often guessed C instead of G** (and could make similar mistakes for other fifth-related key pairs) — songs whose chords fit both the C major and G major scale equally well were tie-broken mainly by which chord happened to appear first or last in the whole chart, which a repeated chorus (very common in Ultimate Guitar imports, which retag `[Chorus]` before every repeat) could easily tip the wrong way. Detection now weighs overall chord frequency first, and how often each chord opens a line as a strong secondary signal — counting each repeated section once, not once per repeat, so a heavily-repeated chorus can no longer out-vote a verse printed only once.
+
 ## [2.0.2] - 2026-07-24
 
 ### Added

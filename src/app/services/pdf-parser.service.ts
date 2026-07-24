@@ -497,8 +497,7 @@ export class PdfParserService {
     // No "Key -" metadata on this PDF — guess the base key from its chords rather
     // than leaving the misleading 'C' default (keeps Nashville/transpose honest).
     if (!keyFound) {
-      const chords = sections.flatMap((s) => s.lines.flatMap((l) => l.chords.map((c) => c.chord)));
-      key = this.chordSvc.detectKey(chords);
+      key = this.chordSvc.detectKey(sections);
     }
 
     return {
