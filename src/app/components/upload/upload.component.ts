@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { PdfParserService } from '../../services/pdf-parser.service';
 import { ExportService } from '../../services/export.service';
+import { UltimateGuitarService } from '../../services/ultimate-guitar.service';
 import { ParsedSong } from '../../models/song.model';
 import { UiSettingsService } from '../../services/ui-settings.service';
 
@@ -12,7 +14,7 @@ const TAGLINE_FADE_MS = 250;
 @Component({
   selector: 'app-upload',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './upload.component.html',
   styleUrl: './upload.component.scss',
 })
@@ -26,6 +28,15 @@ export class UploadComponent implements OnInit, OnDestroy {
   fileErrors: { name: string; message: string }[] = [];
   sessionImportError = '';
 
+  ugUrl = '';
+  ugImporting = false;
+  ugProgress: { done: number; total: number } | null = null;
+  ugErrors: { url: string; message: string }[] = [];
+
+  get ugFoundCount(): number {
+    return this.ug.extractUrls(this.ugUrl).length;
+  }
+
   readonly tagline = signal('');
   readonly taglineVisible = signal(true);
   private taglineTimer: ReturnType<typeof setInterval> | null = null;
@@ -33,6 +44,7 @@ export class UploadComponent implements OnInit, OnDestroy {
   constructor(
     private parser: PdfParserService,
     private exportSvc: ExportService,
+    private ug: UltimateGuitarService,
     public ui: UiSettingsService,
     private cdr: ChangeDetectorRef,
   ) {}
@@ -86,6 +98,36 @@ export class UploadComponent implements OnInit, OnDestroy {
       this.songsLoaded.emit(songs);
     } catch (err) {
       this.sessionImportError = err instanceof Error ? err.message : 'Invalid set file.';
+      this.cdr.detectChanges();
+    }
+  }
+
+  async importFromUrls() {
+    const urls = this.ug.extractUrls(this.ugUrl);
+    if (!urls.length || this.ugImporting) return;
+    this.ugImporting = true;
+    this.ugErrors = [];
+    this.ugProgress = { done: 0, total: urls.length };
+    this.cdr.detectChanges();
+    try {
+      const { songs, errors } = await this.ug.importFromUrls(urls, (done, total) => {
+        this.ugProgress = { done, total };
+        this.cdr.detectChanges();
+      });
+      if (songs.length) {
+        // Emitting songsLoaded replaces the empty workspace and unmounts this
+        // component, so any failures are surfaced via a sticky toast rather than
+        // the inline list (which would vanish with the component).
+        if (errors.length) this.ui.showToast("Some songs couldn't be imported.", 'error');
+        this.ugUrl = '';
+        this.songsLoaded.emit(songs);
+      } else {
+        // Nothing parsed — stay on the upload screen and show failures inline.
+        this.ugErrors = errors;
+      }
+    } finally {
+      this.ugImporting = false;
+      this.ugProgress = null;
       this.cdr.detectChanges();
     }
   }

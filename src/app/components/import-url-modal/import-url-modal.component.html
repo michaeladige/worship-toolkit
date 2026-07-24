@@ -1,0 +1,46 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-dialog" role="dialog" aria-modal="true" [attr.aria-label]="ui.t('Import from Ultimate Guitar')">
+
+    <div class="modal-header">
+      <h2 class="modal-title">{{ ui.t('Import from Ultimate Guitar') }}</h2>
+      <button class="close-btn" (click)="sessionsSvc.closeImportUrlModal()" title="Close" [disabled]="isLoading">✕</button>
+    </div>
+
+    <div class="import-body">
+      <textarea
+        class="url-input"
+        rows="4"
+        [(ngModel)]="urlsText"
+        [placeholder]="ui.t('Paste text or Ultimate Guitar links — we\'ll pull out the URLs')"
+        [disabled]="isLoading"
+      ></textarea>
+
+      @if (foundCount > 0 && !isLoading) {
+        <p class="found-count">{{ foundCount }} {{ ui.t('link(s) found') }}</p>
+      }
+
+      <button class="import-btn" (click)="submit()" [disabled]="isLoading || foundCount === 0">
+        @if (isLoading) {
+          <span class="opt-spinner"></span>
+          {{ ui.t('Importing…') }}@if (progress) { {{ progress.done }} / {{ progress.total }} }
+        } @else {
+          {{ ui.t('Import') }}
+        }
+      </button>
+
+      @if (errors.length) {
+        <div class="import-errors">
+          <p class="import-errors-title">{{ ui.t("Some songs couldn't be imported.") }}</p>
+          <ul>
+            @for (e of errors; track e.url) {
+              <li><span class="err-url">{{ e.url }}</span> — {{ ui.t(e.message) }}</li>
+            }
+          </ul>
+        </div>
+      }
+
+      <p class="import-hint">{{ ui.t('Open chords pages on ultimate-guitar.com and paste their links, one per line or as text.') }}</p>
+    </div>
+
+  </div>
+</div>

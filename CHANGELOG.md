@@ -2,6 +2,13 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.0.1] - 2026-07-24
+
+### Added
+- **Import from Ultimate Guitar** — a new 🔗 Import button in the app header (and on the upload screen) pulls chord charts straight from ultimate-guitar.com. Paste a chords-page link and it's parsed into an editable, transposable song. Because the app is fully client-side, the page is fetched through free third-party CORS proxies (with a fallback chain), which can occasionally be blocked — failed imports report a clear "try again" message. Only chords pages parse cleanly; pure guitar-tab (fretboard) pages are not supported.
+- **Batch import from pasted text** — paste a whole block of text (a set list, a chat message, an email) and WorshipToolkit sanitizes out every Ultimate Guitar link it finds and imports them all at once. Links are fetched sequentially with a live progress count and per-link error reporting, so one bad or blocked link never sinks the batch; successful songs are added as a single undo step and failed links stay listed for retry.
+- **Export each song as a separate PDF** — a new 🗂️ Separate PDFs export option renders every song as its own PDF and bundles them into a single `.zip` download, with filenames derived from song titles. Handy when each musician just needs their own song. The existing Song PDF, Set PDF, and Markdown exports are unchanged.
+
 ## [1.7.2] - 2026-07-03
 
 ### Added

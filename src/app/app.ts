@@ -9,6 +9,7 @@ import { SessionsModalComponent } from './components/sessions-modal/sessions-mod
 import { ExportModalComponent } from './components/export-modal/export-modal.component';
 import { SettingsModalComponent } from './components/settings-modal/settings-modal.component';
 import { ShortcutsModalComponent } from './components/shortcuts-modal/shortcuts-modal.component';
+import { ImportUrlModalComponent } from './components/import-url-modal/import-url-modal.component';
 import { version } from '../../package.json';
 
 @Component({
@@ -16,7 +17,7 @@ import { version } from '../../package.json';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet,
             SessionsModalComponent, ExportModalComponent, SettingsModalComponent,
-            ShortcutsModalComponent],
+            ShortcutsModalComponent, ImportUrlModalComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

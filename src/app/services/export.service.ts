@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import type { jsPDF as JsPdf } from 'jspdf';
 import { ParsedSong, SongLine, ChordToken } from '../models/song.model';
 import { Accidentals, ChordService } from './chord.service';
 import { ChordFont } from './ui-settings.service';
@@ -148,6 +149,60 @@ export class ExportService {
     accidentals: Accidentals = 'auto',
     fontChoice: ChordFont = 'classic',
   ): Promise<void> {
+    const doc = await this.buildDoc(songs, pdfFontSize, accidentals, fontChoice);
+    doc.save('worship-set.pdf');
+  }
+
+  /**
+   * Export every song as its own PDF, bundled into a single .zip download. Each
+   * song is rendered into a fresh document (via buildDoc) exactly like the
+   * combined export, so per-song files look identical to one page of the set
+   * PDF. The JetBrains Mono base64 cache is shared across documents, so the loop
+   * only repeats the cheap per-doc addFont, never a refetch.
+   */
+  async toSeparatePdfs(
+    songs: ParsedSong[],
+    pdfFontSize = 14,
+    accidentals: Accidentals = 'auto',
+    fontChoice: ChordFont = 'classic',
+    zipName = 'worship-set',
+  ): Promise<void> {
+    const { default: JSZip } = await import('jszip');
+    const zip = new JSZip();
+
+    const used = new Set<string>();
+    const fileNameFor = (title: string): string => {
+      const base = (title || 'song').replace(/[^a-z0-9]/gi, '-').replace(/^-+|-+$/g, '').toLowerCase() || 'song';
+      let name = base;
+      let n = 2;
+      while (used.has(name)) name = `${base}-${n++}`;
+      used.add(name);
+      return `${name}.pdf`;
+    };
+
+    for (const song of songs) {
+      const doc = await this.buildDoc([song], pdfFontSize, accidentals, fontChoice);
+      zip.file(fileNameFor(song.title), doc.output('blob'));
+    }
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${(zipName || 'worship-set').replace(/[^a-z0-9]/gi, '-')}.zip`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Builds a single jsPDF document containing every song passed in (one per page
+  // group), and returns it WITHOUT saving so callers can either .save() it
+  // (combined export) or .output('blob') it into a zip (per-song export).
+  private async buildDoc(
+    songs: ParsedSong[],
+    pdfFontSize: number,
+    accidentals: Accidentals,
+    fontChoice: ChordFont,
+  ): Promise<JsPdf> {
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
 
@@ -365,7 +420,7 @@ export class ExportService {
       }
     }
 
-    doc.save('worship-set.pdf');
+    return doc;
   }
 
   downloadSession(songs: ParsedSong[], name: string): void {

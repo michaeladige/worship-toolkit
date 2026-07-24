@@ -89,6 +89,16 @@ Sephiroth!</pre>
     <div class="callout">
       <strong>{{ ui.t('Only PDF files are supported.') }}</strong> {{ ui.t('If nothing is detected, double-check that the file is a SongSelect-style chord chart PDF, not a scanned image.') }}
     </div>
+
+    <h3>{{ ui.t('Importing from Ultimate Guitar') }}</h3>
+    <p>{{ ui.t('Besides PDFs, you can pull chord charts straight from ultimate-guitar.com. Click the 🔗 Import button in the app header — or the 🔗 Import from Ultimate Guitar option on the upload screen — then paste one or more links.') }}</p>
+    <ul>
+      <li>{{ ui.t('Paste a single chords-page URL, or a whole block of text — a set list, a chat message, an email — and WorshipToolkit pulls out every Ultimate Guitar link it finds.') }}</li>
+      <li>{{ ui.t('Links are imported one by one with a progress count. If a link fails, the rest still import and the failed ones stay listed so you can retry just those.') }}</li>
+    </ul>
+    <div class="callout">
+      <strong>{{ ui.t('Heads up:') }}</strong> {{ ui.t('Ultimate Guitar has no public API, so imports are relayed through free third-party proxies and can occasionally be blocked — if a link fails, wait a moment and try again. Only chords pages import cleanly; pure guitar-tab (fretboard) pages are not supported.') }}
+    </div>
   </section>
 
   <section id="your-set" class="manual-section">
@@ -110,6 +120,7 @@ Sephiroth!</pre>
     <ul>
       <li><strong>{{ ui.t('+ New Song') }}</strong> &mdash; {{ ui.t('adds a blank song to the bottom of the list. Give it a name, add sections, and build it from scratch.') }}</li>
       <li><strong>{{ ui.t('+ Import PDF') }}</strong> &mdash; {{ ui.t('appends songs from another PDF') }} <em>{{ ui.t('without') }}</em> {{ ui.t('replacing what\'s already in your set. Great for building a multi-song set from separate files.') }}</li>
+      <li><strong>🔗 {{ ui.t('Import from Ultimate Guitar') }}</strong> &mdash; {{ ui.t('the 🔗 button in the app header appends songs imported from Ultimate Guitar links to your current set, the same way + Import PDF does.') }}</li>
       <li>{{ ui.t('If any imported song title already exists in the set, a warning appears. You can choose to') }} <strong>{{ ui.t('Add anyway') }}</strong> {{ ui.t('(add all including duplicates) or') }} <strong>{{ ui.t('Skip duplicates') }}</strong> {{ ui.t('(only import songs with new titles).') }}</li>
     </ul>
     <h3>{{ ui.t('Reordering songs') }}</h3>
@@ -211,10 +222,11 @@ Sephiroth!</pre>
 
   <section id="export" class="manual-section">
     <h2>{{ ui.t('8. Exporting & sharing') }}</h2>
-    <p>{{ ui.t('Click the') }} <strong>⬇️ {{ ui.t('Export') }}</strong> {{ ui.t('button in the app header to open the export panel. Three options are available:') }}</p>
+    <p>{{ ui.t('Click the') }} <strong>⬇️ {{ ui.t('Export') }}</strong> {{ ui.t('button in the app header to open the export panel. Four options are available:') }}</p>
     <ul>
       <li><strong>📄 {{ ui.t('Song PDF') }}</strong> &mdash; {{ ui.t('exports just the song you\'re currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.') }}</li>
       <li><strong>📋 {{ ui.t('Set PDF') }}</strong> &mdash; {{ ui.t('exports every song in the set into a single PDF, in list order, one song per page.') }}</li>
+      <li><strong>🗂️ {{ ui.t('Separate PDFs') }}</strong> &mdash; {{ ui.t('exports every song as its own PDF file, bundled together in a single .zip download — handy when each musician just needs their own song.') }}</li>
       <li><strong>📝 Markdown</strong> &mdash; {{ ui.t('exports the full set as a') }} <code>.md</code> {{ ui.t('file, with chord rows placed above each lyric line, viewable in any Markdown reader.') }}</li>
     </ul>
     <p>{{ ui.t('All exports respect your current transposition, the Bass Notes toggle, the Nashville toggle, your Accidentals preference, and include any direction/bar-notation annotations, correctly transposed.') }}</p>
@@ -321,6 +333,15 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>2.0.1</h3></summary>
+      <ul>
+        <li><strong>Import from Ultimate Guitar</strong> &mdash; a new 🔗 Import button in the app header (and on the upload screen) pulls chord charts straight from ultimate-guitar.com. Paste a chords-page link and it's parsed into an editable, transposable song.</li>
+        <li><strong>Batch import from pasted text</strong> &mdash; paste a whole block of text (a set list, a chat message, an email) and WorshipToolkit sanitizes out every Ultimate Guitar link and imports them all at once, with a progress count and per-link error reporting so one bad link never sinks the batch.</li>
+        <li><strong>Export each song as a separate PDF</strong> &mdash; a new 🗂️ Separate PDFs export option renders every song as its own PDF and bundles them into a single .zip download — handy when each musician just needs their own song.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>1.7.2</h3></summary>
       <ul>
         <li><strong>Numbered song list</strong> &mdash; collapsing the sidebar (or the mobile tab bar) now shows each song's position number instead, for a quick reference and one-tap jump. Press <kbd>1</kbd>&ndash;<kbd>9</kbd> on your keyboard from anywhere in the editor to jump straight to that song.</li>

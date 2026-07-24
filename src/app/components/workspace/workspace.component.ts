@@ -27,6 +27,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   private redoStack: ParsedSong[][] = [];
   private readonly HISTORY_LIMIT = 50;
   private sessionSub!: Subscription;
+  private appendSub!: Subscription;
 
   get canUndo(): boolean { return this.undoStack.length > 0; }
   get canRedo(): boolean { return this.redoStack.length > 0; }
@@ -70,6 +71,12 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       this.cdr.detectChanges();
     });
 
+    // Songs imported from the toolbar "Import from URL" modal arrive here and
+    // append to whatever is loaded (or become the set when empty).
+    this.appendSub = this.sessionsSvc.songsAppend$.subscribe(songs => {
+      this.onAppendSongs(songs);
+    });
+
     // One-time touch-device hint: the collapsed song-list tab strip is easy
     // to miss on phones once more than one song is loaded.
     if (this.ui.isCoarsePointer && this.songs.length > 1 && !this.ui.hintSeen('songlist-tab')) {
@@ -80,6 +87,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sessionSub?.unsubscribe();
+    this.appendSub?.unsubscribe();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -89,6 +97,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) return;
     if (this.songs.length === 0) return;
     const modalOpen = this.sessionsSvc.showModal || this.sessionsSvc.showExportModal
+      || this.sessionsSvc.showImportUrlModal
       || this.ui.showSettingsModal || this.ui.showShortcutsModal;
 
     if (e.ctrlKey || e.metaKey) {
