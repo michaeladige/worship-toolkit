@@ -340,6 +340,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>2.0.4</h3></summary>
+      <ul>
+        <li><strong>Fixed:</strong> base key detection still guessed C instead of G for very common charts built on the I-V-vi-IV/IV-V-vi-I progression (e.g. C, D, Em, G), where the "wrong" key's chord happens to appear more often and open more lines. Detection now also checks whether each candidate key's ii/iii/IV/V/vi chords have the major/minor quality a real diatonic scale expects — a major chord standing in for what should be a minor ii (or vice versa) is strong evidence the chart is actually in the neighboring key a fifth away.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>2.0.3</h3></summary>
       <ul>
         <li><strong>Fixed:</strong> base key detection often guessed C instead of G (and could make similar mistakes for other key pairs a fifth apart). It now weighs overall chord frequency and how often each chord opens a line, counting each repeated section once instead of once per repeat, so a heavily-repeated chorus can no longer out-vote a verse printed only once.</li>

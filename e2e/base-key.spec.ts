@@ -75,6 +75,66 @@ const CHORUS_HEAVY_SONG = [
   },
 ];
 
+// A real-world G-major chart (JPCC Worship's "More Than Enough") that only
+// ever uses C/D/Em/G — the classic IV-V-vi-I progression. C and D are both
+// printed more often and open more lines than G or Em (C opens nearly every
+// verse/bridge line), so raw frequency/line-start signals alone favor C. What
+// actually gives away G is that D is major: a major D is never the diatonic
+// ii of C (that's D minor), only the diatonic V of G.
+const IV_V_VI_I_SONG = [
+  {
+    id: 'seed-3',
+    title: 'IV V vi I Song',
+    authors: [],
+    key: 'C',
+    originalKey: 'C',
+    tempo: '',
+    timeSignature: '4/4',
+    sections: [
+      { name: 'INTRO', lines: [chordLine(['C', 'D', 'Em']), chordLine(['C', 'D', 'G'])].map(toLine) },
+      {
+        name: 'VERSE',
+        lines: [
+          chordLine(['C']),
+          chordLine(['D', 'G']),
+          chordLine(['C', 'D']),
+          chordLine(['C']),
+          chordLine(['D', 'G']),
+          chordLine(['C', 'D', 'G']),
+        ].map(toLine),
+      },
+      {
+        name: 'CHORUS',
+        lines: [
+          chordLine(['G']),
+          chordLine(['Em']),
+          chordLine(['C']),
+          chordLine(['D', 'G', 'D']),
+          chordLine(['G']),
+          chordLine(['Em']),
+          chordLine(['C']),
+          chordLine(['D', 'G']),
+        ].map(toLine),
+      },
+      {
+        name: 'BRIDGE',
+        lines: [
+          chordLine(['C', 'D', 'Em']),
+          chordLine(['C', 'D', 'Em']),
+          chordLine(['C', 'D', 'Em']),
+          chordLine(['C', 'D', 'G']),
+        ].map(toLine),
+      },
+    ],
+    transposeSemitones: 0,
+    showBassNotesOnly: false,
+  },
+];
+
+function toLine(chords: ReturnType<typeof chordLine>) {
+  return { chords, lyric: 'lyric', isChordsOnly: false };
+}
+
 function chordLine(chords: string[]) {
   return chords.map((chord, i) => ({ chord, xPercent: i * 20, charPos: i * 6 }));
 }
@@ -125,6 +185,20 @@ test.describe('Base key', () => {
 
   test('auto-detect is not thrown off by a chorus repeated verbatim', async ({ page }) => {
     await openSeeded(page, CHORUS_HEAVY_SONG, 'Chorus Heavy Song');
+
+    await baseKeyChip(page).click();
+    await page.locator('.chip--basekey .chip-detect').click();
+
+    const toast = page.locator('.latin-toast');
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText('Base key set to G');
+    await expect(baseKeyChip(page)).toContainText('G');
+  });
+
+  test('auto-detect prefers G over C for a IV-V-vi-I chart where C is the most frequent chord', async ({
+    page,
+  }) => {
+    await openSeeded(page, IV_V_VI_I_SONG, 'IV V vi I Song');
 
     await baseKeyChip(page).click();
     await page.locator('.chip--basekey .chip-detect').click();

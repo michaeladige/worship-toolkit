@@ -285,6 +285,30 @@ export class ChordService {
     // frequency or line-start lead, so one coincidental leading/trailing chord
     // (e.g. an intro or outro vamp on the IV chord) can't hijack the result.
     const dominantFreq = (pc: number): number => majorAt[pc] + minorAt[pc];
+
+    // Non-tonic scale degrees whose *quality* (major vs minor) a major key
+    // strongly implies: ii/iii/vi are normally minor, IV/V normally major.
+    // This is what actually separates a major key from its "borrowed" scale
+    // twin(s) that stage 1 can't tell apart on pitch content alone — e.g. C
+    // major and G major share 6 of 7 notes, so a chart using only C/D/Em/G
+    // (the ubiquitous IV-V-vi-I progression) passes stage 1 as either key.
+    // But a *major* D chord is never the diatonic ii of C (that's D minor);
+    // it's the diatonic V of G. Scoring that quality match/mismatch across
+    // ii/iii/IV/V/vi resolves the tie correctly instead of defaulting to
+    // whichever root happens to be printed more often.
+    const DIATONIC_DEGREES: [offset: number, expectMinor: boolean][] = [
+      [2, true], // ii
+      [4, true], // iii
+      [5, false], // IV
+      [7, false], // V
+      [9, true], // vi
+    ];
+    const diatonicQualityScore = (tonicPc: number): number =>
+      DIATONIC_DEGREES.reduce((sum, [offset, expectMinor]) => {
+        const pc = (tonicPc + offset) % 12;
+        return sum + (expectMinor ? minorAt[pc] - majorAt[pc] : majorAt[pc] - minorAt[pc]);
+      }, 0);
+
     const score = (pc: number, isMinor: boolean): number => {
       const own = isMinor ? minorAt[pc] : majorAt[pc];
       const other = isMinor ? majorAt[pc] : minorAt[pc];
@@ -295,7 +319,10 @@ export class ChordService {
       s += Math.min(1, 0.25 * dominantFreq((pc + 7) % 12)); // dominant a fifth above the tonic
       if (pc === lastRoot) s += 0.3; // songs often (not always) resolve to the tonic
       if (pc === firstRoot) s += 0.3;
-      if (!isMinor) s += 0.05; // break exact ties toward the (more common) major key
+      if (!isMinor) {
+        s += 0.05; // break exact ties toward the (more common) major key
+        s += 1.5 * diatonicQualityScore(pc);
+      }
       return s;
     };
     let best = bestTonics[0];

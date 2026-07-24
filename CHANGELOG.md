@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.0.4] - 2026-07-25
+
+### Fixed
+- **Base key detection still guessed C instead of G for the ubiquitous IV-V-vi-I / I-V-vi-IV progression** (e.g. a chart built entirely from C, D, Em, G) — C and G share 6 of 7 major-scale notes, and in this progression the "wrong" key's chord (C) is typically both the most frequent chord and the one that opens the most lines, so the previous frequency/line-start-weighted scoring consistently favored it. Detection now also scores whether each candidate key's ii/iii/IV/V/vi chords carry the major/minor quality a real diatonic major scale expects (e.g. ii should be minor) — a major chord standing in for an expected-minor scale degree (or vice versa) is strong evidence the chart is actually built on the neighboring key a fifth away.
+
 ## [2.0.3] - 2026-07-24
 
 ### Fixed
