@@ -1,0 +1,79 @@
+<div class="diagram-strip">
+  @if (song.capo) {
+    <div class="diagram-capo-note">
+      {{ ui.t('Shapes shown as if capo were fret 0 — capo') }} {{ song.capo }}
+    </div>
+  }
+  <div class="diagram-list">
+    @for (entry of diagrams; track trackDiagram($index, entry)) {
+      <div class="diagram">
+        <div class="diagram-label">{{ entry.label }}</div>
+        @if (entry.shape) {
+          <svg class="diagram-svg" viewBox="0 0 80 90" [attr.aria-label]="entry.label">
+            <!-- strings -->
+            @for (i of stringIndices(); track i) {
+              <line
+                class="string-line"
+                [attr.x1]="stringX(i)"
+                y1="14"
+                [attr.x2]="stringX(i)"
+                y2="78"
+              />
+            }
+            <!-- nut (thick) when showing open position, plain line + base-fret label otherwise -->
+            @if (entry.shape.baseFret === 1) {
+              <line class="nut-line" x1="10" y1="14" x2="70" y2="14" />
+            } @else {
+              <line class="fret-line" x1="10" y1="14" x2="70" y2="14" />
+              <text class="base-fret-label" x="74" y="18">{{ entry.shape.baseFret }}fr</text>
+            }
+            <!-- fret lines -->
+            @for (row of fretRows; track row) {
+              <line
+                class="fret-line"
+                x1="10"
+                [attr.y1]="fretY(row)"
+                x2="70"
+                [attr.y2]="fretY(row)"
+              />
+            }
+
+            <!-- open / muted markers above the nut -->
+            @for (i of stringIndices(); track i) {
+              @if (isOpen(entry.shape, i)) {
+                <circle class="open-marker" [attr.cx]="stringX(i)" cy="6" r="3" />
+              } @else if (isMuted(entry.shape, i)) {
+                <text class="mute-marker" [attr.x]="stringX(i)" y="9" text-anchor="middle">✕</text>
+              }
+            }
+
+            <!-- barre -->
+            @if (barreStringRange(entry.shape); as barre) {
+              <line
+                class="barre-line"
+                [attr.x1]="stringX(barre.from)"
+                [attr.y1]="dotY(barreRelRow(entry.shape))"
+                [attr.x2]="stringX(barre.to)"
+                [attr.y2]="dotY(barreRelRow(entry.shape))"
+              />
+            }
+
+            <!-- finger dots -->
+            @for (i of stringIndices(); track i) {
+              @if (relFret(entry.shape, i) > 0) {
+                <circle
+                  class="finger-dot"
+                  [attr.cx]="stringX(i)"
+                  [attr.cy]="dotY(relFret(entry.shape, i))"
+                  r="5"
+                />
+              }
+            }
+          </svg>
+        } @else {
+          <div class="diagram-unavailable">{{ ui.t('No shape') }}</div>
+        }
+      </div>
+    }
+  </div>
+</div>

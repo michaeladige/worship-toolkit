@@ -192,6 +192,13 @@
     cursor: pointer;
   }
 
+  .chip-sublabel {
+    font-size: 0.72rem;
+    color: var(--color-muted);
+    font-style: italic;
+    white-space: nowrap;
+  }
+
   .chip-detect {
     border: 1px solid var(--color-primary);
     background: transparent;
@@ -337,6 +344,42 @@
   font-family: inherit;
 }
 
+.beat-indicator {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-border);
+  flex-shrink: 0;
+
+  &--on {
+    background: var(--color-primary);
+  }
+  &--accent {
+    background: #ef4444;
+  }
+}
+
+.tap-tempo-btn,
+.count-in-btn {
+  border: 1px solid var(--color-border);
+  background: none;
+  border-radius: 6px;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.68rem;
+  font-family: inherit;
+  color: var(--color-muted);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.count-in-btn.active {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
 .key-display {
   font-size: 1.05rem;
   font-weight: 700;
@@ -475,6 +518,53 @@
   }
 }
 
+.notes-panel {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.6rem 1.5rem;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
+}
+
+.notes-textarea,
+.duration-input {
+  font-family: inherit;
+  font-size: 0.82rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.notes-textarea {
+  flex: 1;
+  min-width: 0;
+  resize: vertical;
+  padding: 0.4rem 0.6rem;
+}
+
+.notes-duration {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+
+  label {
+    font-size: 0.75rem;
+    color: var(--color-muted);
+  }
+}
+
+.duration-input {
+  width: 4.5rem;
+  padding: 0.3rem 0.5rem;
+}
+
 .content {
   flex: 1;
   overflow-y: auto;
@@ -589,6 +679,17 @@
   @media (max-width: 767px) {
     font-size: 0.72rem;
     max-width: 4.5rem;
+  }
+}
+
+.stage-bar-capo {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  @media (max-width: 767px) {
+    font-size: 0.68rem;
   }
 }
 

@@ -63,17 +63,15 @@ export class SongSectionComponent {
   constructor(public chordSvc: ChordService, public ui: UiSettingsService) {}
 
   get effectiveKey(): string {
-    return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones, this.ui.chordAccidentals);
+    return this.chordSvc.effectiveKey(this.song, this.ui.chordAccidentals);
   }
 
   displayAnnotation(annotation: string): string {
-    return this.chordSvc.transposeAnnotation(annotation, this.song.transposeSemitones, this.effectiveKey, this.ui.chordAccidentals);
+    return this.chordSvc.displayAnnotation(annotation, this.song, this.ui.chordAccidentals);
   }
 
   displayChord(raw: string): string {
-    const transposed = this.chordSvc.transposeChord(raw, this.song.transposeSemitones, this.effectiveKey, this.ui.chordAccidentals);
-    const display = this.song.showBassNotesOnly ? this.chordSvc.getBassNote(transposed) : transposed;
-    return this.song.showNashville ? this.chordSvc.toNashville(display, this.effectiveKey) : display;
+    return this.chordSvc.displayChord(raw, this.song, this.ui.chordAccidentals);
   }
 
   // ── Chord edit ──────────────────────────────────────────────────────────────
@@ -117,7 +115,15 @@ export class SongSectionComponent {
   private storableValue(typed: string): string {
     const trimmed = typed.trim();
     if (!trimmed || this.song.showBassNotesOnly || this.song.showNashville) return trimmed;
-    return this.chordSvc.transposeChord(trimmed, -this.song.transposeSemitones, this.song.originalKey, this.ui.chordAccidentals);
+    // Reverse displayChord()'s pipeline in the opposite order it was applied:
+    // capo shifts the sounding chord DOWN to a shape, so undo that shift back
+    // UP to the sounding chord first, then undo the transpose back to originalKey.
+    const capo = this.song.capo ?? 0;
+    let value = trimmed;
+    if (capo) {
+      value = this.chordSvc.transposeChord(value, capo, this.effectiveKey, this.ui.chordAccidentals);
+    }
+    return this.chordSvc.transposeChord(value, -this.song.transposeSemitones, this.song.originalKey, this.ui.chordAccidentals);
   }
 
   editKeydown(e: KeyboardEvent) {
@@ -346,6 +352,7 @@ export class SongSectionComponent {
       this.ui.chordAccidentals,
       this.song.showBassNotesOnly,
       this.song.showNashville,
+      this.song.capo ?? 0,
       dragging ? `${dragging.ci}:${dragging.currentCharPos}` : '',
     ].join('|');
 

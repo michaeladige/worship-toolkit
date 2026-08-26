@@ -26,6 +26,15 @@
         @if (exporting) { <span class="opt-spinner"></span> }
       </button>
 
+      <label class="export-suboption" (click)="$event.stopPropagation()">
+        <input
+          type="checkbox"
+          [ngModel]="ui.setPdfCoverPage"
+          (ngModelChange)="ui.setSetPdfCoverPage($event)"
+        />
+        {{ ui.t('Include cover page & table of contents') }}
+      </label>
+
       <button class="export-option" (click)="exportSeparatePdfs()" [disabled]="exporting">
         <span class="opt-icon">🗂️</span>
         <span class="opt-body">
@@ -40,6 +49,22 @@
         <span class="opt-body">
           <strong>Markdown</strong>
           <span class="opt-desc">{{ ui.t('Full set as .md file') }}</span>
+        </span>
+      </button>
+
+      <button class="export-option" (click)="printSong()">
+        <span class="opt-icon">🖨️</span>
+        <span class="opt-body">
+          <strong>{{ ui.t('Print song') }}</strong>
+          <span class="opt-desc">{{ ui.t("Opens your browser's print dialog") }}</span>
+        </span>
+      </button>
+
+      <button class="export-option" (click)="printSet()">
+        <span class="opt-icon">🖨️</span>
+        <span class="opt-body">
+          <strong>{{ ui.t('Print set') }}</strong>
+          <span class="opt-desc">{{ ui.t('All songs, one per page') }}</span>
         </span>
       </button>
 

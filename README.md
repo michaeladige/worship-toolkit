@@ -45,26 +45,35 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 - Click the **BPM** chip to set or clear tempo
 - Click the time signature chip (e.g. `4/4`) to change it (e.g. to `3/4` or `6/8`)
 - Add, edit, or remove direction/bar-notation annotations on any lyric line
+- **Song notes & duration** — a 📝 Notes chip opens a small panel per song for arrangement/performance reminders, plus an optional duration (`mm:ss`) that feeds the Set PDF cover page's estimated set length
 
 ### Key & Notation
 - Transpose up/down by semitone with arrow buttons, or jump directly to a target key
 - **Base key detection** — songs imported without key metadata (some Ultimate Guitar pages, or PDFs missing the "Key -" line) get their base key guessed automatically from the chords on the chart, instead of defaulting to C
 - **Manual base key editing** — click the 🔑 base key chip in the toolbar to relabel a song's base key directly, without transposing; only the key label, Nashville numbers, and accidental spelling change, no chords move. An **Auto** button re-runs the key guess against the song's chords at any time
+- **Capo** — a 🗜️ capo chip (0–11 frets) shows both the sounding key and the shape you actually play (e.g. "sounds in D · play in C"); display-only, so it composes correctly with transpose and never touches stored chord data. Nashville Number mode deliberately ignores it. Carried through to every export
+- **Chord diagrams** — a 🎸 Diagrams toggle shows a fretboard diagram strip for every distinct chord in the song, computed from each chord's actual notes rather than a fixed lookup table, on Guitar or Ukulele (⚙️ Settings → Appearance); transpose- and capo-aware, hidden automatically under Nashville numbers, optionally included in PDF exports
 - **Accidentals preference** — choose ♭ Flats, Auto (key-context), or ♯ Sharps; applies everywhere simultaneously (editor, toolbar, exports)
 - Reset to the original PDF key at any time
 - **Bass Notes** toggle — displays only the root/bass note of every chord
 - **Nashville Number System** toggle — converts all chords to scale-degree numbers (1–7 with ♭/♯ prefixes), relative to the current key
 
+### Performance Tools
+- **Autoscroll** — adjustable-speed (0–30) hands-free scrolling through the chart
+- **Metronome** — an audible click track (30–300 BPM) that accents beat 1 of every bar based on the song's time signature, with a visual pulse beside the BPM box (also shown in Stage mode). **TAP** sets BPM by tapping along and writes it back to the song; an optional **Count-in** plays one bar of clicks before the beat indicator goes live
+- **Stage mode** — a distraction-free, optionally full-screen performance view with a floating bar for scroll speed, metronome, and previous/next song
+
 ### Export
 - **Song PDF** — exports the current song as a clean monospace chord chart PDF (two-column at default 14 px, single-column at larger sizes)
-- **Set PDF** — exports every song in the set in one file, in list order
+- **Set PDF** — exports every song in the set in one file, in list order, with an optional cover page & table of contents (set name, date, song count, estimated total length, and a numbered/page-numbered row per song with key/capo/BPM)
 - **Separate PDFs** — exports every song as its own PDF, bundled into a single `.zip` download (filenames from song titles) — handy when each musician just needs their own song
 - **Markdown** — exports the full set as a `.md` file with chord rows above lyrics
+- **Print song / Print set** — opens the browser's own print dialog instead of generating a PDF; a chord/lyric line is never split across a page break, and the page always prints in plain black on white regardless of the active color theme or dark mode
 - All exports respect the current transposition, bass-notes toggle, Nashville toggle, accidentals preference, and annotations
 - **PDF font size** — configurable independently from the on-screen text size (10–20 px, default 14 px) via ⚙️ Settings
 
 ### Appearance & Accessibility
-- **Color themes** — five accent color themes in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, Green; each works with both light and dark mode
+- **Color themes** — twelve accent color themes in ⚙️ Settings → Appearance: Blue (default), Pink, Red, Amber, Green, Purple, Teal, Orange, Disco, Confetti, Grid, Plaid; each works with both light and dark mode
 - **Light / Dark mode** — toggle from ⚙️ Settings; follows system preference on first visit
 - **Chord font** — choose Classic (Courier New) or Readable (JetBrains Mono, the default) in ⚙️ Settings → Appearance; both are true monospace fonts so chord/lyric alignment stays exact, and the choice applies to both the editor and PDF exports
 - **Adjustable text size** — scale the app up or down with A− / A+ (13–32 px), remembered between visits

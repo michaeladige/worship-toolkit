@@ -1,0 +1,85 @@
+:host {
+  display: block;
+}
+
+.diagram-strip {
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.diagram-capo-note {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  font-style: italic;
+  margin-bottom: 0.4rem;
+}
+
+.diagram-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.diagram {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 4.2rem;
+}
+
+.diagram-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.15rem;
+}
+
+.diagram-svg {
+  width: 100%;
+  height: auto;
+}
+
+.diagram-unavailable {
+  font-size: 0.65rem;
+  color: var(--color-muted);
+  font-style: italic;
+  padding: 0.8rem 0;
+}
+
+.string-line,
+.fret-line {
+  stroke: var(--color-muted);
+  stroke-width: 1;
+}
+
+.nut-line {
+  stroke: var(--color-text);
+  stroke-width: 3;
+}
+
+.finger-dot {
+  fill: var(--color-primary);
+}
+
+.barre-line {
+  stroke: var(--color-primary);
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.open-marker {
+  fill: none;
+  stroke: var(--color-text);
+  stroke-width: 1.2;
+}
+
+.mute-marker {
+  font-size: 7px;
+  fill: var(--color-muted);
+}
+
+.base-fret-label {
+  font-size: 7px;
+  fill: var(--color-muted);
+}

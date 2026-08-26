@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import type { jsPDF as JsPdf } from 'jspdf';
 import { ParsedSong, SongLine, ChordToken } from '../models/song.model';
 import { Accidentals, ChordService } from './chord.service';
-import { ChordFont } from './ui-settings.service';
+import { ChordFont, ChordInstrument } from './ui-settings.service';
+import { chordShape, ChordShapeDiagram } from '../data/chord-shapes';
+
+export interface SetPdfOptions {
+  coverPage?: boolean; // prepend a summary + page-numbered table of contents
+  setName?: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class ExportService {
@@ -82,12 +88,16 @@ export class ExportService {
 
   private songToMarkdown(song: ParsedSong, accidentals: Accidentals = 'auto'): string {
     song = this.sanitizeSong(song);
-    const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
+    const effectiveKey = this.chordSvc.effectiveKey(song, accidentals);
     const lines: string[] = [];
 
     lines.push(`# ${song.title}`);
     if (song.authors.length) lines.push(song.authors.join(' | '));
-    lines.push(`**Key - ${effectiveKey} | Tempo - ${song.tempo} | Time - ${song.timeSignature}**`);
+    let keyLine = `**Key - ${effectiveKey} | Tempo - ${song.tempo} | Time - ${song.timeSignature}**`;
+    if (song.capo) {
+      keyLine += ` | Capo ${song.capo} (play in ${this.chordSvc.shapeKey(song, accidentals)})`;
+    }
+    lines.push(keyLine);
     lines.push('');
 
     for (const section of song.sections) {
@@ -97,7 +107,7 @@ export class ExportService {
         const chordLine = this.renderChordRow(line, song, accidentals);
         if (chordLine.trim()) lines.push(chordLine);
         if (line.annotation) {
-          const ann = this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey, accidentals);
+          const ann = this.chordSvc.displayAnnotation(line.annotation, song, accidentals);
           lines.push(`*${ann}*`);
         }
         if (line.lyric.trim()) lines.push(line.lyric);
@@ -136,11 +146,7 @@ export class ExportService {
   }
 
   getDisplayChord(chord: string, song: ParsedSong, accidentals: Accidentals = 'auto'): string {
-    const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
-    let transposed = this.chordSvc.transposeChord(chord, song.transposeSemitones, effectiveKey, accidentals);
-    if (song.showBassNotesOnly) transposed = this.chordSvc.getBassNote(transposed);
-    if (song.showNashville) transposed = this.chordSvc.toNashville(transposed, effectiveKey);
-    return transposed;
+    return this.chordSvc.displayChord(chord, song, accidentals);
   }
 
   async toPdf(
@@ -148,8 +154,10 @@ export class ExportService {
     pdfFontSize = 14,
     accidentals: Accidentals = 'auto',
     fontChoice: ChordFont = 'classic',
+    instrument: ChordInstrument = 'guitar',
+    setOptions: SetPdfOptions | null = null,
   ): Promise<void> {
-    const doc = await this.buildDoc(songs, pdfFontSize, accidentals, fontChoice);
+    const doc = await this.buildDoc(songs, pdfFontSize, accidentals, fontChoice, instrument, setOptions);
     doc.save('worship-set.pdf');
   }
 
@@ -166,6 +174,7 @@ export class ExportService {
     accidentals: Accidentals = 'auto',
     fontChoice: ChordFont = 'classic',
     zipName = 'worship-set',
+    instrument: ChordInstrument = 'guitar',
   ): Promise<void> {
     const { default: JSZip } = await import('jszip');
     const zip = new JSZip();
@@ -181,7 +190,7 @@ export class ExportService {
     };
 
     for (const song of songs) {
-      const doc = await this.buildDoc([song], pdfFontSize, accidentals, fontChoice);
+      const doc = await this.buildDoc([song], pdfFontSize, accidentals, fontChoice, instrument);
       zip.file(fileNameFor(song.title), doc.output('blob'));
     }
 
@@ -194,6 +203,134 @@ export class ExportService {
     URL.revokeObjectURL(url);
   }
 
+  // Draws one row of small fretboard diagrams — one per distinct chord in the
+  // song — wrapping to further rows if they don't fit maxWidth, and returns
+  // the total height consumed so the caller can push the section layout
+  // below it. Diagrams are drawn as vectors (lines/circles), same as the
+  // rest of the PDF, so this adds no image data or extra dependency.
+  private drawChordDiagrams(
+    doc: JsPdf,
+    song: ParsedSong,
+    accidentals: Accidentals,
+    instrument: ChordInstrument,
+    x: number,
+    y: number,
+    maxWidth: number,
+  ): number {
+    const labels = this.chordSvc.distinctChordLabels(song, accidentals);
+    if (labels.length === 0) return 0;
+
+    const DIAG_W = 42;
+    const DIAG_H = 34;
+    const GAP = 6;
+    const perRow = Math.max(1, Math.floor((maxWidth + GAP) / (DIAG_W + GAP)));
+
+    let col = 0;
+    let cx = x;
+    let cy = y;
+    for (const label of labels) {
+      if (col >= perRow) {
+        col = 0;
+        cx = x;
+        cy += DIAG_H;
+      }
+      const parsed = this.chordSvc.parseChord(label);
+      const shape = parsed ? chordShape(parsed.root, parsed.suffix, instrument) : null;
+      this.drawOneDiagram(doc, label, shape, cx, cy, instrument);
+      cx += DIAG_W + GAP;
+      col++;
+    }
+    return cy - y + DIAG_H;
+  }
+
+  private drawOneDiagram(
+    doc: JsPdf,
+    label: string,
+    shape: ChordShapeDiagram | null,
+    ox: number,
+    oy: number,
+    instrument: ChordInstrument,
+  ): void {
+    const DIAG_W = 42;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(6);
+    doc.setTextColor(17, 24, 39);
+    doc.text(label, ox + DIAG_W / 2, oy + 6, { align: 'center' });
+
+    if (!shape) {
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(5);
+      doc.setTextColor(107, 114, 128);
+      doc.text('no shape', ox + DIAG_W / 2, oy + 20, { align: 'center' });
+      return;
+    }
+
+    const stringCount = instrument === 'ukulele' ? 4 : 6;
+    const boardW = 24;
+    const marginX = (DIAG_W - boardW) / 2;
+    const sx = (i: number) => ox + marginX + i * (boardW / (stringCount - 1));
+    const yTop = oy + 11;
+    const rowH = 6;
+    const fy = (row: number) => yTop + row * rowH;
+
+    doc.setDrawColor(107, 114, 128);
+    doc.setLineWidth(0.4);
+    for (let i = 0; i < stringCount; i++) {
+      doc.line(sx(i), yTop, sx(i), fy(4));
+    }
+    if (shape.baseFret === 1) {
+      doc.setLineWidth(1.1);
+      doc.line(sx(0), yTop, sx(stringCount - 1), yTop);
+      doc.setLineWidth(0.4);
+    } else {
+      doc.line(sx(0), yTop, sx(stringCount - 1), yTop);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(4.5);
+      doc.text(`${shape.baseFret}fr`, sx(stringCount - 1) + 2, yTop + 3);
+    }
+    for (let row = 1; row <= 4; row++) {
+      doc.line(sx(0), fy(row), sx(stringCount - 1), fy(row));
+    }
+
+    doc.setFontSize(4.5);
+    doc.setTextColor(107, 114, 128);
+    for (let i = 0; i < stringCount; i++) {
+      const f = shape.frets[i];
+      if (f === 0) {
+        doc.circle(sx(i), yTop - 3, 1.2, 'S');
+      } else if (f === -1) {
+        doc.text('x', sx(i), yTop - 1, { align: 'center' });
+      }
+    }
+
+    if (shape.barreFret !== undefined) {
+      const row = shape.barreFret - shape.baseFret + 1;
+      const indices = shape.frets
+        .map((f, i) => ({ i, rel: f > 0 ? f - shape.baseFret + 1 : 0 }))
+        .filter(e => e.rel === row)
+        .map(e => e.i);
+      if (indices.length >= 2) {
+        const from = Math.min(...indices);
+        const to = Math.max(...indices);
+        doc.setDrawColor(29, 78, 216);
+        doc.setLineWidth(2.5);
+        doc.line(sx(from), fy(row) - rowH / 2, sx(to), fy(row) - rowH / 2);
+        doc.setDrawColor(107, 114, 128);
+        doc.setLineWidth(0.4);
+      }
+    }
+
+    doc.setFillColor(29, 78, 216);
+    for (let i = 0; i < stringCount; i++) {
+      const f = shape.frets[i];
+      if (f > 0) {
+        const rel = f - shape.baseFret + 1;
+        doc.circle(sx(i), fy(rel) - rowH / 2, 1.6, 'F');
+      }
+    }
+  }
+
   // Builds a single jsPDF document containing every song passed in (one per page
   // group), and returns it WITHOUT saving so callers can either .save() it
   // (combined export) or .output('blob') it into a zip (per-song export).
@@ -202,9 +339,13 @@ export class ExportService {
     pdfFontSize: number,
     accidentals: Accidentals,
     fontChoice: ChordFont,
+    instrument: ChordInstrument = 'guitar',
+    setOptions: SetPdfOptions | null = null,
   ): Promise<JsPdf> {
     const { jsPDF } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    // A cover/TOC page only makes sense for a genuine multi-song set.
+    const includeCover = !!setOptions?.coverPage && songs.length > 1;
 
     const margin        = 40;
     const pageW         = doc.internal.pageSize.getWidth();
@@ -260,11 +401,23 @@ export class ExportService {
     const setTextColor   = () => doc.setTextColor(17,  24,  39);  // #111827
     const setMutedColor  = () => doc.setTextColor(107, 114, 128); // #6b7280
 
+    // Reserve blank cover/TOC pages up front — their content (which needs
+    // each song's actual starting page number) is drawn in a second pass
+    // after the songs below have been laid out and those numbers are known.
+    // One combined page serves as both: a header block (set name, date,
+    // song count, estimated duration) followed by a page-numbered row per
+    // song, rather than two near-duplicate listings.
+    const TOC_ROWS_PER_PAGE = 32;
+    const coverPageCount = includeCover ? Math.max(1, Math.ceil(songs.length / TOC_ROWS_PER_PAGE)) : 0;
+    for (let i = 1; i < coverPageCount; i++) doc.addPage(); // page 1 already exists
+    const songStartPages: number[] = [];
+
     for (let si = 0; si < songs.length; si++) {
       const song = this.sanitizeSong(songs[si]);
-      if (si > 0) doc.addPage();
+      if (includeCover || si > 0) doc.addPage();
+      songStartPages.push(doc.getNumberOfPages());
 
-      const effectiveKey = this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
+      const effectiveKey = this.chordSvc.effectiveKey(song, accidentals);
 
       // ── Header (Helvetica, like the editor toolbar) ──────────────────────────
       doc.setFont('helvetica', 'bold');
@@ -284,12 +437,31 @@ export class ExportService {
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(8);
       setMutedColor();
-      doc.text(
-        `Key - ${effectiveKey} | Tempo - ${song.tempo} | Time - ${song.timeSignature}`,
-        margin, authorY + 2,
-      );
+      let keyLine = `Key - ${effectiveKey} | Tempo - ${song.tempo} | Time - ${song.timeSignature}`;
+      if (song.capo) {
+        keyLine += ` | Capo ${song.capo} (play in ${this.chordSvc.shapeKey(song, accidentals)})`;
+      }
+      doc.text(keyLine, margin, authorY + 2);
 
-      const headerH = (authorY + 2) - margin + 14;
+      let headerH = (authorY + 2) - margin + 14;
+
+      if (song.notes) {
+        doc.setFont(MONO, 'italic');
+        doc.setFontSize(FONT_PT - 1);
+        setMutedColor();
+        const noteLines = doc.splitTextToSize(song.notes, pageW - margin * 2) as string[];
+        doc.text(noteLines, margin, margin + headerH - 2);
+        headerH += ANNOT_H * noteLines.length;
+      }
+
+      // Same gating as the on-screen toggle: diagrams hide under Nashville
+      // numbers, which have no fingering to show.
+      if (song.showChordDiagrams && !song.showNashville) {
+        headerH += this.drawChordDiagrams(
+          doc, song, accidentals, instrument,
+          margin, margin + headerH - 6, pageW - margin * 2,
+        );
+      }
 
       // ── Two-column section layout ─────────────────────────────────────────────
       let col = 0;
@@ -332,7 +504,7 @@ export class ExportService {
           const hasChords = line.chords.length > 0;
           const hasLyric  = !line.isChordsOnly && line.lyric.trim().length > 0;
           const ann = line.annotation
-            ? this.chordSvc.transposeAnnotation(line.annotation, song.transposeSemitones, effectiveKey, accidentals)
+            ? this.chordSvc.displayAnnotation(line.annotation, song, accidentals)
             : '';
 
           if (hasChords) {
@@ -420,7 +592,75 @@ export class ExportService {
       }
     }
 
+    if (includeCover) {
+      this.drawCoverPages(doc, songs, setOptions?.setName, accidentals, songStartPages, margin, pageW, pageH);
+    }
+
     return doc;
+  }
+
+  // Drawn as a second pass, once every song's actual starting page is known
+  // from the main layout loop above — jsPDF's setPage() lets earlier
+  // (already-reserved, still-blank) pages be revisited for this without
+  // disturbing the page order already laid down.
+  private drawCoverPages(
+    doc: JsPdf,
+    songs: ParsedSong[],
+    setName: string | undefined,
+    accidentals: Accidentals,
+    songStartPages: number[],
+    margin: number,
+    pageW: number,
+    pageH: number,
+  ): void {
+    doc.setPage(1);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
+    doc.setTextColor(17, 24, 39);
+    doc.text(setName || 'Worship Set', margin, margin + 16);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(107, 114, 128);
+    const dateStr = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    const timed = songs.filter(s => (s.durationSeconds ?? 0) > 0);
+    const totalSeconds = timed.reduce((sum, s) => sum + (s.durationSeconds ?? 0), 0);
+    const durationStr = timed.length
+      ? `≈ ${Math.round(totalSeconds / 60)} min (${timed.length} of ${songs.length} songs timed)`
+      : null;
+    const summaryParts = [dateStr, `${songs.length} song${songs.length === 1 ? '' : 's'}`, durationStr]
+      .filter((p): p is string => !!p);
+    doc.text(summaryParts.join('   ·   '), margin, margin + 34);
+
+    let page = 1;
+    let y = margin + 56;
+    const rowH = 15;
+    const bottomLimit = pageH - margin;
+
+    for (let i = 0; i < songs.length; i++) {
+      if (y + rowH > bottomLimit) {
+        page++;
+        doc.setPage(page);
+        y = margin + 20;
+      }
+      const song = songs[i];
+      const key = this.chordSvc.effectiveKey(song, accidentals);
+      let label = `${i + 1}. ${song.title || 'Untitled'} — Key ${key}`;
+      if (song.capo) label += ` · Capo ${song.capo}`;
+      if (song.tempo) label += ` · ${song.tempo} BPM`;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(17, 24, 39);
+      doc.text(label, margin, y);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(107, 114, 128);
+      doc.text(`p. ${songStartPages[i]}`, pageW - margin, y, { align: 'right' });
+
+      y += rowH;
+    }
   }
 
   downloadSession(songs: ParsedSong[], name: string): void {
@@ -455,6 +695,12 @@ export class ExportService {
       const song = s as Record<string, unknown> | null;
       if (!song || typeof song['title'] !== 'string' || !Array.isArray(song['sections'])) {
         throw new Error('Invalid set file — one or more songs have an unexpected format.');
+      }
+      // Clamp a hostile/garbage capo value (e.g. a hand-edited .wt) into the
+      // 0-11 fret range the toolbar chip and PDF/Markdown export assume.
+      if ('capo' in song) {
+        const n = Math.round(Number(song['capo']));
+        song['capo'] = Number.isFinite(n) && n > 0 ? Math.min(11, n) : undefined;
       }
     }
     return {

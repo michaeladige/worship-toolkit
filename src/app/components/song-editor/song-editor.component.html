@@ -106,6 +106,58 @@
               🔑 {{ song.originalKey }}
             </button>
           }
+
+          <!-- Capo: display-only shape shift. Never changes the sounding key —
+             see ChordService.displayChord() for how it composes with transpose,
+             bass notes, and Nashville. -->
+          @if (editingCapo) {
+            <span class="chip chip--editing chip--capo">
+              {{ ui.t('Capo') }}
+              <select
+                class="chip-select"
+                [ngModel]="capo"
+                (ngModelChange)="setCapo($event)"
+                appAutofocus
+              >
+                <option [value]="0">{{ ui.t('None') }}</option>
+                @for (n of capoOptions.slice(1); track n) {
+                  <option [value]="n">{{ n }}</option>
+                }
+              </select>
+            </span>
+          } @else {
+            <button
+              class="chip chip--btn"
+              [class.chip--empty]="!capo"
+              (click)="startEditCapo()"
+              [title]="
+                ui.t('Capo — the fret a capo is placed on; shapes shift, the sounding key does not')
+              "
+            >
+              🗜️ {{ capo ? ui.t('Capo') + ' ' + capo : ui.t('+ Capo') }}
+            </button>
+          }
+          @if (capo) {
+            <span
+              class="chip-sublabel"
+              [title]="
+                ui.t('Capo — the fret a capo is placed on; shapes shift, the sounding key does not')
+              "
+            >
+              {{ ui.t('sounds in') }} {{ effectiveKey }} · {{ ui.t('play in') }} {{ shapeKey }}
+            </span>
+          }
+
+          <!-- Notes: free-text arrangement/performance reminders, plus an
+             optional duration used by the set PDF's estimated length. -->
+          <button
+            class="chip chip--btn"
+            [class.chip--empty]="!song.notes"
+            (click)="toggleNotes()"
+            [title]="ui.t('Song notes — arrangement or performance reminders')"
+          >
+            📝 {{ ui.t('Notes') }}
+          </button>
         </div>
 
         <div class="undo-redo-group">
@@ -195,22 +247,22 @@
         </div>
 
         <!-- Metronome -->
-        <div class="metronome-control" [class.active]="metronomeOn">
+        <div class="metronome-control" [class.active]="metronomeOn()">
           <button
             class="metronome-toggle-btn"
-            [class.active]="metronomeOn"
+            [class.active]="metronomeOn()"
             (click)="toggleMetronome()"
-            [attr.aria-pressed]="metronomeOn"
+            [attr.aria-pressed]="metronomeOn()"
             [title]="ui.t('Metronome')"
           >
             <span class="control-icon" aria-hidden="true">&#9833;</span>
             <span class="control-label-text">{{ ui.t('Metronome') }}</span>
           </button>
-          @if (metronomeOn) {
+          @if (metronomeOn()) {
             <button
               class="step-btn"
               (click)="decreaseBpm()"
-              [disabled]="bpm <= minBpm"
+              [disabled]="bpm() <= minBpm"
               title="Decrease BPM"
             >
               &#9660;
@@ -221,19 +273,37 @@
               inputmode="numeric"
               pattern="[0-9]*"
               maxlength="3"
-              [ngModel]="bpm"
+              [value]="bpm()"
               (change)="onBpmInput($any($event.target).value)"
               [title]="ui.t('Metronome')"
             />
             <button
               class="step-btn"
               (click)="increaseBpm()"
-              [disabled]="bpm >= maxBpm"
+              [disabled]="bpm() >= maxBpm"
               title="Increase BPM"
             >
               &#9650;
             </button>
+            <span
+              class="beat-indicator"
+              [class.beat-indicator--on]="beatFlash()"
+              [class.beat-indicator--accent]="beatFlash() && currentBeatInBar() === 0"
+              aria-hidden="true"
+            ></span>
+            <button class="tap-tempo-btn" (click)="tapTempo()" [title]="ui.t('Tap tempo')">
+              {{ ui.t('TAP') }}
+            </button>
           }
+          <button
+            class="count-in-btn"
+            [class.active]="ui.metronomeCountIn"
+            (click)="ui.setMetronomeCountIn(!ui.metronomeCountIn)"
+            [attr.aria-pressed]="ui.metronomeCountIn"
+            [title]="ui.t('Count-in — play one bar of clicks before the beat starts')"
+          >
+            {{ ui.t('Count-in') }}
+          </button>
         </div>
 
         <!-- Bass notes toggle -->
@@ -257,6 +327,18 @@
           <span class="label-full">{{ ui.t('1 2 3 Nashville') }}</span>
           <span class="label-short">{{ ui.t('1 2 3') }}</span>
         </button>
+
+        <!-- Chord diagrams toggle -->
+        @if (!song.showNashville) {
+          <button
+            class="toggle-btn"
+            [class.active]="song.showChordDiagrams"
+            (click)="toggleChordDiagrams()"
+            [title]="ui.t('Chord diagrams')"
+          >
+            🎸 {{ ui.t('Diagrams') }}
+          </button>
+        }
 
         <!-- View Only mode -->
         <button
@@ -305,8 +387,50 @@
     </div>
   }
 
+  <!-- Notes panel -->
+  @if (notesOpen) {
+    <div class="notes-panel">
+      <textarea
+        class="notes-textarea"
+        [(ngModel)]="notesDraft"
+        (blur)="commitNotes()"
+        [disabled]="ui.viewOnly()"
+        [placeholder]="ui.t('Arrangement notes, cues, reminders…')"
+        maxlength="2000"
+        rows="3"
+      ></textarea>
+      <div class="notes-duration">
+        <label>{{ ui.t('Duration') }}</label>
+        <input
+          class="duration-input"
+          type="text"
+          inputmode="numeric"
+          [(ngModel)]="durationDraft"
+          (blur)="commitDuration()"
+          [disabled]="ui.viewOnly()"
+          placeholder="mm:ss"
+          maxlength="6"
+        />
+      </div>
+    </div>
+  }
+
   <!-- Song content -->
   <div class="content" #scrollContainer>
+    <!-- Print-only: the toolbar (title/key/capo/BPM) is hidden when printing,
+         so this stands in for it on paper. Printing the whole set instead
+         hides this single-song content entirely — see .print-set-pages below. -->
+    <div class="print-header">
+      <h2>{{ song.title }}</h2>
+      @if (song.authors.length) {
+        <div class="print-authors">{{ song.authors.join(' | ') }}</div>
+      }
+      <div class="print-key-line">{{ printKeyLine(song) }}</div>
+    </div>
+
+    @if (song.showChordDiagrams && !song.showNashville) {
+      <app-chord-diagrams [song]="song" />
+    }
     <app-song-section
       [song]="song"
       [showSectionControls]="!ui.viewOnly()"
@@ -365,6 +489,9 @@
       </button>
 
       <span class="stage-bar-title">{{ song.title }}</span>
+      @if (capo) {
+        <span class="stage-bar-capo" [title]="ui.t('Capo') + ' ' + capo">🗜️ {{ capo }}</span>
+      }
 
       <div
         class="stage-bar-group"
@@ -406,12 +533,16 @@
         }
       </div>
 
-      <div class="stage-bar-group" [class.active]="metronomeOn" [title]="ui.t('Metronome')">
-        <button class="stage-bar-btn" (click)="toggleMetronome()" [attr.aria-pressed]="metronomeOn">
+      <div class="stage-bar-group" [class.active]="metronomeOn()" [title]="ui.t('Metronome')">
+        <button
+          class="stage-bar-btn"
+          (click)="toggleMetronome()"
+          [attr.aria-pressed]="metronomeOn()"
+        >
           &#9833;
         </button>
-        @if (metronomeOn) {
-          <button class="stage-bar-btn" (click)="decreaseBpm()" [disabled]="bpm <= minBpm">
+        @if (metronomeOn()) {
+          <button class="stage-bar-btn" (click)="decreaseBpm()" [disabled]="bpm() <= minBpm">
             &#9660;
           </button>
           <input
@@ -420,13 +551,19 @@
             inputmode="numeric"
             pattern="[0-9]*"
             maxlength="3"
-            [ngModel]="bpm"
+            [value]="bpm()"
             (change)="onBpmInput($any($event.target).value)"
             [title]="ui.t('Metronome')"
           />
-          <button class="stage-bar-btn" (click)="increaseBpm()" [disabled]="bpm >= maxBpm">
+          <button class="stage-bar-btn" (click)="increaseBpm()" [disabled]="bpm() >= maxBpm">
             &#9650;
           </button>
+          <span
+            class="beat-indicator"
+            [class.beat-indicator--on]="beatFlash()"
+            [class.beat-indicator--accent]="beatFlash() && currentBeatInBar() === 0"
+            aria-hidden="true"
+          ></span>
         }
       </div>
 
@@ -447,6 +584,33 @@
       >
         ✕
       </button>
+    </div>
+  }
+
+  <!-- Print-only: every song in the set, one per page. Only rendered into
+       the DOM at all while ui.printingSet() is true (set briefly by the
+       export modal's "Print set" action around its window.print() call) —
+       not just CSS-hidden — so an ordinary edit never pays the cost of every
+       song's full chart existing twice, once live and once print-only. -->
+  @if (ui.printingSet()) {
+    <div class="print-set-pages">
+      @for (s of songs; track s.id) {
+        <div class="song-print-page">
+          <div class="print-header">
+            <h2>{{ s.title }}</h2>
+            @if (s.authors.length) {
+              <div class="print-authors">{{ s.authors.join(' | ') }}</div>
+            }
+            <div class="print-key-line">{{ printKeyLine(s) }}</div>
+          </div>
+          <app-song-section
+            [song]="s"
+            [showSectionControls]="false"
+            [viewOnly]="true"
+            [splitColumns]="ui.editorSplitColumnsActive"
+          />
+        </div>
+      }
     </div>
   }
 </div>

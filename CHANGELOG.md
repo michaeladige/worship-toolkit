@@ -2,6 +2,16 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.1.0] - 2026-08-26
+
+### Added
+- **Capo** — a new 🗜️ capo chip in the editor toolbar (0–11 frets) shows both the sounding key and the shape you actually play, e.g. "sounds in D · play in C". A capo is purely a display transform — it never moves the underlying stored chord data — and composes correctly with transpose; Nashville Number mode deliberately ignores it, since scale-degree numbers are relative to the sounding key, not the fretted shape. Carried through to the PDF export header, Markdown export, and `.wt` set files.
+- **Chord diagrams** — a new 🎸 Diagrams toggle in the toolbar shows a strip of fretboard diagrams for every distinct chord in the song. Fretting is computed from each chord's actual notes (root + quality) rather than a hand-curated shape table, so any root/quality/capo combination gets a musically correct diagram, on both guitar (6 strings) and ukulele (4 strings, selectable in ⚙️ Settings → Appearance). Diagrams are transpose- and capo-aware, automatically hide under Nashville numbers (a scale-degree number has no fingering to show), and can optionally be included at the top of PDF exports.
+- **Set PDF cover page & table of contents** — a new checkbox under the Set PDF export option prepends a page listing the set name, today's date, song count, an estimated total length (summed from any songs with a Duration set), and a numbered row per song showing its key/capo/BPM and the page it starts on.
+- **Song notes & duration** — a new 📝 Notes chip opens a small panel per song for arrangement or performance reminders, plus an optional duration (`mm:ss`) that feeds the new Set PDF cover page's length estimate.
+- **Metronome: downbeat accent, tap tempo, count-in** — the click track now accents beat 1 of every bar based on the song's time signature (a 3/4 song accents every third click, not every fourth), with a small visual pulse next to the BPM box that also appears in Stage mode. A new **TAP** button sets BPM by tapping along instead of typing a number, and writes the tapped tempo back to the song so it's remembered. An optional **Count-in** toggle plays one full bar of clicks before the beat indicator goes live, useful for cueing a band in. Internally the metronome now runs on a proper Web Audio lookahead scheduler instead of a plain `setInterval`, so timing no longer drifts under load.
+- **Print layout** — the browser's own Ctrl+P now produces a usable printed chart instead of the app chrome: the header, sidebar, toolbar, and Stage-mode floating bar are hidden, a chord/lyric line is never split across a page break, and the page always prints in plain black on white regardless of the active color theme or dark mode. New 🖨️ **Print song** / **Print set** options in the export panel open the print dialog directly — Print set puts one song on each printed page.
+
 ## [2.0.4] - 2026-07-25
 
 ### Fixed
