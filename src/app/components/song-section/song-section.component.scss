@@ -134,6 +134,77 @@
     min-height: 1.5rem;
     margin-bottom: 0.6rem;
   }
+
+  &.selected {
+    background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+    border-radius: 4px;
+  }
+
+  &.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  &.cdk-drag-preview {
+    background: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    padding: 0.35rem 0.6rem;
+    opacity: 0.92;
+
+    // .line-body fades its right edge on narrow screens (see the mask-image
+    // rule below); inside a floating drag preview that reads as the line being
+    // cut off rather than scrollable, so drop the mask for the preview only.
+    .line-body {
+      mask-image: none;
+      -webkit-mask-image: none;
+    }
+  }
+}
+
+.line-drag-placeholder {
+  border: 2px dashed var(--color-border);
+  border-radius: 4px;
+  min-height: 2.2rem;
+  width: 100%;
+  background: color-mix(in srgb, var(--color-primary) 5%, transparent);
+}
+
+.section-lines.cdk-drop-list-dragging .line-group:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.line-drag-handle {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: grab;
+  user-select: none;
+  // Required for CDK drag on touch devices — without it the browser claims the
+  // gesture for scrolling before CDK ever sees a move.
+  touch-action: none;
+
+  &:active { cursor: grabbing; }
+}
+
+// The gutter is hover-revealed during normal editing, but while selecting, the
+// checkboxes in it are the primary control and must always be visible.
+.sections.select-mode .line-controls {
+  opacity: 1;
+}
+
+.select-check {
+  cursor: pointer;
+  accent-color: var(--color-primary);
+  margin: 0;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
 }
 
 // Left gutter: + chord and ✕ line buttons

@@ -39,7 +39,9 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 - Drag any chord left/right to reposition it precisely over the lyric
 - Add chords via the `+` gutter button; remove with the `×` that appears on hover
 - Add, remove, and reorder entire lines and sections
-- Drag-and-drop to reorder sections within a song
+- Drag-and-drop to reorder sections within a song, and to move lines within or between sections
+- **Select mode** — a ☑️ toggle swaps the line gutter for checkboxes so you can copy, duplicate, or delete many lines (or many sections) at once, as a single undoable action
+- **Set-wide clipboard** — copied lines/sections survive a song switch, so a chorus can be pasted from one song into another
 - Quick-add sections by name (INTRO / VERSE / CHORUS / PRE-CHORUS / BRIDGE / OUTRO / TAG) or enter a custom name
 - **Inline song title editing** — click the song title in the toolbar to rename; press Enter to save or Esc to cancel
 - Click the **BPM** chip to set or clear tempo

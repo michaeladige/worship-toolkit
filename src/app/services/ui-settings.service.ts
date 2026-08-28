@@ -771,6 +771,56 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   '+ chord': { la: '+ chorda', 'zh-TW': '+ 和弦', id: '+ chord', jv: '+ chord' },
   '+ note': { la: '+ nota', 'zh-TW': '+ 備註', id: '+ catatan', jv: '+ cathetan' },
 
+  // ── select mode & bulk actions ──
+  Select: { la: 'Eligere', 'zh-TW': '選取', id: 'Pilih', jv: 'Pilih' },
+  selected: { la: 'electa', 'zh-TW': '已選取', id: 'dipilih', jv: 'dipilih' },
+  Copy: { la: 'Copiare', 'zh-TW': '複製', id: 'Salin', jv: 'Salin' },
+  Duplicate: { la: 'Duplicare', 'zh-TW': '複製一份', id: 'Gandakan', jv: 'Gandakake' },
+  Paste: { la: 'Agglutinare', 'zh-TW': '貼上', id: 'Tempel', jv: 'Tempel' },
+  Done: { la: 'Confectum', 'zh-TW': '完成', id: 'Selesai', jv: 'Rampung' },
+  sections: { la: 'sectiones', 'zh-TW': '個段落', id: 'bagian', jv: 'bagian' },
+  copied: { la: 'copiata', 'zh-TW': '已複製', id: 'disalin', jv: 'disalin' },
+  duplicated: { la: 'duplicata', 'zh-TW': '已複製一份', id: 'digandakan', jv: 'digandakake' },
+  deleted: { la: 'deleta', 'zh-TW': '已刪除', id: 'dihapus', jv: 'dibusak' },
+  Undo: { la: 'Revocare', 'zh-TW': '復原', id: 'Urungkan', jv: 'Balekake' },
+  'Select all lines': {
+    la: 'Omnes lineas eligere',
+    'zh-TW': '選取所有行',
+    id: 'Pilih semua baris',
+    jv: 'Pilih kabeh baris',
+  },
+  'Select line': { la: 'Lineam eligere', 'zh-TW': '選取此行', id: 'Pilih baris', jv: 'Pilih baris' },
+  'Select section': {
+    la: 'Sectionem eligere',
+    'zh-TW': '選取此段落',
+    id: 'Pilih bagian',
+    jv: 'Pilih bagian',
+  },
+  'In Select mode': {
+    la: 'In Modo Eligendi',
+    'zh-TW': '選取模式中',
+    id: 'Di mode Pilih',
+    jv: 'Ing mode Pilih',
+  },
+  'Copy selection': {
+    la: 'Electa copiare',
+    'zh-TW': '複製選取項目',
+    id: 'Salin pilihan',
+    jv: 'Salin pilihan',
+  },
+  'Duplicate selection': {
+    la: 'Electa duplicare',
+    'zh-TW': '複製選取項目一份',
+    id: 'Gandakan pilihan',
+    jv: 'Gandakake pilihan',
+  },
+  'Delete selection': {
+    la: 'Electa delere',
+    'zh-TW': '刪除選取項目',
+    id: 'Hapus pilihan',
+    jv: 'Busak pilihan',
+  },
+
   // ── song list ──
   'Songs in Set': {
     la: 'Cantus in Collectione',
@@ -2170,6 +2220,97 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     'zh-TW': '段落標題中的按鈕。',
     id: 'tombol di header bagian.',
     jv: 'tombol ing header bagian.',
+  },
+
+  // ── §4 line moves & select mode ──
+  'Move a line': {
+    la: 'Lineam movere',
+    'zh-TW': '移動一行',
+    id: 'Pindahkan baris',
+    jv: 'Pindhah baris',
+  },
+  'every line has its own': {
+    la: 'omnis linea suum habet',
+    'zh-TW': '每一行都有自己的',
+    id: 'tiap baris punya',
+    jv: 'saben baris duwe',
+  },
+  'handle in the left gutter. Drag it to reorder the line within its section, or drop it into a different section entirely. If you move the last line out of a section, a blank line is left behind so the section never ends up empty.':
+    {
+      la: 'ansam in margine sinistro. Trahe eam ut lineam intra sectionem ordines, vel in aliam sectionem omnino demitte. Si ultimam lineam ex sectione moves, linea vacua relinquitur ne sectio umquam inanis fiat.',
+      'zh-TW':
+        '左側邊欄的握把。拖曳它即可在同一段落內重新排序，或直接放進另一個段落。若把段落中最後一行移走，系統會留下一行空行，段落不會變成完全空的。',
+      id: 'handle di gutter kiri. Tarik buat ngatur ulang urutan baris di dalam bagiannya, atau lempar ke bagian lain sekalian. Kalau baris terakhir dipindah keluar dari satu bagian, bakal disisain satu baris kosong biar bagiannya nggak jadi kosong melompong.',
+      jv: 'gagang ing gutter kiwa. Seret kanggo ngurutake maneh baris ing sajroning bagiane, utawa selehake ing bagian liya. Yen baris pungkasan dipindhah metu saka sawijining bagian, bakal ditinggali siji baris kosong supaya bagiane ora tau dadi kothong.',
+    },
+  'Select mode: copy, duplicate & delete in bulk': {
+    la: 'Modus Eligendi: copiare, duplicare et delere aggregatim',
+    'zh-TW': '選取模式：批次複製、再製與刪除',
+    id: 'Mode Pilih: salin, gandakan & hapus sekaligus',
+    jv: 'Mode Pilih: salin, gandakake & busak bebarengan',
+  },
+  'click the Select button in the toolbar to swap the line gutter for checkboxes and open a bulk-action bar. Tick any number of lines — or any number of section headers — then Copy, Duplicate, or Delete them all at once. A selection is either lines or sections, never a mix of both: ticking a section clears any lines you had ticked, and vice versa.':
+    {
+      la: 'preme bullam Eligere in instrumentorum tabula ut margo linearum in quadratula mutetur et tabula actionum aggregatarum aperiatur. Signa quotlibet lineas — vel quotlibet titulos sectionum — deinde omnes simul Copia, Duplica, vel Dele. Electio aut lineae sunt aut sectiones, numquam mixtura: sectionem signare lineas signatas vacuat, et contra.',
+      'zh-TW':
+        '點工具列的「選取」按鈕，行的邊欄會換成核取方塊，並開啟批次操作列。勾選任意數量的行，或任意數量的段落標題，然後一次複製、再製或刪除。一次選取只能是行或段落，不能混用：勾選段落會清掉已勾選的行，反之亦然。',
+      id: 'klik tombol Pilih di toolbar buat ngubah gutter baris jadi checkbox dan munculin bar aksi massal. Centang berapa pun baris — atau berapa pun header bagian — terus Salin, Gandakan, atau Hapus semuanya sekaligus. Satu pilihan itu baris aja atau bagian aja, nggak pernah campur: nyentang bagian bakal ngosongin baris yang udah kamu centang, dan sebaliknya.',
+      jv: 'klik tombol Pilih ing toolbar kanggo ngganti gutter baris dadi kothak centang lan mbukak bar tumindak akeh. Centhang pira wae baris — utawa pira wae judhul bagian — banjur Salin, Gandakake, utawa Busak kabeh bebarengan. Sapisan milih iku baris thok utawa bagian thok, ora tau campur: nyenthang bagian bakal ngosongake baris sing wis dicenthang, lan kosok baline.',
+    },
+  'Each bulk action counts as a single change, so one': {
+    la: 'Omnis actio aggregata una mutatio numeratur, itaque unum',
+    'zh-TW': '每次批次操作只算一次變更，所以按一次',
+    id: 'Tiap aksi massal dihitung satu perubahan, jadi sekali',
+    jv: 'Saben tumindak akeh diitung siji owahan, dadi sepisan',
+  },
+  'undoes the whole thing rather than one line at a time. A bulk delete also offers an Undo button in its confirmation toast.':
+    {
+      la: 'totum revocat, non singulas lineas. Deletio aggregata etiam bullam Revocandi in nuntio suo praebet.',
+      'zh-TW':
+        '就能整批復原，而不是一行一行來。批次刪除也會在提示訊息裡附上「復原」按鈕。',
+      id: 'langsung balikin semuanya, bukan satu baris satu baris. Hapus massal juga nyediain tombol Urungkan di toast konfirmasinya.',
+      jv: 'langsung mbalekake kabeh, dudu siji baris siji baris. Busak akeh uga nyedhiyakake tombol Balekake ing toast konfirmasine.',
+    },
+  'what you copy stays on the clipboard when you switch songs, so you can copy a chorus out of one song and paste it into another. With lines copied, a Paste button appears in every section header; with sections copied, one appears next to Add section. The clipboard is cleared when you reload the page.':
+    {
+      la: 'quod copias in tabella manet cum cantus mutas, ita ut chorum ex uno cantu copiare et in alium agglutinare possis. Lineis copiatis, bulla Agglutinandi in omni titulo sectionis apparet; sectionibus copiatis, una iuxta Addere Sectionem apparet. Tabella vacuatur cum paginam recreas.',
+      'zh-TW':
+        '複製的內容在你切換歌曲後仍會留在剪貼簿，所以可以從一首歌複製副歌，貼到另一首去。複製的是行時，每個段落標題都會出現「貼上」按鈕；複製的是段落時，按鈕會出現在「新增段落」旁邊。重新整理頁面就會清空剪貼簿。',
+      id: 'yang kamu salin tetap nempel di clipboard walau ganti lagu, jadi bisa nyalin chorus dari satu lagu terus tempel ke lagu lain. Kalau yang disalin baris, tombol Tempel muncul di tiap header bagian; kalau yang disalin bagian, tombolnya muncul di sebelah Tambah Bagian. Clipboard-nya kehapus kalau halaman di-reload.',
+      jv: 'sing disalin tetep ana ing clipboard senajan ganti lagu, dadi bisa nyalin chorus saka siji lagu banjur ditempel ing lagu liya. Yen sing disalin baris, tombol Tempel metu ing saben judhul bagian; yen sing disalin bagian, tombole metu ing sandhinge Tambah Bagian. Clipboard-e ilang yen kacane di-reload.',
+    },
+  'While selecting, the usual editing controls are hidden and dragging is switched off, so a click can only ever mean "tick this". Press':
+    {
+      la: 'Dum eligis, instrumenta emendandi solita latent et tractio extinguitur, ita ut ictus solum "hoc signa" significare possit. Preme',
+      'zh-TW':
+        '選取期間，平常的編輯控制項會隱藏、拖曳也會關閉，所以一次點擊只可能代表「勾選這個」。按',
+      id: 'Selama milih, kontrol edit yang biasa disembunyiin dan drag dimatiin, jadi satu klik cuma bisa berarti "centang ini". Tekan',
+      jv: 'Nalika milih, kontrol suntingan sing biasa didhelikake lan seret dipateni, dadi siji klik mung bisa ateges "centhang iki". Pencet',
+    },
+  'or click': { la: 'vel preme', 'zh-TW': '或點擊', id: 'atau klik', jv: 'utawa klik' },
+  'to leave select mode. Select mode is unavailable in View Only and Stage modes.': {
+    la: 'ut modum eligendi relinquas. Modus eligendi in modis Tantum Videre et Scaenae non praesto est.',
+    'zh-TW': '即可離開選取模式。唯讀模式與舞台模式下無法使用選取模式。',
+    id: 'buat keluar dari mode Pilih. Mode Pilih nggak tersedia di mode Lihat Saja dan mode Panggung.',
+    jv: 'kanggo metu saka mode Pilih. Mode Pilih ora kasedhiya ing mode Ndeleng Wae lan mode Panggung.',
+  },
+  'Shortcuts while selecting:': {
+    la: 'Compendia dum eligis:',
+    'zh-TW': '選取時的快速鍵：',
+    id: 'Pintasan saat milih:',
+    jv: 'Trabasan nalika milih:',
+  },
+  'for copy, paste, duplicate, and select-all-lines, and': {
+    la: 'ad copiandum, agglutinandum, duplicandum, et omnes lineas eligendas, et',
+    'zh-TW': '分別是複製、貼上、再製與選取所有行，另外',
+    id: 'buat salin, tempel, gandakan, dan pilih-semua-baris, dan',
+    jv: 'kanggo salin, tempel, gandakake, lan pilih-kabeh-baris, lan',
+  },
+  'to delete the selection.': {
+    la: 'ad electa delenda.',
+    'zh-TW': '則是刪除選取項目。',
+    id: 'buat hapus pilihannya.',
+    jv: 'kanggo mbusak pilihane.',
   },
 
   // ── §5 Keys & transposition ──

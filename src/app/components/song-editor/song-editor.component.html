@@ -351,11 +351,51 @@
           {{ ui.viewOnly() ? '🔒' : '🔓' }} {{ ui.t('View Only') }}
         </button>
 
+        <!-- Select mode (bulk copy/duplicate/delete of lines & sections) -->
+        <button
+          class="toggle-btn select-btn"
+          [class.active]="selection.selectMode()"
+          (click)="toggleSelectMode()"
+          [attr.aria-pressed]="selection.selectMode()"
+          [disabled]="ui.viewOnly()"
+          [title]="ui.t('Select')"
+        >
+          ☑️ {{ ui.t('Select') }}
+        </button>
+
         <!-- Stage mode -->
-        <button class="toggle-btn stage-btn" (click)="ui.enterStageMode()" [title]="ui.t('Stage')">
+        <button class="toggle-btn stage-btn" (click)="enterStageMode()" [title]="ui.t('Stage')">
           🎤 {{ ui.t('Stage') }}
         </button>
       </div>
+    </div>
+  }
+
+  <!-- Bulk-action bar — only while selecting -->
+  @if (selection.selectMode() && !ui.stageMode()) {
+    <div class="bulk-bar">
+      <span class="bulk-count">
+        {{ selection.count() }} {{ ui.t('selected') }}
+      </span>
+      <button class="bulk-btn" [disabled]="!selection.hasSelection()" (click)="copySelection()">
+        📋 {{ ui.t('Copy') }}
+      </button>
+      <button class="bulk-btn" [disabled]="!selection.hasSelection()" (click)="duplicateSelection()">
+        ⧉ {{ ui.t('Duplicate') }}
+      </button>
+      <button
+        class="bulk-btn bulk-btn--danger"
+        [disabled]="!selection.hasSelection()"
+        (click)="deleteSelection()"
+      >
+        🗑 {{ ui.t('Delete') }}
+      </button>
+      <button class="bulk-btn" (click)="selectAllLines()">
+        ☑ {{ ui.t('Select all lines') }}
+      </button>
+      <button class="bulk-btn bulk-btn--ghost" (click)="selection.exitSelectMode()">
+        ✕ {{ ui.t('Done') }}
+      </button>
     </div>
   }
 
@@ -439,6 +479,7 @@
       (songChange)="updateSong($event)"
       (addLine)="addLineToSection($event)"
       (removeSection)="removeSection($event)"
+      (pasteLines)="onPasteLines($event)"
     />
 
     <!-- Add Section -->
@@ -465,6 +506,11 @@
           {{ ui.t('Add') }}
         </button>
       </div>
+      @if (canPasteSections) {
+        <button class="quick-pick-btn paste-sections-btn" (click)="pasteSections()">
+          📋 {{ ui.t('Paste') }} {{ pasteSectionCount }} {{ ui.t('sections') }}
+        </button>
+      }
     </div>
   </div>
 

@@ -2,6 +2,14 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.2.0] - 2026-08-28
+
+### Added
+- **Drag-and-drop line reordering** — a line can now be dragged by its `⠿` handle to a new position within its section, or dropped into a different section entirely. Sections were already reorderable this way; lines now match. Moving the last line out of a section leaves a blank line behind, the same rule the per-line delete already followed.
+- **Select mode & bulk copy/duplicate/delete** — a new ☑️ **Select** toggle in the toolbar swaps the per-line gutter for checkboxes and opens a bulk-action bar. Select any number of lines (or any number of sections — a selection is one or the other, never both) and copy, duplicate, or delete them all at once. A bulk action is a **single** undo entry, so one Ctrl+Z restores everything it changed, and a bulk delete offers an Undo button directly in its toast.
+- **Set-wide clipboard** — copied lines and sections persist across song switches, so a chorus can be copied out of one song and pasted into another. A **Paste** button appears in each section header when lines are on the clipboard, and next to Add Section when sections are. The clipboard is session-only and clears on reload.
+- **Select-mode keyboard shortcuts** — `Ctrl`+`C` / `V` / `D` / `A` for copy, paste, duplicate, and select-all-lines, plus `Delete`/`Backspace` to delete the selection and `Esc` to leave select mode. These are scoped to select mode so they never shadow the browser's own copy/paste while reading a chart. All are listed in the `?` cheatsheet.
+
 ## [2.1.0] - 2026-08-26
 
 ### Added

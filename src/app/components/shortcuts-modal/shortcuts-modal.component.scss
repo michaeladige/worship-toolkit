@@ -70,6 +70,17 @@
   }
 
   tr:last-child td { border-bottom: none; }
+
+  // Sub-heading row separating the shortcuts that only apply while selecting.
+  .shortcut-group td {
+    padding-top: 0.9rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--color-muted);
+    width: auto;
+  }
 }
 
 kbd {

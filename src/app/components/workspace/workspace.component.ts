@@ -6,6 +6,7 @@ import { UploadComponent } from '../upload/upload.component';
 import { SongListComponent } from '../song-list/song-list.component';
 import { SongEditorComponent } from '../song-editor/song-editor.component';
 import { UiSettingsService } from '../../services/ui-settings.service';
+import { SelectionService } from '../../services/selection.service';
 import { SessionsService } from '../../services/sessions.service';
 
 const SESSION_KEY = 'worship_toolkit_session';
@@ -35,6 +36,7 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
   constructor(
     public ui: UiSettingsService,
     private sessionsSvc: SessionsService,
+    private selection: SelectionService,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -110,12 +112,38 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
         if (!modalOpen) this.stepSong(e.key === 'ArrowDown' ? 1 : -1);
+      } else if (!modalOpen && this.selection.selectMode()) {
+        // Bulk-edit shortcuts are scoped to select mode so they can't shadow
+        // the browser's own Ctrl+C/V while someone is just reading a chart.
+        if (e.key === 'c') {
+          e.preventDefault();
+          this.copySelection();
+        } else if (e.key === 'd') {
+          e.preventDefault();
+          this.applySelectionEdit(song => this.selection.duplicateSelected(song));
+        } else if (e.key === 'v') {
+          e.preventDefault();
+          this.pasteClipboard();
+        } else if (e.key === 'a') {
+          e.preventDefault();
+          this.selection.selectAllLines(this.songs[this.selectedIndex]);
+        }
       }
       return;
     }
 
     if (modalOpen) return;
-    if (e.key === 'Escape' && this.ui.stageMode()) {
+    if (e.key === 'Escape' && this.selection.selectMode()) {
+      e.preventDefault();
+      this.selection.exitSelectMode();
+    } else if (
+      (e.key === 'Delete' || e.key === 'Backspace') &&
+      this.selection.selectMode() &&
+      this.selection.hasSelection()
+    ) {
+      e.preventDefault();
+      this.deleteSelection();
+    } else if (e.key === 'Escape' && this.ui.stageMode()) {
       e.preventDefault();
       this.ui.exitStageMode();
     } else if (e.key === '+' || e.key === '=') {
@@ -148,6 +176,53 @@ export class WorkspaceComponent implements OnInit, OnDestroy {
       i === this.selectedIndex ? { ...s, transposeSemitones: s.transposeSemitones + delta } : s,
     );
     this.setSongs(songs);
+  }
+
+  // ── Bulk selection edits (keyboard) ─────────────────────────────────────────
+  //
+  // Same SelectionService transforms the bulk-action bar calls, applied through
+  // setSongs so a keyboard delete lands on the undo stack exactly like a
+  // button-driven one. The editor component owns the equivalent button paths;
+  // neither owns the logic.
+
+  private applySelectionEdit(transform: (song: ParsedSong) => ParsedSong | null): boolean {
+    const current = this.songs[this.selectedIndex];
+    if (!current) return false;
+    const updated = transform(current);
+    if (!updated) return false;
+    const songs = [...this.songs];
+    songs[this.selectedIndex] = updated;
+    this.setSongs(songs);
+    this.selection.clearSelection();
+    return true;
+  }
+
+  private copySelection() {
+    const n = this.selection.copy(this.songs[this.selectedIndex]);
+    if (n > 0) this.ui.showToast(`${n} ${this.ui.t('copied')}`);
+  }
+
+  private deleteSelection() {
+    const n = this.selection.count();
+    if (this.applySelectionEdit(song => this.selection.deleteSelected(song))) {
+      this.ui.showToast(`${n} ${this.ui.t('deleted')}`, 'success', {
+        action: { label: this.ui.t('Undo'), run: () => this.undo() },
+      });
+    }
+  }
+
+  // Ctrl+V has no cursor to paste at, so it targets what the copy implies:
+  // sections go to the end of the song, lines go back to the section they were
+  // taken from (the duplicate-a-couple-of-lines case). The per-section Paste
+  // buttons cover pasting anywhere else.
+  private pasteClipboard() {
+    const payload = this.selection.clipboard();
+    if (!payload) return;
+    this.applySelectionEdit(song =>
+      payload.kind === 'sections'
+        ? this.selection.pasteSections(song)
+        : this.selection.pasteLines(song, Math.min(payload.fromSectionIdx, song.sections.length - 1)),
+    );
   }
 
   private setSongs(songs: ParsedSong[]) {

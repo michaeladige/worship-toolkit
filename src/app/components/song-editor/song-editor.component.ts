@@ -17,6 +17,7 @@ import { ChordService } from '../../services/chord.service';
 import { SongSectionComponent } from '../song-section/song-section.component';
 import { ChordDiagramsComponent } from '../chord-diagrams/chord-diagrams.component';
 import { AutofocusDirective } from '../../directives/autofocus.directive';
+import { SelectionService } from '../../services/selection.service';
 import { UiSettingsService } from '../../services/ui-settings.service';
 
 const QUICK_SECTIONS = ['INTRO', 'VERSE', 'CHORUS', 'PRE-CHORUS', 'BRIDGE', 'OUTRO', 'TAG'];
@@ -106,6 +107,7 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   constructor(
     public chordSvc: ChordService,
     public ui: UiSettingsService,
+    public selection: SelectionService,
   ) {}
 
   get song(): ParsedSong {
@@ -380,6 +382,78 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
     this.updateSong(song);
   }
 
+  // ── Select mode & bulk actions ──────────────────────────────────────────────
+  //
+  // The transforms live on SelectionService so WorkspaceComponent's keyboard
+  // shortcuts can run exactly the same operations. Each returns one new song,
+  // so each bulk action is a single updateSong() → a single undo entry, rather
+  // than N separate edits the user would have to undo N times.
+
+  toggleSelectMode() {
+    if (this.ui.viewOnly()) return;
+    this.selection.toggleSelectMode();
+  }
+
+  // Stage mode is for performing, not editing — it turns viewOnly on, which
+  // already hides every selection affordance. Dropping select mode here too
+  // means exiting stage mode returns to a plain editor rather than silently
+  // resuming a selection made minutes ago.
+  enterStageMode() {
+    this.selection.exitSelectMode();
+    this.ui.enterStageMode();
+  }
+
+  copySelection() {
+    const n = this.selection.copy(this.song);
+    if (n > 0) this.ui.showToast(`${n} ${this.ui.t('copied')}`);
+  }
+
+  duplicateSelection() {
+    const updated = this.selection.duplicateSelected(this.song);
+    if (!updated) return;
+    const n = this.selection.count();
+    this.updateSong(updated);
+    this.selection.clearSelection();
+    this.ui.showToast(`${n} ${this.ui.t('duplicated')}`);
+  }
+
+  deleteSelection() {
+    const updated = this.selection.deleteSelected(this.song);
+    if (!updated) return;
+    const n = this.selection.count();
+    this.updateSong(updated);
+    this.selection.clearSelection();
+    // Bulk delete is the one destructive action here that can wipe out a lot of
+    // work in one click, so offer the undo directly rather than relying on the
+    // user knowing Ctrl+Z. It's the same history entry either way.
+    this.ui.showToast(`${n} ${this.ui.t('deleted')}`, 'success', {
+      action: { label: this.ui.t('Undo'), run: () => this.undo.emit() },
+    });
+  }
+
+  selectAllLines() {
+    this.selection.selectAllLines(this.song);
+  }
+
+  onPasteLines(si: number) {
+    const updated = this.selection.pasteLines(this.song, si);
+    if (updated) this.updateSong(updated);
+  }
+
+  pasteSections() {
+    const updated = this.selection.pasteSections(this.song);
+    if (updated) this.updateSong(updated);
+  }
+
+  get canPasteSections(): boolean {
+    return this.selection.clipboard()?.kind === 'sections';
+  }
+
+  get pasteSectionCount(): number {
+    const payload = this.selection.clipboard();
+    return payload?.kind === 'sections' ? payload.sections.length : 0;
+  }
+
   increaseAutoscrollSpeed() {
     this.setAutoscrollSpeed(this.autoscrollSpeed + 1);
   }
@@ -641,6 +715,10 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
     if (changes['selectedIndex'] && !changes['selectedIndex'].firstChange) {
       this.stopMetronome();
       this.notesOpen = false;
+      // Selection is keyed on section/line indices within one song, so it means
+      // nothing in the next one. The clipboard deliberately survives — copying
+      // here and pasting there is the whole point of it being set-wide.
+      this.selection.clearSelection();
     }
   }
 
