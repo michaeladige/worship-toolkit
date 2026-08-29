@@ -10,6 +10,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { ParsedSong, SongSection, SongLine, ChordToken } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
+import { SelectionService } from '../../services/selection.service';
 import { UiSettingsService } from '../../services/ui-settings.service';
 import { AutofocusDirective } from '../../directives/autofocus.directive';
 
@@ -53,6 +54,7 @@ export class SongSectionComponent {
   @Output() songChange = new EventEmitter<ParsedSong>();
   @Output() addLine = new EventEmitter<number>();
   @Output() removeSection = new EventEmitter<number>();
+  @Output() pasteLines = new EventEmitter<number>();
 
   @ViewChildren('chordRowRef') chordRowRefs!: QueryList<ElementRef<HTMLElement>>;
 
@@ -60,20 +62,41 @@ export class SongSectionComponent {
   editingAnnotation: AnnotationEditState | null = null;
   chordDrag: ChordDrag | null = null;
 
-  constructor(public chordSvc: ChordService, public ui: UiSettingsService) {}
+  constructor(
+    public chordSvc: ChordService,
+    public ui: UiSettingsService,
+    public selection: SelectionService,
+  ) {}
+
+  // Select mode suspends every editing affordance for the same reasons
+  // viewOnly does, so the two collapse into one guard the template can use
+  // everywhere viewOnly was checked before. It also means a pointerdown during
+  // select mode never has to be arbitrated between chord drag, line drag, and
+  // ticking a checkbox — only the checkbox is live.
+  get locked(): boolean {
+    return this.viewOnly || this.selection.selectMode();
+  }
+
+  get selectMode(): boolean {
+    return this.selection.selectMode();
+  }
+
+  // True only when the clipboard holds lines, i.e. when a per-section
+  // "Paste" button has something to offer.
+  get canPasteLines(): boolean {
+    return this.selection.clipboard()?.kind === 'lines';
+  }
 
   get effectiveKey(): string {
-    return this.chordSvc.transposeKey(this.song.originalKey, this.song.transposeSemitones, this.ui.chordAccidentals);
+    return this.chordSvc.effectiveKey(this.song, this.ui.chordAccidentals);
   }
 
   displayAnnotation(annotation: string): string {
-    return this.chordSvc.transposeAnnotation(annotation, this.song.transposeSemitones, this.effectiveKey, this.ui.chordAccidentals);
+    return this.chordSvc.displayAnnotation(annotation, this.song, this.ui.chordAccidentals);
   }
 
   displayChord(raw: string): string {
-    const transposed = this.chordSvc.transposeChord(raw, this.song.transposeSemitones, this.effectiveKey, this.ui.chordAccidentals);
-    const display = this.song.showBassNotesOnly ? this.chordSvc.getBassNote(transposed) : transposed;
-    return this.song.showNashville ? this.chordSvc.toNashville(display, this.effectiveKey) : display;
+    return this.chordSvc.displayChord(raw, this.song, this.ui.chordAccidentals);
   }
 
   // ── Chord edit ──────────────────────────────────────────────────────────────
@@ -84,7 +107,7 @@ export class SongSectionComponent {
   private suppressNextClick = false;
 
   startEdit(si: number, li: number, ci: number) {
-    if (this.viewOnly) return;
+    if (this.locked) return;
     if (this.suppressNextClick) { this.suppressNextClick = false; return; }
     const raw = this.song.sections[si].lines[li].chords[ci].chord;
     this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: this.editableValue(raw) };
@@ -117,7 +140,15 @@ export class SongSectionComponent {
   private storableValue(typed: string): string {
     const trimmed = typed.trim();
     if (!trimmed || this.song.showBassNotesOnly || this.song.showNashville) return trimmed;
-    return this.chordSvc.transposeChord(trimmed, -this.song.transposeSemitones, this.song.originalKey, this.ui.chordAccidentals);
+    // Reverse displayChord()'s pipeline in the opposite order it was applied:
+    // capo shifts the sounding chord DOWN to a shape, so undo that shift back
+    // UP to the sounding chord first, then undo the transpose back to originalKey.
+    const capo = this.song.capo ?? 0;
+    let value = trimmed;
+    if (capo) {
+      value = this.chordSvc.transposeChord(value, capo, this.effectiveKey, this.ui.chordAccidentals);
+    }
+    return this.chordSvc.transposeChord(value, -this.song.transposeSemitones, this.song.originalKey, this.ui.chordAccidentals);
   }
 
   editKeydown(e: KeyboardEvent) {
@@ -128,6 +159,7 @@ export class SongSectionComponent {
   // ── Chord CRUD ──────────────────────────────────────────────────────────────
 
   addChord(si: number, li: number) {
+    if (this.locked) return;
     const song = this.cloneSong();
     const line = song.sections[si].lines[li];
     // Place new chord after the last existing chord, or at 0
@@ -141,13 +173,14 @@ export class SongSectionComponent {
   }
 
   removeChord(si: number, li: number, ci: number) {
-    if (this.viewOnly) return;
+    if (this.locked) return;
     const song = this.cloneSong();
     song.sections[si].lines[li].chords.splice(ci, 1);
     this.songChange.emit(song);
   }
 
   removeLine(si: number, li: number) {
+    if (this.locked) return;
     const song = this.cloneSong();
     song.sections[si].lines.splice(li, 1);
     // Keep at least one empty line in the section
@@ -158,7 +191,7 @@ export class SongSectionComponent {
   }
 
   editLyric(si: number, li: number, value: string) {
-    if (this.viewOnly) return;
+    if (this.locked) return;
     const song = this.cloneSong();
     song.sections[si].lines[li].lyric = value;
     this.songChange.emit(song);
@@ -167,7 +200,7 @@ export class SongSectionComponent {
   // ── Annotation CRUD ──────────────────────────────────────────────────────────
 
   startEditAnnotation(si: number, li: number) {
-    if (this.viewOnly) return;
+    if (this.locked) return;
     this.editingAnnotation = {
       sectionIdx: si,
       lineIdx: li,
@@ -194,7 +227,7 @@ export class SongSectionComponent {
   }
 
   removeAnnotation(si: number, li: number) {
-    if (this.viewOnly) return;
+    if (this.locked) return;
     const song = this.cloneSong();
     song.sections[si].lines[li].annotation = undefined;
     if (this.editingAnnotation?.sectionIdx === si && this.editingAnnotation?.lineIdx === li) {
@@ -279,10 +312,56 @@ export class SongSectionComponent {
     this.songChange.emit(song);
   }
 
+  // ── Line drag-drop reorder ───────────────────────────────────────────────────
+  //
+  // Each section's lines are their own cdkDropList, all cross-connected so a
+  // line can be dragged into a different section. Unlike the section lists
+  // above, these bind the section INDEX as their data rather than the array
+  // itself — dropLine() then needs no identity mapping back to a container, so
+  // there's no equivalent of the columnsCache memoization to keep in step.
+  //
+  // Deliberately not cdkDropListGroup: that would also connect these lists to
+  // the .section-column lists above them, making it possible to drop a whole
+  // section into a line list.
+
+  lineListId(si: number): string {
+    return `line-list-${si}`;
+  }
+
+  connectedLineListIds(si: number): string[] {
+    return this.song.sections.map((_, i) => this.lineListId(i)).filter((_, i) => i !== si);
+  }
+
+  dropLine(event: CdkDragDrop<number>) {
+    const fromSi = event.previousContainer.data;
+    const toSi = event.container.data;
+    if (fromSi === toSi && event.previousIndex === event.currentIndex) return;
+
+    // Indices are measured against the live arrays but applied to a structurally
+    // identical clone, exactly as dropSection() does — never mutate the arrays
+    // the undo stack still points at.
+    const song = this.cloneSong();
+    if (fromSi === toSi) {
+      moveItemInArray(song.sections[fromSi].lines, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        song.sections[fromSi].lines,
+        song.sections[toSi].lines,
+        event.previousIndex,
+        event.currentIndex,
+      );
+      // Same invariant removeLine() keeps: a section never ends up with no lines.
+      if (song.sections[fromSi].lines.length === 0) {
+        song.sections[fromSi].lines.push({ chords: [], lyric: '', isChordsOnly: false });
+      }
+    }
+    this.songChange.emit(song);
+  }
+
   // ── Chord horizontal drag (reposition charPos) ──────────────────────────────
 
   startChordDrag(e: PointerEvent, si: number, li: number, ci: number, rowEl: HTMLElement) {
-    if (this.viewOnly) return;
+    if (this.locked) return;
     // Don't start a drag if we're already editing this chord
     if (this.isEditing(si, li, ci)) return;
     e.preventDefault();
@@ -346,6 +425,7 @@ export class SongSectionComponent {
       this.ui.chordAccidentals,
       this.song.showBassNotesOnly,
       this.song.showNashville,
+      this.song.capo ?? 0,
       dragging ? `${dragging.ci}:${dragging.currentCharPos}` : '',
     ].join('|');
 

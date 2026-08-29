@@ -353,3 +353,137 @@ select {
   background: var(--color-border);
   border-radius: 3px;
 }
+
+// ── Print ──────────────────────────────────────────────────────────────────
+// Browser Ctrl+P, not the jsPDF export path — a plain readable printout of
+// the chart(s) currently on screen, in black on white regardless of the
+// active theme/color/pattern. `.print-header` blocks are rendered by
+// SongEditorComponent (one per song, hidden on screen) since the toolbar
+// carrying title/key/capo/BPM is hidden here.
+@media print {
+  // Override every theme/color-accent variable at the root, rather than
+  // fighting each [data-theme]/[data-color] selector individually — those
+  // still win specificity battles otherwise, and dark mode + a pattern theme
+  // would otherwise print as dark ink-heavy pages.
+  :root {
+    --color-primary: #000000;
+    --color-primary-dark: #000000;
+    --color-secondary: #000000;
+    --color-chord: #000000;
+    --color-text: #000000;
+    --color-muted: #444444;
+    --color-bg: #ffffff;
+    --color-surface: #ffffff;
+    --color-border: #cccccc;
+    --color-hover: #ffffff;
+    --bg-pattern: none;
+    --bg-size: auto;
+  }
+
+  * {
+    print-color-adjust: economy;
+    -webkit-print-color-adjust: economy;
+  }
+
+  html,
+  body {
+    background: #fff;
+    color: #000;
+  }
+
+  // App chrome and editing affordances — nothing here belongs on paper.
+  .app-header,
+  app-song-list,
+  .toolbar,
+  .add-section-row,
+  .bulk-bar,
+  .select-check,
+  .stage-bar,
+  .latin-toast,
+  .hint-banner,
+  .key-banner,
+  .notes-panel,
+  .modal-backdrop,
+  .drag-handle,
+  .section-actions,
+  .line-controls,
+  .chord-remove,
+  .add-chord-btn--inline,
+  .add-annotation-btn,
+  .annotation-remove,
+  .collapse-btn,
+  .mobile-collapse-btn {
+    display: none !important;
+  }
+
+  // Keep a chord row glued to its lyric (and a section's lines together
+  // where they'll fit) rather than splitting either across a page break.
+  .line-group,
+  .section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  // The mobile per-line horizontal scroll (song-section.component.scss)
+  // would otherwise clip a chart wider than a phone screen at the paper
+  // edge — on paper every line should just wrap/overflow visibly instead.
+  .line-body {
+    overflow-x: visible;
+  }
+
+  // No extra column handling needed here: .sections.split-columns is already
+  // a real two-column flex layout gated on the same <=14px threshold the PDF
+  // export uses (UiSettingsService.editorSplitColumnsActive), and its own
+  // "collapse to one column below 767px" rule doesn't match a print page's
+  // width, so on-screen and printed column layout already agree.
+
+  .print-header {
+    display: block !important;
+  }
+
+  // Printing the whole set swaps which content is visible: the normal
+  // single-song `.content` area hides, and the print-only per-song list
+  // (every song's chart, one per page) takes over. The export modal's
+  // "Print set" option adds this class right before calling window.print().
+  body.print-set {
+    .content {
+      display: none !important;
+    }
+    .print-set-pages {
+      display: block !important;
+    }
+  }
+
+  .song-print-page {
+    break-after: page;
+    page-break-after: always;
+
+    &:last-child {
+      break-after: auto;
+      page-break-after: auto;
+    }
+  }
+}
+
+.print-header {
+  display: none;
+
+  h2 {
+    font-size: 16pt;
+    margin-bottom: 2pt;
+  }
+}
+
+.print-set-pages {
+  display: none;
+}
+
+.print-authors,
+.print-key-line {
+  font-size: 9pt;
+  color: #444;
+}
+
+.print-key-line {
+  margin-bottom: 8pt;
+}

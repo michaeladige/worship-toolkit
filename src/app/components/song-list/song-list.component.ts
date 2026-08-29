@@ -50,7 +50,7 @@ export class SongListComponent implements OnChanges {
   }
 
   effectiveKey(song: ParsedSong): string {
-    return this.chordSvc.transposeKey(song.originalKey, song.transposeSemitones, this.ui.chordAccidentals);
+    return this.chordSvc.effectiveKey(song, this.ui.chordAccidentals);
   }
 
   // Original indices are preserved so select/remove emits stay correct while

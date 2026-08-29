@@ -128,6 +128,11 @@ Sephiroth!</pre>
       <li>{{ ui.t('Drag the') }} <strong>≡</strong> {{ ui.t('handle on any song row up or down to reorder the list. This also works on touch screens — press and hold the handle, then drag.') }}</li>
       <li>{{ ui.t('Reordering is undoable with') }} <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd>{{ ui.t('.') }}</li>
     </ul>
+    <h3>{{ ui.t('Notes & duration') }}</h3>
+    <ul>
+      <li><strong>📝 {{ ui.t('Notes') }}</strong> &mdash; {{ ui.t("click the Notes chip in the toolbar to open a small panel for arrangement or performance reminders — cues, who sings which verse, anything you'd otherwise scribble in the margin. Saved with the song.") }}</li>
+      <li><strong>{{ ui.t('Duration') }}</strong> &mdash; {{ ui.t('in the same panel, enter a length as') }} <code>mm:ss</code> {{ ui.t("(or just seconds). It's optional and only used to estimate the whole set's length on the Set PDF cover page — songs left blank simply aren't counted toward that estimate.") }}</li>
+    </ul>
   </section>
 
   <section id="editing" class="manual-section">
@@ -158,6 +163,9 @@ Sephiroth!</pre>
     <h3>{{ ui.t('Metronome') }}</h3>
     <ul>
       <li><strong>{{ ui.t('METRONOME control') }}</strong> &mdash; {{ ui.t('in the toolbar, click the') }} <strong>♩</strong> {{ ui.t('icon to turn the metronome on or off. When on, a BPM stepper appears next to it, defaulted from the song\'s BPM info (or 80 if the song has none). Use the') }} <strong>▲</strong> / <strong>▼</strong> {{ ui.t('buttons, or type a number directly into the box, to adjust it (30–300). The metronome turns off automatically when you switch songs or refresh the page, and always re-reads the song\'s BPM the next time you turn it on.') }}</li>
+      <li><strong>{{ ui.t('Downbeat accent') }}</strong> &mdash; {{ ui.t("beat 1 of every bar clicks higher and louder than the rest, based on the song's time signature — a 3/4 song accents every third click, not every fourth. A small dot beside the BPM box flashes in time, brighter on the downbeat.") }}</li>
+      <li><strong>{{ ui.t('TAP tempo') }}</strong> &mdash; {{ ui.t('click') }} <strong>{{ ui.t('TAP') }}</strong> {{ ui.t("in time with the song two or more times to set the BPM by feel instead of typing a number. It also updates the song's own BPM chip, so it's remembered. A pause of more than two seconds between taps starts a fresh count instead of averaging in an old one.") }}</li>
+      <li><strong>{{ ui.t('Count-in') }}</strong> &mdash; {{ ui.t('turn on the') }} <strong>{{ ui.t('Count-in') }}</strong> {{ ui.t('button next to the metronome before starting it, and turning the metronome on plays one full bar of clicks before the beat indicator goes live — handy for cueing a band in.') }}</li>
     </ul>
     <h3>{{ ui.t('Stage mode') }}</h3>
     <ul>
@@ -188,6 +196,16 @@ Sephiroth!</pre>
       <li><strong>{{ ui.t('Add a section') }}</strong> &mdash; {{ ui.t('below the song, use the quick-pick buttons (INTRO, VERSE, CHORUS, PRE-CHORUS, BRIDGE, OUTRO, TAG) or type a custom name and click') }} <strong>{{ ui.t('Add') }}</strong> / {{ ui.t('press') }} <kbd>Enter</kbd>{{ ui.t('.') }}</li>
       <li><strong>{{ ui.t('Reorder sections') }}</strong> &mdash; {{ ui.t('grab the') }} <strong>⠿</strong> {{ ui.t('drag handle in a section\'s header and drop it where you want it.') }}</li>
       <li><strong>{{ ui.t('Remove a section') }}</strong> &mdash; {{ ui.t('click the') }} <strong>✕</strong> {{ ui.t('button in the section header.') }}</li>
+      <li><strong>{{ ui.t('Move a line') }}</strong> &mdash; {{ ui.t('every line has its own') }} <strong>⠿</strong> {{ ui.t("handle in the left gutter. Drag it to reorder the line within its section, or drop it into a different section entirely. If you move the last line out of a section, a blank line is left behind so the section never ends up empty.") }}</li>
+    </ul>
+
+    <h3>{{ ui.t('Select mode: copy, duplicate & delete in bulk') }}</h3>
+    <ul>
+      <li><strong>☑️ {{ ui.t('Select') }}</strong> &mdash; {{ ui.t("click the Select button in the toolbar to swap the line gutter for checkboxes and open a bulk-action bar. Tick any number of lines — or any number of section headers — then Copy, Duplicate, or Delete them all at once. A selection is either lines or sections, never a mix of both: ticking a section clears any lines you had ticked, and vice versa.") }}</li>
+      <li>{{ ui.t("Each bulk action counts as a single change, so one") }} <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>Z</kbd> {{ ui.t("undoes the whole thing rather than one line at a time. A bulk delete also offers an Undo button in its confirmation toast.") }}</li>
+      <li><strong>{{ ui.t('Paste') }}</strong> &mdash; {{ ui.t("what you copy stays on the clipboard when you switch songs, so you can copy a chorus out of one song and paste it into another. With lines copied, a Paste button appears in every section header; with sections copied, one appears next to Add section. The clipboard is cleared when you reload the page.") }}</li>
+      <li>{{ ui.t('While selecting, the usual editing controls are hidden and dragging is switched off, so a click can only ever mean "tick this". Press') }} <kbd>Esc</kbd> {{ ui.t('or click') }} <strong>{{ ui.t('Done') }}</strong> {{ ui.t('to leave select mode. Select mode is unavailable in View Only and Stage modes.') }}</li>
+      <li>{{ ui.t('Shortcuts while selecting:') }} <kbd>Ctrl</kbd> + <kbd>C</kbd> / <kbd>V</kbd> / <kbd>D</kbd> / <kbd>A</kbd> {{ ui.t('for copy, paste, duplicate, and select-all-lines, and') }} <kbd>Del</kbd> {{ ui.t('to delete the selection.') }}</li>
     </ul>
   </section>
 
@@ -206,6 +224,13 @@ Sephiroth!</pre>
       <li><strong>{{ ui.t('Auto') }}</strong> &mdash; {{ ui.t('while editing the base key, click Auto to guess it from the chords already on the chart — handy when a chart has no key info at all.') }}</li>
       <li>{{ ui.t('Charts that import without key metadata — some Ultimate Guitar pages, or PDFs missing the "Key -" line — now guess the base key automatically from their chords instead of defaulting to C.') }}</li>
     </ul>
+
+    <h3>{{ ui.t('Capo') }}</h3>
+    <ul>
+      <li><strong>🗜️ {{ ui.t('Capo') }}</strong> &mdash; {{ ui.t('click the capo chip in the toolbar and pick a fret (1–11). A capo never changes what key the song sounds in — only which shapes your fretting hand plays — so the chip shows both: "sounds in D · play in C" for a song in D with capo 2.') }}</li>
+      <li>{{ ui.t("Capo composes with everything else: transpose the song first and the capo shape recalculates from the new sounding key. Nashville Number mode deliberately ignores capo — the numbers are scale degrees of the sounding key, not the shape you're fretting.") }}</li>
+      <li>{{ ui.t('Set capo to') }} <strong>{{ ui.t('None') }}</strong> {{ ui.t("to turn it off. It's saved with the song, so it survives a reload and travels with exports (PDF header, Markdown, and .wt files).") }}</li>
+    </ul>
   </section>
 
   <section id="notation" class="manual-section">
@@ -214,6 +239,13 @@ Sephiroth!</pre>
       <li><strong>{{ ui.t('🎹 Bass Notes') }}</strong> &mdash; {{ ui.t('toggles every chord down to just its root/bass note (e.g.') }} <code>D/F♯</code> &rarr; <code>D</code>{{ ui.t('). Handy for simplified or beginner charts.') }}</li>
       <li><strong>{{ ui.t('1 2 3 Nashville') }}</strong> &mdash; {{ ui.t('converts every chord to a scale-degree number (1–7, with ♭/♯ prefixes for accidentals), relative to the song\'s current key. Useful for ear-trained players and key-independent charts.') }}</li>
       <li>{{ ui.t('Both toggles can be combined with transposition, and both are respected by every export.') }}</li>
+    </ul>
+
+    <h3>{{ ui.t('Chord diagrams') }}</h3>
+    <ul>
+      <li><strong>🎸 {{ ui.t('Diagrams') }}</strong> &mdash; {{ ui.t("toggles a strip of fretboard diagrams above the chart, one per distinct chord in the song, computed from the actual notes of each chord rather than a fixed lookup table — so every root, quality, and capo'd shape gets a correct diagram. Choose Guitar (6 strings) or Ukulele (4 strings) in") }} <strong>⚙️ {{ ui.t('Settings') }}</strong> &rarr; {{ ui.t('Appearance.') }}</li>
+      <li>{{ ui.t("Diagrams already reflect the current transpose and capo — they always show the shape you'd actually fret right now, capo included. They're hidden automatically in Nashville Number mode, since a scale-degree number has no fingering to show.") }}</li>
+      <li>{{ ui.t('Set PDF and Song PDF exports can include the same diagram strip at the top of each song — enable Diagrams for a song before exporting.') }}</li>
     </ul>
   </section>
 
@@ -229,13 +261,15 @@ Sephiroth!</pre>
 
   <section id="export" class="manual-section">
     <h2>{{ ui.t('8. Exporting & sharing') }}</h2>
-    <p>{{ ui.t('Click the') }} <strong>⬇️ {{ ui.t('Export') }}</strong> {{ ui.t('button in the app header to open the export panel. Four options are available:') }}</p>
+    <p>{{ ui.t('Click the') }} <strong>⬇️ {{ ui.t('Export') }}</strong> {{ ui.t('button in the app header to open the export panel. Several options are available:') }}</p>
     <ul>
       <li><strong>📄 {{ ui.t('Song PDF') }}</strong> &mdash; {{ ui.t('exports just the song you\'re currently editing as a clean, monospace chord chart PDF. At the default 14 px PDF font size the layout is two-column; larger sizes switch to single-column automatically.') }}</li>
       <li><strong>📋 {{ ui.t('Set PDF') }}</strong> &mdash; {{ ui.t('exports every song in the set into a single PDF, in list order, one song per page.') }}</li>
       <li><strong>🗂️ {{ ui.t('Separate PDFs') }}</strong> &mdash; {{ ui.t('exports every song as its own PDF file, bundled together in a single .zip download — handy when each musician just needs their own song.') }}</li>
       <li><strong>📝 Markdown</strong> &mdash; {{ ui.t('exports the full set as a') }} <code>.md</code> {{ ui.t('file, with chord rows placed above each lyric line, viewable in any Markdown reader.') }}</li>
+      <li><strong>🖨️ {{ ui.t('Print song') }}</strong> / <strong>{{ ui.t('Print set') }}</strong> &mdash; {{ ui.t("opens your browser's own print dialog instead of generating a PDF — a chord/lyric line is never split across a page break, and the page always prints in plain black on white regardless of your color theme or dark mode. Print set puts each song on its own page.") }}</li>
     </ul>
+    <p><strong>{{ ui.t('Cover page & table of contents') }}</strong> &mdash; {{ ui.t('check the box under Set PDF to prepend a page listing the set name, date, song count, an estimated total length (from any songs with a Duration set — see §2), and a numbered row per song with its key, capo, and BPM plus the page it starts on.') }}</p>
     <p>{{ ui.t('All exports respect your current transposition, the Bass Notes toggle, the Nashville toggle, your Accidentals preference, and include any direction/bar-notation annotations, correctly transposed.') }}</p>
     <p>{{ ui.t('To adjust the') }} <strong>{{ ui.t('PDF font size') }}</strong> {{ ui.t('(10–20 px, default 14 px), open ⚙️ Settings → Export. Sizes above 14 px switch the PDF to a single-column layout; a warning is shown in Settings when this threshold is exceeded.') }}</p>
     <div class="callout">
@@ -340,6 +374,28 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>2.2.0</h3></summary>
+      <ul>
+        <li><strong>Drag-and-drop line reordering</strong> &mdash; every line now has its own ⠿ handle in the left gutter. Drag it to reorder the line within its section, or drop it into a different section entirely. Sections were already reorderable this way; lines now match. Moving the last line out of a section leaves a blank line behind.</li>
+        <li><strong>Select mode &amp; bulk copy/duplicate/delete</strong> &mdash; a new ☑️ Select toggle in the toolbar swaps the line gutter for checkboxes and opens a bulk-action bar. Tick any number of lines (or any number of sections — a selection is one or the other, never both) and copy, duplicate, or delete them in one go. Each bulk action is a single undo entry, so one Ctrl+Z restores everything it changed, and a bulk delete offers an Undo button right in its toast.</li>
+        <li><strong>Set-wide clipboard</strong> &mdash; copied lines and sections survive a song switch, so a chorus can be copied out of one song and pasted into another. A Paste button appears in each section header when lines are on the clipboard, and beside Add section when sections are. The clipboard is session-only and clears on reload.</li>
+        <li><strong>Select-mode shortcuts</strong> &mdash; Ctrl+C / V / D / A for copy, paste, duplicate and select-all-lines, plus Delete/Backspace to remove the selection and Esc to leave select mode. They only apply while selecting, so they never shadow the browser's own copy/paste while you're just reading a chart.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
+      <summary><h3>2.1.0</h3></summary>
+      <ul>
+        <li><strong>Capo</strong> &mdash; a new 🗜️ capo chip in the toolbar (0–11 frets) shows both the sounding key and the shape you actually play, e.g. "sounds in D · play in C". A capo is display-only and never moves the underlying chord data; it composes correctly with transpose, and Nashville Number mode deliberately ignores it since scale degrees don't change with a capo. Carried through to the PDF header, Markdown export, and .wt files.</li>
+        <li><strong>Chord diagrams</strong> &mdash; a new 🎸 Diagrams toggle shows a strip of fretboard diagrams for every distinct chord in the song, computed from each chord's actual notes rather than a fixed lookup table, so any root/quality/capo combination gets a correct diagram. Choose Guitar or Ukulele in Settings → Appearance. Diagrams are transpose- and capo-aware, hide automatically under Nashville numbers, and can be included at the top of PDF exports.</li>
+        <li><strong>Set PDF cover page & table of contents</strong> &mdash; an optional cover page (checkbox under Set PDF in the export panel) lists the set name, date, song count, an estimated total length from any songs with a Duration set, and a numbered, page-numbered row per song with its key/capo/BPM.</li>
+        <li><strong>Song notes & duration</strong> &mdash; a new 📝 Notes chip opens a small panel for arrangement/performance reminders per song, plus an optional duration (mm:ss) that powers the new cover page's set-length estimate.</li>
+        <li><strong>Metronome upgrade</strong> &mdash; the click track now accents beat 1 of every bar based on the song's time signature, with a small visual pulse next to the BPM box (also shown in Stage mode). A new TAP button sets BPM by tapping along instead of typing a number, and writes the tapped tempo back to the song. An optional Count-in plays one full bar of clicks before the beat indicator goes live. Under the hood, the metronome now uses a proper lookahead audio scheduler instead of a plain setInterval, so timing no longer drifts under load.</li>
+        <li><strong>Print layout</strong> &mdash; your browser's own Ctrl+P now produces a usable chart instead of printing the app chrome: the header, sidebar, toolbar, and stage-mode bar are hidden, a chord/lyric line is never split across a page break, and the page always prints in plain black on white regardless of your color theme or dark mode. New 🖨️ Print song / Print set options in the export panel open the print dialog directly (Print set puts one song per page).</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>2.0.4</h3></summary>
       <ul>
         <li><strong>Fixed:</strong> base key detection still guessed C instead of G for very common charts built on the I-V-vi-IV/IV-V-vi-I progression (e.g. C, D, Em, G), where the "wrong" key's chord happens to appear more often and open more lines. Detection now also checks whether each candidate key's ii/iii/IV/V/vi chords have the major/minor quality a real diatonic scale expects — a major chord standing in for what should be a minor ii (or vice versa) is strong evidence the chart is actually in the neighboring key a fifth away.</li>

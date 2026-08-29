@@ -16,6 +16,7 @@ export type ColorTheme =
   | 'grid'
   | 'plaid';
 export type ChordFont = 'classic' | 'readable';
+export type ChordInstrument = 'guitar' | 'ukulele';
 export type ToastKind = 'info' | 'success' | 'error';
 export interface ToastAction {
   label: string;
@@ -660,6 +661,35 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
       id: 'Chart yang diimpor tanpa data kunci — beberapa halaman Ultimate Guitar, atau PDF yang nggak punya baris "Key -" — sekarang otomatis nebak kunci dasarnya dari chord-nya, bukan default ke C lagi.',
       jv: 'Chart sing diimpor tanpa data kunci — sawetara kaca Ultimate Guitar, utawa PDF sing ora duwe baris "Key -" — saiki otomatis ngira-ira kunci dhasare saka chord-e, ora default dadi C maneh.',
     },
+  // Kept as the bare loanword "Capo" in every language — the app's own joke
+  // taglines already do this consistently (e.g. the Latin/zh-TW/id/jv capo
+  // jokes above all say "Capo" untranslated), so the toolbar chip matches.
+  Capo: { la: 'Capo', 'zh-TW': 'Capo', id: 'Capo', jv: 'Capo' },
+  '+ Capo': { la: '+ Capo', 'zh-TW': '+ Capo', id: '+ Capo', jv: '+ Capo' },
+  None: { la: 'Nullum', 'zh-TW': '無', id: 'Tanpa', jv: 'Ora Ana' },
+  'sounds in': { la: 'sonat in', 'zh-TW': '實際音高為', id: 'bunyinya di', jv: 'muni ing' },
+  'play in': { la: 'canitur in', 'zh-TW': '按弦位置為', id: 'dimainin di', jv: 'dimainke ing' },
+  'Capo — the fret a capo is placed on; shapes shift, the sounding key does not': {
+    la: 'Capo — fretum in quo capo ponitur; formae mutantur, clavis sonans non mutatur',
+    'zh-TW': 'Capo — 移調夾夾住的琴格；改變的是按法，實際調性不變',
+    id: 'Capo — fret tempat capo dipasang; bentuk kunci berubah, kunci yang bunyi tetap sama',
+    jv: 'Capo — fret panggonan capo dipasang; wangun kunci owah, nanging kunci sing muni tetep padha',
+  },
+  Notes: { la: 'Notae', 'zh-TW': '備註', id: 'Catatan', jv: 'Cathetan' },
+  'Song notes — arrangement or performance reminders': {
+    la: 'Notae cantici — memoranda de dispositione vel actu',
+    'zh-TW': '歌曲備註 — 編曲或演出提醒事項',
+    id: 'Catatan lagu — pengingat aransemen atau performa',
+    jv: 'Cathetan lagu — pengeling aransemen utawa penampilan',
+  },
+  'Arrangement notes, cues, reminders…': {
+    la: 'Notae dispositionis, signa, memoranda…',
+    'zh-TW': '編曲備註、提示、提醒事項…',
+    id: 'Catatan aransemen, cue, pengingat…',
+    jv: 'Cathetan aransemen, cue, pengeling…',
+  },
+  Duration: { la: 'Duratio', 'zh-TW': '時長', id: 'Durasi', jv: 'Durasi' },
+
   'Jump to': { la: 'Salire ad', 'zh-TW': '跳至', id: 'Lompat ke', jv: 'Loncat menyang' },
   Reset: { la: 'Reponere', 'zh-TW': '重設', id: 'Reset', jv: 'Reset' },
   Autoscroll: {
@@ -669,6 +699,25 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     jv: 'Gulung Otomatis',
   },
   Metronome: { la: 'Metronomum', 'zh-TW': '節拍器', id: 'Metronom', jv: 'Metronom' },
+  TAP: { la: 'TANGE', 'zh-TW': '打拍', id: 'TAP', jv: 'TAP' },
+  'Tap tempo': {
+    la: 'Percute ictum',
+    'zh-TW': '打拍抓速',
+    id: 'Tap buat tempo',
+    jv: 'Tap kanggo tempo',
+  },
+  'Count-in': {
+    la: 'Praenumeratio',
+    'zh-TW': '預備拍',
+    id: 'Hitungan Awal',
+    jv: 'Etungan Wiwitan',
+  },
+  'Count-in — play one bar of clicks before the beat starts': {
+    la: 'Praenumeratio — unam mensuram ictuum canit antequam rhythmus incipit',
+    'zh-TW': '預備拍 — 正式節拍開始前先播放一小節的預備聲',
+    id: 'Hitungan awal — mainin satu birama klik sebelum beat mulai',
+    jv: 'Etungan wiwitan — muter siji birama klik sadurunge beat wiwit',
+  },
   'View Only': { la: 'Solum Videre', 'zh-TW': '僅檢視', id: 'Hanya Lihat', jv: 'Mung Deleng' },
   '🎹 Bass Notes': {
     la: '🎹 Notae Bassi',
@@ -684,6 +733,25 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     jv: '1 2 3 Nashville',
   },
   '1 2 3': { la: 'I II III', 'zh-TW': '1 2 3', id: '1 2 3', jv: '1 2 3' },
+  'Chord diagrams': {
+    la: 'Formae Chordarum',
+    'zh-TW': '和弦圖',
+    id: 'Diagram Chord',
+    jv: 'Diagram Chord',
+  },
+  Diagrams: { la: 'Formae', 'zh-TW': '和弦圖', id: 'Diagram', jv: 'Diagram' },
+  'No shape': {
+    la: 'Nulla forma',
+    'zh-TW': '無指法',
+    id: 'Nggak ada bentuk',
+    jv: 'Ora ana wangun',
+  },
+  'Shapes shown as if capo were fret 0 — capo': {
+    la: 'Formae ostensae quasi capo esset fretum 0 — capo',
+    'zh-TW': '指法圖以移調夾當作第0格繪製 — Capo',
+    id: 'Bentuk ditampilin seolah capo ada di fret 0 — Capo',
+    jv: 'Wangun ditampilake kaya capo ana ing fret 0 — Capo',
+  },
   'Add section': {
     la: 'Addere Sectionem',
     'zh-TW': '新增段落',
@@ -702,6 +770,56 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
   '+ Line': { la: '+ Linea', 'zh-TW': '+ 行', id: '+ Baris', jv: '+ Baris' },
   '+ chord': { la: '+ chorda', 'zh-TW': '+ 和弦', id: '+ chord', jv: '+ chord' },
   '+ note': { la: '+ nota', 'zh-TW': '+ 備註', id: '+ catatan', jv: '+ cathetan' },
+
+  // ── select mode & bulk actions ──
+  Select: { la: 'Eligere', 'zh-TW': '選取', id: 'Pilih', jv: 'Pilih' },
+  selected: { la: 'electa', 'zh-TW': '已選取', id: 'dipilih', jv: 'dipilih' },
+  Copy: { la: 'Copiare', 'zh-TW': '複製', id: 'Salin', jv: 'Salin' },
+  Duplicate: { la: 'Duplicare', 'zh-TW': '複製一份', id: 'Gandakan', jv: 'Gandakake' },
+  Paste: { la: 'Agglutinare', 'zh-TW': '貼上', id: 'Tempel', jv: 'Tempel' },
+  Done: { la: 'Confectum', 'zh-TW': '完成', id: 'Selesai', jv: 'Rampung' },
+  sections: { la: 'sectiones', 'zh-TW': '個段落', id: 'bagian', jv: 'bagian' },
+  copied: { la: 'copiata', 'zh-TW': '已複製', id: 'disalin', jv: 'disalin' },
+  duplicated: { la: 'duplicata', 'zh-TW': '已複製一份', id: 'digandakan', jv: 'digandakake' },
+  deleted: { la: 'deleta', 'zh-TW': '已刪除', id: 'dihapus', jv: 'dibusak' },
+  Undo: { la: 'Revocare', 'zh-TW': '復原', id: 'Urungkan', jv: 'Balekake' },
+  'Select all lines': {
+    la: 'Omnes lineas eligere',
+    'zh-TW': '選取所有行',
+    id: 'Pilih semua baris',
+    jv: 'Pilih kabeh baris',
+  },
+  'Select line': { la: 'Lineam eligere', 'zh-TW': '選取此行', id: 'Pilih baris', jv: 'Pilih baris' },
+  'Select section': {
+    la: 'Sectionem eligere',
+    'zh-TW': '選取此段落',
+    id: 'Pilih bagian',
+    jv: 'Pilih bagian',
+  },
+  'In Select mode': {
+    la: 'In Modo Eligendi',
+    'zh-TW': '選取模式中',
+    id: 'Di mode Pilih',
+    jv: 'Ing mode Pilih',
+  },
+  'Copy selection': {
+    la: 'Electa copiare',
+    'zh-TW': '複製選取項目',
+    id: 'Salin pilihan',
+    jv: 'Salin pilihan',
+  },
+  'Duplicate selection': {
+    la: 'Electa duplicare',
+    'zh-TW': '複製選取項目一份',
+    id: 'Gandakan pilihan',
+    jv: 'Gandakake pilihan',
+  },
+  'Delete selection': {
+    la: 'Electa delere',
+    'zh-TW': '刪除選取項目',
+    id: 'Hapus pilihan',
+    jv: 'Busak pilihan',
+  },
 
   // ── song list ──
   'Songs in Set': {
@@ -753,6 +871,12 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Semua lagu satu file',
     jv: 'Kabeh lagu siji file',
   },
+  'Include cover page & table of contents': {
+    la: 'Adde paginam initialem et indicem',
+    'zh-TW': '加入封面頁與目錄',
+    id: 'Sertakan halaman sampul & daftar isi',
+    jv: 'Klebokna kaca sampul & daftar isi',
+  },
   'Separate PDFs': {
     la: 'PDF Separati',
     'zh-TW': '個別 PDF',
@@ -772,6 +896,194 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     jv: 'Set lengkap .md',
   },
   'Generating…': { la: 'Generando…', 'zh-TW': '產生中…', id: 'Membuat…', jv: 'Digawe…' },
+  'Print song': {
+    la: 'Cantum Imprimere',
+    'zh-TW': '列印歌曲',
+    id: 'Cetak Lagu',
+    jv: 'Cithak Lagu',
+  },
+  "Opens your browser's print dialog": {
+    la: 'Aperit tabellam impressionis navigatri tui',
+    'zh-TW': '開啟瀏覽器的列印對話框',
+    id: 'Buka dialog cetak browser kamu',
+    jv: 'Mbukak dialog cithak browser sampeyan',
+  },
+  'Print set': {
+    la: 'Collectionem Imprimere',
+    'zh-TW': '列印全集',
+    id: 'Cetak Set',
+    jv: 'Cithak Set',
+  },
+  'All songs, one per page': {
+    la: 'Omnes cantus, unus per paginam',
+    'zh-TW': '所有歌曲，一頁一首',
+    id: 'Semua lagu, satu per halaman',
+    jv: 'Kabeh lagu, siji saben kaca',
+  },
+
+  // ── manual: metronome accent/tap/count-in ──
+  'Downbeat accent': {
+    la: 'Accentus Primi Ictus',
+    'zh-TW': '重拍強調',
+    id: 'Aksen Ketukan Pertama',
+    jv: 'Aksen Ketukan Pisanan',
+  },
+  "beat 1 of every bar clicks higher and louder than the rest, based on the song's time signature — a 3/4 song accents every third click, not every fourth. A small dot beside the BPM box flashes in time, brighter on the downbeat.":
+    {
+      la: 'ictus primus cuiusque mensurae altius et clarius sonat quam ceteri, secundum tempus signaturae cantici — canticum 3/4 accentuat omnem tertium ictum, non quartum. Punctum parvum iuxta arcam BPM ad rhythmum fulget, clarius in primo ictu.',
+      'zh-TW':
+        '根據歌曲的拍號，每小節的第 1 拍會發出比其他拍更高、更響的聲音——3/4 拍的歌曲每三拍強調一次，而不是每四拍。BPM 方塊旁的小圓點會隨節拍閃爍，重拍時更亮。',
+      id: 'ketukan 1 tiap birama bunyinya lebih tinggi dan keras dari yang lain, sesuai time signature lagunya — lagu 3/4 nge-aksen tiap ketukan ketiga, bukan keempat. Titik kecil di sebelah kotak BPM berkedip sesuai ketukan, lebih terang pas ketukan pertama.',
+      jv: 'ketukan 1 saben birama muni luwih dhuwur lan seru tinimbang liyane, miturut time signature lagune — lagu 3/4 aksen saben ketukan katelu, dudu kaping papat. Titik cilik jejere kothak BPM kelap-kelip miturut ketukan, luwih padhang nalika ketukan pisanan.',
+    },
+  'TAP tempo': {
+    la: 'Ictus Tange',
+    'zh-TW': '打拍抓速',
+    id: 'Tap buat Tempo',
+    jv: 'Tap kanggo Tempo',
+  },
+  "in time with the song two or more times to set the BPM by feel instead of typing a number. It also updates the song's own BPM chip, so it's remembered. A pause of more than two seconds between taps starts a fresh count instead of averaging in an old one.":
+    {
+      la: 'cum cantico bis vel saepius, ut BPM ex sensu ponas potius quam numerum scribas. Etiam papilionem BPM cantici ipsius renovat, ita memoratur. Mora ultra duo secunda inter tactus novam numerationem incipit potius quam veterem in medium ducit.',
+      'zh-TW':
+        '跟著歌曲的節奏點兩下以上，用感覺設定 BPM，不用手動輸入數字。也會同步更新歌曲本身的 BPM 標籤，因此會被記住。兩次點擊間隔超過兩秒會重新開始計算，而不是把舊的一起平均進去。',
+      id: 'seirama sama lagunya, tap dua kali atau lebih buat nyetel BPM pake feeling, nggak usah ketik angka. Juga update chip BPM lagunya sendiri, jadi keinget. Kalo jeda antar tap lebih dari dua detik, itung-itungannya mulai dari nol lagi, nggak dirata-rata sama yang lama.',
+      jv: 'selaras karo lagune, tap kaping loro utawa luwih kanggo nyetel BPM nganggo feeling, ora usah ngetik angka. Uga nganyari chip BPM lagune dhewe, dadi kelingan. Yen jedhane luwih saka rong detik antarane tap, itungane miwiti maneh, ora dirata-rata karo sing lawas.',
+    },
+  'turn on the': { la: 'activa', 'zh-TW': '開啟', id: 'nyalain', jv: 'nguripake' },
+  'button next to the metronome before starting it, and turning the metronome on plays one full bar of clicks before the beat indicator goes live — handy for cueing a band in.':
+    {
+      la: 'iuxta metronomum antequam id incipis, et metronomum activando unam mensuram plenam ictuum canit antequam indicator ictus vivus fit — utile ad chorum introducendum.',
+      'zh-TW':
+        '在啟動節拍器前先開啟旁邊這個按鈕，開啟節拍器時就會先播放一整小節的預備聲，之後節拍指示燈才會開始運作——很適合用來帶樂團進歌。',
+      id: 'tombol di sebelah metronom sebelum nyalain metronomnya, terus pas metronomnya dinyalain bakal mainin satu birama penuh klik dulu sebelum indikator ketukannya aktif — enak buat ngasih aba-aba ke band.',
+      jv: 'tombol jejere metronom sadurunge nguripake metronome, terus nalika metronome diuripake bakal muter siji birama lengkap klik dhisik sadurunge indikator ketukane aktif — migunani kanggo menehi aba-aba band.',
+    },
+
+  // ── manual: capo ──
+  'click the capo chip in the toolbar and pick a fret (1–11). A capo never changes what key the song sounds in — only which shapes your fretting hand plays — so the chip shows both: "sounds in D · play in C" for a song in D with capo 2.':
+    {
+      la: 'preme papilionem capo in instrumentario et elige fretum (1–11). Capo numquam mutat in qua clave canticum sonat — solum quas formas manus tua fretans ludit — ita papilio ambo ostendit: "sonat in D · canitur in C" pro cantico in D cum capo 2.',
+      'zh-TW':
+        '點擊工具列上的移調夾標籤並選擇琴格（1–11）。移調夾絕不會改變歌曲實際的調性——只會改變你按弦的手所彈的指法——所以標籤會同時顯示兩者："實際音高為 D · 按弦位置為 C"，這是一首調性為 D、移調夾夾在第 2 格的歌曲。',
+      id: 'klik chip capo di toolbar terus pilih fret (1–11). Capo nggak pernah ngubah kunci bunyi lagunya — cuma ngubah bentuk yang dimainin tangan kamu — jadi chip-nya nunjukin dua-duanya: "bunyinya di D · dimainin di C" buat lagu berkunci D pake capo 2.',
+      jv: 'klik chip capo ing toolbar terus pilih fret (1–11). Capo ora tau ngganti kunci sing muni ing lagu — mung ngganti wangun sing dimainke tangane — dadi chip-e nuduhake loro-lorone: "muni ing D · dimainke ing C" kanggo lagu kunci D nganggo capo 2.',
+    },
+  "Capo composes with everything else: transpose the song first and the capo shape recalculates from the new sounding key. Nashville Number mode deliberately ignores capo — the numbers are scale degrees of the sounding key, not the shape you're fretting.":
+    {
+      la: 'Capo cum omnibus aliis componitur: transpone canticum prius et forma capo ex nova clave sonante recalculatur. Modus Numerorum Nashville data opera capo neglegit — numeri sunt gradus scalae clavis sonantis, non forma quam fretas.',
+      'zh-TW':
+        'Capo 會和其他功能一起運作：先移調歌曲，移調夾的指法會根據新的實際調性重新計算。納許維爾數字模式則會刻意忽略移調夾——數字是實際發聲調性的音階級數，不是你按弦的指法。',
+      id: 'Capo tetep jalan bareng fitur lain: transpose lagunya dulu, bentuk capo-nya bakal keitung ulang dari kunci bunyi yang baru. Mode Nashville Number sengaja nggak peduliin capo — angkanya itu derajat tangga nada dari kunci yang bunyi, bukan bentuk yang lagi kamu mainin.',
+      jv: 'Capo tetep mlaku bareng fitur liyane: transpose lagune dhisik, wangun capo-ne bakal diitung maneh saka kunci sing muni sing anyar. Mode Nashville Number sengaja ora nggagas capo — angkane iku derajat tangga nada saka kunci sing muni, dudu wangun sing lagi dimainke.',
+    },
+  'Set capo to': {
+    la: 'Pone capo ad',
+    'zh-TW': '將移調夾設為',
+    id: 'Setel capo ke',
+    jv: 'Setel capo dadi',
+  },
+  "to turn it off. It's saved with the song, so it survives a reload and travels with exports (PDF header, Markdown, and .wt files).":
+    {
+      la: 'ut illud extinguas. Cum cantico servatur, ita superviviit renovationem et cum exportationibus vadit (capite PDF, Markdown, et fasciculis .wt).',
+      'zh-TW':
+        '即可關閉。它會隨歌曲一起儲存，因此重新整理後仍會保留，並會出現在匯出結果中（PDF 標題、Markdown 與 .wt 檔案）。',
+      id: 'buat matiinnya. Ini kesimpen bareng lagunya, jadi tetep ada walau di-reload, dan ikut kebawa di hasil ekspor (header PDF, Markdown, dan file .wt).',
+      jv: 'kanggo mateni. Iki disimpen bareng lagune, dadi tetep ana senajan di-reload, lan melu digawa ing hasil ekspor (header PDF, Markdown, lan file .wt).',
+    },
+
+  // ── manual: chord diagrams ──
+  "toggles a strip of fretboard diagrams above the chart, one per distinct chord in the song, computed from the actual notes of each chord rather than a fixed lookup table — so every root, quality, and capo'd shape gets a correct diagram. Choose Guitar (6 strings) or Ukulele (4 strings) in":
+    {
+      la: 'ordinem diagrammatum fretorum super tabulam vertit, unum pro quaque chorda distincta in cantico, ex ipsis notis cuiusque chordae computatum potius quam ex tabula fixa — ita omnis radix, qualitas, et forma capo diagramma rectum accipit. Elige Citharam (6 chordis) vel Ukulele (4 chordis) in',
+      'zh-TW':
+        '在譜面上方顯示一排指板圖，歌曲中每個不同的和弦各一個，是根據每個和弦實際的音符計算出來的，而不是查固定的對照表——所以無論根音、和弦性質或移調夾指法都能得到正確的圖示。可在下方選擇吉他（6 弦）或烏克麗麗（4 弦）：',
+      id: 'nampilin deretan diagram fretboard di atas chart, satu buat tiap chord beda di lagunya, dihitung dari not asli tiap chord, bukan dari tabel tetap — jadi root, quality, sama bentuk capo apapun tetep dapet diagram yang bener. Pilih Gitar (6 senar) atau Ukulele (4 senar) di',
+      jv: 'nampilake deretan diagram fretboard ing ndhuwur chart, siji kanggo saben chord sing beda ing lagune, diitung saka not asline saben chord, dudu saka tabel tetep — dadi root, quality, lan wangun capo apa wae tetep entuk diagram sing bener. Pilih Gitar (6 senar) utawa Ukulele (4 senar) ing',
+    },
+  "Diagrams already reflect the current transpose and capo — they always show the shape you'd actually fret right now, capo included. They're hidden automatically in Nashville Number mode, since a scale-degree number has no fingering to show.":
+    {
+      la: 'Diagrammata iam transpositionem et capo praesentia reflectunt — semper formam quam nunc vere fretares ostendunt, capo incluso. Automatice occultantur in Modo Numerorum Nashville, cum numerus gradus scalae nullam digitationem habeat ostendendam.',
+      'zh-TW':
+        '指法圖已經反映目前的移調與移調夾狀態——永遠顯示你現在實際會按的指法，包含移調夾在內。在納許維爾數字模式下會自動隱藏，因為音階級數並沒有指法可以顯示。',
+      id: 'Diagram udah otomatis ngikutin transpose sama capo yang lagi aktif — selalu nunjukin bentuk yang bener-bener kamu mainin sekarang, termasuk capo-nya. Otomatis ilang di mode Nashville Number, soalnya angka derajat tangga nada emang nggak punya jarian buat ditampilin.',
+      jv: 'Diagram wis otomatis ngetutake transpose lan capo sing lagi aktif — tansah nuduhake wangun sing bener-bener dimainke saiki, kalebu capo-ne. Otomatis ilang ing mode Nashville Number, amarga angka derajat tangga nada pancen ora duwe jarian kanggo ditampilake.',
+    },
+  'Set PDF and Song PDF exports can include the same diagram strip at the top of each song — enable Diagrams for a song before exporting.':
+    {
+      la: 'Exportationes PDF Collectionis et PDF Cantici possunt eundem ordinem diagrammatum in capite cuiusque cantici includere — activa Diagrammata pro cantico antequam exportas.',
+      'zh-TW':
+        'Set PDF 與 Song PDF 匯出都能在每首歌上方加入同一排指法圖——匯出前先為該首歌開啟「和弦圖」即可。',
+      id: 'Ekspor Set PDF dan Song PDF bisa nyertain deretan diagram yang sama di atas tiap lagu — nyalain Diagrams buat lagunya dulu sebelum ekspor.',
+      jv: 'Ekspor Set PDF lan Song PDF bisa nyertakake deretan diagram sing padha ing ndhuwur saben lagu — uripna Diagrams kanggo lagune dhisik sadurunge ekspor.',
+    },
+
+  // ── manual: notes & duration ──
+  'Notes & duration': {
+    la: 'Notae & Duratio',
+    'zh-TW': '備註與時長',
+    id: 'Catatan & Durasi',
+    jv: 'Cathetan & Durasi',
+  },
+  "click the Notes chip in the toolbar to open a small panel for arrangement or performance reminders — cues, who sings which verse, anything you'd otherwise scribble in the margin. Saved with the song.":
+    {
+      la: 'preme papilionem Notarum in instrumentario ut parvam tabulam aperias pro memorandis dispositionis vel actus — signa, quis quem versum canat, quidquid alioquin in margine scriberes. Cum cantico servatur.',
+      'zh-TW':
+        '點擊工具列上的備註標籤，開啟一個小面板，用來寫編曲或演出提醒事項——提示、誰唱哪一段主歌，任何你原本會寫在頁邊空白處的內容。會隨歌曲一起儲存。',
+      id: 'klik chip Notes di toolbar buat buka panel kecil isinya pengingat aransemen atau performa — cue, siapa nyanyi verse yang mana, apapun yang biasanya kamu coret-coret di pinggir kertas. Kesimpen bareng lagunya.',
+      jv: 'klik chip Notes ing toolbar kanggo mbukak panel cilik isine pengeling aransemen utawa penampilan — cue, sapa nyanyi verse sing endi, apa wae sing biasane dicorat-coret ing pinggir kertas. Disimpen bareng lagune.',
+    },
+  'in the same panel, enter a length as': {
+    la: 'in eadem tabula, duratio pone ut',
+    'zh-TW': '在同一個面板中，以',
+    id: 'di panel yang sama, masukin durasi dalam format',
+    jv: 'ing panel sing padha, lebokna durasi format',
+  },
+  "(or just seconds). It's optional and only used to estimate the whole set's length on the Set PDF cover page — songs left blank simply aren't counted toward that estimate.":
+    {
+      la: '(vel tantum secunda). Optionale est et tantum ad totam durationem collectionis in pagina initiali PDF Collectionis aestimandam adhibetur — cantica vacua relicta simpliciter non numerantur in illa aestimatione.',
+      'zh-TW':
+        '格式輸入時長（或只輸入秒數）。這是選填欄位，只用於在 Set PDF 封面頁估算整個全集的長度——留空的歌曲不會被計入估算。',
+      id: '(atau angka detik doang). Ini opsional, cuma dipake buat ngira-ira total durasi seluruh set di halaman sampul Set PDF — lagu yang dikosongin ya nggak keitung di estimasi itu.',
+      jv: '(utawa angka detik wae). Iki opsional, mung dienggo ngira-ira total durasi kabeh set ing kaca sampul Set PDF — lagu sing dikosongake ya ora diétung ing estimasi kasebut.',
+    },
+
+  // ── manual: export panel intro / print ──
+  'button in the app header to open the export panel. Several options are available:': {
+    la: 'in capite appli ut tabulam exportationis aperias. Plures optiones praesto sunt:',
+    'zh-TW': '按鈕開啟匯出面板。目前有多種選項可供使用：',
+    id: 'di header aplikasi buat buka panel ekspor. Ada beberapa pilihan:',
+    jv: 'ing header aplikasi kanggo mbukak panel ekspor. Ana pirang-pirang pilihan:',
+  },
+  "opens your browser's own print dialog instead of generating a PDF — a chord/lyric line is never split across a page break, and the page always prints in plain black on white regardless of your color theme or dark mode. Print set puts each song on its own page.":
+    {
+      la: 'tabellam impressionis navigatri tui aperit potius quam PDF generat — linea chordae/verbi numquam per ruptionem paginae dividitur, et pagina semper in nigro puro super album imprimitur, quocumque themate coloris vel modo obscuro. Collectionem Imprimere quodque canticum in propria pagina ponit.',
+      'zh-TW':
+        '會開啟瀏覽器自己的列印對話框，而不是產生 PDF——和弦／歌詞行絕不會被分頁截斷，且無論你用哪種色彩主題或深色模式，頁面都一律以純黑印在白底上。列印全集會讓每首歌各自獨立一頁。',
+      id: 'ini buka dialog cetak browser kamu sendiri, bukan bikin PDF — baris chord/lirik nggak bakal kepotong halaman, dan halamannya selalu dicetak item di atas putih apapun tema warna atau mode gelap kamu. Print set bakal naruh tiap lagu di halamannya sendiri.',
+      jv: 'iki mbukak dialog cithak browser sampeyan dhewe, dudu gawe PDF — baris chord/lirik ora bakal kepotong kaca, lan kacane tansah dicithak ireng ing dhuwur putih apa wae tema werna utawa mode peteng sampeyan. Print set bakal nyelehake saben lagu ing kacane dhewe.',
+    },
+  'Cover page & table of contents': {
+    la: 'Pagina Initialis & Index',
+    'zh-TW': '封面頁與目錄',
+    id: 'Halaman Sampul & Daftar Isi',
+    jv: 'Kaca Sampul & Daftar Isi',
+  },
+  'check the box under Set PDF to prepend a page listing the set name, date, song count, an estimated total length (from any songs with a Duration set — see §2), and a numbered row per song with its key, capo, and BPM plus the page it starts on.':
+    {
+      la: 'signa quadratum sub PDF Collectionis ut paginam praeponas listam nominis collectionis, diei, numeri canticorum, durationis totius aestimatae (ex canticis quorum duratio posita est — vide §2), et versum numeratum pro quoque cantico cum clave, capo, et BPM eius plus pagina in qua incipit.',
+      'zh-TW':
+        '在 Set PDF 選項下方勾選此方塊，即可在最前面加一頁，列出全集名稱、日期、歌曲數量、估計總時長（根據已設定時長的歌曲——見第 2 節），以及每首歌的編號列，含調性、移調夾、BPM，以及起始頁碼。',
+      id: 'centang kotak di bawah Set PDF buat nambahin halaman di depan yang isinya nama set, tanggal, jumlah lagu, estimasi total durasi (dari lagu-lagu yang udah diisi Duration-nya — lihat §2), dan baris bernomor tiap lagu lengkap sama kunci, capo, BPM-nya, plus halaman mulainya.',
+      jv: 'centhang kothak ing ngisor Set PDF kanggo nambahake kaca ing ngarep sing isine jeneng set, tanggal, cacahing lagu, estimasi total durasi (saka lagu-lagu sing wis diisi Duration-e — deleng §2), lan baris kanthi nomer saben lagu lengkap karo kunci, capo, BPM-e, plus kaca wiwitane.',
+    },
+  'Appearance.': {
+    la: 'Aspectus.',
+    'zh-TW': '外觀。',
+    id: 'Tampilan.',
+    jv: 'Tampilan.',
+  },
+
   'PDFs exported': {
     la: 'PDF Exportata',
     'zh-TW': 'PDF 已匯出',
@@ -805,6 +1117,14 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
       id: 'pilih antara Classic (Courier New) dan Readable (JetBrains Mono) — Readable itu defaultnya. Keduanya monospace asli, jadi posisi chord dan lirik tetap presisi apa pun pilihannya. Berlaku di editor maupun ekspor PDF.',
       jv: 'pilih antarane Classic (Courier New) lan Readable (JetBrains Mono) — Readable kuwi defaulte. Loro-lorone monospace asli, dadi posisi chord lan lirik tetep pas senajan milih sing endi wae. Ditrapake ing editor lan uga ing ekspor PDF, nak.',
     },
+  'Chord diagrams instrument': {
+    la: 'Instrumentum Formarum Chordarum',
+    'zh-TW': '和弦圖樂器',
+    id: 'Instrumen Diagram Chord',
+    jv: 'Instrumen Diagram Chord',
+  },
+  Guitar: { la: 'Cithara', 'zh-TW': '吉他', id: 'Gitar', jv: 'Gitar' },
+  Ukulele: { la: 'Ukulele', 'zh-TW': '烏克麗麗', id: 'Ukulele', jv: 'Ukulele' },
   'Split-column view': {
     la: 'Visio Bicolumnis',
     'zh-TW': '雙欄檢視',
@@ -1902,6 +2222,97 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     jv: 'tombol ing header bagian.',
   },
 
+  // ── §4 line moves & select mode ──
+  'Move a line': {
+    la: 'Lineam movere',
+    'zh-TW': '移動一行',
+    id: 'Pindahkan baris',
+    jv: 'Pindhah baris',
+  },
+  'every line has its own': {
+    la: 'omnis linea suum habet',
+    'zh-TW': '每一行都有自己的',
+    id: 'tiap baris punya',
+    jv: 'saben baris duwe',
+  },
+  'handle in the left gutter. Drag it to reorder the line within its section, or drop it into a different section entirely. If you move the last line out of a section, a blank line is left behind so the section never ends up empty.':
+    {
+      la: 'ansam in margine sinistro. Trahe eam ut lineam intra sectionem ordines, vel in aliam sectionem omnino demitte. Si ultimam lineam ex sectione moves, linea vacua relinquitur ne sectio umquam inanis fiat.',
+      'zh-TW':
+        '左側邊欄的握把。拖曳它即可在同一段落內重新排序，或直接放進另一個段落。若把段落中最後一行移走，系統會留下一行空行，段落不會變成完全空的。',
+      id: 'handle di gutter kiri. Tarik buat ngatur ulang urutan baris di dalam bagiannya, atau lempar ke bagian lain sekalian. Kalau baris terakhir dipindah keluar dari satu bagian, bakal disisain satu baris kosong biar bagiannya nggak jadi kosong melompong.',
+      jv: 'gagang ing gutter kiwa. Seret kanggo ngurutake maneh baris ing sajroning bagiane, utawa selehake ing bagian liya. Yen baris pungkasan dipindhah metu saka sawijining bagian, bakal ditinggali siji baris kosong supaya bagiane ora tau dadi kothong.',
+    },
+  'Select mode: copy, duplicate & delete in bulk': {
+    la: 'Modus Eligendi: copiare, duplicare et delere aggregatim',
+    'zh-TW': '選取模式：批次複製、再製與刪除',
+    id: 'Mode Pilih: salin, gandakan & hapus sekaligus',
+    jv: 'Mode Pilih: salin, gandakake & busak bebarengan',
+  },
+  'click the Select button in the toolbar to swap the line gutter for checkboxes and open a bulk-action bar. Tick any number of lines — or any number of section headers — then Copy, Duplicate, or Delete them all at once. A selection is either lines or sections, never a mix of both: ticking a section clears any lines you had ticked, and vice versa.':
+    {
+      la: 'preme bullam Eligere in instrumentorum tabula ut margo linearum in quadratula mutetur et tabula actionum aggregatarum aperiatur. Signa quotlibet lineas — vel quotlibet titulos sectionum — deinde omnes simul Copia, Duplica, vel Dele. Electio aut lineae sunt aut sectiones, numquam mixtura: sectionem signare lineas signatas vacuat, et contra.',
+      'zh-TW':
+        '點工具列的「選取」按鈕，行的邊欄會換成核取方塊，並開啟批次操作列。勾選任意數量的行，或任意數量的段落標題，然後一次複製、再製或刪除。一次選取只能是行或段落，不能混用：勾選段落會清掉已勾選的行，反之亦然。',
+      id: 'klik tombol Pilih di toolbar buat ngubah gutter baris jadi checkbox dan munculin bar aksi massal. Centang berapa pun baris — atau berapa pun header bagian — terus Salin, Gandakan, atau Hapus semuanya sekaligus. Satu pilihan itu baris aja atau bagian aja, nggak pernah campur: nyentang bagian bakal ngosongin baris yang udah kamu centang, dan sebaliknya.',
+      jv: 'klik tombol Pilih ing toolbar kanggo ngganti gutter baris dadi kothak centang lan mbukak bar tumindak akeh. Centhang pira wae baris — utawa pira wae judhul bagian — banjur Salin, Gandakake, utawa Busak kabeh bebarengan. Sapisan milih iku baris thok utawa bagian thok, ora tau campur: nyenthang bagian bakal ngosongake baris sing wis dicenthang, lan kosok baline.',
+    },
+  'Each bulk action counts as a single change, so one': {
+    la: 'Omnis actio aggregata una mutatio numeratur, itaque unum',
+    'zh-TW': '每次批次操作只算一次變更，所以按一次',
+    id: 'Tiap aksi massal dihitung satu perubahan, jadi sekali',
+    jv: 'Saben tumindak akeh diitung siji owahan, dadi sepisan',
+  },
+  'undoes the whole thing rather than one line at a time. A bulk delete also offers an Undo button in its confirmation toast.':
+    {
+      la: 'totum revocat, non singulas lineas. Deletio aggregata etiam bullam Revocandi in nuntio suo praebet.',
+      'zh-TW':
+        '就能整批復原，而不是一行一行來。批次刪除也會在提示訊息裡附上「復原」按鈕。',
+      id: 'langsung balikin semuanya, bukan satu baris satu baris. Hapus massal juga nyediain tombol Urungkan di toast konfirmasinya.',
+      jv: 'langsung mbalekake kabeh, dudu siji baris siji baris. Busak akeh uga nyedhiyakake tombol Balekake ing toast konfirmasine.',
+    },
+  'what you copy stays on the clipboard when you switch songs, so you can copy a chorus out of one song and paste it into another. With lines copied, a Paste button appears in every section header; with sections copied, one appears next to Add section. The clipboard is cleared when you reload the page.':
+    {
+      la: 'quod copias in tabella manet cum cantus mutas, ita ut chorum ex uno cantu copiare et in alium agglutinare possis. Lineis copiatis, bulla Agglutinandi in omni titulo sectionis apparet; sectionibus copiatis, una iuxta Addere Sectionem apparet. Tabella vacuatur cum paginam recreas.',
+      'zh-TW':
+        '複製的內容在你切換歌曲後仍會留在剪貼簿，所以可以從一首歌複製副歌，貼到另一首去。複製的是行時，每個段落標題都會出現「貼上」按鈕；複製的是段落時，按鈕會出現在「新增段落」旁邊。重新整理頁面就會清空剪貼簿。',
+      id: 'yang kamu salin tetap nempel di clipboard walau ganti lagu, jadi bisa nyalin chorus dari satu lagu terus tempel ke lagu lain. Kalau yang disalin baris, tombol Tempel muncul di tiap header bagian; kalau yang disalin bagian, tombolnya muncul di sebelah Tambah Bagian. Clipboard-nya kehapus kalau halaman di-reload.',
+      jv: 'sing disalin tetep ana ing clipboard senajan ganti lagu, dadi bisa nyalin chorus saka siji lagu banjur ditempel ing lagu liya. Yen sing disalin baris, tombol Tempel metu ing saben judhul bagian; yen sing disalin bagian, tombole metu ing sandhinge Tambah Bagian. Clipboard-e ilang yen kacane di-reload.',
+    },
+  'While selecting, the usual editing controls are hidden and dragging is switched off, so a click can only ever mean "tick this". Press':
+    {
+      la: 'Dum eligis, instrumenta emendandi solita latent et tractio extinguitur, ita ut ictus solum "hoc signa" significare possit. Preme',
+      'zh-TW':
+        '選取期間，平常的編輯控制項會隱藏、拖曳也會關閉，所以一次點擊只可能代表「勾選這個」。按',
+      id: 'Selama milih, kontrol edit yang biasa disembunyiin dan drag dimatiin, jadi satu klik cuma bisa berarti "centang ini". Tekan',
+      jv: 'Nalika milih, kontrol suntingan sing biasa didhelikake lan seret dipateni, dadi siji klik mung bisa ateges "centhang iki". Pencet',
+    },
+  'or click': { la: 'vel preme', 'zh-TW': '或點擊', id: 'atau klik', jv: 'utawa klik' },
+  'to leave select mode. Select mode is unavailable in View Only and Stage modes.': {
+    la: 'ut modum eligendi relinquas. Modus eligendi in modis Tantum Videre et Scaenae non praesto est.',
+    'zh-TW': '即可離開選取模式。唯讀模式與舞台模式下無法使用選取模式。',
+    id: 'buat keluar dari mode Pilih. Mode Pilih nggak tersedia di mode Lihat Saja dan mode Panggung.',
+    jv: 'kanggo metu saka mode Pilih. Mode Pilih ora kasedhiya ing mode Ndeleng Wae lan mode Panggung.',
+  },
+  'Shortcuts while selecting:': {
+    la: 'Compendia dum eligis:',
+    'zh-TW': '選取時的快速鍵：',
+    id: 'Pintasan saat milih:',
+    jv: 'Trabasan nalika milih:',
+  },
+  'for copy, paste, duplicate, and select-all-lines, and': {
+    la: 'ad copiandum, agglutinandum, duplicandum, et omnes lineas eligendas, et',
+    'zh-TW': '分別是複製、貼上、再製與選取所有行，另外',
+    id: 'buat salin, tempel, gandakan, dan pilih-semua-baris, dan',
+    jv: 'kanggo salin, tempel, gandakake, lan pilih-kabeh-baris, lan',
+  },
+  'to delete the selection.': {
+    la: 'ad electa delenda.',
+    'zh-TW': '則是刪除選取項目。',
+    id: 'buat hapus pilihannya.',
+    jv: 'kanggo mbusak pilihane.',
+  },
+
   // ── §5 Keys & transposition ──
   'Step transpose': {
     la: 'Transpositio Gradatim',
@@ -2788,6 +3199,12 @@ export class UiSettingsService {
 
   editorSplitColumns = false;
 
+  chordInstrument: ChordInstrument = 'guitar';
+
+  setPdfCoverPage = false;
+
+  metronomeCountIn = false;
+
   // One-time UI hints already dismissed by the user (persisted in prefs).
   hintsSeen: string[] = [];
 
@@ -2857,6 +3274,13 @@ export class UiSettingsService {
   toggleViewOnly() {
     this.viewOnly.set(!this.viewOnly());
   }
+
+  // Set true only for the brief window around a "Print set" action, so
+  // SongEditorComponent renders its print-only per-song list into the DOM —
+  // gated behind a signal (rather than always rendering it CSS-hidden) so
+  // every song's full chart isn't duplicated into the page (and query
+  // selectors like `.chord-btn`) on every ordinary edit. Session-only.
+  readonly printingSet = signal(false);
 
   // Captured `beforeinstallprompt` event (Chromium only) — lets an "Install"
   // button trigger the browser's native install prompt on demand instead of
@@ -3018,6 +3442,21 @@ export class UiSettingsService {
     this.savePrefs();
   }
 
+  setChordInstrument(instrument: ChordInstrument) {
+    this.chordInstrument = instrument;
+    this.savePrefs();
+  }
+
+  setSetPdfCoverPage(val: boolean) {
+    this.setPdfCoverPage = val;
+    this.savePrefs();
+  }
+
+  setMetronomeCountIn(val: boolean) {
+    this.metronomeCountIn = val;
+    this.savePrefs();
+  }
+
   // Mirrors the PDF export's own splitColumns rule (pdfFontSize <= 14): the
   // editor only actually renders two columns when the preference is on AND
   // the on-screen text is small enough that two columns of chords/lyrics fit
@@ -3060,6 +3499,10 @@ export class UiSettingsService {
         const cf = p['chordFont'] as string;
         this.chordFont = cf === 'classic' ? 'classic' : 'readable';
         this.editorSplitColumns = p['editorSplitColumns'] === true;
+        const inst = p['chordInstrument'] as string;
+        this.chordInstrument = inst === 'ukulele' ? 'ukulele' : 'guitar';
+        this.setPdfCoverPage = p['setPdfCoverPage'] === true;
+        this.metronomeCountIn = p['metronomeCountIn'] === true;
         const hints = p['hintsSeen'];
         this.hintsSeen = Array.isArray(hints)
           ? hints.filter((h): h is string => typeof h === 'string')
@@ -3104,6 +3547,9 @@ export class UiSettingsService {
         colorTheme: this.colorTheme,
         chordFont: this.chordFont,
         editorSplitColumns: this.editorSplitColumns,
+        chordInstrument: this.chordInstrument,
+        setPdfCoverPage: this.setPdfCoverPage,
+        metronomeCountIn: this.metronomeCountIn,
         hintsSeen: this.hintsSeen,
       }),
     );

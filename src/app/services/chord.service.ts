@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SongSection } from '../models/song.model';
+import { ParsedSong, SongSection } from '../models/song.model';
 
 export type Accidentals = 'auto' | 'sharps' | 'flats';
 
@@ -137,6 +137,91 @@ export class ChordService {
     if (!parsed) return chord;
     // If slash chord, bass is the bass note; otherwise it's the root
     return parsed.bass ?? parsed.root;
+  }
+
+  /** The key a song's chords currently sound in — originalKey shifted by transposeSemitones. */
+  effectiveKey(song: ParsedSong, accidentals: Accidentals = 'auto'): string {
+    return this.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
+  }
+
+  // The key a capo'd guitarist actually plays shapes in: the sounding key
+  // transposed DOWN by the capo fret count (capo 2 on a song sounding in D is
+  // played using C shapes). A capo never changes what key the song sounds
+  // in — only which shapes produce it — so this is display-only, same as
+  // transposeSemitones is for the sounding key.
+  shapeKey(song: ParsedSong, accidentals: Accidentals = 'auto'): string {
+    const capo = song.capo ?? 0;
+    const key = this.effectiveKey(song, accidentals);
+    return capo ? this.transposeKey(key, -capo, accidentals) : key;
+  }
+
+  // Single source of truth for how a chord renders on screen and in exports,
+  // composing transpose, capo, bass-notes-only, and Nashville in that order.
+  // Nashville deliberately skips the capo step: scale-degree numbers are
+  // relative to the sounding key, not the fretted shape, so a capo changes
+  // which shape you play but never which number you'd call it.
+  displayChord(chord: string, song: ParsedSong, accidentals: Accidentals = 'auto'): string {
+    const key = this.effectiveKey(song, accidentals);
+    let display = this.transposeChord(chord, song.transposeSemitones, key, accidentals);
+    const capo = song.capo ?? 0;
+    if (capo && !song.showNashville) {
+      display = this.transposeChord(display, -capo, this.shapeKey(song, accidentals), accidentals);
+    }
+    if (song.showBassNotesOnly) display = this.getBassNote(display);
+    if (song.showNashville) display = this.toNashville(display, key);
+    return display;
+  }
+
+  // Same composition as displayChord(), but for bar-notation/direction
+  // annotations, which carry chord tokens embedded in free text.
+  displayAnnotation(
+    annotation: string,
+    song: ParsedSong,
+    accidentals: Accidentals = 'auto',
+  ): string {
+    const key = this.effectiveKey(song, accidentals);
+    let display = this.transposeAnnotation(annotation, song.transposeSemitones, key, accidentals);
+    const capo = song.capo ?? 0;
+    if (capo && !song.showNashville) {
+      display = this.transposeAnnotation(
+        display,
+        -capo,
+        this.shapeKey(song, accidentals),
+        accidentals,
+      );
+    }
+    return display;
+  }
+
+  // Every distinct chord shown for a song, in the exact form currently
+  // displayed (transpose + capo already applied) — the shared traversal
+  // behind both the on-screen chord-diagram strip and its PDF-export
+  // counterpart, so they can never drift out of sync with each other.
+  distinctChordLabels(song: ParsedSong, accidentals: Accidentals = 'auto'): string[] {
+    const seen = new Set<string>();
+    const labels: string[] = [];
+    const add = (label: string) => {
+      if (!seen.has(label)) {
+        seen.add(label);
+        labels.push(label);
+      }
+    };
+    for (const section of song.sections) {
+      for (const line of section.lines) {
+        for (const ct of line.chords) add(this.displayChord(ct.chord, song, accidentals));
+        if (line.annotation) {
+          // displayAnnotation() has already transposed/capo-shifted whichever
+          // tokens are chords, so a fresh isChord() check on its output finds
+          // the (now-displayed) chord tokens without re-transposing them.
+          const displayed = this.displayAnnotation(line.annotation, song, accidentals);
+          for (const token of displayed.split(/\s+/)) {
+            const stripped = token.replace(/^[|:]+/, '');
+            if (this.isChord(stripped)) add(stripped);
+          }
+        }
+      }
+    }
+    return labels;
   }
 
   allKeys(accidentals: Accidentals = 'auto'): string[] {

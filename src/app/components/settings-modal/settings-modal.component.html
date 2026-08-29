@@ -80,6 +80,22 @@
       </div>
 
       <div class="setting-row">
+        <span class="setting-label">{{ ui.t('Chord diagrams instrument') }}</span>
+        <div class="seg-group">
+          <button
+            class="seg-btn"
+            [class.seg-btn--active]="ui.chordInstrument === 'guitar'"
+            (click)="ui.setChordInstrument('guitar')"
+          >🎸 {{ ui.t('Guitar') }}</button>
+          <button
+            class="seg-btn"
+            [class.seg-btn--active]="ui.chordInstrument === 'ukulele'"
+            (click)="ui.setChordInstrument('ukulele')"
+          >🪕 {{ ui.t('Ukulele') }}</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
         <span class="setting-label">{{ ui.t('Split-column view') }}</span>
         <button
           class="setting-btn"

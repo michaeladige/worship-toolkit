@@ -39,4 +39,8 @@ export interface ParsedSong {
   transposeSemitones: number;
   showBassNotesOnly: boolean;
   showNashville?: boolean;
+  capo?: number; // 0-11 fret; undefined/0 = no capo. Display-only — never changes the sounding key.
+  showChordDiagrams?: boolean;
+  notes?: string; // free-text arrangement/performance notes
+  durationSeconds?: number; // optional, user-entered; powers the set PDF's estimated length
 }
