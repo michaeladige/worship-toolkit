@@ -95,7 +95,7 @@ test.describe('Set PDF cover page & export', () => {
     await openSeeded(page);
     await page.locator('.ui-ctrl-btn', { hasText: 'Export' }).click();
 
-    const checkbox = page.locator('.export-suboption input[type=checkbox]');
+    const checkbox = page.getByRole('checkbox', { name: /cover page/i });
     await checkbox.check();
     await expect(checkbox).toBeChecked();
 
@@ -109,11 +109,11 @@ test.describe('Set PDF cover page & export', () => {
   test('the cover-page preference persists across reload', async ({ page }) => {
     await openSeeded(page);
     await page.locator('.ui-ctrl-btn', { hasText: 'Export' }).click();
-    await page.locator('.export-suboption input[type=checkbox]').check();
+    await page.getByRole('checkbox', { name: /cover page/i }).check();
 
     await page.reload();
     await page.locator('.ui-ctrl-btn', { hasText: 'Export' }).click();
-    await expect(page.locator('.export-suboption input[type=checkbox]')).toBeChecked();
+    await expect(page.getByRole('checkbox', { name: /cover page/i })).toBeChecked();
   });
 });
 

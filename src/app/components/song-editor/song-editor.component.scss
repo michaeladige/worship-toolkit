@@ -388,6 +388,14 @@
   text-align: center;
 }
 
+.modulation-note {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+  margin-left: 0.15rem;
+}
+
 .key-jump {
   display: flex;
   align-items: center;

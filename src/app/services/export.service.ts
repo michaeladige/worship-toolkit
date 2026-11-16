@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import type { jsPDF as JsPdf } from 'jspdf';
-import { ParsedSong, SongLine, ChordToken } from '../models/song.model';
+import type { jsPDF as JsPdf, GState as JsPdfGState } from 'jspdf';
+import { ParsedSong, SongLine, SongSection, InkStroke } from '../models/song.model';
 import { Accidentals, ChordService } from './chord.service';
 import { ChordFont, ChordInstrument } from './ui-settings.service';
 import { chordShape, ChordShapeDiagram } from '../data/chord-shapes';
@@ -8,7 +8,29 @@ import { chordShape, ChordShapeDiagram } from '../data/chord-shapes';
 export interface SetPdfOptions {
   coverPage?: boolean; // prepend a summary + page-numbered table of contents
   setName?: string;
+  includeInk?: boolean; // draw each line's pen/highlighter strokes (SongLine.ink)
 }
+
+// Where a line's ink anchor (its lyric row, or chord row for a chords-only
+// line) landed on the PDF page, for mapping InkStroke (ch, em) coordinates.
+interface PdfInkAnchor {
+  x: number; // left edge of the text column
+  baseline: number; // baseline of the anchor row's (first) text line
+  chordBaseline: number | null; // baseline of the chord row above a lyric anchor
+  annotationRows: number; // annotation rows between chord and lyric rows
+}
+
+// On-screen geometry of the chart rows ink coordinates are measured against
+// (song-section.component.scss): the lyric row's text baseline sits ~1.085em
+// below its content top (line-height 1.45), a chord row's ~1.15em below its
+// top, a chord row's baseline is ~1.7em above the lyric baseline beneath it,
+// and an annotation row adds ~1.45em. The PDF packs rows tighter than the
+// screen, so the stretch of a stroke above a lyric (marking up the chords)
+// is compressed to land on the same PDF rows rather than drifting upward.
+const INK_LYRIC_BASELINE_EM = 1.085;
+const INK_CHORD_BASELINE_EM = 1.15;
+const INK_CHORD_TO_LYRIC_EM = 1.7;
+const INK_ANNOTATION_ROW_EM = 1.45;
 
 @Injectable({ providedIn: 'root' })
 export class ExportService {
@@ -100,21 +122,22 @@ export class ExportService {
     lines.push(keyLine);
     lines.push('');
 
-    for (const section of song.sections) {
-      lines.push(`**${section.name}**`);
+    song.sections.forEach((section, si) => {
+      const keyChange = this.keyChangeText(song, si, accidentals);
+      lines.push(keyChange ? `**${section.name}** — *${keyChange}*` : `**${section.name}**`);
       lines.push('');
       for (const line of section.lines) {
-        const chordLine = this.renderChordRow(line, song, accidentals);
+        const chordLine = this.renderChordRow(line, song, accidentals, section);
         if (chordLine.trim()) lines.push(chordLine);
         if (line.annotation) {
-          const ann = this.chordSvc.displayAnnotation(line.annotation, song, accidentals);
+          const ann = this.chordSvc.displayAnnotation(line.annotation, song, accidentals, section);
           lines.push(`*${ann}*`);
         }
         if (line.lyric.trim()) lines.push(line.lyric);
         if (!chordLine.trim() && !line.annotation && !line.lyric.trim()) lines.push('');
       }
       lines.push('');
-    }
+    });
 
     if (song.ccliNumber) {
       lines.push(`*CCLI Song # ${song.ccliNumber}*`);
@@ -123,7 +146,25 @@ export class ExportService {
     return lines.join('\n');
   }
 
-  private renderChordRow(line: SongLine, song: ParsedSong, accidentals: Accidentals = 'auto'): string {
+  // "Key - Ab" (plus the capo shape, when one applies) for a section that
+  // modulates away from the section before it, else null. Same "Key - X"
+  // wording SongSelect prints, which PdfParserService reads back on re-import.
+  private keyChangeText(song: ParsedSong, si: number, accidentals: Accidentals): string | null {
+    const sounding = this.chordSvc.keyChangeAt(song, si, accidentals);
+    if (!sounding) return null;
+    let text = `Key - ${sounding}`;
+    if (song.capo && !song.showNashville) {
+      text += ` (play in ${this.chordSvc.shapeKey(song, accidentals, song.sections[si])})`;
+    }
+    return text;
+  }
+
+  private renderChordRow(
+    line: SongLine,
+    song: ParsedSong,
+    accidentals: Accidentals = 'auto',
+    section?: SongSection,
+  ): string {
     if (line.chords.length === 0) return '';
 
     // Build a character array
@@ -134,7 +175,7 @@ export class ExportService {
 
     let cursor = 0;
     for (const ct of sortedChords) {
-      const chord = this.getDisplayChord(ct.chord, song, accidentals);
+      const chord = this.getDisplayChord(ct.chord, song, accidentals, section);
       const pos = Math.max(cursor, ct.charPos ?? 0);
       for (let j = 0; j < chord.length; j++) {
         if (pos + j < chars.length) chars[pos + j] = chord[j];
@@ -145,8 +186,13 @@ export class ExportService {
     return chars.join('').trimEnd();
   }
 
-  getDisplayChord(chord: string, song: ParsedSong, accidentals: Accidentals = 'auto'): string {
-    return this.chordSvc.displayChord(chord, song, accidentals);
+  getDisplayChord(
+    chord: string,
+    song: ParsedSong,
+    accidentals: Accidentals = 'auto',
+    section?: SongSection,
+  ): string {
+    return this.chordSvc.displayChord(chord, song, accidentals, section);
   }
 
   async toPdf(
@@ -175,6 +221,7 @@ export class ExportService {
     fontChoice: ChordFont = 'classic',
     zipName = 'worship-set',
     instrument: ChordInstrument = 'guitar',
+    includeInk = false,
   ): Promise<void> {
     const { default: JSZip } = await import('jszip');
     const zip = new JSZip();
@@ -190,7 +237,9 @@ export class ExportService {
     };
 
     for (const song of songs) {
-      const doc = await this.buildDoc([song], pdfFontSize, accidentals, fontChoice, instrument);
+      const doc = await this.buildDoc([song], pdfFontSize, accidentals, fontChoice, instrument, {
+        includeInk,
+      });
       zip.file(fileNameFor(song.title), doc.output('blob'));
     }
 
@@ -331,6 +380,65 @@ export class ExportService {
     }
   }
 
+  // Draws a line's ink strokes in PDF space. x maps column-for-column (ink x is
+  // in ch, the PDF is monospace); y maps em → points around the anchor row's
+  // baseline, compressing the part above a lyric baseline as described at
+  // INK_CHORD_TO_LYRIC_EM. Highlighter strokes go down at reduced opacity.
+  private drawInk(
+    doc: JsPdf,
+    GState: typeof JsPdfGState,
+    strokes: InkStroke[],
+    fontPt: number,
+    charW: number,
+    anchor: PdfInkAnchor,
+  ): void {
+    const isLyric = anchor.chordBaseline !== null;
+    const baseEm = isLyric ? INK_LYRIC_BASELINE_EM : INK_CHORD_BASELINE_EM;
+    const screenAboveEm = INK_CHORD_TO_LYRIC_EM + anchor.annotationRows * INK_ANNOTATION_ROW_EM;
+    const pdfAbovePt = isLyric ? anchor.baseline - (anchor.chordBaseline as number) : 0;
+    const aboveScale = isLyric && pdfAbovePt > 0 ? pdfAbovePt / (screenAboveEm * fontPt) : 1;
+    const px = (xCh: number) => anchor.x + xCh * charW;
+    const py = (yEm: number) => {
+      const d = yEm - baseEm;
+      return anchor.baseline + d * fontPt * (d < 0 ? aboveScale : 1);
+    };
+
+    doc.saveGraphicsState();
+    doc.setLineJoin('round');
+    for (const stroke of strokes) {
+      const pts = stroke.points;
+      if (pts.length < 2) continue;
+      const [r, g, b] = this.inkRgb(stroke.color);
+      const width = Math.max(0.4, stroke.width * fontPt);
+      // jsPDF's `opacity` is fill alpha only; strokes need `stroke-opacity`.
+      const alpha = stroke.tool === 'highlighter' ? 0.4 : 1;
+      doc.setGState(new GState({ opacity: alpha, 'stroke-opacity': alpha }));
+      // Flat ends for the highlighter, as on screen — a round cap half an em
+      // wide would overhang the start of the line.
+      doc.setLineCap(stroke.tool === 'highlighter' ? 'butt' : 'round');
+      if (pts.length === 2) {
+        doc.setFillColor(r, g, b);
+        doc.circle(px(pts[0]), py(pts[1]), width / 2, 'F');
+        continue;
+      }
+      doc.setDrawColor(r, g, b);
+      doc.setLineWidth(width);
+      doc.moveTo(px(pts[0]), py(pts[1]));
+      for (let i = 2; i < pts.length; i += 2) doc.lineTo(px(pts[i]), py(pts[i + 1]));
+      doc.stroke();
+    }
+    doc.restoreGraphicsState();
+  }
+
+  // 'auto' ink follows the theme's text color on screen; on paper that's the
+  // same near-black the lyrics are printed in.
+  private inkRgb(color: string): [number, number, number] {
+    const m = /^#([0-9a-f]{6})$/i.exec(color);
+    if (!m) return [17, 24, 39];
+    const n = parseInt(m[1], 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
   // Builds a single jsPDF document containing every song passed in (one per page
   // group), and returns it WITHOUT saving so callers can either .save() it
   // (combined export) or .output('blob') it into a zip (per-song export).
@@ -342,8 +450,9 @@ export class ExportService {
     instrument: ChordInstrument = 'guitar',
     setOptions: SetPdfOptions | null = null,
   ): Promise<JsPdf> {
-    const { jsPDF } = await import('jspdf');
+    const { jsPDF, GState } = await import('jspdf');
     const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+    const includeInk = !!setOptions?.includeInk;
     // A cover/TOC page only makes sense for a genuine multi-song set.
     const includeCover = !!setOptions?.coverPage && songs.length > 1;
 
@@ -476,7 +585,8 @@ export class ExportService {
         if (y + needed > pageH - margin) newColumn();
       };
 
-      for (const section of song.sections) {
+      for (let secIdx = 0; secIdx < song.sections.length; secIdx++) {
+        const section = song.sections[secIdx];
         // Estimate height so we don't orphan a section header at the column bottom.
         // Account for lyric/annotation wrapping at the current font size.
         let needed = SEC_GAP;
@@ -498,13 +608,22 @@ export class ExportService {
         doc.setFontSize(SEC_LABEL_PT);
         setMutedColor();
         doc.text(section.name, colX(col), y);
+        // Modulation marker, right-aligned on the label line — where SongSelect
+        // puts its own "Key - X", and what the parser picks back up on re-import.
+        const keyChange = this.keyChangeText(song, secIdx, accidentals);
+        if (keyChange) {
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(8 * scale);
+          setChordColor();
+          doc.text(keyChange, colX(col) + colWidth, y, { align: 'right' });
+        }
         y += SEC_GAP;
 
         for (const line of section.lines) {
           const hasChords = line.chords.length > 0;
           const hasLyric  = !line.isChordsOnly && line.lyric.trim().length > 0;
           const ann = line.annotation
-            ? this.chordSvc.displayAnnotation(line.annotation, song, accidentals)
+            ? this.chordSvc.displayAnnotation(line.annotation, song, accidentals, section)
             : '';
 
           if (hasChords) {
@@ -526,10 +645,11 @@ export class ExportService {
             doc.setFont(MONO, 'bold');
             doc.setFontSize(FONT_PT);
             setChordColor();
+            const chordBaseline = y;
 
             let cursor = 0;
             for (const { ct } of sorted) {
-              const chord  = this.getDisplayChord(ct.chord, song, accidentals);
+              const chord  = this.getDisplayChord(ct.chord, song, accidentals, section);
               const pos    = Math.max(cursor, ct.charPos ?? 0);
               const chordX = colX(col) + pos * CHAR_W;
               // Clamp: skip chords that would start past the right column edge
@@ -548,12 +668,18 @@ export class ExportService {
               y += ANNOT_H * annLines.length;
             }
 
+            const lyricBaseline = y;
             if (lyricLines.length) {
               doc.setFont(MONO, 'normal');
               doc.setFontSize(FONT_PT);
               setTextColor();
               doc.text(lyricLines, colX(col), y);
               y += LYRIC_H * lyricLines.length;
+            }
+            if (includeInk && line.ink?.length) {
+              this.drawInk(doc, GState, line.ink, FONT_PT, CHAR_W, line.isChordsOnly
+                ? { x: colX(col), baseline: chordBaseline, chordBaseline: null, annotationRows: 0 }
+                : { x: colX(col), baseline: lyricBaseline, chordBaseline, annotationRows: annLines.length });
             }
           } else {
             if (ann) {
@@ -566,14 +692,25 @@ export class ExportService {
               y += ANNOT_H * annLines.length;
             }
 
+            let lyricBaseline = y;
             if (hasLyric) {
               doc.setFont(MONO, 'normal');
               doc.setFontSize(FONT_PT);
               setTextColor();
               const lyricLines = doc.splitTextToSize(line.lyric, colWidth) as string[];
               ensureSpace(LYRIC_H * lyricLines.length);
+              lyricBaseline = y; // after ensureSpace, which may have moved to a new column
               doc.text(lyricLines, colX(col), y);
               y += LYRIC_H * lyricLines.length;
+            }
+            if (includeInk && line.ink?.length) {
+              // A chordless lyric: no chord row above to compress against.
+              this.drawInk(doc, GState, line.ink, FONT_PT, CHAR_W, {
+                x: colX(col),
+                baseline: lyricBaseline,
+                chordBaseline: lyricBaseline - INK_CHORD_TO_LYRIC_EM * FONT_PT,
+                annotationRows: 0,
+              });
             }
 
             if (!ann && !hasLyric) y += LYRIC_H * 0.4;
@@ -702,11 +839,54 @@ export class ExportService {
         const n = Math.round(Number(song['capo']));
         song['capo'] = Number.isFinite(n) && n > 0 ? Math.min(11, n) : undefined;
       }
+      this.sanitizeImportedSections(song['sections'] as unknown[]);
     }
     return {
       name: (parsed['sessionName'] as string) || file.name.replace(/\.wt$/i, ''),
       songs: rawSongs as ParsedSong[],
     };
+  }
+
+  // Same spirit as the capo clamp above, for the two per-section/per-line
+  // fields a hand-edited .wt could break: a modulation key the chord engine
+  // can't read is dropped (the section falls back to the song key), and an
+  // ink stroke with a non-hex color, a silly width or a malformed point list
+  // is dropped rather than reaching the SVG renderer or the PDF exporter.
+  private sanitizeImportedSections(sections: unknown[]): void {
+    for (const raw of sections) {
+      const section = raw as Record<string, unknown> | null;
+      if (!section || typeof section !== 'object') continue;
+      if ('key' in section && !(typeof section['key'] === 'string' && /^[A-G][b#]?$/.test(section['key']))) {
+        delete section['key'];
+      }
+      if (!Array.isArray(section['lines'])) continue;
+      for (const rawLine of section['lines'] as unknown[]) {
+        const line = rawLine as Record<string, unknown> | null;
+        if (!line || typeof line !== 'object' || !('ink' in line)) continue;
+        const strokes = Array.isArray(line['ink'])
+          ? (line['ink'] as unknown[]).filter((st) => this.isValidInkStroke(st))
+          : [];
+        if (strokes.length) line['ink'] = strokes;
+        else delete line['ink'];
+      }
+    }
+  }
+
+  private isValidInkStroke(raw: unknown): boolean {
+    const st = raw as Record<string, unknown> | null;
+    if (!st || typeof st !== 'object') return false;
+    if (st['tool'] !== 'pen' && st['tool'] !== 'highlighter') return false;
+    if (typeof st['color'] !== 'string' || !/^(auto|#[0-9a-fA-F]{6})$/.test(st['color'])) return false;
+    const w = st['width'];
+    if (typeof w !== 'number' || !(w > 0 && w <= 4)) return false;
+    const pts = st['points'];
+    return (
+      Array.isArray(pts) &&
+      pts.length >= 2 &&
+      pts.length % 2 === 0 &&
+      pts.length <= 20000 &&
+      pts.every((v) => typeof v === 'number' && Number.isFinite(v))
+    );
   }
 
   downloadMarkdown(songs: ParsedSong[], accidentals: Accidentals = 'auto'): void {

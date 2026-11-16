@@ -2,6 +2,18 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.3.0] - 2026-11-16
+
+### Added
+- **Key changes (modulation)** — each section can now be in its own key (`SongSection.key`). A SongSelect chart that prints a `Key - Ab` line part-way through (typically a last chorus up a step) now imports with every following section in the new key, instead of the marker being silently discarded. A 🔑 → badge marks each section where the key changes and the toolbar shows the whole journey (G → Ab). Transpose, capo shapes, sharp/flat spelling and Nashville numbers all follow each section's own key — so a modulated chorus numbers exactly like the original. A 🔑 picker in each section header adds or moves a key change ("modulate from here": it applies to that section and every following one up to the next change). PDF and Markdown exports print `Key - X` at each change, and re-importing a WorshipToolkit PDF keeps it.
+- **Pen & ink** — freehand annotations on the chart. A tablet pen (Apple Pencil, Surface Pen, S Pen…) always draws, while a finger keeps scrolling; mouse/finger drawing is opt-in from the new ✏️ Ink tools, which add pen colors, a highlighter, an eraser (a pen's eraser end also erases), hide and clear. Ink is stored per line in text-relative units, so it stays over the same words at any text size and moves/copies/deletes with its line; it works in Stage mode, prints, and every stroke is one undo step. Tapping a chord with a pen opens a roomier, pre-selected edit box for iPad Scribble / Windows handwriting. A new **Include pen ink in PDFs** export option draws ink into exported PDFs.
+
+### Fixed
+- **SongSelect compound superscript chords** (G²ˢᵘˢ, Am⁷⁽⁴⁾, C²⁽ⁿᵒ³⁾) were split into a bare chord plus a stray "2sus"/"7(4)" lyric line; they now import whole.
+- **Slash chords with a superscript** (G²/B, C⁷/E, D⁷/F#) lost their bass note, because SongSelect sets the "/B" as a separate text item; it's now re-attached.
+- **Continuation-page header** — the "Song Title - 2" running header on page 2+ of a SongSelect PDF was imported as a lyric line.
+- **"~" section breaks** in SongSelect charts were imported as a lyric line instead of starting a new section.
+
 ## [2.2.0] - 2026-08-28
 
 ### Added

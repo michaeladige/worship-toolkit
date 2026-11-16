@@ -187,6 +187,9 @@
           <button class="step-btn" (click)="transpose(-1)" title="Transpose down">&#9660;</button>
           <span class="key-display">{{ effectiveKey }}</span>
           <button class="step-btn" (click)="transpose(1)" title="Transpose up">&#9650;</button>
+          @if (modulationSummary(song); as modulation) {
+            <span class="modulation-note" [title]="ui.t('Key change')">→ {{ modulation }}</span>
+          }
         </div>
 
         <div class="key-jump">
@@ -351,6 +354,17 @@
           {{ ui.viewOnly() ? '🔒' : '🔓' }} {{ ui.t('View Only') }}
         </button>
 
+        <!-- Ink: pen / highlighter annotations (a stylus always draws; this opens the tools) -->
+        <button
+          class="toggle-btn ink-toggle-btn"
+          [class.active]="ink.barOpen()"
+          (click)="toggleInkBar()"
+          [attr.aria-pressed]="ink.barOpen()"
+          [title]="ui.t('Ink — draw on the chart with a pen (or finger)')"
+        >
+          ✏️ {{ ui.t('Ink') }}
+        </button>
+
         <!-- Select mode (bulk copy/duplicate/delete of lines & sections) -->
         <button
           class="toggle-btn select-btn"
@@ -369,6 +383,15 @@
         </button>
       </div>
     </div>
+  }
+
+  @if (ink.barOpen() && !ui.stageMode()) {
+    <app-ink-bar
+      [hasInk]="songHasInk"
+      [canUndo]="canUndo"
+      (undo)="undo.emit()"
+      (clearInk)="clearInk()"
+    />
   }
 
   <!-- Bulk-action bar — only while selecting -->
@@ -615,6 +638,16 @@
 
       <button
         class="stage-bar-btn"
+        [class.active]="ink.barOpen()"
+        (click)="toggleInkBar()"
+        [attr.aria-pressed]="ink.barOpen()"
+        [title]="ui.t('Ink — draw on the chart with a pen (or finger)')"
+      >
+        ✏️
+      </button>
+
+      <button
+        class="stage-bar-btn"
         [class.active]="ui.viewOnly()"
         (click)="ui.toggleViewOnly()"
         [attr.aria-pressed]="ui.viewOnly()"
@@ -631,6 +664,16 @@
         ✕
       </button>
     </div>
+  }
+
+  @if (ink.barOpen() && ui.stageMode()) {
+    <app-ink-bar
+      [floating]="true"
+      [hasInk]="songHasInk"
+      [canUndo]="canUndo"
+      (undo)="undo.emit()"
+      (clearInk)="clearInk()"
+    />
   }
 
   <!-- Print-only: every song in the set, one per page. Only rendered into

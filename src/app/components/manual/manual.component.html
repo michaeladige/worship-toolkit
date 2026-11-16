@@ -177,6 +177,14 @@ Sephiroth!</pre>
     <ul>
       <li><strong>🔒 {{ ui.t('View Only') }}</strong> &mdash; {{ ui.t('click the View Only button in the toolbar (or the floating bar in Stage mode) to lock the chart against accidental edits — handy when handing the tablet to a band member. Chord editing, adding/removing chords/lines/sections, lyric editing, annotations, and renaming the title, BPM, or time signature are all disabled. Transpose, Jump to Key, Bass Notes, Nashville, and Accidentals stay fully usable. The setting resets when you reload the page.') }}</li>
     </ul>
+    <h3>{{ ui.t('Pen & ink') }}</h3>
+    <ul>
+      <li>{{ ui.t('Write on the chart with a tablet pen (Apple Pencil, Surface Pen, S Pen…) — a pen always draws, while your finger keeps scrolling and tapping as usual. Ink is saved with the song, follows its line when you move, copy or delete it, and works in Stage mode too.') }}</li>
+      <li>{{ ui.t("Click ✏️ Ink in the toolbar (or ✏️ on the Stage bar) for the tools: pen colors, highlighter, eraser (a pen's eraser end works too), Finger draws (to draw with a finger or mouse), Hide ink, and Clear. Every stroke is one Undo step.") }}</li>
+      <li>{{ ui.t("To change a chord by hand, tap it with the pen: a larger edit box opens with the chord selected, ready for iPad Scribble or Windows handwriting to replace it. Ink is drawing, not chords — it doesn't transpose.") }}</li>
+      <li>{{ ui.t('Tick ✏️ Include pen ink in PDFs in the export panel to print your ink into exported PDFs.') }}</li>
+    </ul>
+
     <h3>{{ ui.t('Keyboard shortcuts') }}</h3>
     <ul>
       <li><kbd>+</kbd> / <kbd>−</kbd> {{ ui.t('transpose the current song up or down;') }} <kbd>Ctrl</kbd> + <kbd>↓</kbd> / <kbd>↑</kbd> {{ ui.t('switch to the next or previous song;') }} <kbd>1</kbd>–<kbd>9</kbd> {{ ui.t('jump directly to that song in the set;') }} <kbd>?</kbd> {{ ui.t('shows the full shortcut list.') }}</li>
@@ -230,6 +238,13 @@ Sephiroth!</pre>
       <li><strong>🗜️ {{ ui.t('Capo') }}</strong> &mdash; {{ ui.t('click the capo chip in the toolbar and pick a fret (1–11). A capo never changes what key the song sounds in — only which shapes your fretting hand plays — so the chip shows both: "sounds in D · play in C" for a song in D with capo 2.') }}</li>
       <li>{{ ui.t("Capo composes with everything else: transpose the song first and the capo shape recalculates from the new sounding key. Nashville Number mode deliberately ignores capo — the numbers are scale degrees of the sounding key, not the shape you're fretting.") }}</li>
       <li>{{ ui.t('Set capo to') }} <strong>{{ ui.t('None') }}</strong> {{ ui.t("to turn it off. It's saved with the song, so it survives a reload and travels with exports (PDF header, Markdown, and .wt files).") }}</li>
+    </ul>
+
+    <h3>{{ ui.t('Key changes (modulation)') }}</h3>
+    <ul>
+      <li>{{ ui.t('Songs that change key part-way through — a final chorus up a step, say — keep each section in its own key. SongSelect charts that print a "Key -" line mid-song are imported that way automatically, and a 🔑 → badge marks every section where the key changes.') }}</li>
+      <li>{{ ui.t('To add or move a key change yourself, use the 🔑 key picker in a section header: the new key applies to that section and every section after it, up to the next key change. Pick the song key again to remove it.') }}</li>
+      <li>{{ ui.t("Transpose, capo, and Nashville numbers all follow each section's own key, so a modulated chorus numbers the same as the original one. PDF and Markdown exports print “Key -” at every change.") }}</li>
     </ul>
   </section>
 
@@ -374,6 +389,15 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>2.3.0</h3></summary>
+      <ul>
+        <li><strong>Key changes (modulation)</strong> &mdash; each section can now be in its own key. SongSelect charts that print a "Key -" line part-way through (e.g. a last chorus up a half step) import with every following section in the new key, marked with a 🔑 → badge; the toolbar shows the whole journey (G → Ab). Transpose, capo, accidental spelling and Nashville numbers all follow each section's key, a 🔑 picker in each section header adds or moves a key change, and PDF/Markdown exports print "Key -" at every change (re-importing our own PDFs keeps it).</li>
+        <li><strong>Pen &amp; ink</strong> &mdash; write on the chart with a tablet pen. A pen always draws while a finger keeps scrolling; ink is saved with the song, travels with its line, works in Stage mode, and prints. The new ✏️ Ink tools add pen colors, a highlighter, an eraser (or use the pen's eraser end), finger/mouse drawing, hide and clear. Tapping a chord with the pen opens a roomier editor for iPad Scribble / Windows handwriting. Optionally include ink in exported PDFs.</li>
+        <li><strong>SongSelect import fixes</strong> &mdash; compound superscript chords (G²ˢᵘˢ, Am⁷⁽⁴⁾, C²⁽ⁿᵒ³⁾) no longer split into a bare chord plus a stray "2sus" lyric line, slash chords with a superscript (G²/B, C⁷/E) keep their bass note, the "Song Title - 2" header on continuation pages no longer appears as a lyric, and a "~" section break starts a new section.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>2.2.0</h3></summary>
       <ul>
         <li><strong>Drag-and-drop line reordering</strong> &mdash; every line now has its own ⠿ handle in the left gutter. Drag it to reorder the line within its section, or drop it into a different section entirely. Sections were already reorderable this way; lines now match. Moving the last line out of a section leaves a blank line behind.</li>

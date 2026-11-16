@@ -31,7 +31,7 @@ const FLAT_KEYS = new Set([
 // sometimes render "CMaj7"/"CDim") — deliberately NOT a blanket `i` flag,
 // since that would blur the single-letter m/M minor-vs-major distinction.
 const CHORD_RE =
-  /^([A-G][b#]?)(maj|Maj|MAJ|min|Min|MIN|dim|Dim|DIM|aug|Aug|AUG|m|M)?(\d+)?((?:[#b]\d+)|(?:\d+\/\d+))?(\([0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
+  /^([A-G][b#]?)(maj|Maj|MAJ|min|Min|MIN|dim|Dim|DIM|aug|Aug|AUG|m|M)?(\d+)?((?:[#b]\d+)|(?:\d+\/\d+))?(\((?:no)?[0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
 
 @Injectable({ providedIn: 'root' })
 export class ChordService {
@@ -139,9 +139,23 @@ export class ChordService {
     return parsed.bass ?? parsed.root;
   }
 
-  /** The key a song's chords currently sound in — originalKey shifted by transposeSemitones. */
-  effectiveKey(song: ParsedSong, accidentals: Accidentals = 'auto'): string {
-    return this.transposeKey(song.originalKey, song.transposeSemitones, accidentals);
+  // The base (untransposed) key a section is written in: its own modulation
+  // key if it has one, else the song's. Every key-dependent display path —
+  // transpose spelling, capo shapes, Nashville degrees — takes an optional
+  // section and resolves through here, so a mid-song modulation (e.g. a final
+  // chorus up a half step) numbers and spells its chords against the key
+  // that section is actually in rather than the key the song started in.
+  baseKey(song: ParsedSong, section?: SongSection | null): string {
+    return section?.key || song.originalKey;
+  }
+
+  /** The key a song's (or one section's) chords currently sound in — the base key shifted by transposeSemitones. */
+  effectiveKey(
+    song: ParsedSong,
+    accidentals: Accidentals = 'auto',
+    section?: SongSection | null,
+  ): string {
+    return this.transposeKey(this.baseKey(song, section), song.transposeSemitones, accidentals);
   }
 
   // The key a capo'd guitarist actually plays shapes in: the sounding key
@@ -149,23 +163,53 @@ export class ChordService {
   // played using C shapes). A capo never changes what key the song sounds
   // in — only which shapes produce it — so this is display-only, same as
   // transposeSemitones is for the sounding key.
-  shapeKey(song: ParsedSong, accidentals: Accidentals = 'auto'): string {
+  shapeKey(song: ParsedSong, accidentals: Accidentals = 'auto', section?: SongSection | null): string {
     const capo = song.capo ?? 0;
-    const key = this.effectiveKey(song, accidentals);
+    const key = this.effectiveKey(song, accidentals, section);
     return capo ? this.transposeKey(key, -capo, accidentals) : key;
+  }
+
+  /** True when any section is written in a key other than the song's base key. */
+  hasModulation(song: ParsedSong): boolean {
+    return song.sections.some((s) => !!s.key && s.key !== song.originalKey);
+  }
+
+  // The sounding key that section `si` modulates INTO, or null when it's in
+  // the same key as whatever came before it (the previous section, or the
+  // song's own key for the first section). This is what decides where a
+  // "Key → Ab" marker appears on screen and in exports — derived from the
+  // per-section keys rather than stored, so it can never disagree with them.
+  keyChangeAt(song: ParsedSong, si: number, accidentals: Accidentals = 'auto'): string | null {
+    const section = song.sections[si];
+    if (!section) return null;
+    const prevBase = si > 0 ? this.baseKey(song, song.sections[si - 1]) : song.originalKey;
+    const base = this.baseKey(song, section);
+    if (this.noteToIndex(base) === this.noteToIndex(prevBase)) return null;
+    return this.effectiveKey(song, accidentals, section);
   }
 
   // Single source of truth for how a chord renders on screen and in exports,
   // composing transpose, capo, bass-notes-only, and Nashville in that order.
   // Nashville deliberately skips the capo step: scale-degree numbers are
   // relative to the sounding key, not the fretted shape, so a capo changes
-  // which shape you play but never which number you'd call it.
-  displayChord(chord: string, song: ParsedSong, accidentals: Accidentals = 'auto'): string {
-    const key = this.effectiveKey(song, accidentals);
+  // which shape you play but never which number you'd call it. `section`
+  // supplies a modulated section's own key (see baseKey()).
+  displayChord(
+    chord: string,
+    song: ParsedSong,
+    accidentals: Accidentals = 'auto',
+    section?: SongSection | null,
+  ): string {
+    const key = this.effectiveKey(song, accidentals, section);
     let display = this.transposeChord(chord, song.transposeSemitones, key, accidentals);
     const capo = song.capo ?? 0;
     if (capo && !song.showNashville) {
-      display = this.transposeChord(display, -capo, this.shapeKey(song, accidentals), accidentals);
+      display = this.transposeChord(
+        display,
+        -capo,
+        this.shapeKey(song, accidentals, section),
+        accidentals,
+      );
     }
     if (song.showBassNotesOnly) display = this.getBassNote(display);
     if (song.showNashville) display = this.toNashville(display, key);
@@ -178,19 +222,39 @@ export class ChordService {
     annotation: string,
     song: ParsedSong,
     accidentals: Accidentals = 'auto',
+    section?: SongSection | null,
   ): string {
-    const key = this.effectiveKey(song, accidentals);
+    const key = this.effectiveKey(song, accidentals, section);
     let display = this.transposeAnnotation(annotation, song.transposeSemitones, key, accidentals);
     const capo = song.capo ?? 0;
     if (capo && !song.showNashville) {
       display = this.transposeAnnotation(
         display,
         -capo,
-        this.shapeKey(song, accidentals),
+        this.shapeKey(song, accidentals, section),
         accidentals,
       );
     }
     return display;
+  }
+
+  // Inverse of displayChord() for a value the user typed into the chord edit
+  // box (only reached when the display is lossless — not under bass-notes or
+  // Nashville, which edit the raw text instead). Undoes the steps in reverse:
+  // capo shifted the sounding chord DOWN to a shape, so shift back UP first,
+  // then undo the transpose back to the stored, untransposed form.
+  storableChord(
+    typed: string,
+    song: ParsedSong,
+    accidentals: Accidentals = 'auto',
+    section?: SongSection | null,
+  ): string {
+    const capo = song.capo ?? 0;
+    let value = typed;
+    if (capo) {
+      value = this.transposeChord(value, capo, this.effectiveKey(song, accidentals, section), accidentals);
+    }
+    return this.transposeChord(value, -song.transposeSemitones, this.baseKey(song, section), accidentals);
   }
 
   // Every distinct chord shown for a song, in the exact form currently
@@ -208,12 +272,12 @@ export class ChordService {
     };
     for (const section of song.sections) {
       for (const line of section.lines) {
-        for (const ct of line.chords) add(this.displayChord(ct.chord, song, accidentals));
+        for (const ct of line.chords) add(this.displayChord(ct.chord, song, accidentals, section));
         if (line.annotation) {
           // displayAnnotation() has already transposed/capo-shifted whichever
           // tokens are chords, so a fresh isChord() check on its output finds
           // the (now-displayed) chord tokens without re-transposing them.
-          const displayed = this.displayAnnotation(line.annotation, song, accidentals);
+          const displayed = this.displayAnnotation(line.annotation, song, accidentals, section);
           for (const token of displayed.split(/\s+/)) {
             const stripped = token.replace(/^[|:]+/, '');
             if (this.isChord(stripped)) add(stripped);
@@ -318,7 +382,11 @@ export class ChordService {
     // contributes to the line-start tally below.
     const seenSectionNames = new Set<string>();
 
-    for (const section of sections) {
+    // Sections already marked as modulated are in a known, different key —
+    // letting a final chorus up a half step vote here would only blur the
+    // base-key evidence. Fall back to everything if that leaves nothing.
+    const unmodulated = sections.filter((s) => !s.key);
+    for (const section of unmodulated.length ? unmodulated : sections) {
       const nameKey = section.name.trim().toUpperCase();
       const countLineStarts = !seenSectionNames.has(nameKey);
       seenSectionNames.add(nameKey);

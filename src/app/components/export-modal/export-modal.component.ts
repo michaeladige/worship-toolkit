@@ -43,6 +43,7 @@ export class ExportModalComponent {
         this.ui.chordAccidentals,
         this.ui.chordFont,
         this.ui.chordInstrument,
+        { includeInk: this.ui.pdfIncludeInk },
       );
       this.ui.showToast('PDF exported');
     } catch (err) {
@@ -60,7 +61,11 @@ export class ExportModalComponent {
         this.ui.chordAccidentals,
         this.ui.chordFont,
         this.ui.chordInstrument,
-        { coverPage: this.ui.setPdfCoverPage, setName: this.sessionsSvc.activeSessionName ?? undefined },
+        {
+          coverPage: this.ui.setPdfCoverPage,
+          setName: this.sessionsSvc.activeSessionName ?? undefined,
+          includeInk: this.ui.pdfIncludeInk,
+        },
       );
       this.ui.showToast('PDF exported');
     } catch (err) {
@@ -79,6 +84,7 @@ export class ExportModalComponent {
         this.ui.chordFont,
         this.sessionsSvc.activeSessionName ?? 'worship-set',
         this.ui.chordInstrument,
+        this.ui.pdfIncludeInk,
       );
       this.ui.showToast('PDFs exported');
     } catch (err) {
