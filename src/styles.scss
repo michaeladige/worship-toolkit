@@ -361,6 +361,12 @@ select {
 // SongEditorComponent (one per song, hidden on screen) since the toolbar
 // carrying title/key/capo/BPM is hidden here.
 @media print {
+  // Pen ink follows the same "Include pen ink in PDFs & prints" setting as
+  // PDF export (mirrored onto <html> by UiSettingsService.applyPrintInk).
+  html[data-print-ink='off'] svg.ink-layer {
+    display: none !important;
+  }
+
   // Override every theme/color-accent variable at the root, rather than
   // fighting each [data-theme]/[data-color] selector individually — those
   // still win specificity battles otherwise, and dark mode + a pattern theme

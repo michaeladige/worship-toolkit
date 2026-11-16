@@ -926,11 +926,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Buat ganti chord pakai tulisan tangan, tap chord-nya pakai pen: kotak edit yang lebih gede kebuka dengan chord-nya udah ke-select, siap diganti pakai iPad Scribble atau tulisan tangan Windows. Coretan itu gambar, bukan chord — nggak ikut di-transpose.',
     jv: 'Kanggo ngganti chord nganggo tulisan tangan, tutul chord-e nganggo pen: kothak edit sing luwih gedhe kebukak karo chord-e wis kapilih, siyap diganti nganggo iPad Scribble utawa tulisan tangan Windows. Coretan iku gambar, dudu chord — ora melu di-transpose.',
   },
-  'Tick ✏️ Include pen ink in PDFs in the export panel to print your ink into exported PDFs.': {
-    la: 'Nota ✏️ Adde atramentum stili in PDF in tabula exportandi ut atramentum tuum in PDF exportata imprimatur.',
-    'zh-TW': '在匯出面板勾選 ✏️「在 PDF 中包含手寫筆跡」，即可把手寫印進匯出的 PDF。',
-    id: 'Centang ✏️ Ikutin coretan pen di PDF di panel ekspor buat nyetak coretanmu ke PDF yang diekspor.',
-    jv: 'Centhang ✏️ Klebokna coretan pen ing PDF ing panel ekspor kanggo nyetak coretanmu menyang PDF sing diekspor.',
+  'Exported PDFs and prints leave your ink out by default — tick ✏️ Include pen ink in PDFs & prints in the export panel to include it.': {
+    la: 'PDF exportata et impressiones atramentum tuum per defectum omittunt — nota ✏️ Adde atramentum stili in PDF et impressiones in tabula exportandi ut includatur.',
+    'zh-TW': '匯出的 PDF 與列印預設不含手寫 — 在匯出面板勾選 ✏️「在 PDF 與列印中包含手寫筆跡」即可包含。',
+    id: 'PDF yang diekspor dan cetakan defaultnya nggak ikut coretanmu — centang ✏️ Ikutin coretan pen di PDF & cetakan di panel ekspor buat nyertain.',
+    jv: 'PDF sing diekspor lan cetakan gawane ora nglebokake coretanmu — centhang ✏️ Klebokna coretan pen ing PDF & cetakan ing panel ekspor kanggo nglebokake.',
   },
   // ── Modulation ──
   'Key change': {
@@ -989,11 +989,11 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Coretan udah dihapus',
     jv: 'Coretan wis dibusak',
   },
-  'Include pen ink in PDFs': {
-    la: 'Adde atramentum stili in PDF',
-    'zh-TW': '在 PDF 中包含手寫筆跡',
-    id: 'Ikutin coretan pen di PDF',
-    jv: 'Klebokna coretan pen ing PDF',
+  'Include pen ink in PDFs & prints': {
+    la: 'Adde atramentum stili in PDF et impressiones',
+    'zh-TW': '在 PDF 與列印中包含手寫筆跡',
+    id: 'Ikutin coretan pen di PDF & cetakan',
+    jv: 'Klebokna coretan pen ing PDF & cetakan',
   },
   'Separate PDFs': {
     la: 'PDF Separati',
@@ -3321,8 +3321,9 @@ export class UiSettingsService {
 
   setPdfCoverPage = false;
 
-  // Draw pen/highlighter ink into exported PDFs. Off by default so a set PDF
-  // handed to the band stays clean unless you ask for your markup.
+  // Include pen/highlighter ink in exported PDFs AND browser prints (one
+  // setting, so the two never disagree). Off by default so a set handed to
+  // the band stays clean unless you ask for your markup.
   pdfIncludeInk = false;
 
   metronomeCountIn = false;
@@ -3577,6 +3578,14 @@ export class UiSettingsService {
   setPdfIncludeInk(val: boolean) {
     this.pdfIncludeInk = val;
     this.savePrefs();
+    this.applyPrintInk();
+  }
+
+  // Print is plain CSS (it covers Ctrl+P too, not just the export panel's
+  // Print buttons), so the preference is mirrored onto <html> for the
+  // @media print rule in styles.scss to read.
+  private applyPrintInk() {
+    document.documentElement.setAttribute('data-print-ink', this.pdfIncludeInk ? 'on' : 'off');
   }
 
   setMetronomeCountIn(val: boolean) {
@@ -3661,6 +3670,7 @@ export class UiSettingsService {
     this.applyFontSize();
     this.applyColorTheme();
     this.applyChordFont();
+    this.applyPrintInk();
   }
 
   private savePrefs() {

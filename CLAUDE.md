@@ -135,6 +135,9 @@ every component and service reads or transforms this shape; when adding a featur
   mode. Rendering is an `<svg appInkLayer>` per inked line inside the unclipped `.line-group`
   (`.line-body` scrolls/masks and would clip strokes); `InkLayerDirective` positions and
   font-matches it so its `0 0 1 1` viewBox is exactly 1ch × 1em of the lyric row.
+  One preference (`UiSettingsService.pdfIncludeInk`, off by default) decides whether ink goes
+  into exported PDFs *and* browser prints; for print it's mirrored onto `<html data-print-ink>`
+  and hidden by an `@media print` rule in `styles.scss`, so Ctrl+P honours it too.
 - **`UltimateGuitarService`** — imports a chart from an ultimate-guitar.com URL into the
   same `ParsedSong[]` shape `PdfParserService` returns, so it flows through the existing
   upload/append pipeline (UI: `import-url-modal`). Being static, the app can't fetch UG
