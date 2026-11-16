@@ -877,6 +877,124 @@ const TRANSLATIONS: Record<string, Partial<Record<Language, string>>> = {
     id: 'Sertakan halaman sampul & daftar isi',
     jv: 'Klebokna kaca sampul & daftar isi',
   },
+  // ── Manual: modulation & ink ──
+  'Key changes (modulation)': {
+    la: 'Mutationes clavis (modulatio)',
+    'zh-TW': '轉調',
+    id: 'Ganti kunci (modulasi)',
+    jv: 'Ganti kunci (modulasi)',
+  },
+  'Songs that change key part-way through — a final chorus up a step, say — keep each section in its own key. SongSelect charts that print a "Key -" line mid-song are imported that way automatically, and a 🔑 → badge marks every section where the key changes.': {
+    la: 'Cantica quae mediā viā clavem mutant — exempli gratiā ultimus chorus gradu altior — quamque sectionem in sua clave servant. Tabulae SongSelect quae lineam "Key -" in medio cantico imprimunt sic sponte importantur, et signum 🔑 → omnem sectionem notat ubi clavis mutatur.',
+    'zh-TW': '中途轉調的歌曲（例如最後一次副歌升一個全音）會讓每個段落保有自己的調。SongSelect 譜中途印有「Key -」的，匯入時會自動這樣處理，並在每個轉調的段落標上 🔑 → 標記。',
+    id: 'Lagu yang ganti kunci di tengah jalan — misalnya reff terakhir naik satu nada — tiap bagiannya nyimpen kuncinya sendiri. Chart SongSelect yang nyetak baris "Key -" di tengah lagu otomatis ke-import kayak gitu, dan ada badge 🔑 → di tiap bagian yang ganti kunci.',
+    jv: 'Lagu sing ganti kunci ing tengah dalan — umpamane reff pungkasan munggah sak nada — saben bageane nyimpen kuncine dhewe. Chart SongSelect sing nyetak baris "Key -" ing tengah lagu otomatis diimpor kaya ngono, lan ana badge 🔑 → ing saben bagean sing ganti kunci.',
+  },
+  'To add or move a key change yourself, use the 🔑 key picker in a section header: the new key applies to that section and every section after it, up to the next key change. Pick the song key again to remove it.': {
+    la: 'Ut mutationem clavis ipse addas aut moveas, electore 🔑 in capite sectionis utere: nova clavis ad eam sectionem et omnes sequentes pertinet, usque ad proximam mutationem. Clavem cantici iterum elige ut eam removeas.',
+    'zh-TW': '要自己新增或移動轉調，請使用段落標題中的 🔑 調性選單：新調會套用到該段落以及之後的每個段落，直到下一次轉調為止。再次選擇歌曲原調即可移除。',
+    id: 'Buat nambah atau mindahin pergantian kunci sendiri, pakai pemilih kunci 🔑 di judul bagian: kunci barunya berlaku buat bagian itu dan semua bagian sesudahnya, sampai pergantian kunci berikutnya. Pilih lagi kunci lagunya buat ngapus.',
+    jv: 'Kanggo nambah utawa mindhah pergantian kunci dhewe, gunakake pamilih kunci 🔑 ing judhul bagean: kunci anyar ditrapake kanggo bagean kuwi lan kabeh bagean sawise, nganti pergantian kunci sabanjure. Pilih maneh kunci lagune kanggo mbusak.',
+  },
+  "Transpose, capo, and Nashville numbers all follow each section's own key, so a modulated chorus numbers the same as the original one. PDF and Markdown exports print “Key -” at every change.": {
+    la: 'Transpositio, capo et numeri Nashville clavem cuiusque sectionis sequuntur, ita ut chorus modulatus eosdem numeros habeat ac primus. Exporta PDF et Markdown "Key -" ad omnem mutationem imprimunt.',
+    'zh-TW': '移調、移調夾和 Nashville 級數都會依照每個段落自己的調，因此轉調後的副歌級數會和原本的一樣。PDF 與 Markdown 匯出會在每次轉調處印出「Key -」。',
+    id: 'Transpose, capo, dan angka Nashville semuanya ngikutin kunci tiap bagian, jadi reff yang udah dimodulasi angkanya sama kayak reff aslinya. Ekspor PDF dan Markdown nyetak "Key -" di tiap pergantian.',
+    jv: 'Transpose, capo, lan angka Nashville kabeh ngetutake kunci saben bagean, dadi reff sing wis dimodulasi angkane padha karo reff asline. Ekspor PDF lan Markdown nyetak "Key -" ing saben pergantian.',
+  },
+  'Pen & ink': {
+    la: 'Stilus et atramentum',
+    'zh-TW': '觸控筆與手寫',
+    id: 'Pen & coretan',
+    jv: 'Pen & coretan',
+  },
+  'Write on the chart with a tablet pen (Apple Pencil, Surface Pen, S Pen…) — a pen always draws, while your finger keeps scrolling and tapping as usual. Ink is saved with the song, follows its line when you move, copy or delete it, and works in Stage mode too.': {
+    la: 'Stilo tabulae (Apple Pencil, Surface Pen, S Pen…) in tabula scribe — stilus semper scribit, digitus autem more solito volvit et tangit. Atramentum cum cantico servatur, lineam suam sequitur cum eam moves, exscribis aut deles, et in Modo Scaenae quoque operatur.',
+    'zh-TW': '用平板觸控筆（Apple Pencil、Surface Pen、S Pen…）直接在譜上書寫 — 觸控筆一律是書寫，手指則照常捲動與點按。手寫會隨歌曲儲存，移動、複製或刪除某一行時會跟著那一行走，在舞台模式中也能使用。',
+    id: 'Corat-coret di chart pakai pen tablet (Apple Pencil, Surface Pen, S Pen…) — pen selalu nulis, sementara jari tetap buat scroll dan tap kayak biasa. Coretan disimpan bareng lagunya, ikut barisnya kalau kamu pindahin, copy, atau hapus, dan bisa dipakai di Mode Panggung juga.',
+    jv: 'Nyoret ing chart nganggo pen tablet (Apple Pencil, Surface Pen, S Pen…) — pen mesthi nulis, dene driji tetep kanggo scroll lan tutul kaya biasane. Coretan disimpen bareng lagune, melu barise yen kok pindhah, salin, utawa busak, lan iso dienggo ing Mode Panggung uga.',
+  },
+  "Click ✏️ Ink in the toolbar (or ✏️ on the Stage bar) for the tools: pen colors, highlighter, eraser (a pen's eraser end works too), Finger draws (to draw with a finger or mouse), Hide ink, and Clear. Every stroke is one Undo step.": {
+    la: 'Preme ✏️ Atramentum in instrumentario (aut ✏️ in vecte Scaenae) ad instrumenta: colores stili, signatorem, deletorem (extremitas deletoria stili quoque operatur), Digitus scribit (ut digito aut mure scribas), Atramentum cela, et Dele. Quisque ductus unus gradus Revocandi est.',
+    'zh-TW': '點工具列的 ✏️ 手寫（或舞台列上的 ✏️）開啟工具：筆的顏色、螢光筆、橡皮擦（觸控筆的橡皮擦端也可以）、手指書寫（用手指或滑鼠畫）、隱藏手寫和清除。每一筆都是一個復原步驟。',
+    id: 'Klik ✏️ Coretan di toolbar (atau ✏️ di bar Panggung) buat buka alat-alatnya: warna pen, stabilo, penghapus (ujung penghapus pen juga bisa), Jari bisa nyoret (buat nyoret pakai jari atau mouse), Sembunyiin coretan, dan Hapus. Tiap goresan itu satu langkah Undo.',
+    jv: 'Klik ✏️ Coretan ing toolbar (utawa ✏️ ing bar Panggung) kanggo piranti: werna pen, stabilo, pambusak (pucuk pambusak pen uga iso), Driji iso nyoret (kanggo nyoret nganggo driji utawa mouse), Umpetke coretan, lan Busak. Saben goresan iku siji langkah Undo.',
+  },
+  "To change a chord by hand, tap it with the pen: a larger edit box opens with the chord selected, ready for iPad Scribble or Windows handwriting to replace it. Ink is drawing, not chords — it doesn't transpose.": {
+    la: 'Ut chordam manu mutes, eam stilo tange: maior capsa recensendi aperitur cum chorda selecta, parata ut iPad Scribble aut scriptura Windows eam substituat. Atramentum pictura est, non chordae — non transponitur.',
+    'zh-TW': '要用手寫修改和弦，用觸控筆點一下該和弦：會開啟較大的編輯框並選取和弦，可直接用 iPad 隨手寫（Scribble）或 Windows 手寫輸入取代。手寫是圖畫，不是和弦 — 不會跟著移調。',
+    id: 'Buat ganti chord pakai tulisan tangan, tap chord-nya pakai pen: kotak edit yang lebih gede kebuka dengan chord-nya udah ke-select, siap diganti pakai iPad Scribble atau tulisan tangan Windows. Coretan itu gambar, bukan chord — nggak ikut di-transpose.',
+    jv: 'Kanggo ngganti chord nganggo tulisan tangan, tutul chord-e nganggo pen: kothak edit sing luwih gedhe kebukak karo chord-e wis kapilih, siyap diganti nganggo iPad Scribble utawa tulisan tangan Windows. Coretan iku gambar, dudu chord — ora melu di-transpose.',
+  },
+  'Tick ✏️ Include pen ink in PDFs in the export panel to print your ink into exported PDFs.': {
+    la: 'Nota ✏️ Adde atramentum stili in PDF in tabula exportandi ut atramentum tuum in PDF exportata imprimatur.',
+    'zh-TW': '在匯出面板勾選 ✏️「在 PDF 中包含手寫筆跡」，即可把手寫印進匯出的 PDF。',
+    id: 'Centang ✏️ Ikutin coretan pen di PDF di panel ekspor buat nyetak coretanmu ke PDF yang diekspor.',
+    jv: 'Centhang ✏️ Klebokna coretan pen ing PDF ing panel ekspor kanggo nyetak coretanmu menyang PDF sing diekspor.',
+  },
+  // ── Modulation ──
+  'Key change': {
+    la: 'Mutatio clavis',
+    'zh-TW': '轉調',
+    id: 'Ganti kunci',
+    jv: 'Ganti kunci',
+  },
+  'Section key — pick a new key to modulate from here': {
+    la: 'Clavis sectionis — elige novam clavem ut hinc moduleris',
+    'zh-TW': '段落調性 — 選擇新調，從這裡開始轉調',
+    id: 'Kunci bagian — pilih kunci baru buat modulasi mulai dari sini',
+    jv: 'Kunci bagean — pilih kunci anyar kanggo modulasi wiwit saka kene',
+  },
+  // ── Ink (pen annotations) ──
+  Ink: { la: 'Atramentum', 'zh-TW': '手寫', id: 'Coretan', jv: 'Coretan' },
+  'Ink tool': { la: 'Instrumentum scribendi', 'zh-TW': '書寫工具', id: 'Alat coret', jv: 'Piranti coret' },
+  'Ink — draw on the chart with a pen (or finger)': {
+    la: 'Atramentum — in tabula stilo (aut digito) scribe',
+    'zh-TW': '手寫 — 用觸控筆（或手指）在譜上書寫',
+    id: 'Coretan — corat-coret di chart pakai pen (atau jari)',
+    jv: 'Coretan — nyoret ing chart nganggo pen (utawa driji)',
+  },
+  Pen: { la: 'Stilus', 'zh-TW': '筆', id: 'Pen', jv: 'Pen' },
+  Highlighter: { la: 'Signator', 'zh-TW': '螢光筆', id: 'Stabilo', jv: 'Stabilo' },
+  Eraser: { la: 'Deletor', 'zh-TW': '橡皮擦', id: 'Penghapus', jv: 'Pambusak' },
+  Black: { la: 'Niger', 'zh-TW': '黑', id: 'Hitam', jv: 'Ireng' },
+  Red: { la: 'Ruber', 'zh-TW': '紅', id: 'Merah', jv: 'Abang' },
+  Blue: { la: 'Caeruleus', 'zh-TW': '藍', id: 'Biru', jv: 'Biru' },
+  Green: { la: 'Viridis', 'zh-TW': '綠', id: 'Hijau', jv: 'Ijo' },
+  Yellow: { la: 'Flavus', 'zh-TW': '黃', id: 'Kuning', jv: 'Kuning' },
+  Pink: { la: 'Roseus', 'zh-TW': '粉紅', id: 'Pink', jv: 'Jambon' },
+  'Finger draws': {
+    la: 'Digitus scribit',
+    'zh-TW': '手指書寫',
+    id: 'Jari bisa nyoret',
+    jv: 'Driji iso nyoret',
+  },
+  'Draw with finger or mouse too (a pen always draws)': {
+    la: 'Digito aut mure quoque scribe (stilus semper scribit)',
+    'zh-TW': '也可用手指或滑鼠書寫（觸控筆一律可書寫）',
+    id: 'Bisa nyoret pakai jari atau mouse juga (pen mah selalu bisa)',
+    jv: 'Iso nyoret nganggo driji utawa mouse uga (pen mesthi iso)',
+  },
+  'Hide ink': { la: 'Atramentum cela', 'zh-TW': '隱藏手寫', id: 'Sembunyiin coretan', jv: 'Umpetke coretan' },
+  Clear: { la: 'Dele', 'zh-TW': '清除', id: 'Hapus', jv: 'Busak' },
+  'Clear ink on this song': {
+    la: 'Dele atramentum huius cantici',
+    'zh-TW': '清除這首歌的手寫',
+    id: 'Hapus semua coretan di lagu ini',
+    jv: 'Busak kabeh coretan ing lagu iki',
+  },
+  'Ink cleared': {
+    la: 'Atramentum deletum',
+    'zh-TW': '已清除手寫',
+    id: 'Coretan udah dihapus',
+    jv: 'Coretan wis dibusak',
+  },
+  'Include pen ink in PDFs': {
+    la: 'Adde atramentum stili in PDF',
+    'zh-TW': '在 PDF 中包含手寫筆跡',
+    id: 'Ikutin coretan pen di PDF',
+    jv: 'Klebokna coretan pen ing PDF',
+  },
   'Separate PDFs': {
     la: 'PDF Separati',
     'zh-TW': '個別 PDF',
@@ -3203,6 +3321,10 @@ export class UiSettingsService {
 
   setPdfCoverPage = false;
 
+  // Draw pen/highlighter ink into exported PDFs. Off by default so a set PDF
+  // handed to the band stays clean unless you ask for your markup.
+  pdfIncludeInk = false;
+
   metronomeCountIn = false;
 
   // One-time UI hints already dismissed by the user (persisted in prefs).
@@ -3452,6 +3574,11 @@ export class UiSettingsService {
     this.savePrefs();
   }
 
+  setPdfIncludeInk(val: boolean) {
+    this.pdfIncludeInk = val;
+    this.savePrefs();
+  }
+
   setMetronomeCountIn(val: boolean) {
     this.metronomeCountIn = val;
     this.savePrefs();
@@ -3502,6 +3629,7 @@ export class UiSettingsService {
         const inst = p['chordInstrument'] as string;
         this.chordInstrument = inst === 'ukulele' ? 'ukulele' : 'guitar';
         this.setPdfCoverPage = p['setPdfCoverPage'] === true;
+        this.pdfIncludeInk = p['pdfIncludeInk'] === true;
         this.metronomeCountIn = p['metronomeCountIn'] === true;
         const hints = p['hintsSeen'];
         this.hintsSeen = Array.isArray(hints)
@@ -3549,6 +3677,7 @@ export class UiSettingsService {
         editorSplitColumns: this.editorSplitColumns,
         chordInstrument: this.chordInstrument,
         setPdfCoverPage: this.setPdfCoverPage,
+        pdfIncludeInk: this.pdfIncludeInk,
         metronomeCountIn: this.metronomeCountIn,
         hintsSeen: this.hintsSeen,
       }),

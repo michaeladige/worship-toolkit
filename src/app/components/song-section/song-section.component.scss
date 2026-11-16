@@ -121,9 +121,41 @@
   &--danger:hover { border-color: #ef4444; color: #ef4444; }
 }
 
+// Modulation marker — shown wherever a section is in a different key from
+// the one before it, in every mode (editing, view-only, stage, print), since
+// a key change is exactly what a performer must not miss.
+.key-change-badge {
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  color: var(--color-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+
+  @media print {
+    background: none;
+    border: 1px solid currentColor;
+  }
+}
+
+.section-key-select {
+  padding: 0.05rem 0.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-bg);
+  color: var(--color-muted);
+  font-size: 0.7rem;
+  line-height: 1.4;
+  cursor: pointer;
+
+  &:hover, &:focus { border-color: var(--color-primary); color: var(--color-primary); }
+}
+
 // ── Line group ────────────────────────────────────────────────────────────────
 
 .line-group {
+  position: relative; // containing block for its .ink-layer
   display: flex;
   align-items: flex-start;
   gap: 0.25rem;
@@ -468,4 +500,71 @@
 
   &:hover { background: var(--color-hover); }
   &:focus { background: color-mix(in srgb, var(--color-primary) 6%, var(--color-bg)); }
+}
+
+// ── Ink (pen annotations) ─────────────────────────────────────────────────────
+
+// One per inked line; InkLayerDirective sets left/top/font-size so its 1×1
+// viewBox spans exactly 1ch × 1em of the line's lyric row. Non-uniform scale
+// (preserveAspectRatio none) is fine because strokes use non-scaling-stroke.
+.ink-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1ch;
+  height: 1em;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+  color: var(--color-text); // 'auto' ink = currentColor
+
+  path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+}
+
+// Highlighter: translucent and multiplied, so text under it stays legible.
+.ink-hl {
+  opacity: 0.45;
+  mix-blend-mode: multiply;
+  stroke-linecap: butt;
+}
+
+:host-context([data-theme='dark']) .ink-hl {
+  opacity: 0.35;
+  mix-blend-mode: screen;
+}
+
+// The stroke in progress, in viewport coordinates.
+.ink-live {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 60;
+  color: var(--color-text);
+
+  path {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media print {
+    display: none;
+  }
+}
+
+// A stylus tap opens a roomier edit box: handwriting input (iPad Scribble,
+// Windows Ink) needs space to write into, and the old chord is pre-selected
+// so the handwritten one replaces it.
+.chord-input--pen {
+  min-width: 7ch;
+  font-size: 1.25em;
+  padding: 0.2em 0.4em;
 }

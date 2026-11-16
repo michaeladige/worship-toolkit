@@ -16,6 +16,8 @@ import { ParsedSong } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
 import { SongSectionComponent } from '../song-section/song-section.component';
 import { ChordDiagramsComponent } from '../chord-diagrams/chord-diagrams.component';
+import { InkBarComponent } from '../ink-bar/ink-bar.component';
+import { InkService } from '../../services/ink.service';
 import { AutofocusDirective } from '../../directives/autofocus.directive';
 import { SelectionService } from '../../services/selection.service';
 import { UiSettingsService } from '../../services/ui-settings.service';
@@ -30,6 +32,7 @@ const QUICK_SECTIONS = ['INTRO', 'VERSE', 'CHORUS', 'PRE-CHORUS', 'BRIDGE', 'OUT
     FormsModule,
     SongSectionComponent,
     ChordDiagramsComponent,
+    InkBarComponent,
     AutofocusDirective,
   ],
   templateUrl: './song-editor.component.html',
@@ -108,6 +111,7 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
     public chordSvc: ChordService,
     public ui: UiSettingsService,
     public selection: SelectionService,
+    public ink: InkService,
   ) {}
 
   get song(): ParsedSong {
@@ -120,6 +124,41 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
 
   get allKeys(): string[] {
     return this.chordSvc.allKeys(this.ui.chordAccidentals);
+  }
+
+  // Sounding keys the song modulates into, in order ("Ab" or "Ab → Bb"), or
+  // '' for a song in one key — shown beside the song key so a modulation is
+  // visible before scrolling down to it. Transpose shifts these with the song.
+  modulationSummary(s: ParsedSong): string {
+    const keys: string[] = [];
+    for (let i = 0; i < s.sections.length; i++) {
+      const k = this.chordSvc.keyChangeAt(s, i, this.ui.chordAccidentals);
+      if (k) keys.push(k);
+    }
+    return keys.join(' → ');
+  }
+
+  get songHasInk(): boolean {
+    return this.song.sections.some((sec) => sec.lines.some((l) => !!l.ink?.length));
+  }
+
+  // One undo entry, like any other edit — so an accidental clear is one Ctrl+Z
+  // (or the toast's Undo) away.
+  clearInk() {
+    if (!this.songHasInk) return;
+    const song = JSON.parse(JSON.stringify(this.song)) as ParsedSong;
+    for (const sec of song.sections) for (const line of sec.lines) delete line.ink;
+    this.updateSong(song);
+    this.ui.showToast(this.ui.t('Ink cleared'), 'success', {
+      action: { label: this.ui.t('Undo'), run: () => this.undo.emit() },
+    });
+  }
+
+  // Ink tools open/close. Select mode is exited on open: there a press means
+  // "tick this line", which is exactly what drawing would fight with.
+  toggleInkBar() {
+    if (!this.ink.barOpen()) this.selection.exitSelectMode();
+    this.ink.toggleBar();
   }
 
   // The chord-editing hint only makes sense once there are chords to click.
@@ -190,7 +229,8 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
   // export's own header line carries.
   printKeyLine(s: ParsedSong): string {
     const key = this.chordSvc.effectiveKey(s, this.ui.chordAccidentals);
-    const parts = [`Key ${key}`];
+    const modulation = this.modulationSummary(s);
+    const parts = [modulation ? `Key ${key} → ${modulation}` : `Key ${key}`];
     if (s.tempo) parts.push(`${s.tempo} BPM`);
     if (s.timeSignature) parts.push(s.timeSignature);
     if (s.capo)
@@ -362,9 +402,13 @@ export class SongEditorComponent implements OnDestroy, OnChanges {
     const trimmed = name.trim().toUpperCase();
     if (!trimmed) return;
     const song = JSON.parse(JSON.stringify(this.song)) as ParsedSong;
+    // A section added after a modulation (say a TAG after the final chorus
+    // up a step) is in that new key, not back in the song's starting key.
+    const lastKey = song.sections[song.sections.length - 1]?.key;
     song.sections.push({
       name: trimmed,
       lines: [{ chords: [], lyric: '', isChordsOnly: false }],
+      ...(lastKey ? { key: lastKey } : {}),
     });
     this.updateSong(song);
     this.newSectionName = '';

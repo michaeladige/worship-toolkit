@@ -1,0 +1,80 @@
+<div class="ink-bar" [class.ink-bar--floating]="floating" role="toolbar" [attr.aria-label]="ui.t('Ink')">
+  <div class="ink-group" role="radiogroup" [attr.aria-label]="ui.t('Ink tool')">
+    <button
+      class="ink-btn"
+      [class.active]="ink.tool() === 'pen'"
+      [attr.aria-pressed]="ink.tool() === 'pen'"
+      (click)="setTool('pen')"
+      [title]="ui.t('Pen')"
+    >
+      ✏️ <span class="ink-label">{{ ui.t('Pen') }}</span>
+    </button>
+    <button
+      class="ink-btn"
+      [class.active]="ink.tool() === 'highlighter'"
+      [attr.aria-pressed]="ink.tool() === 'highlighter'"
+      (click)="setTool('highlighter')"
+      [title]="ui.t('Highlighter')"
+    >
+      🖍️ <span class="ink-label">{{ ui.t('Highlighter') }}</span>
+    </button>
+    <button
+      class="ink-btn"
+      [class.active]="ink.tool() === 'eraser'"
+      [attr.aria-pressed]="ink.tool() === 'eraser'"
+      (click)="setTool('eraser')"
+      [title]="ui.t('Eraser')"
+    >
+      🧽 <span class="ink-label">{{ ui.t('Eraser') }}</span>
+    </button>
+  </div>
+
+  @if (ink.tool() !== 'eraser') {
+    <div class="ink-group">
+      @for (c of colors; track c) {
+        <button
+          class="ink-swatch"
+          [class.active]="c === activeColor"
+          [attr.aria-pressed]="c === activeColor"
+          [style.background]="swatch(c)"
+          (click)="setColor(c)"
+          [title]="colorName(c)"
+          [attr.aria-label]="colorName(c)"
+        ></button>
+      }
+    </div>
+  }
+
+  <div class="ink-group">
+    <button
+      class="ink-btn"
+      [class.active]="ink.fingerDraws()"
+      [attr.aria-pressed]="ink.fingerDraws()"
+      (click)="ink.fingerDraws.set(!ink.fingerDraws())"
+      [title]="ui.t('Draw with finger or mouse too (a pen always draws)')"
+    >
+      👆 <span class="ink-label">{{ ui.t('Finger draws') }}</span>
+    </button>
+    <button
+      class="ink-btn"
+      [class.active]="!ink.visible()"
+      [attr.aria-pressed]="!ink.visible()"
+      (click)="ink.visible.set(!ink.visible())"
+      [title]="ui.t('Hide ink')"
+    >
+      🙈 <span class="ink-label">{{ ui.t('Hide ink') }}</span>
+    </button>
+    <button class="ink-btn" [disabled]="!canUndo" (click)="undo.emit()" [title]="ui.t('↩ Undo')">↩</button>
+    <button
+      class="ink-btn ink-btn--danger"
+      [disabled]="!hasInk"
+      (click)="clearInk.emit()"
+      [title]="ui.t('Clear ink on this song')"
+    >
+      🗑 <span class="ink-label">{{ ui.t('Clear') }}</span>
+    </button>
+    <button class="ink-btn ink-btn--ghost" (click)="ink.barOpen.set(false)" [title]="ui.t('Done')">
+      ✕
+    </button>
+  </div>
+</div>

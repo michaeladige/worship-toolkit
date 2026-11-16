@@ -23,8 +23,22 @@ const SECTION_RE =
 const META_RE =
   /Key\s*[-–]\s*([A-G][b#]?)\s*\|(?:.*Tempo\s*[-–]\s*(\d*)\s*\|)?.*Time\s*[-–]\s*([\d/]+)/i;
 
-// Superscript suffixes emitted as separate PDF items above the chord root
-const SUPERSCRIPT_RE = /^(\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\(\d+\))$/i;
+// Superscript suffixes emitted as separate PDF items above the chord root.
+// SongSelect sets the whole extension as ONE superscript run, so compound
+// forms like "2sus" (G²ˢᵘˢ), "7(4)" (Am⁷⁽⁴⁾) and "2(no3)" (C²⁽ⁿᵒ³⁾) arrive
+// as a single item and must match as a whole — hence the repeated group.
+const SUPERSCRIPT_RE = /^(?:\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\((?:no)?\d+\))+$/i;
+
+// A slash-bass that SongSelect typesets as its own item when the chord has a
+// superscript in the middle (G²/B → "G" + "2" + "/B"), see mergeSuperscripts.
+const BASS_ITEM_RE = /^\/[A-G][b#]?$/;
+
+// A mid-song key change: SongSelect prints "Key - Ab" on its own, right-aligned
+// above the first section in the new key (unlike the first-page META_RE line,
+// it carries no "| Tempo | Time"). Minor keys ("Key - Em") are accepted but
+// only the root is kept, matching how the song-level key is stored. The
+// optional "(play in G)" is what our own PDF export appends under a capo.
+const KEY_CHANGE_RE = /^Key\s*[-–]\s*([A-G][b#]?)m?(?:\s*\(play in [A-G][b#]?\))?$/i;
 
 @Injectable({ providedIn: 'root' })
 export class PdfParserService {
@@ -259,6 +273,25 @@ export class PdfParserService {
         dead.add(sup);
       }
     }
+    // Re-attach a split-off slash bass ("/B") to the chord it now abuts —
+    // only once the superscript above has been folded in, since that's what
+    // extends the root's width out to meet it.
+    for (const bass of items) {
+      if (dead.has(bass) || !BASS_ITEM_RE.test(bass.text.trim())) continue;
+      const root = items.find(
+        (r) =>
+          r !== bass &&
+          !dead.has(r) &&
+          Math.abs(r.y - bass.y) <= 2 &&
+          Math.abs(bass.x - (r.x + r.width)) <= 2 &&
+          this.chordSvc.isChord(r.text.trim()),
+      );
+      if (root) {
+        root.text = root.text.trim() + bass.text.trim();
+        root.width += bass.width;
+        dead.add(bass);
+      }
+    }
     for (let i = items.length - 1; i >= 0; i--) {
       if (dead.has(items[i])) items.splice(i, 1);
     }
@@ -447,42 +480,75 @@ export class PdfParserService {
     let pendingChordLine: RawLine | null = null;
     let pendingAnnotation = '';
 
+    // Key in force for the sections being read (see KEY_CHANGE_RE). Every
+    // section opened while it differs from the song key is tagged with it.
+    let currentKey = key;
+    // Set when a key change arrives mid-section with no new heading after
+    // it: the lines that follow are still that section, but in the new key,
+    // so they continue in a fresh same-named section carrying that key.
+    let keyChangedMidSection = false;
+    const openSection = (name: string): SongSection => {
+      const opened: SongSection = { name, lines: [] };
+      if (currentKey !== key) opened.key = currentKey;
+      sections.push(opened);
+      keyChangedMidSection = false;
+      return opened;
+    };
+
+    // Running header SongSelect repeats at the top of every continuation
+    // page ("Psalm 150 (Praise The Lord) - 2") — not part of the chart.
+    const escapedTitle = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const runningHeaderRe = new RegExp(`^${escapedTitle}\\s*-\\s*\\d+$`, 'i');
+
     for (let i = contentStart; i < allLines.length; i++) {
-      const line = allLines[i];
-      const text = line.text.trim();
+      let line = allLines[i];
+      let text = line.text.trim();
       if (!text) continue;
       if (/CCLI Song|For use solely|©|www\.ccli|License #/i.test(text)) continue;
-      if (/^Key\s*[-–]\s*[A-G][b#]?$/i.test(text)) {
+      if (runningHeaderRe.test(text)) continue;
+
+      // A key-change marker can share a y-band with the section heading it
+      // sits above, so look for it item-by-item rather than only as a whole line.
+      const keyItem = line.items.find((it) => KEY_CHANGE_RE.test(it.text.trim()));
+      if (keyItem) {
         this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
         pendingChordLine = null;
         pendingAnnotation = '';
-        continue;
+        currentKey = keyItem.text.trim().match(KEY_CHANGE_RE)![1];
+        currentKey = currentKey[0].toUpperCase() + currentKey.slice(1);
+        keyChangedMidSection = !!currentSection;
+        const rest = line.items.filter((it) => it !== keyItem);
+        if (!rest.length) continue;
+        line = { ...line, items: rest, text: rest.map((it) => it.text).join(' ') };
+        text = line.text.trim();
       }
 
-      if (SECTION_RE.test(text)) {
+      // "~" in the heading column is SongSelect's unnamed section break.
+      if (SECTION_RE.test(text) || text === '~') {
         this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
         pendingChordLine = null;
         pendingAnnotation = '';
-        currentSection = { name: text.toUpperCase().trim(), lines: [] };
-        sections.push(currentSection);
+        currentSection = openSection(text.toUpperCase().trim());
         continue;
       }
 
       if (!currentSection) {
-        currentSection = { name: 'SONG', lines: [] };
-        sections.push(currentSection);
+        currentSection = openSection('SONG');
+      } else if (keyChangedMidSection) {
+        currentSection = openSection(currentSection.name);
       }
+      const section: SongSection = currentSection;
 
       if (this.chordSvc.isChordLine(text)) {
         if (pendingChordLine) {
-          this.flushChordOnly(pendingChordLine, currentSection, pendingAnnotation);
+          this.flushChordOnly(pendingChordLine, section, pendingAnnotation);
         }
         pendingChordLine = line;
         pendingAnnotation = this.extractAnnotation(text);
       } else {
         // Lyric line — pass lyric items so chords get accurate charPos
         const chords = pendingChordLine ? this.extractChords(pendingChordLine, line.items) : [];
-        currentSection.lines.push({
+        section.lines.push({
           chords,
           lyric: text,
           isChordsOnly: false,

@@ -35,6 +35,16 @@
         {{ ui.t('Include cover page & table of contents') }}
       </label>
 
+      <label class="export-suboption" (click)="$event.stopPropagation()">
+        <input
+          type="checkbox"
+          class="include-ink-check"
+          [ngModel]="ui.pdfIncludeInk"
+          (ngModelChange)="ui.setPdfIncludeInk($event)"
+        />
+        ✏️ {{ ui.t('Include pen ink in PDFs') }}
+      </label>
+
       <button class="export-option" (click)="exportSeparatePdfs()" [disabled]="exporting">
         <span class="opt-icon">🗂️</span>
         <span class="opt-body">

@@ -1,6 +1,7 @@
 import {
   Component, Input, Output, EventEmitter, ChangeDetectionStrategy,
-  ElementRef, ViewChildren, QueryList, HostListener
+  ElementRef, ViewChild, ViewChildren, QueryList, HostListener,
+  AfterViewInit, OnDestroy,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,17 +9,21 @@ import {
   CdkDragDrop, CdkDropList, CdkDrag, CdkDragHandle, CdkDragPlaceholder,
   moveItemInArray, transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { ParsedSong, SongSection, SongLine, ChordToken } from '../../models/song.model';
+import { ParsedSong, SongSection, SongLine, ChordToken, InkStroke } from '../../models/song.model';
 import { ChordService } from '../../services/chord.service';
+import { InkService } from '../../services/ink.service';
 import { SelectionService } from '../../services/selection.service';
 import { UiSettingsService } from '../../services/ui-settings.service';
 import { AutofocusDirective } from '../../directives/autofocus.directive';
+import { InkLayerDirective } from '../../directives/ink-layer.directive';
+import { InkCapture, InkCaptureHost } from './ink-capture';
 
 interface EditState {
   sectionIdx: number;
   lineIdx: number;
   chordIdx: number;
   value: string;
+  pen?: boolean; // opened by a stylus tap — show the roomier handwriting-friendly box
 }
 
 interface AnnotationEditState {
@@ -41,12 +46,15 @@ interface ChordDrag {
 @Component({
   selector: 'app-song-section',
   standalone: true,
-  imports: [CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle, CdkDragPlaceholder, AutofocusDirective],
+  imports: [
+    CommonModule, FormsModule, CdkDropList, CdkDrag, CdkDragHandle, CdkDragPlaceholder,
+    AutofocusDirective, InkLayerDirective,
+  ],
   templateUrl: './song-section.component.html',
   styleUrl: './song-section.component.scss',
   changeDetection: ChangeDetectionStrategy.Default,
 })
-export class SongSectionComponent {
+export class SongSectionComponent implements AfterViewInit, OnDestroy, InkCaptureHost {
   @Input() song!: ParsedSong;
   @Input() showSectionControls = false;
   @Input() viewOnly = false;
@@ -57,16 +65,75 @@ export class SongSectionComponent {
   @Output() pasteLines = new EventEmitter<number>();
 
   @ViewChildren('chordRowRef') chordRowRefs!: QueryList<ElementRef<HTMLElement>>;
+  @ViewChild('inkLivePath') private inkLivePath?: ElementRef<SVGPathElement>;
 
   editing: EditState | null = null;
   editingAnnotation: AnnotationEditState | null = null;
   chordDrag: ChordDrag | null = null;
 
+  private inkCapture: InkCapture | null = null;
+
   constructor(
     public chordSvc: ChordService,
     public ui: UiSettingsService,
     public selection: SelectionService,
+    public ink: InkService,
+    private hostEl: ElementRef<HTMLElement>,
   ) {}
+
+  ngAfterViewInit() {
+    this.inkCapture = new InkCapture(
+      this.hostEl.nativeElement,
+      () => this.inkLivePath?.nativeElement,
+      this,
+    );
+    this.inkCapture.attach();
+  }
+
+  ngOnDestroy() {
+    this.inkCapture?.detach();
+  }
+
+  // ── Ink (InkCaptureHost) ────────────────────────────────────────────────────
+  //
+  // Ink is markup, not structure, so unlike every other edit here it is NOT
+  // blocked by view-only: annotating the chart with a pen mid-rehearsal (in
+  // stage mode, which turns view-only on) is the main use. Select mode does
+  // block it — there a press means "tick this line".
+
+  canInk(): boolean {
+    return !this.selection.selectMode();
+  }
+
+  isLocked(): boolean {
+    return this.locked;
+  }
+
+  strokesAt(si: number, li: number): readonly InkStroke[] {
+    return this.song.sections[si]?.lines[li]?.ink ?? [];
+  }
+
+  commitStroke(si: number, li: number, stroke: InkStroke) {
+    const song = this.cloneSong();
+    const line = song.sections[si]?.lines[li];
+    if (!line) return;
+    line.ink = [...(line.ink ?? []), stroke];
+    this.songChange.emit(song);
+  }
+
+  eraseStrokes(hits: { si: number; li: number; k: number }[]) {
+    const song = this.cloneSong();
+    const doomed = new Set(hits.map((h) => `${h.si}:${h.li}:${h.k}`));
+    song.sections.forEach((sec, si) =>
+      sec.lines.forEach((line, li) => {
+        if (!line.ink) return;
+        const kept = line.ink.filter((_, k) => !doomed.has(`${si}:${li}:${k}`));
+        if (kept.length) line.ink = kept;
+        else delete line.ink;
+      }),
+    );
+    this.songChange.emit(song);
+  }
 
   // Select mode suspends every editing affordance for the same reasons
   // viewOnly does, so the two collapse into one guard the template can use
@@ -87,16 +154,59 @@ export class SongSectionComponent {
     return this.selection.clipboard()?.kind === 'lines';
   }
 
-  get effectiveKey(): string {
-    return this.chordSvc.effectiveKey(this.song, this.ui.chordAccidentals);
+  // Every display helper takes the section the chord lives in, so a
+  // modulated section (SongSection.key) spells and numbers its chords
+  // against its own key — see ChordService.baseKey().
+  displayAnnotation(annotation: string, section: SongSection): string {
+    return this.chordSvc.displayAnnotation(annotation, this.song, this.ui.chordAccidentals, section);
   }
 
-  displayAnnotation(annotation: string): string {
-    return this.chordSvc.displayAnnotation(annotation, this.song, this.ui.chordAccidentals);
+  displayChord(raw: string, section: SongSection): string {
+    return this.chordSvc.displayChord(raw, this.song, this.ui.chordAccidentals, section);
   }
 
-  displayChord(raw: string): string {
-    return this.chordSvc.displayChord(raw, this.song, this.ui.chordAccidentals);
+  // ── Modulation (per-section key) ────────────────────────────────────────────
+
+  get allKeys(): string[] {
+    return this.chordSvc.allKeys(this.ui.chordAccidentals);
+  }
+
+  /** The key a section currently sounds in (transpose applied), for its key picker. */
+  sectionKey(section: SongSection): string {
+    return this.chordSvc.effectiveKey(this.song, this.ui.chordAccidentals, section);
+  }
+
+  // Badge text for a section that modulates away from the one before it,
+  // e.g. "Ab" or, with a capo, "Ab · play in G". Null = no key change here.
+  keyChangeLabel(si: number): string | null {
+    const sounding = this.chordSvc.keyChangeAt(this.song, si, this.ui.chordAccidentals);
+    if (!sounding) return null;
+    if (!this.song.capo || this.song.showNashville) return sounding;
+    const shape = this.chordSvc.shapeKey(this.song, this.ui.chordAccidentals, this.song.sections[si]);
+    return `${sounding} · ${this.ui.t('play in')} ${shape}`;
+  }
+
+  // "Modulate from here": re-keys this section AND every following section
+  // that was in the same key as it, stopping at the next existing key change.
+  // That's what a musician means by marking a modulation — the whole rest of
+  // the song (up to any later change) moves — while still letting a single
+  // section be changed when the next one already differs. The picked key is
+  // in sounding terms (transpose applied), so undo the transpose to store it.
+  setSectionKey(si: number, soundingKey: string) {
+    if (this.locked) return;
+    const song = this.cloneSong();
+    const acc = this.ui.chordAccidentals;
+    const newBase = this.chordSvc.transposeKey(soundingKey, -song.transposeSemitones, acc);
+    const oldBase = this.chordSvc.baseKey(song, song.sections[si]);
+    if (this.chordSvc.semitonesBetween(oldBase, newBase) === 0) return;
+    const isSongKey = this.chordSvc.semitonesBetween(song.originalKey, newBase) === 0;
+    for (let j = si; j < song.sections.length; j++) {
+      const sec = song.sections[j];
+      if (j > si && this.chordSvc.semitonesBetween(this.chordSvc.baseKey(song, sec), oldBase) !== 0) break;
+      if (isSongKey) delete sec.key;
+      else sec.key = newBase;
+    }
+    this.songChange.emit(song);
   }
 
   // ── Chord edit ──────────────────────────────────────────────────────────────
@@ -110,7 +220,13 @@ export class SongSectionComponent {
     if (this.locked) return;
     if (this.suppressNextClick) { this.suppressNextClick = false; return; }
     const raw = this.song.sections[si].lines[li].chords[ci].chord;
-    this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: this.editableValue(raw) };
+    this.editing = {
+      sectionIdx: si,
+      lineIdx: li,
+      chordIdx: ci,
+      value: this.editableValue(raw, si),
+      pen: this.lastChordPointerType === 'pen',
+    };
   }
 
   commitEdit() {
@@ -118,7 +234,7 @@ export class SongSectionComponent {
     const { sectionIdx, lineIdx, chordIdx, value } = this.editing;
     const song = this.cloneSong();
     const chord = song.sections[sectionIdx].lines[lineIdx].chords[chordIdx];
-    chord.chord = this.storableValue(value) || chord.chord;
+    chord.chord = this.storableValue(value, sectionIdx) || chord.chord;
     this.editing = null;
     this.songChange.emit(song);
   }
@@ -133,22 +249,16 @@ export class SongSectionComponent {
   // stored chord. Plain transposed display, on the other hand, is reversible,
   // so the edit box shows/accepts the transposed value for a natural UX and
   // we convert back to original-key form on commit (see storableValue).
-  private editableValue(raw: string): string {
-    return (this.song.showBassNotesOnly || this.song.showNashville) ? raw : this.displayChord(raw);
+  private editableValue(raw: string, si: number): string {
+    return (this.song.showBassNotesOnly || this.song.showNashville)
+      ? raw
+      : this.displayChord(raw, this.song.sections[si]);
   }
 
-  private storableValue(typed: string): string {
+  private storableValue(typed: string, si: number): string {
     const trimmed = typed.trim();
     if (!trimmed || this.song.showBassNotesOnly || this.song.showNashville) return trimmed;
-    // Reverse displayChord()'s pipeline in the opposite order it was applied:
-    // capo shifts the sounding chord DOWN to a shape, so undo that shift back
-    // UP to the sounding chord first, then undo the transpose back to originalKey.
-    const capo = this.song.capo ?? 0;
-    let value = trimmed;
-    if (capo) {
-      value = this.chordSvc.transposeChord(value, capo, this.effectiveKey, this.ui.chordAccidentals);
-    }
-    return this.chordSvc.transposeChord(value, -this.song.transposeSemitones, this.song.originalKey, this.ui.chordAccidentals);
+    return this.chordSvc.storableChord(trimmed, this.song, this.ui.chordAccidentals, this.song.sections[si]);
   }
 
   editKeydown(e: KeyboardEvent) {
@@ -169,7 +279,7 @@ export class SongSectionComponent {
     line.chords.push({ chord: 'C', xPercent: 0, charPos: lastCharPos });
     const ci = line.chords.length - 1;
     this.songChange.emit(song);
-    this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: this.editableValue('C') };
+    this.editing = { sectionIdx: si, lineIdx: li, chordIdx: ci, value: this.editableValue('C', si) };
   }
 
   removeChord(si: number, li: number, ci: number) {
@@ -360,7 +470,13 @@ export class SongSectionComponent {
 
   // ── Chord horizontal drag (reposition charPos) ──────────────────────────────
 
+  // How the last chord press was made, so a stylus tap can open the roomier,
+  // select-all edit box that handwriting input (iPad Scribble, Windows Ink)
+  // needs to replace a chord in one go.
+  private lastChordPointerType = '';
+
   startChordDrag(e: PointerEvent, si: number, li: number, ci: number, rowEl: HTMLElement) {
+    this.lastChordPointerType = e.pointerType;
     if (this.locked) return;
     // Don't start a drag if we're already editing this chord
     if (this.isEditing(si, li, ci)) return;
@@ -419,9 +535,10 @@ export class SongSectionComponent {
     const dragging = this.chordDrag && this.chordDrag.si === si && this.chordDrag.li === li
       ? this.chordDrag
       : null;
+    const section = this.song.sections[si];
     const key = [
       this.song.transposeSemitones,
-      this.effectiveKey,
+      this.chordSvc.effectiveKey(this.song, this.ui.chordAccidentals, section),
       this.ui.chordAccidentals,
       this.song.showBassNotesOnly,
       this.song.showNashville,
@@ -438,7 +555,7 @@ export class SongSectionComponent {
       if (dragging && dragging.ci === i) {
         charPos = dragging.currentCharPos;
       }
-      return { charPos, len: this.displayChord(ct.chord).length, i };
+      return { charPos, len: this.displayChord(ct.chord, section).length, i };
     }).sort((a, b) => a.charPos - b.charPos);
 
     const result: number[] = new Array(line.chords.length);

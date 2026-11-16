@@ -1,6 +1,6 @@
 // Quick smoke test of the chord regex and superscript merging logic
-const CHORD_RE = /^([A-G][b#]?)(maj|Maj|MAJ|min|Min|MIN|dim|Dim|DIM|aug|Aug|AUG|m|M)?(\d+)?((?:[#b]\d+)|(?:\d+\/\d+))?(\([0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
-const SUPERSCRIPT_RE = /^(\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\(\d+\))$/i;
+const CHORD_RE = /^([A-G][b#]?)(maj|Maj|MAJ|min|Min|MIN|dim|Dim|DIM|aug|Aug|AUG|m|M)?(\d+)?((?:[#b]\d+)|(?:\d+\/\d+))?(\((?:no)?[0-9]+\))?(sus\d*|add\d*)?(\/[A-G][b#]?)?$/;
+const SUPERSCRIPT_RE = /^(?:\d+|sus\d*|maj\d*|add\d*|dim|aug|m|\((?:no)?\d+\))+$/i;
 
 function isChord(t) { return CHORD_RE.test(t.trim()); }
 
@@ -21,6 +21,8 @@ const shouldPass = [
   'Gm7','Bbm','C#m','Fm7','Bb',
   'CMaj7','CDim','Csus4','Gaug','Adim','GAUG',
   'C7b9','G7#9','C6/9','Bb13#11','Fadd9',
+  // SongSelect compound superscripts once merged (G²ˢᵘˢ, Am⁷⁽⁴⁾, C²⁽ⁿᵒ³⁾, G²/B)
+  'G2sus','Ab2sus','Am7(4)','Bbm7(4)','C2(no3)','Db2(no3)','G2/B','Db2/F',
 ];
 
 // All these should be FALSE (lyrics / non-chord words)

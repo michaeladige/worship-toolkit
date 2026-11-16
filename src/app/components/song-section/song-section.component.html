@@ -24,8 +24,22 @@
               <span class="drag-handle" cdkDragHandle title="Drag to reorder">⠿</span>
             }
             <div class="section-label">{{ section.name }}</div>
+            @if (keyChangeLabel(si); as keyChange) {
+              <span class="key-change-badge" [title]="ui.t('Key change')">🔑 → {{ keyChange }}</span>
+            }
             @if (showSectionControls && !selectMode) {
               <div class="section-actions">
+                <select
+                  class="section-key-select"
+                  [ngModel]="sectionKey(section)"
+                  (ngModelChange)="setSectionKey(si, $event)"
+                  [title]="ui.t('Section key — pick a new key to modulate from here')"
+                  [attr.aria-label]="ui.t('Section key — pick a new key to modulate from here')"
+                >
+                  @for (k of allKeys; track k) {
+                    <option [value]="k">🔑 {{ k }}</option>
+                  }
+                </select>
                 @if (canPasteLines) {
                   <button class="section-action-btn" (click)="pasteLines.emit(si)" title="Paste lines here">{{ ui.t('Paste') }}</button>
                 }
@@ -51,10 +65,27 @@
               class="line-group"
               [class.chords-only]="line.isChordsOnly"
               [class.selected]="selectMode && selection.isLineSelected(si, li)"
+              [attr.data-si]="si"
+              [attr.data-li]="li"
               cdkDrag
               [cdkDragDisabled]="!showSectionControls || selectMode"
             >
               <div *cdkDragPlaceholder class="line-drag-placeholder"></div>
+
+              <!-- Freehand ink, in (ch, em) units of this line's lyric row — see InkStroke -->
+              @if (ink.visible() && line.ink?.length) {
+                <svg appInkLayer class="ink-layer" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true">
+                  @for (st of line.ink; track $index; let k = $index) {
+                    <path
+                      [attr.d]="ink.pathD(st)"
+                      [attr.data-k]="k"
+                      [class.ink-hl]="st.tool === 'highlighter'"
+                      [style.stroke]="ink.cssColor(st.color)"
+                      [style.stroke-width.em]="st.width"
+                    />
+                  }
+                </svg>
+              }
 
               <!-- Left gutter: select checkbox, or drag handle + add chord + remove line -->
               @if (showSectionControls) {
@@ -93,6 +124,11 @@
                             (keydown)="editKeydown($event)"
                             (blur)="commitEdit()"
                             appAutofocus
+                            [class.chord-input--pen]="editing!.pen"
+                            (focus)="editing!.pen && $any($event.target).select()"
+                            autocomplete="off"
+                            autocapitalize="off"
+                            spellcheck="false"
                             [style.width.ch]="editing!.value.length + 2"
                           />
                         } @else {
@@ -102,7 +138,7 @@
                             (click)="startEdit(si, li, ci)"
                             (pointerdown)="startChordDrag($event, si, li, ci, chordRowRef)"
                             title="Click to edit · drag to reposition"
-                          >{{ displayChord(ct.chord) }}</button>
+                          >{{ displayChord(ct.chord, section) }}</button>
                           @if (!locked) {
                             <button
                               class="chord-remove"
@@ -143,7 +179,7 @@
                     [class.non-interactive]="locked"
                     (click)="startEditAnnotation(si, li)"
                     title="Click to edit annotation"
-                  >{{ displayAnnotation(line.annotation) }}</div>
+                  >{{ displayAnnotation(line.annotation, section) }}</div>
                 } @else if (showSectionControls && !selectMode && !line.isChordsOnly) {
                   <button
                     class="add-annotation-btn"
@@ -169,3 +205,7 @@
     </div>
   }
 </div>
+
+<!-- Live preview of the stroke being drawn, in viewport px; replaced by the
+     line's own ink layer on pointerup. Written to directly by InkCapture. -->
+<svg class="ink-live" aria-hidden="true"><path #inkLivePath /></svg>
