@@ -5,8 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 WorshipToolkit is a client-only Angular SPA (no backend) that lets worship teams
-upload a SongSelect PDF chord chart, parse it into an editable model, transpose /
-annotate it, and export clean PDFs or Markdown. All state lives in the browser
+upload a SongSelect PDF chord chart (or import one from an Ultimate Guitar URL), parse it
+into an editable model, transpose / capo / annotate it, and export or print clean PDFs or
+Markdown. All state lives in the browser
 (`localStorage`) — there is no server, database, or API layer anywhere in this repo.
 
 ## Commands
@@ -26,8 +27,9 @@ an npm script — run `npx prettier --write .` directly if needed).
 ### End-to-end tests
 
 `e2e/*.spec.ts` are Playwright tests (`playwright.config.ts`) covering keyboard shortcuts,
-autoscroll, the metronome, stage mode, PWA install behavior, theming, toasts, and upload —
-this is the only real test coverage in the repo (unit specs under `src/` don't exist).
+autoscroll, the metronome, stage mode, PWA install behavior, theming, toasts, upload, hints,
+capo, chord diagrams, base-key detection, line/section editing (drag-and-drop, select mode,
+bulk actions), print layout, and set export — this is the only real test coverage in the repo (unit specs under `src/` don't exist).
 Playwright's `webServer` config runs `ng serve` on port 4200 automatically, so
 `npm run e2e` / `npx playwright test` works standalone without a dev server already
 running. Fixtures (sample PDFs) live in `e2e/fixtures/`. To run a single file or test:
@@ -65,7 +67,8 @@ check before deploy, so broken builds on `main` go live immediately.
 
 `ParsedSong` (`src/app/models/song.model.ts`) is the single source of truth for a song:
 title/key/tempo/time signature plus `SongSection[]` → `SongLine[]` → `ChordToken[]`
-(chord text + `xPercent` horizontal position + optional `charPos`/`annotation`). Nearly
+(chord text + `xPercent` horizontal position + optional `charPos`/`annotation`). Per-song
+fields include `capo` (0–11, display-only), `notes`, and `durationSeconds`. Nearly
 every component and service reads or transforms this shape; when adding a feature, extend
 `ParsedSong`/`SongSection`/`SongLine` rather than inventing a parallel structure.
 
@@ -95,11 +98,26 @@ every component and service reads or transforms this shape; when adding a featur
   only when a NUL byte actually shows up) and keeps whichever forms a real word.
 - **`ChordService`** — pure chord-string logic: `isChord`/`isChordLine` detection via
   `CHORD_RE`, transposition (`transposeChord`/`transposeKey`), Nashville Number System
-  conversion, and sharps-vs-flats spelling (`Accidentals: 'auto' | 'sharps' | 'flats'`).
+  conversion, and sharps-vs-flats spelling (`Accidentals: 'auto' | 'sharps' | 'flats'`), key detection
+  (`detectKey`, which scores diatonic chord quality, not just frequency), and capo handling:
+  a capo is a display-only transform (shape key = sounding key − capo) composed after
+  transpose; Nashville mode deliberately ignores it.
   This is the only place that understands chord grammar — route new chord-text
   manipulation through here instead of re-deriving regexes elsewhere.
+- **`UltimateGuitarService`** — imports a chart from an ultimate-guitar.com URL into the
+  same `ParsedSong[]` shape `PdfParserService` returns, so it flows through the existing
+  upload/append pipeline (UI: `import-url-modal`). Being static, the app can't fetch UG
+  directly (no CORS, Cloudflare), so it tries a chain of free public CORS proxies in order
+  and reads the chart from the page's embedded `js-store` JSON. Any proxy can die at any
+  time — keep the fallback chain and friendly errors; fetch URLs sequentially (rate limits).
+- **`SelectionService`** — transient "select mode" state (selected lines/sections as
+  signals, keyed `${sectionIdx}:${lineIdx}`; a selection is lines *or* sections, never both)
+  plus the in-app clipboard that persists across song switches. Neither is persisted. Its
+  mutation helpers are pure (return a new deep-cloned song or null) so the undo stack stays
+  valid; each bulk action is a single undo entry.
 - **`ExportService`** — renders a `ParsedSong[]` to PDF (via `jsPDF`, monospace layout so
-  chords stay aligned over lyrics) or Markdown. Fonts (JetBrains Mono) are fetched once,
+  chords stay aligned over lyrics) or Markdown, including the optional set-PDF cover page / table of contents, chord diagrams,
+  and capo in headers. Fonts (JetBrains Mono) are fetched once,
   base64-encoded, and cached in-memory (`jetbrainsMonoPromise`) since exporting is a
   frequent action and refetching ~800KB of font data per export would be wasteful.
 - **`SessionsService`** — manages named "saved sets" (up to 20, in `localStorage`),
@@ -119,10 +137,18 @@ every component and service reads or transforms this shape; when adding a featur
 ### Components (`src/app/components/`)
 
 Standalone Angular components (no NgModules anywhere in the app), one directory each:
-`workspace` (root/orchestrator), `upload`, `song-list`, `song-editor`, `song-section`
-(chord/lyric line editing — drag-to-reposition chords, add/remove lines), `export-modal`,
+`workspace` (root/orchestrator), `upload`, `import-url-modal`, `song-list`, `song-editor`
+(toolbar: capo, notes/duration, select mode, diagrams toggle, metronome), `song-section`
+(chord/lyric line editing — drag-to-reposition chords, line/section drag-and-drop,
+add/remove lines), `chord-diagrams` (fretboard strip), `export-modal` (PDF/Markdown/print),
 `sessions-modal`, `settings-modal`, `shortcuts-modal` (`?` cheatsheet), `manual` (in-app
-user manual). Routing (`app.routes.ts`) only has two real routes: `/` (workspace) and
+user manual).
+
+`src/app/data/chord-shapes.ts` computes guitar/ukulele fretting from a chord's actual tones
+(root + quality) rather than a hand-curated shape table — extend the theory, not a lookup.
+The metronome runs on a Web Audio lookahead scheduler (not `setInterval`), with downbeat
+accent from the time signature, tap tempo, and count-in. Browser print (Ctrl+P) is styled to
+hide app chrome and print black-on-white; "Print set" puts one song per page. Routing (`app.routes.ts`) only has two real routes: `/` (workspace) and
 `/manual`; everything else about "screens" (upload vs. editor vs. modals vs. stage mode)
 is conditional rendering inside `WorkspaceComponent`, not separate routes.
 
