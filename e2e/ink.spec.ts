@@ -276,3 +276,26 @@ test.describe('Ink — PDF export', () => {
     expect(without).not.toContain('0.86 0.15 0.15 RG');
   });
 });
+
+test.describe('Ink — browser print', () => {
+  // Print is CSS-driven, so emulate print media and read the ink layer's
+  // computed display (a straight stroke has a zero-height box, so Playwright's
+  // toBeVisible() can't tell shown from hidden here).
+  const inkDisplay = (page: Page) =>
+    page.locator('svg.ink-layer').first().evaluate((el) => getComputedStyle(el).display);
+
+  test('prints leave ink out unless "Include pen ink" is ticked', async ({ page }) => {
+    await open(page, SEED_WITH_INK);
+    expect(await inkDisplay(page)).not.toBe('none'); // on screen, ink always shows
+    await page.emulateMedia({ media: 'print' });
+    expect(await inkDisplay(page)).toBe('none');
+
+    await page.emulateMedia({ media: 'screen' });
+    await page.locator('button', { hasText: 'Export' }).first().click();
+    await page.locator('.include-ink-check').check();
+    await page.locator('.close-btn').click();
+
+    await page.emulateMedia({ media: 'print' });
+    expect(await inkDisplay(page)).not.toBe('none');
+  });
+});

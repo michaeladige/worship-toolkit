@@ -182,7 +182,7 @@ Sephiroth!</pre>
       <li>{{ ui.t('Write on the chart with a tablet pen (Apple Pencil, Surface Pen, S Pen…) — a pen always draws, while your finger keeps scrolling and tapping as usual. Ink is saved with the song, follows its line when you move, copy or delete it, and works in Stage mode too.') }}</li>
       <li>{{ ui.t("Click ✏️ Ink in the toolbar (or ✏️ on the Stage bar) for the tools: pen colors, highlighter, eraser (a pen's eraser end works too), Finger draws (to draw with a finger or mouse), Hide ink, and Clear. Every stroke is one Undo step.") }}</li>
       <li>{{ ui.t("To change a chord by hand, tap it with the pen: a larger edit box opens with the chord selected, ready for iPad Scribble or Windows handwriting to replace it. Ink is drawing, not chords — it doesn't transpose.") }}</li>
-      <li>{{ ui.t('Tick ✏️ Include pen ink in PDFs in the export panel to print your ink into exported PDFs.') }}</li>
+      <li>{{ ui.t('Exported PDFs and prints leave your ink out by default — tick ✏️ Include pen ink in PDFs & prints in the export panel to include it.') }}</li>
     </ul>
 
     <h3>{{ ui.t('Keyboard shortcuts') }}</h3>
@@ -389,6 +389,13 @@ Sephiroth!</pre>
     <p>A history of feature releases. See the full <a href="https://github.com/michaeladige/worship-toolkit/blob/main/CHANGELOG.md" target="_blank" rel="noopener">CHANGELOG.md</a> on GitHub.</p>
 
     <details class="changelog-entry" open>
+      <summary><h3>2.3.1</h3></summary>
+      <ul>
+        <li><strong>Printing follows the ink setting</strong> &mdash; Print song, Print set and Ctrl+P now leave your pen ink out by default, just like PDF export. Tick <em>Include pen ink in PDFs &amp; prints</em> in the export panel to include it in both.</li>
+      </ul>
+    </details>
+
+    <details class="changelog-entry">
       <summary><h3>2.3.0</h3></summary>
       <ul>
         <li><strong>Key changes (modulation)</strong> &mdash; each section can now be in its own key. SongSelect charts that print a "Key -" line part-way through (e.g. a last chorus up a half step) import with every following section in the new key, marked with a 🔑 → badge; the toolbar shows the whole journey (G → Ab). Transpose, capo, accidental spelling and Nashville numbers all follow each section's key, a 🔑 picker in each section header adds or moves a key change, and PDF/Markdown exports print "Key -" at every change (re-importing our own PDFs keeps it).</li>

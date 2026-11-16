@@ -42,7 +42,7 @@
           [ngModel]="ui.pdfIncludeInk"
           (ngModelChange)="ui.setPdfIncludeInk($event)"
         />
-        ✏️ {{ ui.t('Include pen ink in PDFs') }}
+        ✏️ {{ ui.t('Include pen ink in PDFs & prints') }}
       </label>
 
       <button class="export-option" (click)="exportSeparatePdfs()" [disabled]="exporting">

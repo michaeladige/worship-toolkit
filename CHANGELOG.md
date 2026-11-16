@@ -2,6 +2,11 @@
 
 All notable changes to WorshipToolkit are documented here. Versions follow `MAJOR.MINOR.PATCH`.
 
+## [2.3.1] - 2026-11-16
+
+### Changed
+- **Printing follows the ink setting** — browser printing (Print song / Print set in the export panel, or Ctrl+P) now leaves pen ink out by default, the same as PDF export. The export-panel checkbox is now **Include pen ink in PDFs & prints** and controls both, so a printout and an exported PDF always match.
+
 ## [2.3.0] - 2026-11-16
 
 ### Added
